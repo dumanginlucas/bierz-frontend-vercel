@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
@@ -18,6 +18,7 @@ const Header = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { getItemCount } = useCart();
   const navigate = useNavigate();
+  const location = useLocation();
   const itemCount = getItemCount();
 
   useEffect(() => {
@@ -29,12 +30,33 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id) => {
+    setIsMobileMenuOpen(false);
+    
+    // Se não estiver na home, navega para home primeiro
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: id } });
+      return;
+    }
+    
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
     }
   };
+
+  // Efeito para scroll após navegação
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      setTimeout(() => {
+        const element = document.getElementById(location.state.scrollTo);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      // Limpa o state
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const handleLogout = () => {
     logout();
@@ -284,3 +306,4 @@ const Header = () => {
 };
 
 export default Header;
+
