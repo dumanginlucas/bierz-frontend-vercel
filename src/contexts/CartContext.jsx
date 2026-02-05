@@ -78,6 +78,10 @@ export const CartProvider = ({ children }) => {
   };
 
   const getItemCount = () => {
+    return items.length; // Retorna número de itens, não quantidade total
+  };
+
+  const getTotalQuantity = () => {
     return items.reduce((sum, item) => sum + item.quantity, 0);
   };
 
@@ -127,6 +131,7 @@ export const CartProvider = ({ children }) => {
     clearCart,
     getTotal,
     getItemCount,
+    getTotalQuantity,
     hasChoppItems,
     getChoppLiters,
     hasFreeDelivery,
