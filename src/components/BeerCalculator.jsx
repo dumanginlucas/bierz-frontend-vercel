@@ -7,7 +7,7 @@ import { Users, Clock, Beer, Phone, Sparkles } from 'lucide-react';
 const BeerCalculator = () => {
   const [people, setPeople] = useState(50);
   const [hours, setHours] = useState(4);
-  const [consumption, setConsumption] = useState(500); // ml por pessoa/hora
+  const [consumption, setConsumption] = useState(450); // ml por pessoa/hora
   const [result, setResult] = useState(null);
 
   // Calcular automaticamente quando valores mudam
@@ -37,9 +37,9 @@ const BeerCalculator = () => {
   };
 
   const consumptionOptions = [
-    { value: 300, label: 'Leve', description: '300ml/h' },
-    { value: 500, label: 'Moderado', description: '500ml/h' },
-    { value: 850, label: 'Intenso', description: '850ml/h' }
+    { value: 300, label: 'Leve', description: '300ml/h', subtitle: 'Confraternizações Empresariais' },
+    { value: 450, label: 'Moderado', description: '450ml/h', subtitle: 'Festas e Aniversários' },
+    { value: 600, label: 'Intenso', description: '600ml/h', subtitle: 'Grandes Eventos' }
   ];
 
   return (
@@ -146,6 +146,9 @@ const BeerCalculator = () => {
                         <div className="font-semibold text-sm">{option.label}</div>
                         <div className={`text-xs ${consumption === option.value ? 'text-black/70' : 'text-gray-500'}`}>
                           {option.description}
+                        </div>
+                        <div className={`text-[10px] mt-1 ${consumption === option.value ? 'text-black/60' : 'text-gray-600'}`}>
+                          {option.subtitle}
                         </div>
                       </button>
                     ))}
