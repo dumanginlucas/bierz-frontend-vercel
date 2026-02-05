@@ -1,0 +1,429 @@
+import React, { useState, useEffect } from 'react';
+import { Card } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import { useCart } from '../contexts/CartContext';
+import axios from 'axios';
+import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, X } from 'lucide-react';
+
+const API_URL = process.env.REACT_APP_BACKEND_URL;
+
+const Products = () => {
+  const [selectedCategory, setSelectedCategory] = useState('todos');
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [quantities, setQuantities] = useState({});
+  const [selectedSizes, setSelectedSizes] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { addItem } = useCart();
+
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/products`);
+      setProducts(response.data);
+      // Initialize quantities and sizes
+      const initQuantities = {};
+      const initSizes = {};
+      response.data.forEach(p => {
+        initQuantities[p.id] = p.price_unit === 'litro' ? 30 : 1;
+        initSizes[p.id] = p.sizes[0] || '';
+      });
+      setQuantities(initQuantities);
+      setSelectedSizes(initSizes);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/categories`);
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const filteredProducts = selectedCategory === 'todos'
+    ? products
+    : products.filter(p => p.category === selectedCategory);
+
+  const handleAddToCart = (product) => {
+    const quantity = quantities[product.id] || 1;
+    const size = selectedSizes[product.id] || product.sizes[0];
+    addItem(product, quantity, size);
+  };
+
+  const updateQuantity = (productId, delta, isLitro) => {
+    setQuantities(prev => {
+      const current = prev[productId] || (isLitro ? 30 : 1);
+      const step = isLitro ? 10 : 1;
+      const min = isLitro ? 20 : 1;
+      const newVal = Math.max(min, current + (delta * step));
+      return { ...prev, [productId]: newVal };
+    });
+  };
+
+  const openProductModal = (product) => {
+    setSelectedProduct(product);
+    setModalOpen(true);
+  };
+
+  const renderIcon = (iconName) => {
+    const icons = {
+      'beer': <Beer className="w-4 h-4 mr-2" />,
+      'wine': <Wine className="w-4 h-4 mr-2" />,
+      'star': <Star className="w-4 h-4 mr-2" />,
+      'snowflake': <Snowflake className="w-4 h-4 mr-2" />,
+      'zap': <Zap className="w-4 h-4 mr-2" />,
+      'cup-soda': <CupSoda className="w-4 h-4 mr-2" />,
+      'glass-water': <GlassWater className="w-4 h-4 mr-2" />
+    };
+    return icons[iconName] || <Beer className="w-4 h-4 mr-2" />;
+  };
+
+  const formatPrice = (price) => {
+    return price.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+  };
+
+  if (loading) {
+    return (
+      <section id="products" className="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center text-white">Carregando produtos...</div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="products" className="py-20 bg-gradient-to-b from-black to-gray-900">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Nossos <span className="text-[#FDB913]">Produtos</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Oferecemos uma ampla variedade de produtos gelados para tornar seu evento inesquecível
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {categories.map((cat) => (
+            <Button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={selectedCategory === cat.id 
+                ? 'bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold' 
+                : 'border border-[#FDB913]/50 bg-transparent text-gray-300 hover:border-[#FDB913] hover:text-[#FDB913]'
+              }
+              data-testid={`category-${cat.id}`}
+            >
+              {renderIcon(cat.icon)}
+              {cat.name}
+            </Button>
+          ))}
+        </div>
+
+        {/* Free Delivery Banner */}
+        <div className="bg-gradient-to-r from-green-600/20 to-green-500/10 border border-green-500/30 rounded-xl p-4 mb-8 flex items-center justify-center gap-3">
+          <Truck className="w-6 h-6 text-green-400" />
+          <p className="text-green-400 font-semibold text-lg">
+            Compras acima de 30 litros de Chopp recebem entrega grátis!
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {filteredProducts.map((product) => {
+            const isLitro = product.price_unit === 'litro';
+            const quantity = quantities[product.id] || (isLitro ? 30 : 1);
+            const totalPrice = product.price * quantity;
+
+            return (
+              <Card 
+                key={product.id} 
+                className="bg-white/5 border-[#FDB913]/20 hover:border-[#FDB913] transition-all group overflow-hidden cursor-pointer"
+                data-testid={`product-card-${product.id}`}
+                onClick={() => openProductModal(product)}
+              >
+                {/* Imagem com proporção equilibrada */}
+                <div className="relative aspect-[8/9] overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-2 right-2">
+                    <Badge className="bg-[#FDB913] text-black font-semibold text-xs px-2 py-0.5">
+                      {categories.find(c => c.id === product.category)?.name || product.category}
+                    </Badge>
+                  </div>
+                  {product.stock < 10 && product.stock > 0 && (
+                    <div className="absolute top-2 left-2">
+                      <Badge className="bg-red-500 text-white text-xs px-2 py-0.5">Últimas un.</Badge>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Conteúdo compacto */}
+                <div className="p-3">
+                  <h3 className="text-white text-sm font-bold mb-1 group-hover:text-[#FDB913] transition-colors line-clamp-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-400 text-xs mb-2 line-clamp-1">
+                    {product.description}
+                  </p>
+                  
+                  {/* Preço */}
+                  <div className="mb-2">
+                    <span className="text-[#FDB913] font-bold text-base">
+                      {formatPrice(product.price)}
+                    </span>
+                    <span className="text-gray-400 text-xs">/{product.price_unit}</span>
+                  </div>
+
+                  {/* Size Selection - Only for non-Chopp products */}
+                  {product.sizes.length > 1 && !isLitro && (
+                    <div className="mb-2" onClick={(e) => e.stopPropagation()}>
+                      <Select 
+                        value={selectedSizes[product.id]} 
+                        onValueChange={(value) => setSelectedSizes(prev => ({...prev, [product.id]: value}))}
+                      >
+                        <SelectTrigger className="h-8 text-xs bg-gray-900/50 border-[#FDB913]/30 text-white">
+                          <SelectValue placeholder="Tamanho" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+                          {product.sizes.map(size => (
+                            <SelectItem key={size} value={size} className="text-white text-xs">{size}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {/* Quantidade e Total na mesma linha */}
+                  <div className="flex items-center justify-between gap-2 mb-2" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateQuantity(product.id, -1, isLitro);
+                        }}
+                        data-testid={`decrease-qty-${product.id}`}
+                      >
+                        <Minus className="w-3 h-3" />
+                      </Button>
+                      <span className="text-white text-sm font-bold w-10 text-center">
+                        {quantity}{isLitro ? 'L' : ''}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateQuantity(product.id, 1, isLitro);
+                        }}
+                        data-testid={`increase-qty-${product.id}`}
+                      >
+                        <Plus className="w-3 h-3" />
+                      </Button>
+                    </div>
+                    <span className="text-[#FDB913] font-bold text-sm">{formatPrice(totalPrice)}</span>
+                  </div>
+
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToCart(product);
+                    }}
+                    className="w-full h-8 text-xs bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                    disabled={product.stock === 0}
+                    data-testid={`add-to-cart-${product.id}`}
+                  >
+                    <ShoppingCart className="w-3 h-3 mr-1" />
+                    {product.stock === 0 ? 'Esgotado' : 'Adicionar'}
+                  </Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">Nenhum produto encontrado nesta categoria.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Product Detail Modal */}
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+        <DialogContent className="bg-gray-900 border-[#FDB913]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+          {selectedProduct && (() => {
+            const isLitro = selectedProduct.price_unit === 'litro';
+            const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
+            const totalPrice = selectedProduct.price * quantity;
+            
+            return (
+              <>
+                <div className="relative">
+                  <img
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    className="w-full h-64 md:h-80 object-cover"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-[#FDB913] text-black font-semibold">
+                      {categories.find(c => c.id === selectedProduct.category)?.name || selectedProduct.category}
+                    </Badge>
+                  </div>
+                  {selectedProduct.stock < 10 && selectedProduct.stock > 0 && (
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-red-500 text-white">Últimas unidades!</Badge>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="p-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    {selectedProduct.name}
+                  </h2>
+                  
+                  {/* Preço destacado */}
+                  <div className="mb-4">
+                    <span className="text-[#FDB913] font-bold text-3xl">
+                      {formatPrice(selectedProduct.price)}
+                    </span>
+                    <span className="text-gray-400 text-lg">/{selectedProduct.price_unit}</span>
+                  </div>
+
+                  {/* Descrição completa */}
+                  <div className="mb-6">
+                    <h3 className="text-[#FDB913] font-semibold mb-2">Descrição</h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      {selectedProduct.description}
+                    </p>
+                  </div>
+
+                  {/* Informações adicionais */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-white/5 rounded-lg p-3">
+                      <p className="text-gray-400 text-sm">Tamanhos disponíveis</p>
+                      <p className="text-white font-semibold">{selectedProduct.sizes.join(', ')}</p>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-3">
+                      <p className="text-gray-400 text-sm">Disponibilidade</p>
+                      <p className={`font-semibold ${selectedProduct.stock > 10 ? 'text-green-500' : selectedProduct.stock > 0 ? 'text-yellow-500' : 'text-red-500'}`}>
+                        {selectedProduct.stock > 10 ? 'Em estoque' : selectedProduct.stock > 0 ? `Apenas ${selectedProduct.stock} ${isLitro ? 'L' : 'un.'} restantes` : 'Esgotado'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Size Selection */}
+                  {selectedProduct.sizes.length > 1 && !isLitro && (
+                    <div className="mb-4">
+                      <label className="text-gray-400 text-sm block mb-2">Selecione o tamanho:</label>
+                      <Select 
+                        value={selectedSizes[selectedProduct.id]} 
+                        onValueChange={(value) => setSelectedSizes(prev => ({...prev, [selectedProduct.id]: value}))}
+                      >
+                        <SelectTrigger className="bg-black/50 border-[#FDB913]/30 text-white">
+                          <SelectValue placeholder="Tamanho" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+                          {selectedProduct.sizes.map(size => (
+                            <SelectItem key={size} value={size} className="text-white">{size}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {/* Quantidade */}
+                  <div className="mb-4">
+                    <label className="text-gray-400 text-sm block mb-2">
+                      Quantidade {isLitro ? '(litros)' : ''}:
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-10 w-10 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        onClick={() => updateQuantity(selectedProduct.id, -1, isLitro)}
+                      >
+                        <Minus className="w-5 h-5" />
+                      </Button>
+                      <span className="text-white text-2xl font-bold w-20 text-center">
+                        {quantity}{isLitro ? 'L' : ''}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-10 w-10 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        onClick={() => updateQuantity(selectedProduct.id, 1, isLitro)}
+                      >
+                        <Plus className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Total */}
+                  <div className="bg-[#FDB913]/10 rounded-lg p-4 mb-6">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-lg">Total:</span>
+                      <span className="text-[#FDB913] font-bold text-2xl">{formatPrice(totalPrice)}</span>
+                    </div>
+                  </div>
+
+                  {/* Botão de adicionar */}
+                  <Button
+                    onClick={() => {
+                      handleAddToCart(selectedProduct);
+                      setModalOpen(false);
+                    }}
+                    className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-bold text-lg py-6"
+                    disabled={selectedProduct.stock === 0}
+                  >
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    {selectedProduct.stock === 0 ? 'Produto Esgotado' : 'Adicionar ao Carrinho'}
+                  </Button>
+                </div>
+              </>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
+    </section>
+  );
+};
+
+export default Products;
