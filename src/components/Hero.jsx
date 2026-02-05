@@ -29,54 +29,54 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
 
           {/* Tagline */}
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-slide-up drop-shadow-2xl">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 md:mb-6 animate-slide-up drop-shadow-2xl">
             Distribuidora de Chopp e
             <span className="text-[#FDB913]"> Cervejas Especiais</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-slide-up drop-shadow-lg" style={{ animationDelay: '0.2s' }}>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 md:mb-8 max-w-2xl mx-auto animate-slide-up drop-shadow-lg px-2" style={{ animationDelay: '0.2s' }}>
             As melhores marcas de chopp e cerveja para seu evento em Sorocaba e região.
             Qualidade, variedade e atendimento diferenciado.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 md:mb-12 animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
             <Button
               onClick={() => scrollToSection('products')}
               size="lg"
-              className="bg-[#FDB913] hover:bg-[#F5A623] text-black font-bold text-lg px-8 py-6 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105"
+              className="bg-[#FDB913] hover:bg-[#F5A623] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 w-full sm:w-auto"
               data-testid="view-products-hero"
             >
-              <ShoppingCart className="w-5 h-5 mr-2" />
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Ver Produtos e Preços
             </Button>
             <Button
               onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
               size="lg"
               variant="outline"
-              className="border-2 border-[#FDB913] text-[#FDB913] hover:bg-[#FDB913] hover:text-black font-bold text-lg px-8 py-6 transition-all duration-300"
+              className="border-2 border-[#FDB913] text-[#FDB913] hover:bg-[#FDB913] hover:text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 w-full sm:w-auto"
             >
-              <Phone className="w-5 h-5 mr-2" />
+              <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               WhatsApp
             </Button>
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Beer className="w-12 h-12 text-[#FDB913] mx-auto mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-lg mb-2">Variedade</h3>
-              <p className="text-gray-200 text-sm">Chopp, cervejas especiais, gelo e muito mais</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto animate-slide-up px-2" style={{ animationDelay: '0.6s' }}>
+            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-4 sm:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
+              <Beer className="w-10 h-10 sm:w-12 sm:h-12 text-[#FDB913] mx-auto mb-2 sm:mb-3" />
+              <h3 className="text-[#FDB913] font-bold text-base sm:text-lg mb-1 sm:mb-2">Variedade</h3>
+              <p className="text-gray-200 text-xs sm:text-sm">Chopp, cervejas especiais, gelo e muito mais</p>
             </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Zap className="w-12 h-12 text-[#FDB913] mx-auto mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-lg mb-2">Entrega Rápida</h3>
-              <p className="text-gray-200 text-sm">Atendimento ágil em Sorocaba e região</p>
+            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-4 sm:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
+              <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-[#FDB913] mx-auto mb-2 sm:mb-3" />
+              <h3 className="text-[#FDB913] font-bold text-base sm:text-lg mb-1 sm:mb-2">Entrega Rápida</h3>
+              <p className="text-gray-200 text-xs sm:text-sm">Atendimento ágil em Sorocaba e região</p>
             </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Star className="w-12 h-12 text-[#FDB913] mx-auto mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-lg mb-2">Tudo Gelado</h3>
-              <p className="text-gray-200 text-sm">Todas bebidas servidas na temperatura ideal</p>
+            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-4 sm:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
+              <Star className="w-10 h-10 sm:w-12 sm:h-12 text-[#FDB913] mx-auto mb-2 sm:mb-3" />
+              <h3 className="text-[#FDB913] font-bold text-base sm:text-lg mb-1 sm:mb-2">Tudo Gelado</h3>
+              <p className="text-gray-200 text-xs sm:text-sm">Todas bebidas servidas na temperatura ideal</p>
             </div>
           </div>
         </div>
