@@ -18,6 +18,61 @@ code {
         source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Hero section mobile */
+    #hero h1 {
+        font-size: 2rem !important;
+        line-height: 1.2;
+    }
+    
+    #hero p {
+        font-size: 1rem !important;
+    }
+    
+    /* Products grid mobile */
+    #products .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+    }
+    
+    /* Calculator mobile */
+    #calculator .grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    #calculator .grid-cols-3 button {
+        padding: 0.5rem !important;
+    }
+    
+    #calculator .grid-cols-3 button .text-\[10px\] {
+        display: none;
+    }
+    
+    /* Fix cards overflow */
+    .line-clamp-1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 380px) {
+    #products .grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    #calculator .lg\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
