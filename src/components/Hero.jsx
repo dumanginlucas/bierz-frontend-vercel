@@ -13,15 +13,15 @@ const Hero = () => {
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - Hidden on mobile */}
       <div className="absolute inset-0 bg-black">
         <img
           src="/banner.jpg"
           alt="Bierz Background"
-          className="w-full h-full object-contain object-center"
+          className="hidden sm:block w-full h-full object-cover object-center"
         />
         {/* Dark overlay para melhor legibilidade */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black sm:bg-black/40"></div>
       </div>
 
       {/* Content */}
@@ -62,21 +62,21 @@ const Hero = () => {
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto animate-slide-up px-2" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-4 sm:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Beer className="w-10 h-10 sm:w-12 sm:h-12 text-[#FDB913] mx-auto mb-2 sm:mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-base sm:text-lg mb-1 sm:mb-2">Variedade</h3>
-              <p className="text-gray-200 text-xs sm:text-sm">Chopp, cervejas especiais, gelo e muito mais</p>
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto animate-slide-up px-2" style={{ animationDelay: '0.6s' }}>
+            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
+              <Beer className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#FDB913] mx-auto mb-1 sm:mb-2 md:mb-3" />
+              <h3 className="text-[#FDB913] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Variedade</h3>
+              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Chopp, cervejas especiais, gelo e mais</p>
             </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-4 sm:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-[#FDB913] mx-auto mb-2 sm:mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-base sm:text-lg mb-1 sm:mb-2">Entrega Rápida</h3>
-              <p className="text-gray-200 text-xs sm:text-sm">Atendimento ágil em Sorocaba e região</p>
+            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
+              <Zap className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#FDB913] mx-auto mb-1 sm:mb-2 md:mb-3" />
+              <h3 className="text-[#FDB913] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Entrega Rápida</h3>
+              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Atendimento ágil em Sorocaba e região</p>
             </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-4 sm:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Star className="w-10 h-10 sm:w-12 sm:h-12 text-[#FDB913] mx-auto mb-2 sm:mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-base sm:text-lg mb-1 sm:mb-2">Tudo Gelado</h3>
-              <p className="text-gray-200 text-xs sm:text-sm">Todas bebidas servidas na temperatura ideal</p>
+            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
+              <Star className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#FDB913] mx-auto mb-1 sm:mb-2 md:mb-3" />
+              <h3 className="text-[#FDB913] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Tudo Gelado</h3>
+              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Bebidas na temperatura ideal</p>
             </div>
           </div>
         </div>
