@@ -22,7 +22,7 @@ import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Pl
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Products = () => {
-  const [selectedCategory, setSelectedCategory] = useState('todos');
+  const [selectedCategory, setSelectedCategory] = useState('chopp');
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,6 +31,9 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const { addItem } = useCart();
+
+  // Ordem desejada das categorias
+  const categoryOrder = ['chopp', 'cervejas', 'cervejas-especiais', 'energeticos', 'copos', 'gelo', 'outras', 'todos'];
 
   useEffect(() => {
     fetchProducts();
@@ -60,7 +63,15 @@ const Products = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/categories`);
-      setCategories(response.data);
+      // Filtrar apenas categorias desejadas e ordenar
+      const filteredAndSorted = response.data
+        .filter(cat => categoryOrder.includes(cat.id))
+        .sort((a, b) => {
+          const indexA = categoryOrder.indexOf(a.id);
+          const indexB = categoryOrder.indexOf(b.id);
+          return indexA - indexB;
+        });
+      setCategories(filteredAndSorted);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
