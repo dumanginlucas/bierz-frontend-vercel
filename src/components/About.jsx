@@ -69,7 +69,7 @@ const About = () => {
                   <MapPin className="w-6 h-6 text-[#FDB913] flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="text-white font-semibold mb-2">Localização</h4>
-                    <p className="text-gray-300">Rua Professor Toledo, Centro - Sorocaba/SP</p>
+                    <p className="text-gray-300">Rua Professor Toledo, 665, Centro - Sorocaba/SP</p>
                   </div>
                 </div>
               </CardContent>
