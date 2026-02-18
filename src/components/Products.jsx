@@ -33,7 +33,7 @@ const Products = () => {
   const { addItem } = useCart();
 
   // Ordem desejada das categorias
-  const categoryOrder = ['chopp', 'cerveja', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
+  const categoryOrder = ['chopp', 'cerveja.', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
 
   useEffect(() => {
     fetchProducts();
