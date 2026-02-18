@@ -67,35 +67,35 @@ const AdminDashboard = () => {
   const Sidebar = () => (
     <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-black transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out`}>
       <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-[#FDB913]/30">
+        <div className="p-4 border-b border-[#F59E0B]/30">
           <Link to="/" className="flex items-center space-x-2">
-            <Beer className="w-8 h-8 text-[#FDB913]" />
-            <span className="text-xl font-bold text-[#FDB913]">Bierz Admin</span>
+            <Beer className="w-8 h-8 text-[#F59E0B]" />
+            <span className="text-xl font-bold text-[#F59E0B]">Bierz Admin</span>
           </Link>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#FDB913]/10 text-[#FDB913]">
+          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B]">
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
           </Link>
-          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
           </Link>
-          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <ClipboardList className="w-5 h-5" />
             <span>Pedidos</span>
           </Link>
-          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Users className="w-5 h-5" />
             <span>Usuários</span>
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-[#FDB913]/30">
+        <div className="p-4 border-t border-[#F59E0B]/30">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="w-10 h-10 bg-[#FDB913] rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#F59E0B] rounded-full flex items-center justify-center">
               <span className="text-black font-bold">{user?.name?.charAt(0)}</span>
             </div>
             <div>
@@ -126,7 +126,7 @@ const AdminDashboard = () => {
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white">
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-        <span className="text-[#FDB913] font-bold">Bierz Admin</span>
+        <span className="text-[#F59E0B] font-bold">Bierz Admin</span>
         <div className="w-6" />
       </div>
 
@@ -144,19 +144,19 @@ const AdminDashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-black/50 border-[#FDB913]/30">
+          <Card className="bg-black/50 border-[#F59E0B]/30">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Total de Pedidos</p>
                   <p className="text-3xl font-bold text-white">{stats?.total_orders || 0}</p>
                 </div>
-                <ShoppingCart className="w-10 h-10 text-[#FDB913]" />
+                <ShoppingCart className="w-10 h-10 text-[#F59E0B]" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/50 border-[#FDB913]/30">
+          <Card className="bg-black/50 border-[#F59E0B]/30">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -168,19 +168,19 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-black/50 border-[#FDB913]/30">
+          <Card className="bg-black/50 border-[#F59E0B]/30">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Total de Clientes</p>
                   <p className="text-3xl font-bold text-white">{stats?.total_users || 0}</p>
                 </div>
-                <Users className="w-10 h-10 text-[#FDB913]" />
+                <Users className="w-10 h-10 text-[#F59E0B]" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/50 border-[#FDB913]/30">
+          <Card className="bg-black/50 border-[#F59E0B]/30">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -220,9 +220,9 @@ const AdminDashboard = () => {
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link to="/admin/produtos">
-            <Card className="bg-black/50 border-[#FDB913]/30 hover:border-[#FDB913] transition-colors cursor-pointer">
+            <Card className="bg-black/50 border-[#F59E0B]/30 hover:border-[#F59E0B] transition-colors cursor-pointer">
               <CardContent className="pt-6 text-center">
-                <Package className="w-12 h-12 text-[#FDB913] mx-auto mb-2" />
+                <Package className="w-12 h-12 text-[#F59E0B] mx-auto mb-2" />
                 <p className="text-white font-semibold">Gerenciar Produtos</p>
                 <p className="text-gray-400 text-sm">{stats?.total_products || 0} produtos cadastrados</p>
               </CardContent>
@@ -230,9 +230,9 @@ const AdminDashboard = () => {
           </Link>
 
           <Link to="/admin/pedidos">
-            <Card className="bg-black/50 border-[#FDB913]/30 hover:border-[#FDB913] transition-colors cursor-pointer">
+            <Card className="bg-black/50 border-[#F59E0B]/30 hover:border-[#F59E0B] transition-colors cursor-pointer">
               <CardContent className="pt-6 text-center">
-                <ClipboardList className="w-12 h-12 text-[#FDB913] mx-auto mb-2" />
+                <ClipboardList className="w-12 h-12 text-[#F59E0B] mx-auto mb-2" />
                 <p className="text-white font-semibold">Ver Pedidos</p>
                 <p className="text-gray-400 text-sm">{stats?.pending_orders || 0} pedidos pendentes</p>
               </CardContent>
@@ -240,9 +240,9 @@ const AdminDashboard = () => {
           </Link>
 
           <Link to="/admin/usuarios">
-            <Card className="bg-black/50 border-[#FDB913]/30 hover:border-[#FDB913] transition-colors cursor-pointer">
+            <Card className="bg-black/50 border-[#F59E0B]/30 hover:border-[#F59E0B] transition-colors cursor-pointer">
               <CardContent className="pt-6 text-center">
-                <Users className="w-12 h-12 text-[#FDB913] mx-auto mb-2" />
+                <Users className="w-12 h-12 text-[#F59E0B] mx-auto mb-2" />
                 <p className="text-white font-semibold">Ver Clientes</p>
                 <p className="text-gray-400 text-sm">{stats?.total_users || 0} clientes cadastrados</p>
               </CardContent>

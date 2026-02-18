@@ -50,12 +50,16 @@ const AdminProducts = () => {
     name: "",
     description: "",
     category: "",
+    brand: "",
     image: "",
     sizes: "",
     price: "",
     price_unit: "unidade",
+    abv: "",
+    ibu: "",
     stock: "",
-    is_active: true
+    is_active: true,
+    featured: false
   });
 
   useEffect(() => {
@@ -104,12 +108,16 @@ const AdminProducts = () => {
       name: "",
       description: "",
       category: "",
+      brand: "",
       image: "",
       sizes: "",
       price: "",
       price_unit: "unidade",
+      abv: "",
+      ibu: "",
       stock: "",
-      is_active: true
+      is_active: true,
+      featured: false
     });
     setDialogOpen(true);
   };
@@ -120,12 +128,16 @@ const AdminProducts = () => {
       name: product.name,
       description: product.description,
       category: product.category,
+      brand: product.brand || "",
       image: product.image,
       sizes: product.sizes.join(", "),
       price: product.price.toString(),
       price_unit: product.price_unit,
+      abv: product.abv ? product.abv.toString() : "",
+      ibu: product.ibu ? product.ibu.toString() : "",
       stock: product.stock.toString(),
-      is_active: product.is_active
+      is_active: product.is_active,
+      featured: product.featured || false
     });
     setDialogOpen(true);
   };
@@ -203,12 +215,16 @@ const AdminProducts = () => {
         name: formData.name,
         description: formData.description,
         category: formData.category,
+        brand: formData.brand || null,
         image: formData.image,
         sizes: formData.sizes.split(",").map(s => s.trim()).filter(s => s),
         price: parseFloat(formData.price),
         price_unit: formData.price_unit,
+        abv: formData.abv ? parseFloat(formData.abv) : null,
+        ibu: formData.ibu ? parseInt(formData.ibu) : null,
         stock: parseInt(formData.stock),
-        is_active: formData.is_active
+        is_active: formData.is_active,
+        featured: formData.featured
       };
 
       if (selectedProduct) {
@@ -281,33 +297,33 @@ const AdminProducts = () => {
   const Sidebar = () => (
     <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-black transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out`}>
       <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-[#FDB913]/30">
+        <div className="p-4 border-b border-[#F59E0B]/30">
           <Link to="/" className="flex items-center space-x-2">
-            <Beer className="w-8 h-8 text-[#FDB913]" />
-            <span className="text-xl font-bold text-[#FDB913]">Bierz Admin</span>
+            <Beer className="w-8 h-8 text-[#F59E0B]" />
+            <span className="text-xl font-bold text-[#F59E0B]">Bierz Admin</span>
           </Link>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
           </Link>
-          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#FDB913]/10 text-[#FDB913]">
+          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B]">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
           </Link>
-          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <ClipboardList className="w-5 h-5" />
             <span>Pedidos</span>
           </Link>
-          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Users className="w-5 h-5" />
             <span>Usuários</span>
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-[#FDB913]/30">
+        <div className="p-4 border-t border-[#F59E0B]/30">
           <Button
             onClick={handleLogout}
             variant="outline"
@@ -330,7 +346,7 @@ const AdminProducts = () => {
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white">
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-        <span className="text-[#FDB913] font-bold">Produtos</span>
+        <span className="text-[#F59E0B] font-bold">Produtos</span>
         <div className="w-6" />
       </div>
 
@@ -347,7 +363,7 @@ const AdminProducts = () => {
           <h1 className="text-3xl font-bold text-white">Produtos</h1>
           <Button
             onClick={openCreateDialog}
-            className="bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+            className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
             data-testid="add-product-btn"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -363,15 +379,15 @@ const AdminProducts = () => {
               placeholder="Buscar produtos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-black/50 border-[#FDB913]/30 text-white"
+              className="pl-10 bg-black/50 border-[#F59E0B]/30 text-white"
               data-testid="search-products"
             />
           </div>
           <Select value={filterCategory} onValueChange={setFilterCategory}>
-            <SelectTrigger className="w-full md:w-48 bg-black/50 border-[#FDB913]/30 text-white">
+            <SelectTrigger className="w-full md:w-48 bg-black/50 border-[#F59E0B]/30 text-white">
               <SelectValue placeholder="Categoria" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+            <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
               <SelectItem value="todos" className="text-white">Todas Categorias</SelectItem>
               {categories.map(cat => (
                 <SelectItem key={cat.id} value={cat.id} className="text-white">{cat.name}</SelectItem>
@@ -383,22 +399,47 @@ const AdminProducts = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="bg-black/50 border-[#FDB913]/30" data-testid={`product-${product.id}`}>
+            <Card key={product.id} className="bg-black/50 border-[#F59E0B]/30" data-testid={`product-${product.id}`}>
               <div className="relative h-40">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-t-lg"
                 />
+                {product.featured && (
+                  <Badge className="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold">
+                    ⭐ Destaque
+                  </Badge>
+                )}
                 {!product.is_active && (
                   <Badge className="absolute top-2 right-2 bg-red-500">Inativo</Badge>
                 )}
               </div>
               <CardContent className="pt-4">
                 <h3 className="text-white font-semibold text-lg mb-1">{product.name}</h3>
+                {product.brand && (
+                  <p className="text-amber-500 text-sm font-medium">{product.brand}</p>
+                )}
                 <p className="text-gray-400 text-sm mb-2">{product.category}</p>
+                
+                {/* ABV e IBU */}
+                {(product.abv || product.ibu) && (
+                  <div className="flex gap-2 mb-2">
+                    {product.abv && (
+                      <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-500">
+                        {product.abv}% ABV
+                      </Badge>
+                    )}
+                    {product.ibu && (
+                      <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-500">
+                        {product.ibu} IBU
+                      </Badge>
+                    )}
+                  </div>
+                )}
+                
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-[#FDB913] font-bold">
+                  <span className="text-[#F59E0B] font-bold">
                     {formatPrice(product.price)}/{product.price_unit}
                   </span>
                   <div className="flex items-center gap-2">
@@ -407,7 +448,7 @@ const AdminProducts = () => {
                     </span>
                     <Input
                       type="number"
-                      className="w-20 h-8 bg-gray-900/50 border-[#FDB913]/30 text-white text-sm"
+                      className="w-20 h-8 bg-gray-900/50 border-[#F59E0B]/30 text-white text-sm"
                       defaultValue={product.stock}
                       onBlur={(e) => {
                         const newStock = parseInt(e.target.value);
@@ -423,7 +464,7 @@ const AdminProducts = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                    className="flex-1 border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
                     onClick={() => openEditDialog(product)}
                     data-testid={`edit-${product.id}`}
                   >
@@ -457,9 +498,9 @@ const AdminProducts = () => {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-gray-900 border-[#FDB913]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-gray-900 border-[#F59E0B]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-[#FDB913]">
+            <DialogTitle className="text-[#F59E0B]">
               {selectedProduct ? "Editar Produto" : "Novo Produto"}
             </DialogTitle>
           </DialogHeader>
@@ -470,7 +511,7 @@ const AdminProducts = () => {
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="bg-black/50 border-[#FDB913]/30 text-white"
+                  className="bg-black/50 border-[#F59E0B]/30 text-white"
                   data-testid="product-name"
                 />
               </div>
@@ -480,10 +521,10 @@ const AdminProducts = () => {
                   value={formData.category} 
                   onValueChange={(value) => setFormData({...formData, category: value})}
                 >
-                  <SelectTrigger className="bg-black/50 border-[#FDB913]/30 text-white">
+                  <SelectTrigger className="bg-black/50 border-[#F59E0B]/30 text-white">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+                  <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
                     {categories.map(cat => (
                       <SelectItem key={cat.id} value={cat.id} className="text-white">{cat.name}</SelectItem>
                     ))}
@@ -496,7 +537,7 @@ const AdminProducts = () => {
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="bg-black/50 border-[#FDB913]/30 text-white"
+                className="bg-black/50 border-[#F59E0B]/30 text-white"
                 data-testid="product-description"
               />
             </div>
@@ -509,8 +550,8 @@ const AdminProducts = () => {
               <div
                 className={`relative border-2 border-dashed rounded-lg p-6 transition-colors ${
                   dragActive 
-                    ? 'border-[#FDB913] bg-[#FDB913]/10' 
-                    : 'border-[#FDB913]/30 hover:border-[#FDB913]/50'
+                    ? 'border-[#F59E0B] bg-[#F59E0B]/10' 
+                    : 'border-[#F59E0B]/30 hover:border-[#F59E0B]/50'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -537,7 +578,7 @@ const AdminProducts = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-[#FDB913]/30 text-[#FDB913]"
+                      className="border-[#F59E0B]/30 text-[#F59E0B]"
                       disabled={uploading}
                     >
                       {uploading ? (
@@ -560,12 +601,12 @@ const AdminProducts = () => {
                   >
                     {uploading ? (
                       <>
-                        <Loader2 className="w-12 h-12 text-[#FDB913] mb-3 animate-spin" />
+                        <Loader2 className="w-12 h-12 text-[#F59E0B] mb-3 animate-spin" />
                         <p className="text-gray-400">Enviando imagem...</p>
                       </>
                     ) : (
                       <>
-                        <ImageIcon className="w-12 h-12 text-[#FDB913]/50 mb-3" />
+                        <ImageIcon className="w-12 h-12 text-[#F59E0B]/50 mb-3" />
                         <p className="text-gray-300 font-medium mb-1">
                           Arraste uma imagem ou clique para selecionar
                         </p>
@@ -584,7 +625,7 @@ const AdminProducts = () => {
                 <Input
                   value={formData.image}
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
-                  className="bg-black/50 border-[#FDB913]/30 text-white mt-1"
+                  className="bg-black/50 border-[#F59E0B]/30 text-white mt-1"
                   placeholder="https://..."
                   data-testid="product-image"
                 />
@@ -596,11 +637,49 @@ const AdminProducts = () => {
               <Input
                 value={formData.sizes}
                 onChange={(e) => setFormData({...formData, sizes: e.target.value})}
-                className="bg-black/50 border-[#FDB913]/30 text-white"
+                className="bg-black/50 border-amber-500/30 text-white"
                 placeholder="30L, 50L"
                 data-testid="product-sizes"
               />
             </div>
+            
+            {/* Novos campos: Brand, ABV, IBU */}
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label className="text-gray-300">Marca</Label>
+                <Input
+                  value={formData.brand}
+                  onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                  className="bg-black/50 border-amber-500/30 text-white"
+                  placeholder="Ex: Brahma, Heineken"
+                  data-testid="product-brand"
+                />
+              </div>
+              <div>
+                <Label className="text-gray-300">ABV (%)</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  value={formData.abv}
+                  onChange={(e) => setFormData({...formData, abv: e.target.value})}
+                  className="bg-black/50 border-amber-500/30 text-white"
+                  placeholder="Ex: 4.8"
+                  data-testid="product-abv"
+                />
+              </div>
+              <div>
+                <Label className="text-gray-300">IBU (Amargor)</Label>
+                <Input
+                  type="number"
+                  value={formData.ibu}
+                  onChange={(e) => setFormData({...formData, ibu: e.target.value})}
+                  className="bg-black/50 border-amber-500/30 text-white"
+                  placeholder="Ex: 12"
+                  data-testid="product-ibu"
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <Label className="text-gray-300">Preço (R$)</Label>
@@ -609,7 +688,7 @@ const AdminProducts = () => {
                   step="0.01"
                   value={formData.price}
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
-                  className="bg-black/50 border-[#FDB913]/30 text-white"
+                  className="bg-black/50 border-[#F59E0B]/30 text-white"
                   data-testid="product-price"
                 />
               </div>
@@ -619,10 +698,10 @@ const AdminProducts = () => {
                   value={formData.price_unit} 
                   onValueChange={(value) => setFormData({...formData, price_unit: value})}
                 >
-                  <SelectTrigger className="bg-black/50 border-[#FDB913]/30 text-white">
+                  <SelectTrigger className="bg-black/50 border-[#F59E0B]/30 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+                  <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
                     <SelectItem value="litro" className="text-white">Por Litro</SelectItem>
                     <SelectItem value="unidade" className="text-white">Por Unidade</SelectItem>
                   </SelectContent>
@@ -634,20 +713,34 @@ const AdminProducts = () => {
                   type="number"
                   value={formData.stock}
                   onChange={(e) => setFormData({...formData, stock: e.target.value})}
-                  className="bg-black/50 border-[#FDB913]/30 text-white"
+                  className="bg-black/50 border-[#F59E0B]/30 text-white"
                   data-testid="product-stock"
                 />
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="is_active"
-                checked={formData.is_active}
-                onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
-                className="rounded border-[#FDB913]/30"
-              />
-              <Label htmlFor="is_active" className="text-gray-300">Produto ativo</Label>
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="is_active"
+                  checked={formData.is_active}
+                  onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
+                  className="rounded border-amber-500/30"
+                />
+                <Label htmlFor="is_active" className="text-gray-300">Produto ativo</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  checked={formData.featured}
+                  onChange={(e) => setFormData({...formData, featured: e.target.checked})}
+                  className="rounded border-amber-500/30"
+                />
+                <Label htmlFor="featured" className="text-gray-300 flex items-center gap-1">
+                  <span className="text-amber-500">⭐</span> Produto em Destaque
+                </Label>
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -660,7 +753,7 @@ const AdminProducts = () => {
             </Button>
             <Button
               onClick={handleSubmit}
-              className="bg-[#FDB913] hover:bg-[#F5A623] text-black"
+              className="bg-[#F59E0B] hover:bg-[#F97316] text-black"
               data-testid="save-product-btn"
             >
               {selectedProduct ? "Salvar" : "Criar"}

@@ -76,13 +76,13 @@ const ProfilePage = () => {
       <main className="min-h-screen bg-gradient-to-b from-black to-gray-900 pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-2xl">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
-            Meu <span className="text-[#FDB913]">Perfil</span>
+            Meu <span className="text-[#F59E0B]">Perfil</span>
           </h1>
 
-          <Card className="bg-black/50 border-[#FDB913]/30">
+          <Card className="bg-black/50 border-[#F59E0B]/30">
             <CardHeader>
               <CardTitle className="text-white flex items-center">
-                <User className="w-5 h-5 mr-2 text-[#FDB913]" />
+                <User className="w-5 h-5 mr-2 text-[#F59E0B]" />
                 Informações Pessoais
               </CardTitle>
             </CardHeader>
@@ -104,7 +104,7 @@ const ProfilePage = () => {
                   <Input
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-gray-900/50 border-[#FDB913]/30 text-white"
+                    className="bg-gray-900/50 border-[#F59E0B]/30 text-white"
                     data-testid="profile-name"
                   />
                 ) : (
@@ -121,7 +121,7 @@ const ProfilePage = () => {
                   <Input
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="bg-gray-900/50 border-[#FDB913]/30 text-white"
+                    className="bg-gray-900/50 border-[#F59E0B]/30 text-white"
                     data-testid="profile-phone"
                   />
                 ) : (
@@ -138,7 +138,7 @@ const ProfilePage = () => {
                   <Input
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="bg-gray-900/50 border-[#FDB913]/30 text-white"
+                    className="bg-gray-900/50 border-[#F59E0B]/30 text-white"
                     data-testid="profile-address"
                   />
                 ) : (
@@ -151,7 +151,7 @@ const ProfilePage = () => {
                   <>
                     <Button
                       onClick={handleSave}
-                      className="bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                      className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
                       disabled={saving}
                       data-testid="save-profile-btn"
                     >
@@ -160,7 +160,7 @@ const ProfilePage = () => {
                     <Button
                       onClick={() => setEditing(false)}
                       variant="outline"
-                      className="border-[#FDB913]/30 text-[#FDB913]"
+                      className="border-[#F59E0B]/30 text-[#F59E0B]"
                     >
                       Cancelar
                     </Button>
@@ -168,7 +168,7 @@ const ProfilePage = () => {
                 ) : (
                   <Button
                     onClick={() => setEditing(true)}
-                    className="bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                    className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
                     data-testid="edit-profile-btn"
                   >
                     Editar Perfil

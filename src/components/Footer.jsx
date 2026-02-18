@@ -11,7 +11,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-black border-t border-[#FDB913]/20">
+    <footer className="bg-black border-t border-[#F59E0B]/20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
@@ -30,12 +30,12 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-[#FDB913] font-bold text-lg mb-4">Links Rápidos</h3>
+            <h3 className="text-[#F59E0B] font-bold text-lg mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
                 <button
                   onClick={() => scrollToSection('products')}
-                  className="text-gray-400 hover:text-[#FDB913] transition-colors text-sm"
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Produtos
                 </button>
@@ -43,7 +43,7 @@ const Footer = () => {
               <li>
                 <button
                   onClick={() => scrollToSection('calculator')}
-                  className="text-gray-400 hover:text-[#FDB913] transition-colors text-sm"
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Calculadora de Chopp
                 </button>
@@ -51,7 +51,7 @@ const Footer = () => {
               <li>
                 <button
                   onClick={() => scrollToSection('about')}
-                  className="text-gray-400 hover:text-[#FDB913] transition-colors text-sm"
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Sobre Nós
                 </button>
@@ -59,7 +59,7 @@ const Footer = () => {
               <li>
                 <button
                   onClick={() => scrollToSection('contact')}
-                  className="text-gray-400 hover:text-[#FDB913] transition-colors text-sm"
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Contato
                 </button>
@@ -69,30 +69,30 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-[#FDB913] font-bold text-lg mb-4">Contato</h3>
+            <h3 className="text-[#F59E0B] font-bold text-lg mb-4">Contato</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-[#FDB913] flex-shrink-0 mt-1" />
+                <Phone className="w-4 h-4 text-[#F59E0B] flex-shrink-0 mt-1" />
                 <a
                   href={`https://wa.me/${companyInfo.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-[#FDB913] transition-colors text-sm"
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   {companyInfo.phone}
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-[#FDB913] flex-shrink-0 mt-1" />
+                <Mail className="w-4 h-4 text-[#F59E0B] flex-shrink-0 mt-1" />
                 <a
                   href={`mailto:${companyInfo.email}`}
-                  className="text-gray-400 hover:text-[#FDB913] transition-colors text-sm"
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   {companyInfo.email}
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[#FDB913] flex-shrink-0 mt-1" />
+                <MapPin className="w-4 h-4 text-[#F59E0B] flex-shrink-0 mt-1" />
                 <span className="text-gray-400 text-sm">{companyInfo.address}</span>
               </li>
             </ul>
@@ -100,13 +100,13 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-[#FDB913]/20 pt-8">
+        <div className="border-t border-[#F59E0B]/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
               © {new Date().getFullYear()} Bierz - Distribuidora de Chopp e Cervejas. Todos os direitos reservados.
             </p>
             <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <Beer className="w-4 h-4 text-[#FDB913]" />
+              <Beer className="w-4 h-4 text-[#F59E0B]" />
               <span>Beba com moderação</span>
             </div>
           </div>

@@ -32,7 +32,7 @@ const About = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Sobre a <span className="text-[#FDB913]">Bierz</span>
+            Sobre a <span className="text-[#F59E0B]">Bierz</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Sua distribuidora de confiança em Sorocaba
@@ -43,9 +43,9 @@ const About = () => {
           {/* Text Content */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-[#FDB913]">Quem Somos</h3>
+              <h3 className="text-2xl font-bold text-[#F59E0B]">Quem Somos</h3>
               <p className="text-gray-300 leading-relaxed">
-                A <span className="text-[#FDB913] font-semibold">Bierz</span> é uma distribuidora de Chopp e cervejas especiais voltada para a região de Sorocaba. 
+                A <span className="text-[#F59E0B] font-semibold">Bierz</span> é uma distribuidora de Chopp e cervejas especiais voltada para a região de Sorocaba. 
                 Trabalhamos com as melhores marcas do mercado para garantir a qualidade e satisfação dos nossos clientes.
               </p>
               <p className="text-gray-300 leading-relaxed">
@@ -55,7 +55,7 @@ const About = () => {
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-[#FDB913]">Nossa Missão</h3>
+              <h3 className="text-2xl font-bold text-[#F59E0B]">Nossa Missão</h3>
               <p className="text-gray-300 leading-relaxed">
                 Proporcionar experiências únicas através de produtos de alta qualidade, 
                 atendimento diferenciado e comprometimento com a satisfação dos nossos clientes.
@@ -63,10 +63,10 @@ const About = () => {
             </div>
 
             {/* Location Badge */}
-            <Card className="bg-[#FDB913]/10 border-[#FDB913]/30">
+            <Card className="bg-[#F59E0B]/10 border-[#F59E0B]/30">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <MapPin className="w-6 h-6 text-[#FDB913] flex-shrink-0 mt-1" />
+                  <MapPin className="w-6 h-6 text-[#F59E0B] flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="text-white font-semibold mb-2">Localização</h4>
                     <p className="text-gray-300">Rua Professor Toledo, 665, Centro - Sorocaba/SP</p>
@@ -83,11 +83,11 @@ const About = () => {
               return (
                 <Card
                   key={index}
-                  className="bg-white/5 backdrop-blur-sm border-[#FDB913]/20 hover:border-[#FDB913] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#FDB913]/20"
+                  className="bg-white/5 backdrop-blur-sm border-[#F59E0B]/20 hover:border-[#F59E0B] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#F59E0B]/20"
                 >
                   <CardContent className="p-6 text-center">
-                    <div className="bg-[#FDB913]/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <IconComponent className="w-8 h-8 text-[#FDB913]" />
+                    <div className="bg-[#F59E0B]/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <IconComponent className="w-8 h-8 text-[#F59E0B]" />
                     </div>
                     <h3 className="text-white font-bold text-lg mb-2">{feature.title}</h3>
                     <p className="text-gray-400 text-sm">{feature.description}</p>

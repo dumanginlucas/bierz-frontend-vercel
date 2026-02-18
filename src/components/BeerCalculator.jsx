@@ -46,20 +46,20 @@ const BeerCalculator = () => {
     <section id="calculator" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-[#FDB913] rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#FDB913] rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#F59E0B] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#F59E0B] rounded-full blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-[#FDB913]/10 border border-[#FDB913]/30 rounded-full px-4 py-2 mb-4">
-              <Sparkles className="w-4 h-4 text-[#FDB913]" />
-              <span className="text-[#FDB913] text-sm font-medium">Ferramenta Interativa</span>
+            <div className="inline-flex items-center gap-2 bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-full px-4 py-2 mb-4">
+              <Sparkles className="w-4 h-4 text-[#F59E0B]" />
+              <span className="text-[#F59E0B] text-sm font-medium">Ferramenta Interativa</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <span className="text-[#FDB913]">Calculadora</span> de Chopp
+              <span className="text-[#F59E0B]">Calculadora</span> de Chopp
             </h2>
             <p className="text-gray-400 text-lg max-w-xl mx-auto">
               Descubra a quantidade perfeita de chopp para seu evento
@@ -70,14 +70,14 @@ const BeerCalculator = () => {
             {/* Controls */}
             <div className="space-y-4">
               {/* People Slider */}
-              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#FDB913]/20">
+              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#F59E0B]/20">
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <Users className="w-5 h-5 text-[#FDB913]" />
+                      <Users className="w-5 h-5 text-[#F59E0B]" />
                       <span className="text-gray-300 font-medium">Pessoas</span>
                     </div>
-                    <div className="bg-[#FDB913] text-black font-bold text-lg px-3 py-0.5 rounded-full">
+                    <div className="bg-[#F59E0B] text-black font-bold text-lg px-3 py-0.5 rounded-full">
                       {people}
                     </div>
                   </div>
@@ -98,14 +98,14 @@ const BeerCalculator = () => {
               </Card>
 
               {/* Hours Slider */}
-              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#FDB913]/20">
+              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#F59E0B]/20">
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-[#FDB913]" />
+                      <Clock className="w-5 h-5 text-[#F59E0B]" />
                       <span className="text-gray-300 font-medium">Duração</span>
                     </div>
-                    <div className="bg-[#FDB913] text-black font-bold text-lg px-3 py-0.5 rounded-full">
+                    <div className="bg-[#F59E0B] text-black font-bold text-lg px-3 py-0.5 rounded-full">
                       {hours}h
                     </div>
                   </div>
@@ -126,10 +126,10 @@ const BeerCalculator = () => {
               </Card>
 
               {/* Consumption Options - 3 buttons */}
-              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#FDB913]/20">
+              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#F59E0B]/20">
                 <CardContent className="p-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <Beer className="w-5 h-5 text-[#FDB913]" />
+                    <Beer className="w-5 h-5 text-[#F59E0B]" />
                     <span className="text-gray-300 font-medium">Nível de Consumo</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
@@ -139,8 +139,8 @@ const BeerCalculator = () => {
                         onClick={() => setConsumption(option.value)}
                         className={`p-3 rounded-lg border transition-all ${
                           consumption === option.value
-                            ? 'bg-[#FDB913] border-[#FDB913] text-black'
-                            : 'bg-white/5 border-white/10 text-gray-300 hover:border-[#FDB913]/50'
+                            ? 'bg-[#F59E0B] border-[#F59E0B] text-black'
+                            : 'bg-white/5 border-white/10 text-gray-300 hover:border-[#F59E0B]/50'
                         }`}
                       >
                         <div className="font-semibold text-sm">{option.label}</div>
@@ -158,21 +158,21 @@ const BeerCalculator = () => {
             </div>
 
             {/* Result */}
-            <Card className="bg-gradient-to-br from-[#FDB913]/10 to-[#FDB913]/5 border-[#FDB913]/30">
+            <Card className="bg-gradient-to-br from-[#F59E0B]/10 to-[#F59E0B]/5 border-[#F59E0B]/30">
               <CardContent className="p-5 flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-4">
-                  <Beer className="w-5 h-5 text-[#FDB913]" />
+                  <Beer className="w-5 h-5 text-[#F59E0B]" />
                   <span className="text-white font-semibold">Resultado</span>
                 </div>
 
                 {result && (
                   <div className="flex-1 flex flex-col">
                     {/* Main Result */}
-                    <div className="bg-black/30 rounded-xl p-5 text-center mb-4 border border-[#FDB913]/20">
+                    <div className="bg-black/30 rounded-xl p-5 text-center mb-4 border border-[#F59E0B]/20">
                       <p className="text-gray-400 text-sm mb-1">Total Recomendado</p>
                       <div className="flex items-baseline justify-center gap-1">
-                        <span className="text-5xl font-bold text-[#FDB913]">{result.totalLiters}</span>
-                        <span className="text-xl text-[#FDB913]/70">litros</span>
+                        <span className="text-5xl font-bold text-[#F59E0B]">{result.totalLiters}</span>
+                        <span className="text-xl text-[#F59E0B]/70">litros</span>
                       </div>
                     </div>
 
@@ -192,15 +192,15 @@ const BeerCalculator = () => {
                     <div className="bg-white/5 rounded-lg p-3 mb-4 text-sm text-gray-300">
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-1">
-                          <Users className="w-3 h-3 text-[#FDB913]" />
+                          <Users className="w-3 h-3 text-[#F59E0B]" />
                           {people} pessoas
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-[#FDB913]" />
+                          <Clock className="w-3 h-3 text-[#F59E0B]" />
                           {hours}h
                         </span>
                         <span className="flex items-center gap-1">
-                          <Beer className="w-3 h-3 text-[#FDB913]" />
+                          <Beer className="w-3 h-3 text-[#F59E0B]" />
                           {consumption}ml/h
                         </span>
                       </div>

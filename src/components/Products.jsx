@@ -17,7 +17,7 @@ import {
 } from './ui/dialog';
 import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
-import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, X } from 'lucide-react';
+import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -137,28 +137,34 @@ const Products = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Nossos <span className="text-[#FDB913]">Produtos</span>
+            Nossos <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Produtos</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Oferecemos uma ampla variedade de produtos gelados para tornar seu evento inesquecível
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          {categories.map((cat) => (
-            <Button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={selectedCategory === cat.id 
-                ? 'bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold' 
-                : 'border border-[#FDB913]/50 bg-transparent text-gray-300 hover:border-[#FDB913] hover:text-[#FDB913]'
-              }
-              data-testid={`category-${cat.id}`}
-            >
-              {renderIcon(cat.icon)}
-              {cat.name}
-            </Button>
-          ))}
+        {/* Category Navigation Bar - Single Container */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`
+                  flex items-center gap-1.5 px-4 py-2 rounded-md font-semibold text-sm transition-all duration-300
+                  ${selectedCategory === cat.id 
+                    ? 'bg-[#F59E0B] text-black shadow-md' 
+                    : 'text-gray-300 hover:text-gray-100'
+                  }
+                `}
+                data-testid={`category-${cat.id}`}
+              >
+                {renderIcon(cat.icon)}
+                {cat.name}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Free Delivery Banner */}
@@ -178,7 +184,7 @@ const Products = () => {
             return (
               <Card 
                 key={product.id} 
-                className="bg-white/5 border-[#FDB913]/20 hover:border-[#FDB913] transition-all group overflow-hidden cursor-pointer"
+                className="bg-white/5 border-amber-500/20 hover:border-amber-500 transition-all group overflow-hidden cursor-pointer"
                 data-testid={`product-card-${product.id}`}
                 onClick={() => openProductModal(product)}
               >
@@ -189,12 +195,21 @@ const Products = () => {
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
+                  {/* Featured Badge */}
+                  {product.featured && (
+                    <div className="absolute top-2 left-2">
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        Destaque
+                      </Badge>
+                    </div>
+                  )}
                   <div className="absolute top-2 right-2">
-                    <Badge className="bg-[#FDB913] text-black font-semibold text-xs px-2 py-0.5">
+                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold text-xs px-2 py-0.5">
                       {categories.find(c => c.id === product.category)?.name || product.category}
                     </Badge>
                   </div>
-                  {product.stock < 10 && product.stock > 0 && (
+                  {product.stock < 10 && product.stock > 0 && !product.featured && (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-red-500 text-white text-xs px-2 py-0.5">Últimas un.</Badge>
                     </div>
@@ -203,16 +218,38 @@ const Products = () => {
                 
                 {/* Conteúdo compacto */}
                 <div className="p-3">
-                  <h3 className="text-white text-sm font-bold mb-1 group-hover:text-[#FDB913] transition-colors line-clamp-1">
+                  <h3 className="text-white text-sm font-bold mb-1 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-orange-600 group-hover:bg-clip-text transition-all line-clamp-1">
                     {product.name}
                   </h3>
+                  {/* Brand */}
+                  {product.brand && (
+                    <p className="text-amber-500 text-xs font-semibold mb-1">
+                      {product.brand}
+                    </p>
+                  )}
                   <p className="text-gray-400 text-xs mb-2 line-clamp-1">
                     {product.description}
                   </p>
                   
+                  {/* ABV e IBU */}
+                  {(product.abv || product.ibu) && (
+                    <div className="flex items-center gap-2 mb-2">
+                      {product.abv && (
+                        <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-500 px-1.5 py-0">
+                          {product.abv}% ABV
+                        </Badge>
+                      )}
+                      {product.ibu && (
+                        <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-500 px-1.5 py-0">
+                          {product.ibu} IBU
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                  
                   {/* Preço */}
                   <div className="mb-2">
-                    <span className="text-[#FDB913] font-bold text-base">
+                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-base">
                       {formatPrice(product.price)}
                     </span>
                     <span className="text-gray-400 text-xs">/{product.price_unit}</span>
@@ -225,10 +262,10 @@ const Products = () => {
                         value={selectedSizes[product.id]} 
                         onValueChange={(value) => setSelectedSizes(prev => ({...prev, [product.id]: value}))}
                       >
-                        <SelectTrigger className="h-8 text-xs bg-gray-900/50 border-[#FDB913]/30 text-white">
+                        <SelectTrigger className="h-8 text-xs bg-gray-900/50 border-amber-500/30 text-white">
                           <SelectValue placeholder="Tamanho" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+                        <SelectContent className="bg-gray-900 border-amber-500/30">
                           {product.sizes.map(size => (
                             <SelectItem key={size} value={size} className="text-white text-xs">{size}</SelectItem>
                           ))}
@@ -243,7 +280,7 @@ const Products = () => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent"
                         onClick={(e) => {
                           e.stopPropagation();
                           updateQuantity(product.id, -1, isLitro);
@@ -258,7 +295,7 @@ const Products = () => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent"
                         onClick={(e) => {
                           e.stopPropagation();
                           updateQuantity(product.id, 1, isLitro);
@@ -268,7 +305,7 @@ const Products = () => {
                         <Plus className="w-3 h-3" />
                       </Button>
                     </div>
-                    <span className="text-[#FDB913] font-bold text-sm">{formatPrice(totalPrice)}</span>
+                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-sm">{formatPrice(totalPrice)}</span>
                   </div>
 
                   <Button
@@ -276,7 +313,7 @@ const Products = () => {
                       e.stopPropagation();
                       handleAddToCart(product);
                     }}
-                    className="w-full h-8 text-xs bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                    className="w-full h-8 text-xs bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-black font-semibold shadow-lg shadow-orange-500/30"
                     disabled={product.stock === 0}
                     data-testid={`add-to-cart-${product.id}`}
                   >
@@ -298,7 +335,7 @@ const Products = () => {
 
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="bg-gray-900 border-[#FDB913]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {selectedProduct && (() => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
@@ -312,13 +349,21 @@ const Products = () => {
                     alt={selectedProduct.name}
                     className="w-full h-64 md:h-80 object-cover"
                   />
+                  {selectedProduct.featured && (
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold flex items-center gap-1">
+                        <Sparkles className="w-4 h-4" />
+                        Destaque
+                      </Badge>
+                    </div>
+                  )}
                   <div className="absolute top-4 right-4">
-                    <Badge className="bg-[#FDB913] text-black font-semibold">
+                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold">
                       {categories.find(c => c.id === selectedProduct.category)?.name || selectedProduct.category}
                     </Badge>
                   </div>
                   {selectedProduct.stock < 10 && selectedProduct.stock > 0 && (
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute bottom-4 left-4">
                       <Badge className="bg-red-500 text-white">Últimas unidades!</Badge>
                     </div>
                   )}
@@ -329,9 +374,32 @@ const Products = () => {
                     {selectedProduct.name}
                   </h2>
                   
+                  {/* Brand */}
+                  {selectedProduct.brand && (
+                    <p className="text-amber-500 text-lg font-semibold mb-3">
+                      {selectedProduct.brand}
+                    </p>
+                  )}
+                  
+                  {/* ABV e IBU */}
+                  {(selectedProduct.abv || selectedProduct.ibu) && (
+                    <div className="flex items-center gap-3 mb-4">
+                      {selectedProduct.abv && (
+                        <Badge variant="outline" className="border-amber-500/50 text-amber-500 px-3 py-1">
+                          🍺 {selectedProduct.abv}% ABV
+                        </Badge>
+                      )}
+                      {selectedProduct.ibu && (
+                        <Badge variant="outline" className="border-amber-500/50 text-amber-500 px-3 py-1">
+                          🌿 {selectedProduct.ibu} IBU
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+
                   {/* Preço destacado */}
                   <div className="mb-4">
-                    <span className="text-[#FDB913] font-bold text-3xl">
+                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-3xl">
                       {formatPrice(selectedProduct.price)}
                     </span>
                     <span className="text-gray-400 text-lg">/{selectedProduct.price_unit}</span>
@@ -339,7 +407,7 @@ const Products = () => {
 
                   {/* Descrição completa */}
                   <div className="mb-6">
-                    <h3 className="text-[#FDB913] font-semibold mb-2">Descrição</h3>
+                    <h3 className="text-amber-500 font-semibold mb-2">Descrição</h3>
                     <p className="text-gray-300 leading-relaxed">
                       {selectedProduct.description}
                     </p>
@@ -367,10 +435,10 @@ const Products = () => {
                         value={selectedSizes[selectedProduct.id]} 
                         onValueChange={(value) => setSelectedSizes(prev => ({...prev, [selectedProduct.id]: value}))}
                       >
-                        <SelectTrigger className="bg-black/50 border-[#FDB913]/30 text-white">
+                        <SelectTrigger className="bg-black/50 border-amber-500/30 text-white">
                           <SelectValue placeholder="Tamanho" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+                        <SelectContent className="bg-gray-900 border-amber-500/30">
                           {selectedProduct.sizes.map(size => (
                             <SelectItem key={size} value={size} className="text-white">{size}</SelectItem>
                           ))}
@@ -388,7 +456,7 @@ const Products = () => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-10 w-10 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        className="h-10 w-10 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent"
                         onClick={() => updateQuantity(selectedProduct.id, -1, isLitro)}
                       >
                         <Minus className="w-5 h-5" />
@@ -399,7 +467,7 @@ const Products = () => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-10 w-10 border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                        className="h-10 w-10 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent"
                         onClick={() => updateQuantity(selectedProduct.id, 1, isLitro)}
                       >
                         <Plus className="w-5 h-5" />
@@ -408,10 +476,10 @@ const Products = () => {
                   </div>
 
                   {/* Total */}
-                  <div className="bg-[#FDB913]/10 rounded-lg p-4 mb-6">
+                  <div className="bg-gradient-to-r from-amber-500/10 to-orange-600/10 rounded-lg p-4 mb-6 border border-amber-500/20">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300 text-lg">Total:</span>
-                      <span className="text-[#FDB913] font-bold text-2xl">{formatPrice(totalPrice)}</span>
+                      <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-2xl">{formatPrice(totalPrice)}</span>
                     </div>
                   </div>
 
@@ -421,7 +489,7 @@ const Products = () => {
                       handleAddToCart(selectedProduct);
                       setModalOpen(false);
                     }}
-                    className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-bold text-lg py-6"
+                    className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-black font-bold text-lg py-6 shadow-lg shadow-orange-500/30"
                     disabled={selectedProduct.stock === 0}
                   >
                     <ShoppingCart className="w-5 h-5 mr-2" />

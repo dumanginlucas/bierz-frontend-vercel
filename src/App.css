@@ -1,3 +1,10 @@
+/* CSS Variables - Orange Gradient Theme */
+:root {
+  --primary-orange: #F59E0B; /* amber-500 */
+  --secondary-orange: #F97316; /* orange-600 */
+  --gradient-orange: linear-gradient(to right, #F59E0B, #F97316);
+}
+
 /* Animations */
 @keyframes fade-in {
   from {
@@ -43,10 +50,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FDB913;
+  background: #F59E0B;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #F5A623;
+  background: #F97316;
 }

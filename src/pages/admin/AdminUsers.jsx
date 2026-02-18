@@ -67,33 +67,33 @@ const AdminUsers = () => {
   const Sidebar = () => (
     <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-black transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out`}>
       <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-[#FDB913]/30">
+        <div className="p-4 border-b border-[#F59E0B]/30">
           <Link to="/" className="flex items-center space-x-2">
-            <Beer className="w-8 h-8 text-[#FDB913]" />
-            <span className="text-xl font-bold text-[#FDB913]">Bierz Admin</span>
+            <Beer className="w-8 h-8 text-[#F59E0B]" />
+            <span className="text-xl font-bold text-[#F59E0B]">Bierz Admin</span>
           </Link>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
           </Link>
-          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
           </Link>
-          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <ClipboardList className="w-5 h-5" />
             <span>Pedidos</span>
           </Link>
-          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#FDB913]/10 text-[#FDB913]">
+          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B]">
             <Users className="w-5 h-5" />
             <span>Usuários</span>
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-[#FDB913]/30">
+        <div className="p-4 border-t border-[#F59E0B]/30">
           <Button
             onClick={handleLogout}
             variant="outline"
@@ -116,7 +116,7 @@ const AdminUsers = () => {
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white">
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-        <span className="text-[#FDB913] font-bold">Usuários</span>
+        <span className="text-[#F59E0B] font-bold">Usuários</span>
         <div className="w-6" />
       </div>
 
@@ -137,14 +137,14 @@ const AdminUsers = () => {
               placeholder="Buscar usuários..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-black/50 border-[#FDB913]/30 text-white"
+              className="pl-10 bg-black/50 border-[#F59E0B]/30 text-white"
               data-testid="search-users"
             />
           </div>
         </div>
 
         {filteredUsers.length === 0 ? (
-          <Card className="bg-black/50 border-[#FDB913]/30 p-8 text-center">
+          <Card className="bg-black/50 border-[#F59E0B]/30 p-8 text-center">
             <Users className="w-16 h-16 text-gray-500 mx-auto mb-4" />
             <p className="text-gray-400">Nenhum usuário encontrado</p>
           </Card>
@@ -153,13 +153,13 @@ const AdminUsers = () => {
             {filteredUsers.map((u) => (
               <Card 
                 key={u.id} 
-                className="bg-black/50 border-[#FDB913]/30"
+                className="bg-black/50 border-[#F59E0B]/30"
                 data-testid={`user-${u.id}`}
               >
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-[#FDB913] rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-[#F59E0B] rounded-full flex items-center justify-center">
                         <span className="text-black font-bold text-lg">{u.name.charAt(0)}</span>
                       </div>
                       <div>
@@ -182,7 +182,7 @@ const AdminUsers = () => {
                     {u.phone && (
                       <a 
                         href={`tel:${u.phone}`}
-                        className="text-[#FDB913] flex items-center hover:underline"
+                        className="text-[#F59E0B] flex items-center hover:underline"
                       >
                         <Phone className="w-4 h-4 mr-2" />
                         {u.phone}

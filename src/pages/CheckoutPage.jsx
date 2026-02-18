@@ -99,18 +99,18 @@ const CheckoutPage = () => {
         <Header />
         <main className="min-h-screen bg-gradient-to-b from-black to-gray-900 pt-32 pb-20">
           <div className="container mx-auto px-4">
-            <Card className="max-w-lg mx-auto bg-black/50 border-[#FDB913]/30 p-8 text-center">
+            <Card className="max-w-lg mx-auto bg-black/50 border-[#F59E0B]/30 p-8 text-center">
               <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
               <h1 className="text-3xl font-bold text-white mb-4">Pedido Realizado!</h1>
               <p className="text-gray-400 mb-2">Seu pedido foi recebido com sucesso.</p>
-              <p className="text-[#FDB913] font-semibold mb-6">Pedido #{orderId?.slice(0, 8)}</p>
+              <p className="text-[#F59E0B] font-semibold mb-6">Pedido #{orderId?.slice(0, 8)}</p>
               <p className="text-gray-400 mb-8">
                 Em breve entraremos em contato para confirmar a entrega.
               </p>
               <div className="space-y-3">
                 <Button
                   onClick={() => navigate("/pedidos")}
-                  className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                  className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
                   data-testid="view-orders-btn"
                 >
                   Ver Meus Pedidos
@@ -118,7 +118,7 @@ const CheckoutPage = () => {
                 <Button
                   onClick={() => navigate("/")}
                   variant="outline"
-                  className="w-full border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                  className="w-full border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
                 >
                   Voltar para Home
                 </Button>
@@ -137,15 +137,15 @@ const CheckoutPage = () => {
       <main className="min-h-screen bg-gradient-to-b from-black to-gray-900 pt-32 pb-20">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
-            Finalizar <span className="text-[#FDB913]">Pedido</span>
+            Finalizar <span className="text-[#F59E0B]">Pedido</span>
           </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <form onSubmit={handleSubmit}>
-                <Card className="bg-black/50 border-[#FDB913]/30 p-6 mb-6">
+                <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
                   <h2 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <MapPin className="w-5 h-5 mr-2 text-[#FDB913]" />
+                    <MapPin className="w-5 h-5 mr-2 text-[#F59E0B]" />
                     Endereço de Entrega
                   </h2>
                   <div className="space-y-4">
@@ -158,7 +158,7 @@ const CheckoutPage = () => {
                         value={formData.delivery_address}
                         onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
                         placeholder="Rua, número, bairro, cidade"
-                        className="bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                        className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                         required
                         data-testid="delivery-address"
                       />
@@ -166,23 +166,23 @@ const CheckoutPage = () => {
                   </div>
                 </Card>
 
-                <Card className="bg-black/50 border-[#FDB913]/30 p-6 mb-6">
+                <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
                   <h2 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <FileText className="w-5 h-5 mr-2 text-[#FDB913]" />
+                    <FileText className="w-5 h-5 mr-2 text-[#F59E0B]" />
                     Observações
                   </h2>
                   <Textarea
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="Instruções especiais para entrega, horário preferido, etc."
-                    className="bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913] min-h-[100px]"
+                    className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B] min-h-[100px]"
                     data-testid="order-notes"
                   />
                 </Card>
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold py-6 text-lg"
+                  className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold py-6 text-lg"
                   disabled={loading}
                   data-testid="confirm-order-btn"
                 >
@@ -192,7 +192,7 @@ const CheckoutPage = () => {
             </div>
 
             <div className="lg:col-span-1">
-              <Card className="bg-black/50 border-[#FDB913]/30 p-6 sticky top-32">
+              <Card className="bg-black/50 border-[#F59E0B]/30 p-6 sticky top-32">
                 <h2 className="text-xl font-bold text-white mb-4">Resumo do Pedido</h2>
                 <div className="space-y-3 mb-4 max-h-48 overflow-y-auto">
                   {items.map((item, index) => (
@@ -205,7 +205,7 @@ const CheckoutPage = () => {
                   ))}
                 </div>
 
-                <div className="border-t border-[#FDB913]/30 pt-4 mb-4 space-y-3">
+                <div className="border-t border-[#F59E0B]/30 pt-4 mb-4 space-y-3">
                   <div className="flex justify-between text-gray-400">
                     <span>Subtotal</span>
                     <span>{formatPrice(getTotal())}</span>
@@ -261,10 +261,10 @@ const CheckoutPage = () => {
                   </div>
                 )}
 
-                <div className="border-t border-[#FDB913]/30 pt-4">
+                <div className="border-t border-[#F59E0B]/30 pt-4">
                   <div className="flex justify-between text-white font-bold text-xl">
                     <span>Total</span>
-                    <span className="text-[#FDB913]">{formatPrice(getFinalTotal())}</span>
+                    <span className="text-[#F59E0B]">{formatPrice(getFinalTotal())}</span>
                   </div>
                 </div>
               </Card>

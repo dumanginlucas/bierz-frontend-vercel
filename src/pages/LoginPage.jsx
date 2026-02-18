@@ -40,15 +40,15 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <Link to="/" className="inline-flex items-center text-[#FDB913] hover:text-[#F5A623] mb-8">
+        <Link to="/" className="inline-flex items-center text-[#F59E0B] hover:text-[#F97316] mb-8">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Voltar para o site
         </Link>
 
-        <Card className="bg-black/50 border-[#FDB913]/30">
+        <Card className="bg-black/50 border-[#F59E0B]/30">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <div className="bg-[#FDB913] p-3 rounded-full">
+              <div className="bg-[#F59E0B] p-3 rounded-full">
                 <Beer className="w-8 h-8 text-black" />
               </div>
             </div>
@@ -69,7 +69,7 @@ const LoginPage = () => {
                     placeholder="seu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     required
                     data-testid="login-email"
                   />
@@ -86,14 +86,14 @@ const LoginPage = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 pr-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     required
                     data-testid="login-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#FDB913] transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#F59E0B] transition-colors"
                     data-testid="toggle-password"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -103,7 +103,7 @@ const LoginPage = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
                 disabled={loading}
                 data-testid="login-submit"
               >
@@ -114,7 +114,7 @@ const LoginPage = () => {
             <div className="mt-6 text-center">
               <p className="text-gray-400">
                 Não tem uma conta?{" "}
-                <Link to="/register" className="text-[#FDB913] hover:text-[#F5A623]">
+                <Link to="/register" className="text-[#F59E0B] hover:text-[#F97316]">
                   Cadastre-se
                 </Link>
               </p>

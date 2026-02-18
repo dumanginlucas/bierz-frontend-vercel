@@ -89,11 +89,11 @@ const OrdersPage = () => {
       <main className="min-h-screen bg-gradient-to-b from-black to-gray-900 pt-32 pb-20">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
-            Meus <span className="text-[#FDB913]">Pedidos</span>
+            Meus <span className="text-[#F59E0B]">Pedidos</span>
           </h1>
 
           {orders.length === 0 ? (
-            <Card className="bg-black/50 border-[#FDB913]/30 p-8 text-center">
+            <Card className="bg-black/50 border-[#F59E0B]/30 p-8 text-center">
               <Package className="w-16 h-16 text-gray-500 mx-auto mb-4" />
               <h2 className="text-xl text-gray-400">Você ainda não fez nenhum pedido</h2>
             </Card>
@@ -105,7 +105,7 @@ const OrdersPage = () => {
                 return (
                   <Card
                     key={order.id}
-                    className="bg-black/50 border-[#FDB913]/30 p-6"
+                    className="bg-black/50 border-[#F59E0B]/30 p-6"
                     data-testid={`order-${order.id}`}
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
@@ -121,7 +121,7 @@ const OrdersPage = () => {
                       </Badge>
                     </div>
 
-                    <div className="border-t border-[#FDB913]/20 pt-4">
+                    <div className="border-t border-[#F59E0B]/20 pt-4">
                       <div className="space-y-2">
                         {order.items.map((item, idx) => (
                           <div key={idx} className="flex justify-between text-sm">
@@ -132,9 +132,9 @@ const OrdersPage = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="border-t border-[#FDB913]/20 mt-4 pt-4 flex justify-between">
+                      <div className="border-t border-[#F59E0B]/20 mt-4 pt-4 flex justify-between">
                         <span className="text-white font-semibold">Total</span>
-                        <span className="text-[#FDB913] font-bold">{formatPrice(order.total)}</span>
+                        <span className="text-[#F59E0B] font-bold">{formatPrice(order.total)}</span>
                       </div>
                     </div>
 

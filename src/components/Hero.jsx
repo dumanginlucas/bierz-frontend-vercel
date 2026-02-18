@@ -31,7 +31,7 @@ const Hero = () => {
           {/* Tagline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 md:mb-6 animate-slide-up drop-shadow-2xl">
             Distribuidora de Chopp e
-            <span className="text-[#FDB913]"> Cervejas Especiais</span>
+            <span className="text-[#F59E0B]"> Cervejas Especiais</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 md:mb-8 max-w-2xl mx-auto animate-slide-up drop-shadow-lg px-2" style={{ animationDelay: '0.2s' }}>
@@ -44,7 +44,7 @@ const Hero = () => {
             <Button
               onClick={() => scrollToSection('products')}
               size="lg"
-              className="bg-[#FDB913] hover:bg-[#F5A623] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 w-full sm:w-auto"
+              className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 w-full sm:w-auto"
               data-testid="view-products-hero"
             >
               <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -54,7 +54,7 @@ const Hero = () => {
               onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
               size="lg"
               variant="outline"
-              className="border-2 border-[#FDB913] text-[#FDB913] hover:bg-[#FDB913] hover:text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 w-full sm:w-auto"
+              className="border-2 border-[#F59E0B] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 w-full sm:w-auto"
             >
               <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               WhatsApp
@@ -63,19 +63,19 @@ const Hero = () => {
 
           {/* Features */}
           <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto animate-slide-up px-2" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Beer className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#FDB913] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Variedade</h3>
+            <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
+              <Beer className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
+              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Variedade</h3>
               <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Chopp, cervejas especiais, gelo e mais</p>
             </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Zap className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#FDB913] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Entrega Rápida</h3>
+            <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
+              <Zap className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
+              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Entrega Rápida</h3>
               <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Atendimento ágil em Sorocaba e região</p>
             </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#FDB913]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#FDB913] hover:bg-black/80 transition-all duration-300">
-              <Star className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#FDB913] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#FDB913] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Tudo Gelado</h3>
+            <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
+              <Star className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
+              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Tudo Gelado</h3>
               <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Bebidas na temperatura ideal</p>
             </div>
           </div>
@@ -85,7 +85,7 @@ const Hero = () => {
       {/* Scroll Indicator */}
       <button
         onClick={() => scrollToSection('products')}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-[#FDB913] animate-bounce cursor-pointer hover:text-[#F5A623] transition-colors"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-[#F59E0B] animate-bounce cursor-pointer hover:text-[#F97316] transition-colors"
       >
         <ArrowDown className="w-8 h-8" />
       </button>

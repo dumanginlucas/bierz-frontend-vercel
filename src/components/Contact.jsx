@@ -49,7 +49,7 @@ const Contact = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Entre em <span className="text-[#FDB913]">Contato</span>
+            Entre em <span className="text-[#F59E0B]">Contato</span>
           </h2>
           <p className="text-gray-400 text-lg">
             Estamos prontos para atender você
@@ -59,7 +59,7 @@ const Contact = () => {
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Info */}
           <div className="space-y-6">
-            <Card className="bg-white/5 backdrop-blur-sm border-[#FDB913]/20">
+            <Card className="bg-white/5 backdrop-blur-sm border-[#F59E0B]/20">
               <CardHeader>
                 <CardTitle className="text-white">Informações de Contato</CardTitle>
                 <CardDescription className="text-gray-400">
@@ -69,8 +69,8 @@ const Contact = () => {
               <CardContent className="space-y-6">
                 {/* Phone */}
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#FDB913]/10 p-3 rounded-lg">
-                    <Phone className="w-6 h-6 text-[#FDB913]" />
+                  <div className="bg-[#F59E0B]/10 p-3 rounded-lg">
+                    <Phone className="w-6 h-6 text-[#F59E0B]" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold mb-1">Telefone / WhatsApp</h3>
@@ -78,7 +78,7 @@ const Contact = () => {
                       href={`https://wa.me/${companyInfo.whatsapp}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#FDB913] hover:text-[#F5A623] transition-colors"
+                      className="text-[#F59E0B] hover:text-[#F97316] transition-colors"
                     >
                       {companyInfo.phone}
                     </a>
@@ -87,14 +87,14 @@ const Contact = () => {
 
                 {/* Email */}
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#FDB913]/10 p-3 rounded-lg">
-                    <Mail className="w-6 h-6 text-[#FDB913]" />
+                  <div className="bg-[#F59E0B]/10 p-3 rounded-lg">
+                    <Mail className="w-6 h-6 text-[#F59E0B]" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold mb-1">E-mail</h3>
                     <a
                       href={`mailto:${companyInfo.email}`}
-                      className="text-[#FDB913] hover:text-[#F5A623] transition-colors"
+                      className="text-[#F59E0B] hover:text-[#F97316] transition-colors"
                     >
                       {companyInfo.email}
                     </a>
@@ -103,8 +103,8 @@ const Contact = () => {
 
                 {/* Address */}
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#FDB913]/10 p-3 rounded-lg">
-                    <MapPin className="w-6 h-6 text-[#FDB913]" />
+                  <div className="bg-[#F59E0B]/10 p-3 rounded-lg">
+                    <MapPin className="w-6 h-6 text-[#F59E0B]" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold mb-1">Endereço</h3>
@@ -114,8 +114,8 @@ const Contact = () => {
 
                 {/* Hours */}
                 <div className="flex items-start gap-4">
-                  <div className="bg-[#FDB913]/10 p-3 rounded-lg">
-                    <Clock className="w-6 h-6 text-[#FDB913]" />
+                  <div className="bg-[#F59E0B]/10 p-3 rounded-lg">
+                    <Clock className="w-6 h-6 text-[#F59E0B]" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold mb-1">Horário de Atendimento</h3>
@@ -143,7 +143,7 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <Card className="bg-white/5 backdrop-blur-sm border-[#FDB913]/20">
+          <Card className="bg-white/5 backdrop-blur-sm border-[#F59E0B]/20">
             <CardHeader>
               <CardTitle className="text-white">Solicite um Orçamento</CardTitle>
               <CardDescription className="text-gray-400">
@@ -163,7 +163,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="bg-white/10 border-[#FDB913]/30 text-white placeholder:text-gray-500 focus:border-[#FDB913]"
+                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B]"
                   />
                 </div>
 
@@ -178,7 +178,7 @@ const Contact = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    className="bg-white/10 border-[#FDB913]/30 text-white placeholder:text-gray-500 focus:border-[#FDB913]"
+                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B]"
                   />
                 </div>
 
@@ -192,7 +192,7 @@ const Contact = () => {
                     placeholder="seu@email.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="bg-white/10 border-[#FDB913]/30 text-white placeholder:text-gray-500 focus:border-[#FDB913]"
+                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B]"
                   />
                 </div>
 
@@ -206,7 +206,7 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    className="bg-white/10 border-[#FDB913]/30 text-white placeholder:text-gray-500 focus:border-[#FDB913] resize-none"
+                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B] resize-none"
                   />
                 </div>
 
@@ -219,7 +219,7 @@ const Contact = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold text-lg py-6 transition-all duration-200"
+                  className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold text-lg py-6 transition-all duration-200"
                 >
                   <Send className="w-5 h-5 mr-2" />
                   Enviar via WhatsApp

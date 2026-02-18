@@ -61,15 +61,15 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <Link to="/" className="inline-flex items-center text-[#FDB913] hover:text-[#F5A623] mb-8">
+        <Link to="/" className="inline-flex items-center text-[#F59E0B] hover:text-[#F97316] mb-8">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Voltar para o site
         </Link>
 
-        <Card className="bg-black/50 border-[#FDB913]/30">
+        <Card className="bg-black/50 border-[#F59E0B]/30">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <div className="bg-[#FDB913] p-3 rounded-full">
+              <div className="bg-[#F59E0B] p-3 rounded-full">
                 <Beer className="w-8 h-8 text-black" />
               </div>
             </div>
@@ -91,7 +91,7 @@ const RegisterPage = () => {
                     placeholder="Seu nome"
                     value={formData.name}
                     onChange={handleChange}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     required
                     data-testid="register-name"
                   />
@@ -109,7 +109,7 @@ const RegisterPage = () => {
                     placeholder="seu@email.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     required
                     data-testid="register-email"
                   />
@@ -127,7 +127,7 @@ const RegisterPage = () => {
                     placeholder="(15) 99999-9999"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     data-testid="register-phone"
                   />
                 </div>
@@ -144,7 +144,7 @@ const RegisterPage = () => {
                     placeholder="Rua, número, bairro"
                     value={formData.address}
                     onChange={handleChange}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     data-testid="register-address"
                   />
                 </div>
@@ -161,7 +161,7 @@ const RegisterPage = () => {
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={handleChange}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     required
                     data-testid="register-password"
                   />
@@ -179,7 +179,7 @@ const RegisterPage = () => {
                     placeholder="••••••••"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="pl-10 bg-gray-900/50 border-[#FDB913]/30 text-white placeholder-gray-500 focus:border-[#FDB913]"
+                    className="pl-10 bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                     required
                     data-testid="register-confirm-password"
                   />
@@ -188,7 +188,7 @@ const RegisterPage = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#FDB913] hover:bg-[#F5A623] text-black font-semibold"
+                className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
                 disabled={loading}
                 data-testid="register-submit"
               >
@@ -199,7 +199,7 @@ const RegisterPage = () => {
             <div className="mt-6 text-center">
               <p className="text-gray-400">
                 Já tem uma conta?{" "}
-                <Link to="/login" className="text-[#FDB913] hover:text-[#F5A623]">
+                <Link to="/login" className="text-[#F59E0B] hover:text-[#F97316]">
                   Fazer login
                 </Link>
               </p>

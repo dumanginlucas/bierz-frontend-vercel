@@ -122,33 +122,33 @@ const AdminOrders = () => {
   const Sidebar = () => (
     <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-black transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out`}>
       <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-[#FDB913]/30">
+        <div className="p-4 border-b border-[#F59E0B]/30">
           <Link to="/" className="flex items-center space-x-2">
-            <Beer className="w-8 h-8 text-[#FDB913]" />
-            <span className="text-xl font-bold text-[#FDB913]">Bierz Admin</span>
+            <Beer className="w-8 h-8 text-[#F59E0B]" />
+            <span className="text-xl font-bold text-[#F59E0B]">Bierz Admin</span>
           </Link>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
           </Link>
-          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
           </Link>
-          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#FDB913]/10 text-[#FDB913]">
+          <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B]">
             <ClipboardList className="w-5 h-5" />
             <span>Pedidos</span>
           </Link>
-          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#FDB913]/10 hover:text-[#FDB913] transition-colors">
+          <Link to="/admin/usuarios" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Users className="w-5 h-5" />
             <span>Usuários</span>
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-[#FDB913]/30">
+        <div className="p-4 border-t border-[#F59E0B]/30">
           <Button
             onClick={handleLogout}
             variant="outline"
@@ -171,7 +171,7 @@ const AdminOrders = () => {
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white">
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-        <span className="text-[#FDB913] font-bold">Pedidos</span>
+        <span className="text-[#F59E0B] font-bold">Pedidos</span>
         <div className="w-6" />
       </div>
 
@@ -187,10 +187,10 @@ const AdminOrders = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <h1 className="text-3xl font-bold text-white">Pedidos</h1>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-full md:w-48 bg-black/50 border-[#FDB913]/30 text-white">
+            <SelectTrigger className="w-full md:w-48 bg-black/50 border-[#F59E0B]/30 text-white">
               <SelectValue placeholder="Filtrar por status" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-[#FDB913]/30">
+            <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
               <SelectItem value="all" className="text-white">Todos</SelectItem>
               <SelectItem value="pending" className="text-white">Pendentes</SelectItem>
               <SelectItem value="confirmed" className="text-white">Confirmados</SelectItem>
@@ -202,7 +202,7 @@ const AdminOrders = () => {
         </div>
 
         {filteredOrders.length === 0 ? (
-          <Card className="bg-black/50 border-[#FDB913]/30 p-8 text-center">
+          <Card className="bg-black/50 border-[#F59E0B]/30 p-8 text-center">
             <ClipboardList className="w-16 h-16 text-gray-500 mx-auto mb-4" />
             <p className="text-gray-400">Nenhum pedido encontrado</p>
           </Card>
@@ -215,7 +215,7 @@ const AdminOrders = () => {
               return (
                 <Card 
                   key={order.id} 
-                  className="bg-black/50 border-[#FDB913]/30"
+                  className="bg-black/50 border-[#F59E0B]/30"
                   data-testid={`order-${order.id}`}
                 >
                   <CardContent className="pt-6">
@@ -243,7 +243,7 @@ const AdminOrders = () => {
                           {order.user_phone && (
                             <a 
                               href={`tel:${order.user_phone}`}
-                              className="text-[#FDB913] flex items-center hover:underline"
+                              className="text-[#F59E0B] flex items-center hover:underline"
                             >
                               <Phone className="w-4 h-4 mr-1" />
                               {order.user_phone}
@@ -253,14 +253,14 @@ const AdminOrders = () => {
                       </div>
                       
                       <div className="flex flex-col items-end gap-2">
-                        <span className="text-[#FDB913] font-bold text-xl">
+                        <span className="text-[#F59E0B] font-bold text-xl">
                           {formatPrice(order.total)}
                         </span>
                         <div className="flex gap-2">
                           <Button
                             variant="outline"
                             size="sm"
-                            className="border-[#FDB913]/30 text-[#FDB913] hover:bg-[#FDB913] hover:text-black"
+                            className="border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
                             onClick={() => {
                               setSelectedOrder(order);
                               setDetailDialogOpen(true);
@@ -285,7 +285,7 @@ const AdminOrders = () => {
                     </div>
 
                     {/* Status Update */}
-                    <div className="mt-4 pt-4 border-t border-[#FDB913]/20">
+                    <div className="mt-4 pt-4 border-t border-[#F59E0B]/20">
                       <div className="flex flex-wrap gap-2">
                         <span className="text-gray-400 text-sm mr-2">Atualizar status:</span>
                         {["pending", "confirmed", "preparing", "delivered", "cancelled"].map((status) => {
@@ -316,9 +316,9 @@ const AdminOrders = () => {
 
       {/* Order Detail Dialog */}
       <Dialog open={detailDialogOpen} onOpenChange={setDetailDialogOpen}>
-        <DialogContent className="bg-gray-900 border-[#FDB913]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-gray-900 border-[#F59E0B]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-[#FDB913]">
+            <DialogTitle className="text-[#F59E0B]">
               Detalhes do Pedido #{selectedOrder?.id.slice(0, 8)}
             </DialogTitle>
           </DialogHeader>
@@ -327,7 +327,7 @@ const AdminOrders = () => {
             <div className="space-y-6">
               {/* Customer Info */}
               <div className="bg-black/30 rounded-lg p-4">
-                <h3 className="text-[#FDB913] font-semibold mb-3">Dados do Cliente</h3>
+                <h3 className="text-[#F59E0B] font-semibold mb-3">Dados do Cliente</h3>
                 <div className="space-y-2">
                   <p className="text-white flex items-center">
                     <Users className="w-4 h-4 mr-2 text-gray-400" />
@@ -340,7 +340,7 @@ const AdminOrders = () => {
                   {selectedOrder.user_phone && (
                     <a 
                       href={`tel:${selectedOrder.user_phone}`}
-                      className="text-[#FDB913] flex items-center hover:underline"
+                      className="text-[#F59E0B] flex items-center hover:underline"
                     >
                       <Phone className="w-4 h-4 mr-2" />
                       {selectedOrder.user_phone}
@@ -364,7 +364,7 @@ const AdminOrders = () => {
 
               {/* Order Items */}
               <div className="bg-black/30 rounded-lg p-4">
-                <h3 className="text-[#FDB913] font-semibold mb-3">Itens do Pedido</h3>
+                <h3 className="text-[#F59E0B] font-semibold mb-3">Itens do Pedido</h3>
                 <div className="space-y-3">
                   {selectedOrder.items.map((item, idx) => (
                     <div key={idx} className="flex justify-between items-center border-b border-gray-700 pb-2">
@@ -378,23 +378,23 @@ const AdminOrders = () => {
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-4 border-t border-[#FDB913]/30 flex justify-between">
+                <div className="mt-4 pt-4 border-t border-[#F59E0B]/30 flex justify-between">
                   <span className="text-white font-bold text-lg">Total</span>
-                  <span className="text-[#FDB913] font-bold text-lg">{formatPrice(selectedOrder.total)}</span>
+                  <span className="text-[#F59E0B] font-bold text-lg">{formatPrice(selectedOrder.total)}</span>
                 </div>
               </div>
 
               {/* Notes */}
               {selectedOrder.notes && (
                 <div className="bg-black/30 rounded-lg p-4">
-                  <h3 className="text-[#FDB913] font-semibold mb-2">Observações</h3>
+                  <h3 className="text-[#F59E0B] font-semibold mb-2">Observações</h3>
                   <p className="text-gray-300">{selectedOrder.notes}</p>
                 </div>
               )}
 
               {/* Status */}
               <div className="bg-black/30 rounded-lg p-4">
-                <h3 className="text-[#FDB913] font-semibold mb-3">Status do Pedido</h3>
+                <h3 className="text-[#F59E0B] font-semibold mb-3">Status do Pedido</h3>
                 <Badge className={`${getStatusInfo(selectedOrder.status).color} text-white`}>
                   {getStatusInfo(selectedOrder.status).label}
                 </Badge>
