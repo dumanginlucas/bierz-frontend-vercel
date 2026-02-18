@@ -18,6 +18,7 @@ import {
 import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
+import ProductSkeleton from './ProductSkeleton';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -33,7 +34,7 @@ const Products = () => {
   const { addItem } = useCart();
 
   // Ordem desejada das categorias
-  const categoryOrder = ['chopp', 'cerveja.', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
+  const categoryOrder = ['chopp', 'cerveja', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
 
   useEffect(() => {
     fetchProducts();
@@ -124,9 +125,23 @@ const Products = () => {
 
   if (loading) {
     return (
-      <section id="products" className="py-20 bg-gradient-to-b from-black to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center text-white">Carregando produtos...</div>
+      <section id="products" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">
+              Nossos <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Produtos</span>
+            </h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-2xl mx-auto px-4">
+              Oferecemos uma ampla variedade de produtos gelados para tornar seu evento inesquecível
+            </p>
+          </div>
+
+          {/* Skeleton Loading */}
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))}
+          </div>
         </div>
       </section>
     );
@@ -135,11 +150,11 @@ const Products = () => {
   return (
     <section id="products" className="py-20 bg-gradient-to-b from-black to-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3 sm:mb-4">
             Nossos <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Produtos</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-2xl mx-auto px-4">
             Oferecemos uma ampla variedade de produtos gelados para tornar seu evento inesquecível
           </p>
         </div>
@@ -168,7 +183,10 @@ const Products = () => {
         </div>
 
         {/* Free Delivery Banner */}
-        <div className="bg-gradient-to-r from-green-600/20 to-green-500/10 border border-green-500/30 rounded-xl p-4 mb-8 flex items-center justify-center gap-3">
+        <div className="bg-gradient-to-r from-green-600/20 to-green-500/10 border border-green-500/30 rounded-xl p-4 mb-8 flex items-center justify-center gap-3
+          transition-all duration-300
+          hover:shadow-lg hover:shadow-green-500/20
+          hover:border-green-500/50">
           <Truck className="w-6 h-6 text-green-400" />
           <p className="text-green-400 font-semibold text-lg">
             Compras acima de 30 litros de Chopp recebem entrega grátis!
@@ -184,7 +202,12 @@ const Products = () => {
             return (
               <Card 
                 key={product.id} 
-                className="bg-white/5 border-amber-500/20 hover:border-amber-500 transition-all group overflow-hidden cursor-pointer"
+                className="bg-white/5 border-amber-500/20 hover:border-amber-500 overflow-hidden cursor-pointer
+                  transition-all duration-200 ease-out
+                  hover:shadow-xl hover:shadow-amber-500/10
+                  hover:-translate-y-1
+                  active:scale-[0.98]
+                  group"
                 data-testid={`product-card-${product.id}`}
                 onClick={() => openProductModal(product)}
               >
@@ -280,7 +303,9 @@ const Products = () => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent"
+                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent
+                          transition-all duration-150
+                          active:scale-[0.90]"
                         onClick={(e) => {
                           e.stopPropagation();
                           updateQuantity(product.id, -1, isLitro);
@@ -295,7 +320,9 @@ const Products = () => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent"
+                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent
+                          transition-all duration-150
+                          active:scale-[0.90]"
                         onClick={(e) => {
                           e.stopPropagation();
                           updateQuantity(product.id, 1, isLitro);
@@ -313,7 +340,10 @@ const Products = () => {
                       e.stopPropagation();
                       handleAddToCart(product);
                     }}
-                    className="w-full h-8 text-xs bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-black font-semibold shadow-lg shadow-orange-500/30"
+                    className="w-full h-8 text-xs bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-black font-semibold shadow-lg shadow-orange-500/30
+                      transition-all duration-150
+                      hover:brightness-110
+                      active:scale-[0.97]"
                     disabled={product.stock === 0}
                     data-testid={`add-to-cart-${product.id}`}
                   >
@@ -327,8 +357,53 @@ const Products = () => {
         </div>
 
         {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">Nenhum produto encontrado nesta categoria.</p>
+          <div className="flex flex-col items-center justify-center py-20 text-center opacity-0 animate-[fadeUp_400ms_ease-out_forwards]">
+            <div className="max-w-md rounded-2xl bg-white/5 backdrop-blur-sm p-8 border border-white/10 shadow-xl">
+              <div className="mb-4 text-5xl animate-bounce">🍺</div>
+              
+              <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-3">
+                Nenhum produto nessa categoria
+              </h3>
+              
+              <p className="text-sm sm:text-base text-white/70 mb-6">
+                Não encontramos produtos na categoria selecionada. Que tal explorar outras opções?
+              </p>
+
+              <button
+                onClick={() => setSelectedCategory('todos')}
+                className="h-12 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold
+                  transition-all duration-150
+                  hover:brightness-110
+                  hover:-translate-y-0.5
+                  hover:shadow-lg hover:shadow-amber-500/30
+                  active:scale-[0.97]"
+              >
+                <Beer className="inline-block w-5 h-5 mr-2" />
+                Ver Todos os Produtos
+              </button>
+
+              {/* Categorias Sugeridas */}
+              <div className="mt-8">
+                <p className="text-xs sm:text-sm text-white/50 mb-3">Categorias populares:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {categories.filter(c => c.id !== selectedCategory && c.id !== 'todos').slice(0, 4).map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium
+                        bg-white/5 border border-amber-500/30 text-gray-300
+                        hover:border-amber-500 hover:text-amber-500
+                        hover:-translate-y-0.5
+                        transition-all duration-150
+                        active:scale-[0.95]"
+                    >
+                      {renderIcon(cat.icon)}
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

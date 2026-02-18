@@ -36,16 +36,16 @@ const Services = () => {
     }
   ];
 
-  // Imagens da Chopeira Elétrica Convencional para o carrossel
+  // Imagens da Chopeira Elétrica para o carrossel
   const conventionalImages = [
     {
       url: 'https://customer-assets.emergentagent.com/job_808be6ee-315b-4ff7-9d87-e7df67a25bf9/artifacts/zocyhgq6_ChatGPT%20Image%2017%20de%20fev.%20de%202026%2C%2021_20_24.png',
-      alt: 'Chopeira Elétrica Convencional com barril',
+      alt: 'Chopeira Elétrica com barril',
       title: 'Chopeira com Barril'
     },
     {
       url: 'https://customer-assets.emergentagent.com/job_full-stack-deploy-38/artifacts/ox30kitc_imagem_2026-02-17_202943222.png',
-      alt: 'Chopeira Elétrica Convencional dupla',
+      alt: 'Chopeira Elétrica dupla',
       title: 'Modelo Duplo'
     }
   ];
@@ -88,13 +88,13 @@ const Services = () => {
 
   const services = {
     conventional: {
-      name: 'Chopeira Elétrica Convencional',
+      name: 'Chopeira Elétrica',
       subtitle: 'Barril no Chão',
       image: 'https://customer-assets.emergentagent.com/job_full-stack-deploy-38/artifacts/ox30kitc_imagem_2026-02-17_202943222.png',
-      description: 'Sistema tradicional com refrigeração por gelo, ideal para eventos outdoor e consumo rápido.',
+      description: 'Sistema elétrico tradicional, ideal para eventos outdoor e consumo rápido.',
       features: [
         'Barril em temperatura ambiente',
-        'Refrigeração por gelo',
+        'Refrigeração elétrica',
         'Ideal para eventos outdoor',
         'Setup rápido e simples'
       ]
@@ -184,11 +184,6 @@ const Services = () => {
       criteria: 'Versatilidade de Uso',
       conventional: 'Eventos outdoor',
       homebar: 'Festas, áreas gourmet, residências, eventos indoor e outdoor'
-    },
-    {
-      criteria: 'Custo-Benefício a Longo Prazo',
-      conventional: 'Maior desperdício de chopp',
-      homebar: 'Menor desperdício e melhor aproveitamento do barril'
     }
   ];
 
@@ -250,7 +245,7 @@ const Services = () => {
               `}
             >
               <Thermometer className="w-4 h-4" />
-              Chopeira Elétrica Convencional
+              Chopeira Elétrica
             </button>
             
             <button
@@ -286,9 +281,10 @@ const Services = () => {
         {/* Conditional Content Based on Selected View */}
         {selectedView !== 'comparison' ? (
           /* Service Display Card */
-          <Card className="bg-gradient-to-br from-white/10 to-white/[0.02] border-amber-500/30 overflow-hidden">
-            <CardContent className="p-0">
-              <div className="grid md:grid-cols-2 gap-0">
+          <div className="max-w-6xl mx-auto">
+            <Card className="bg-gradient-to-br from-white/10 to-white/[0.02] border-amber-500/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="grid md:grid-cols-2 gap-0">
                 {/* Image Side - Carrossel para ambos HomeBar e Convencional */}
                 <div className="relative h-[400px] md:h-auto bg-gradient-to-br from-black to-gray-900 flex items-center justify-center p-8">
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-orange-600/10"></div>
@@ -387,9 +383,11 @@ const Services = () => {
               </div>
             </CardContent>
           </Card>
+          </div>
         ) : (
           /* Comparison View - Inline */
-          <Card className="bg-gradient-to-br from-white/10 to-white/[0.02] border-amber-500/30 overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <Card className="bg-gradient-to-br from-white/10 to-white/[0.02] border-amber-500/30 overflow-hidden">
             <CardContent className="p-6 md:p-8">
               <div className="mb-6">
                 <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent flex items-center gap-2">
@@ -406,7 +404,7 @@ const Services = () => {
                       <th className="p-4 text-center bg-gradient-to-br from-gray-800/50 to-gray-900/50">
                         <div className="flex flex-col items-center gap-2">
                           <Thermometer className="w-6 h-6 text-gray-400" />
-                          <span className="text-white font-bold">Chopeira Elétrica Convencional</span>
+                          <span className="text-white font-bold">Chopeira Elétrica</span>
                           <span className="text-xs text-gray-400">(Barril no Chão)</span>
                         </div>
                       </th>
@@ -452,6 +450,7 @@ const Services = () => {
               </div>
             </CardContent>
           </Card>
+          </div>
         )}
       </div>
     </section>

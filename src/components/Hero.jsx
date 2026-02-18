@@ -44,7 +44,11 @@ const Hero = () => {
             <Button
               onClick={() => scrollToSection('products')}
               size="lg"
-              className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 w-full sm:w-auto"
+              className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 shadow-lg hover:shadow-2xl w-full sm:w-auto
+                transition-all duration-200
+                hover:brightness-110
+                hover:scale-105
+                active:scale-[0.98]"
               data-testid="view-products-hero"
             >
               <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -54,7 +58,10 @@ const Hero = () => {
               onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
               size="lg"
               variant="outline"
-              className="border-2 border-[#F59E0B] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 transition-all duration-300 w-full sm:w-auto"
+              className="border-2 border-[#F59E0B] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto
+                transition-all duration-200
+                hover:scale-105
+                active:scale-[0.98]"
             >
               <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               WhatsApp

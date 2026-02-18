@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# Arquivos Modificados - Bierz Shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📦 Conteúdo dos ZIPs
 
-## Available Scripts
+### frontend_modificado.zip
+Contém apenas os arquivos do frontend que foram modificados ou criados:
 
-In the project directory, you can run:
+**Novos Componentes:**
+- `src/components/Container.jsx` - Container reutilizável
+- `src/components/ProductSkeleton.jsx` - Skeleton loading
 
-### `npm start`
+**Componentes Modificados:**
+- `src/components/Products.jsx` - Skeleton loading, microinterações, empty state, ordenação
+- `src/components/Footer.jsx` - Link "Serviço" adicionado
+- `src/components/Header.jsx` - Menu mobile melhorado, logo scroll to top
+- `src/components/Hero.jsx` - Microinterações nos botões
+- `src/components/Services.jsx` - Correções de texto, limites de largura
+- `src/components/ui/slider.jsx` - Gradiente restaurado na barra
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Estilos:**
+- `src/index.css` - Animação fadeUp adicionada
+- `tailwind.config.js` - Breakpoint xs customizado
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Assets:**
+- `public/logo.jpg` - Logo da Bierz
+- `public/banner.jpg` - Banner do hero
 
-### `npm test`
+### backend_modificado.zip
+Contém apenas os arquivos do backend que foram modificados:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Modificado:**
+- `server.py` - Campo `order` adicionado, API de reordenação de produtos
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 Como Atualizar no GitHub
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Opção 1: Atualização Manual
+1. Extraia os ZIPs
+2. Substitua os arquivos no seu repositório local
+3. Commit e push:
+```bash
+git add .
+git commit -m "feat: melhorias de responsividade, percepção premium e ordenação de produtos"
+git push origin main
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Opção 2: Estrutura Completa
+Se preferir, você pode:
+1. Extrair `frontend_modificado.zip` na pasta `frontend/` do seu repo
+2. Extrair `backend_modificado.zip` na pasta `backend/` do seu repo
+3. Os arquivos sobrescreverão apenas os modificados
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ✨ Melhorias Implementadas
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Frontend:
+✅ Responsividade mobile completa
+✅ Skeleton loading (zero piscadas)
+✅ Microinterações premium
+✅ Empty states bonitos
+✅ Profundidade visual (backdrop-blur)
+✅ Sistema de ordenação de produtos (UI)
+✅ Logo com scroll to top
+✅ Menu mobile melhorado
+✅ Tipografia refinada
+✅ Limites de largura nas seções
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Backend:
+✅ Campo `order` para ordenação customizada
+✅ API `/api/admin/products/reorder` para reordenar
+✅ Ordenação automática por order → featured → created_at
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 📋 Checklist Pós-Deploy
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [ ] Verificar se todas as imagens carregam (logo.jpg, banner.jpg)
+- [ ] Testar ordenação de produtos no Admin
+- [ ] Testar responsividade em mobile
+- [ ] Verificar skeleton loading
+- [ ] Testar empty states
+- [ ] Verificar microinterações
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Data da modificação:** 18/02/2025
+**Versão:** 2.0.0

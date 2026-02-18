@@ -73,7 +73,10 @@ const Header = () => {
         <div className="flex items-center justify-between h-28 md:h-32">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/">
+            <Link 
+              to="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               <img
                 src="/logo.jpg"
                 alt="Bierz Logo"
