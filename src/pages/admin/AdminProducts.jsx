@@ -26,7 +26,8 @@ import axios from "axios";
 import { 
   Package, Plus, Edit, Trash2, Beer, 
   LayoutDashboard, ClipboardList, Users, LogOut,
-  Menu, X, Search, Upload, Image as ImageIcon, Loader2
+  Menu, X, Search, Upload, Image as ImageIcon, Loader2,
+  ChevronUp, ChevronDown
 } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
@@ -59,7 +60,8 @@ const AdminProducts = () => {
     ibu: "",
     stock: "",
     is_active: true,
-    featured: false
+    featured: false,
+    order: 0
   });
 
   useEffect(() => {
@@ -137,7 +139,8 @@ const AdminProducts = () => {
       ibu: product.ibu ? product.ibu.toString() : "",
       stock: product.stock.toString(),
       is_active: product.is_active,
-      featured: product.featured || false
+      featured: product.featured || false,
+      order: product.order || 0
     });
     setDialogOpen(true);
   };
@@ -270,6 +273,39 @@ const AdminProducts = () => {
       fetchProducts();
     } catch (error) {
       toast.error("Erro ao atualizar estoque");
+    }
+  };
+
+  const moveProduct = async (productId, direction) => {
+    const productIndex = filteredProducts.findIndex(p => p.id === productId);
+    if (
+      (direction === 'up' && productIndex === 0) ||
+      (direction === 'down' && productIndex === filteredProducts.length - 1)
+    ) {
+      return;
+    }
+
+    const newProducts = [...filteredProducts];
+    const targetIndex = direction === 'up' ? productIndex - 1 : productIndex + 1;
+    
+    // Swap
+    [newProducts[productIndex], newProducts[targetIndex]] = [newProducts[targetIndex], newProducts[productIndex]];
+    
+    // Atualizar ordens
+    const updates = newProducts.map((product, index) => ({
+      id: product.id,
+      order: index
+    }));
+
+    try {
+      await axios.post(`${API_URL}/api/admin/products/reorder`, updates, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success("Ordem atualizada!");
+      fetchProducts();
+    } catch (error) {
+      console.error("Error reordering:", error);
+      toast.error("Erro ao reordenar produto");
     }
   };
 
@@ -459,6 +495,31 @@ const AdminProducts = () => {
                       data-testid={`stock-${product.id}`}
                     />
                   </div>
+                </div>
+                <div className="flex gap-2 mb-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
+                    onClick={() => moveProduct(product.id, 'up')}
+                    disabled={filteredProducts.indexOf(product) === 0}
+                    data-testid={`move-up-${product.id}`}
+                  >
+                    <ChevronUp className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
+                    onClick={() => moveProduct(product.id, 'down')}
+                    disabled={filteredProducts.indexOf(product) === filteredProducts.length - 1}
+                    data-testid={`move-down-${product.id}`}
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </Button>
+                  <span className="text-gray-500 text-xs flex items-center">
+                    Ordem: {filteredProducts.indexOf(product) + 1}
+                  </span>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -715,6 +776,20 @@ const AdminProducts = () => {
                   onChange={(e) => setFormData({...formData, stock: e.target.value})}
                   className="bg-black/50 border-[#F59E0B]/30 text-white"
                   data-testid="product-stock"
+                />
+              </div>
+              <div>
+                <Label className="text-gray-300">
+                  Ordem de Exibição
+                  <span className="text-xs text-gray-500 ml-2">(menor = primeiro)</span>
+                </Label>
+                <Input
+                  type="number"
+                  value={formData.order || 0}
+                  onChange={(e) => setFormData({...formData, order: parseInt(e.target.value) || 0})}
+                  className="bg-black/50 border-[#F59E0B]/30 text-white"
+                  placeholder="0"
+                  data-testid="product-order"
                 />
               </div>
             </div>
