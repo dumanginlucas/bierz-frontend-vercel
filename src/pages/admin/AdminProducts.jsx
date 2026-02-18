@@ -213,6 +213,8 @@ const AdminProducts = () => {
 
   const handleSubmit = async () => {
     try {
+      const orderValue = formData.order === '' || formData.order === null ? 0 : parseInt(formData.order);
+      
       const productData = {
         name: formData.name,
         description: formData.description,
@@ -227,8 +229,10 @@ const AdminProducts = () => {
         stock: parseInt(formData.stock),
         is_active: formData.is_active,
         featured: formData.featured,
-        order: parseInt(formData.order) || 0
+        order: orderValue
       };
+
+      console.log('Salvando produto com order:', orderValue, 'formData.order:', formData.order);
 
       if (selectedProduct) {
         await axios.put(`${API_URL}/api/admin/products/${selectedProduct.id}`, productData, {
@@ -727,8 +731,12 @@ const AdminProducts = () => {
                 </Label>
                 <Input
                   type="number"
-                  value={formData.order || 0}
-                  onChange={(e) => setFormData({...formData, order: parseInt(e.target.value) || 0})}
+                  value={formData.order ?? 0}
+                  onChange={(e) => {
+                    const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                    console.log('Mudando order para:', val);
+                    setFormData({...formData, order: val});
+                  }}
                   className="bg-black/50 border-[#F59E0B]/30 text-white"
                   placeholder="0"
                   min="0"
