@@ -7,7 +7,7 @@ import axios from "axios";
 import { 
   Package, ShoppingCart, Users, DollarSign, 
   AlertTriangle, LogOut, Menu, X, Beer,
-  LayoutDashboard, ClipboardList, Settings
+  LayoutDashboard, ClipboardList, Settings, Tags
 } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
@@ -82,6 +82,10 @@ const AdminDashboard = () => {
           <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
+          </Link>
+          <Link to="/admin/categorias" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
+            <Tags className="w-5 h-5" />
+            <span>Categorias</span>
           </Link>
           <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <ClipboardList className="w-5 h-5" />

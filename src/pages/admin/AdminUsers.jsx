@@ -7,7 +7,7 @@ import { Badge } from "../../components/ui/badge";
 import { Input } from "../../components/ui/input";
 import axios from "axios";
 import { 
-  Package, Beer, LayoutDashboard, ClipboardList, Users, LogOut,
+  Package, Beer, LayoutDashboard, ClipboardList, Users, Tags, LogOut,
   Menu, X, Mail, Phone, MapPin, Search
 } from "lucide-react";
 
@@ -82,6 +82,10 @@ const AdminUsers = () => {
           <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
+          </Link>
+          <Link to="/admin/categorias" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
+            <Tags className="w-5 h-5" />
+            <span>Categorias</span>
           </Link>
           <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <ClipboardList className="w-5 h-5" />

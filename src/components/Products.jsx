@@ -33,8 +33,7 @@ const Products = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { addItem } = useCart();
 
-  // Ordem desejada das categorias (removido 'cerveja')
-  const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
+  // Categorias agora vêm do backend (com campo order). "todos" é um pseudo-filtro local.
 
   useEffect(() => {
     fetchProducts();
@@ -64,15 +63,19 @@ const Products = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/categories`);
-      // Filtrar apenas categorias desejadas e ordenar
-      const filteredAndSorted = response.data
-        .filter(cat => categoryOrder.includes(cat.id))
-        .sort((a, b) => {
-          const indexA = categoryOrder.indexOf(a.id);
-          const indexB = categoryOrder.indexOf(b.id);
-          return indexA - indexB;
-        });
-      setCategories(filteredAndSorted);
+
+      const sorted = [...(response.data || [])].sort((a, b) => {
+        const oa = a.order && a.order > 0 ? a.order : 9999;
+        const ob = b.order && b.order > 0 ? b.order : 9999;
+        if (oa !== ob) return oa - ob;
+        return (a.name || '').localeCompare(b.name || '');
+      });
+
+      // garantir que exista o filtro "todos" no começo
+      setCategories([
+        { id: 'todos', name: 'Todos', icon: '📦', order: -1 },
+        ...sorted,
+      ]);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }

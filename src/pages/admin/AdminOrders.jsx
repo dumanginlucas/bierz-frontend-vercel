@@ -20,7 +20,7 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import { 
-  Package, Beer, LayoutDashboard, ClipboardList, Users, LogOut,
+  Package, Beer, LayoutDashboard, ClipboardList, Users, Tags, LogOut,
   Menu, X, Clock, CheckCircle, Truck, XCircle, Eye, Phone, Mail, MapPin
 } from "lucide-react";
 
@@ -137,6 +137,10 @@ const AdminOrders = () => {
           <Link to="/admin/produtos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <Package className="w-5 h-5" />
             <span>Produtos</span>
+          </Link>
+          <Link to="/admin/categorias" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
+            <Tags className="w-5 h-5" />
+            <span>Categorias</span>
           </Link>
           <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B]">
             <ClipboardList className="w-5 h-5" />
