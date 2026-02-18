@@ -26,8 +26,7 @@ import axios from "axios";
 import { 
   Package, Plus, Edit, Trash2, Beer, 
   LayoutDashboard, ClipboardList, Users, LogOut,
-  Menu, X, Search, Upload, Image as ImageIcon, Loader2,
-  ChevronUp, ChevronDown
+  Menu, X, Search, Upload, Image as ImageIcon, Loader2
 } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
@@ -276,39 +275,6 @@ const AdminProducts = () => {
     }
   };
 
-  const moveProduct = async (productId, direction) => {
-    const productIndex = filteredProducts.findIndex(p => p.id === productId);
-    if (
-      (direction === 'up' && productIndex === 0) ||
-      (direction === 'down' && productIndex === filteredProducts.length - 1)
-    ) {
-      return;
-    }
-
-    const newProducts = [...filteredProducts];
-    const targetIndex = direction === 'up' ? productIndex - 1 : productIndex + 1;
-    
-    // Swap
-    [newProducts[productIndex], newProducts[targetIndex]] = [newProducts[targetIndex], newProducts[productIndex]];
-    
-    // Atualizar ordens
-    const updates = newProducts.map((product, index) => ({
-      id: product.id,
-      order: index
-    }));
-
-    try {
-      await axios.post(`${API_URL}/api/admin/products/reorder`, updates, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success("Ordem atualizada!");
-      fetchProducts();
-    } catch (error) {
-      console.error("Error reordering:", error);
-      toast.error("Erro ao reordenar produto");
-    }
-  };
-
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === "todos" || p.category === filterCategory;
@@ -495,31 +461,6 @@ const AdminProducts = () => {
                       data-testid={`stock-${product.id}`}
                     />
                   </div>
-                </div>
-                <div className="flex gap-2 mb-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
-                    onClick={() => moveProduct(product.id, 'up')}
-                    disabled={filteredProducts.indexOf(product) === 0}
-                    data-testid={`move-up-${product.id}`}
-                  >
-                    <ChevronUp className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
-                    onClick={() => moveProduct(product.id, 'down')}
-                    disabled={filteredProducts.indexOf(product) === filteredProducts.length - 1}
-                    data-testid={`move-down-${product.id}`}
-                  >
-                    <ChevronDown className="w-4 h-4" />
-                  </Button>
-                  <span className="text-gray-500 text-xs flex items-center">
-                    Ordem: {filteredProducts.indexOf(product) + 1}
-                  </span>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -781,7 +722,7 @@ const AdminProducts = () => {
               <div>
                 <Label className="text-gray-300">
                   Ordem de Exibição
-                  <span className="text-xs text-gray-500 ml-2">(menor = primeiro)</span>
+                  <span className="text-xs text-gray-500 ml-2">(1-30, menor primeiro | 0 = sem ordem)</span>
                 </Label>
                 <Input
                   type="number"
@@ -789,8 +730,13 @@ const AdminProducts = () => {
                   onChange={(e) => setFormData({...formData, order: parseInt(e.target.value) || 0})}
                   className="bg-black/50 border-[#F59E0B]/30 text-white"
                   placeholder="0"
+                  min="0"
+                  max="999"
                   data-testid="product-order"
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  💡 Produtos com ordem 1-30 aparecem primeiro. Produtos com ordem 0 aparecem no final.
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-6">
