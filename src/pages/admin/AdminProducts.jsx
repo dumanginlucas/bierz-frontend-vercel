@@ -226,7 +226,8 @@ const AdminProducts = () => {
         ibu: formData.ibu ? parseInt(formData.ibu) : null,
         stock: parseInt(formData.stock),
         is_active: formData.is_active,
-        featured: formData.featured
+        featured: formData.featured,
+        order: parseInt(formData.order) || 0
       };
 
       if (selectedProduct) {
