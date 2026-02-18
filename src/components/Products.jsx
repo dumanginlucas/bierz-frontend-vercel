@@ -82,6 +82,20 @@ const Products = () => {
     ? products
     : products.filter(p => p.category === selectedCategory);
 
+  // Ordenação no frontend (fallback + garantia)
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    // 1. Por order (quem não tem vai pro fim com 9999)
+    const orderA = a.order ?? 9999;
+    const orderB = b.order ?? 9999;
+    if (orderA !== orderB) return orderA - orderB;
+
+    // 2. Por featured (destaques primeiro)
+    if (a.featured !== b.featured) return a.featured ? -1 : 1;
+
+    // 3. Por nome (alfabético)
+    return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
+  });
+
   const handleAddToCart = (product) => {
     const quantity = quantities[product.id] || 1;
     const size = selectedSizes[product.id] || product.sizes[0];
@@ -194,7 +208,7 @@ const Products = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {filteredProducts.map((product) => {
+          {sortedProducts.map((product) => {
             const isLitro = product.price_unit === 'litro';
             const quantity = quantities[product.id] || (isLitro ? 30 : 1);
             const totalPrice = product.price * quantity;
@@ -356,7 +370,7 @@ const Products = () => {
           })}
         </div>
 
-        {filteredProducts.length === 0 && (
+        {sortedProducts.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-center opacity-0 animate-[fadeUp_400ms_ease-out_forwards]">
             <div className="max-w-md rounded-2xl bg-white/5 backdrop-blur-sm p-8 border border-white/10 shadow-xl">
               <div className="mb-4 text-5xl animate-bounce">🍺</div>
