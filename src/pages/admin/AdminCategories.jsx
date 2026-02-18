@@ -111,6 +111,23 @@ const AdminCategories = () => {
     }
   };
 
+  const setCategoryActive = async (id, isActive) => {
+    // optimistic UI
+    setCategories((prev) => prev.map((c) => (c.id === id ? { ...c, is_active: isActive } : c)));
+    try {
+      await axios.put(
+        `${API_URL}/api/admin/categories/${id}`,
+        { is_active: !!isActive },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (e) {
+      console.error("Error updating category active:", e);
+      alert(e?.response?.data?.detail || "Erro ao atualizar status da categoria");
+      // rollback
+      await fetchCategories();
+    }
+  };
+
   const sorted = useMemo(() => {
     const list = [...categories];
     list.sort((a, b) => {
@@ -237,7 +254,16 @@ const AdminCategories = () => {
                       <td className="py-3">{c.name}</td>
                       <td className="py-3">{c.icon || "—"}</td>
                       <td className="py-3">{c.order || 0}</td>
-                      <td className="py-3">{c.is_active === false ? "Não" : "Sim"}</td>
+                      <td className="py-3">
+                        <label className="inline-flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={c.is_active !== false}
+                            onChange={(e) => setCategoryActive(c.id, e.target.checked)}
+                          />
+                          <span className="text-xs text-gray-300">{c.is_active === false ? "Desativada" : "Ativa"}</span>
+                        </label>
+                      </td>
                       <td className="py-3 text-right">
                         <Button variant="outline" className="border-[#F59E0B]/40 text-[#F59E0B] hover:bg-[#F59E0B]/10 mr-2" onClick={() => openEdit(c)}>
                           <Pencil className="w-4 h-4" />
