@@ -173,26 +173,29 @@ const Products = () => {
           </p>
         </div>
 
-        {/* Category Navigation Bar - Single Container */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`
-                  flex items-center gap-1.5 px-4 py-2 rounded-md font-semibold text-sm transition-all duration-300
-                  ${selectedCategory === cat.id 
-                    ? 'bg-[#F59E0B] text-black shadow-md' 
-                    : 'text-gray-300 hover:text-gray-100'
-                  }
-                `}
-                data-testid={`category-${cat.id}`}
-              >
-                {renderIcon(cat.icon)}
-                {cat.name}
-              </button>
-            ))}
+        {/* Category Navigation Bar - Horizontal Scroll */}
+        <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
+          <div className="flex justify-center min-w-full px-4">
+            <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`
+                    flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
+                    ${selectedCategory === cat.id 
+                      ? 'bg-[#F59E0B] text-black shadow-md' 
+                      : 'text-gray-300 hover:text-gray-100'
+                    }
+                  `}
+                  data-testid={`category-${cat.id}`}
+                >
+                  {renderIcon(cat.icon)}
+                  <span className="hidden sm:inline">{cat.name}</span>
+                  <span className="sm:hidden">{cat.name.split(' ')[0]}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

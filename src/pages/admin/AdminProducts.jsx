@@ -118,7 +118,8 @@ const AdminProducts = () => {
       ibu: "",
       stock: "",
       is_active: true,
-      featured: false
+      featured: false,
+      order: 0
     });
     setDialogOpen(true);
   };
@@ -213,7 +214,10 @@ const AdminProducts = () => {
 
   const handleSubmit = async () => {
     try {
-      const orderValue = formData.order === '' || formData.order === null ? 0 : parseInt(formData.order);
+      // Garantir que order sempre seja um número, nunca undefined ou null
+      const orderValue = formData.order === '' || formData.order === null || formData.order === undefined 
+        ? 0 
+        : Number(formData.order);
       
       const productData = {
         name: formData.name,
@@ -232,22 +236,24 @@ const AdminProducts = () => {
         order: orderValue
       };
 
-      console.log('Salvando produto com order:', orderValue, 'formData.order:', formData.order);
+      console.log('📦 Salvando produto com order:', orderValue, 'formData.order:', formData.order, 'tipo:', typeof orderValue);
 
       if (selectedProduct) {
-        await axios.put(`${API_URL}/api/admin/products/${selectedProduct.id}`, productData, {
+        const response = await axios.put(`${API_URL}/api/admin/products/${selectedProduct.id}`, productData, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        console.log('✅ Resposta do backend após update:', response.data);
         toast.success("Produto atualizado com sucesso!");
       } else {
-        await axios.post(`${API_URL}/api/admin/products`, productData, {
+        const response = await axios.post(`${API_URL}/api/admin/products`, productData, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        console.log('✅ Resposta do backend após criar:', response.data);
         toast.success("Produto criado com sucesso!");
       }
 
       setDialogOpen(false);
-      fetchProducts();
+      await fetchProducts();
     } catch (error) {
       console.error("Error saving product:", error);
       toast.error(error.response?.data?.detail || "Erro ao salvar produto");
@@ -733,9 +739,15 @@ const AdminProducts = () => {
                   type="number"
                   value={formData.order ?? 0}
                   onChange={(e) => {
-                    const val = e.target.value === '' ? 0 : parseInt(e.target.value);
-                    console.log('Mudando order para:', val);
+                    const val = e.target.value === '' || e.target.value === null ? 0 : Number(e.target.value);
+                    console.log('🔢 Mudando order para:', val, 'tipo:', typeof val);
                     setFormData({...formData, order: val});
+                  }}
+                  onBlur={(e) => {
+                    // Garantir que sempre tenha um número válido ao sair do campo
+                    if (e.target.value === '' || e.target.value === null) {
+                      setFormData({...formData, order: 0});
+                    }
                   }}
                   className="bg-black/50 border-[#F59E0B]/30 text-white"
                   placeholder="0"

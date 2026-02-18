@@ -231,50 +231,54 @@ const Services = () => {
           ))}
         </div>
 
-        {/* Service Selection Menu - Same style as Products */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1">
-            <button
-              onClick={() => setSelectedView('conventional')}
-              className={`
-                flex items-center gap-1.5 px-4 py-2 rounded-md font-semibold text-sm transition-all duration-300
-                ${selectedView === 'conventional' 
-                  ? 'bg-[#F59E0B] text-black shadow-md' 
-                  : 'text-gray-300 hover:text-gray-100'
-                }
-              `}
-            >
-              <Thermometer className="w-4 h-4" />
-              Chopeira Elétrica
-            </button>
-            
-            <button
-              onClick={() => setSelectedView('homebar')}
-              className={`
-                flex items-center gap-1.5 px-4 py-2 rounded-md font-semibold text-sm transition-all duration-300
-                ${selectedView === 'homebar' 
-                  ? 'bg-[#F59E0B] text-black shadow-md' 
-                  : 'text-gray-300 hover:text-gray-100'
-                }
-              `}
-            >
-              <Snowflake className="w-4 h-4" />
-              HomeBar (Premium)
-            </button>
+        {/* Service Selection Menu - Responsive with scroll */}
+        <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
+          <div className="flex justify-center min-w-full px-4">
+            <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1">
+              <button
+                onClick={() => setSelectedView('conventional')}
+                className={`
+                  flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
+                  ${selectedView === 'conventional' 
+                    ? 'bg-[#F59E0B] text-black shadow-md' 
+                    : 'text-gray-300 hover:text-gray-100'
+                  }
+                `}
+              >
+                <Thermometer className="w-4 h-4" />
+                <span className="hidden sm:inline">Chopeira Elétrica</span>
+                <span className="sm:hidden">Elétrica</span>
+              </button>
+              
+              <button
+                onClick={() => setSelectedView('homebar')}
+                className={`
+                  flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
+                  ${selectedView === 'homebar' 
+                    ? 'bg-[#F59E0B] text-black shadow-md' 
+                    : 'text-gray-300 hover:text-gray-100'
+                  }
+                `}
+              >
+                <Snowflake className="w-4 h-4" />
+                <span className="hidden sm:inline">HomeBar (Premium)</span>
+                <span className="sm:hidden">HomeBar</span>
+              </button>
 
-            <button
-              onClick={() => setSelectedView('comparison')}
-              className={`
-                flex items-center gap-1.5 px-4 py-2 rounded-md font-semibold text-sm transition-all duration-300
-                ${selectedView === 'comparison' 
-                  ? 'bg-[#F59E0B] text-black shadow-md' 
-                  : 'text-gray-300 hover:text-gray-100'
-                }
-              `}
-            >
-              <GitCompare className="w-4 h-4" />
-              Comparativo
-            </button>
+              <button
+                onClick={() => setSelectedView('comparison')}
+                className={`
+                  flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
+                  ${selectedView === 'comparison' 
+                    ? 'bg-[#F59E0B] text-black shadow-md' 
+                    : 'text-gray-300 hover:text-gray-100'
+                  }
+                `}
+              >
+                <GitCompare className="w-4 h-4" />
+                Comparativo
+              </button>
+            </div>
           </div>
         </div>
 
@@ -396,8 +400,8 @@ const Services = () => {
                 </h3>
               </div>
               
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+              <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+                <table className="w-full border-collapse min-w-[600px]">
                   <thead>
                     <tr className="border-b border-amber-500/30">
                       <th className="p-4 text-left text-amber-500 font-bold">Critério</th>
