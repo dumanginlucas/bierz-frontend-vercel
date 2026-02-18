@@ -105,6 +105,7 @@ const AdminProducts = () => {
 
   const openCreateDialog = () => {
     setSelectedProduct(null);
+    // ✅ FIX: Garantir que order esteja sempre presente no reset do form
     setFormData({
       name: "",
       description: "",
@@ -119,7 +120,7 @@ const AdminProducts = () => {
       stock: "",
       is_active: true,
       featured: false,
-      order: 0
+      order: 0  // ✅ Campo order sempre inicializado
     });
     setDialogOpen(true);
   };
@@ -214,10 +215,10 @@ const AdminProducts = () => {
 
   const handleSubmit = async () => {
     try {
-      // Garantir que order sempre seja um número, nunca undefined ou null
-      const orderValue = formData.order === '' || formData.order === null || formData.order === undefined 
-        ? 0 
-        : Number(formData.order);
+      // ✅ FIX: Blindagem contra NaN - usar Number.isFinite para garantir número válido
+      const orderValue = Number.isFinite(Number(formData.order))
+        ? Number(formData.order)
+        : 0;
       
       const productData = {
         name: formData.name,
@@ -233,7 +234,7 @@ const AdminProducts = () => {
         stock: parseInt(formData.stock),
         is_active: formData.is_active,
         featured: formData.featured,
-        order: orderValue
+        order: orderValue  // ✅ Sempre será um número válido (0 ou maior)
       };
 
       console.log('📦 Salvando produto com order:', orderValue, 'formData.order:', formData.order, 'tipo:', typeof orderValue);
@@ -739,15 +740,18 @@ const AdminProducts = () => {
                   type="number"
                   value={formData.order ?? 0}
                   onChange={(e) => {
-                    const val = e.target.value === '' || e.target.value === null ? 0 : Number(e.target.value);
-                    console.log('🔢 Mudando order para:', val, 'tipo:', typeof val);
-                    setFormData({...formData, order: val});
+                    // ✅ FIX: Sempre converter para número, nunca deixar vazio/undefined
+                    const val = e.target.value === '' ? 0 : Number(e.target.value);
+                    // Validar se é um número válido
+                    const finalVal = Number.isNaN(val) ? 0 : val;
+                    console.log('🔢 Mudando order para:', finalVal, 'tipo:', typeof finalVal);
+                    setFormData({...formData, order: finalVal});
                   }}
                   onBlur={(e) => {
-                    // Garantir que sempre tenha um número válido ao sair do campo
-                    if (e.target.value === '' || e.target.value === null) {
-                      setFormData({...formData, order: 0});
-                    }
+                    // ✅ FIX: Garantir que sempre tenha um número válido ao sair do campo
+                    const val = e.target.value === '' ? 0 : Number(e.target.value);
+                    const finalVal = Number.isNaN(val) ? 0 : val;
+                    setFormData({...formData, order: finalVal});
                   }}
                   className="bg-black/50 border-[#F59E0B]/30 text-white"
                   placeholder="0"

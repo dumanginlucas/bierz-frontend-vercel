@@ -33,8 +33,8 @@ const Products = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { addItem } = useCart();
 
-  // Ordem desejada das categorias
-  const categoryOrder = ['chopp', 'cerveja', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
+  // Ordem desejada das categorias (removido 'cerveja')
+  const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
 
   useEffect(() => {
     fetchProducts();
@@ -121,7 +121,7 @@ const Products = () => {
     const icons = {
       'beer': <Beer className="w-4 h-4 mr-2" />,
       'wine': <Wine className="w-4 h-4 mr-2" />,
-      'star': <Star className="w-4 h-4 mr-2" />,
+      'star': <Sparkles className="w-4 h-4 mr-2" />,  // ✅ Trocado para Sparkles (cervejas especiais)
       'snowflake': <Snowflake className="w-4 h-4 mr-2" />,
       'zap': <Zap className="w-4 h-4 mr-2" />,
       'cup-soda': <CupSoda className="w-4 h-4 mr-2" />,
@@ -173,16 +173,16 @@ const Products = () => {
           </p>
         </div>
 
-        {/* Category Navigation Bar - Horizontal Scroll */}
+        {/* ✅ Category Navigation Bar - Barra única responsiva sem cortar */}
         <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
-          <div className="flex justify-center min-w-full px-4">
-            <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1">
+          <div className="flex px-4">
+            <div className="inline-flex items-center bg-gray-900/90 backdrop-blur-sm rounded-lg p-1 gap-1 mx-auto">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`
-                    flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
+                    flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap shrink-0
                     ${selectedCategory === cat.id 
                       ? 'bg-[#F59E0B] text-black shadow-md' 
                       : 'text-gray-300 hover:text-gray-100'
@@ -210,7 +210,8 @@ const Products = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {/* ✅ FIX: 1 coluna no mobile, 2 apenas a partir de 420px */}
+        <div className="grid grid-cols-1 min-[420px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {sortedProducts.map((product) => {
             const isLitro = product.price_unit === 'litro';
             const quantity = quantities[product.id] || (isLitro ? 30 : 1);
@@ -314,15 +315,14 @@ const Products = () => {
                     </div>
                   )}
 
-                  {/* Quantidade e Total na mesma linha */}
+                  {/* Layout compacto - tudo na mesma linha */}
                   <div className="flex items-center justify-between gap-2 mb-2" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex items-center gap-1">
+                    {/* Controles */}
+                    <div className="flex items-center gap-1.5">
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent
-                          transition-all duration-150
-                          active:scale-[0.90]"
+                        className="h-6 w-6 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent transition-all duration-150 active:scale-[0.90]"
                         onClick={(e) => {
                           e.stopPropagation();
                           updateQuantity(product.id, -1, isLitro);
@@ -331,15 +331,13 @@ const Products = () => {
                       >
                         <Minus className="w-3 h-3" />
                       </Button>
-                      <span className="text-white text-sm font-bold w-10 text-center">
+                      <span className="text-white text-sm font-bold min-w-[2rem] text-center">
                         {quantity}{isLitro ? 'L' : ''}
                       </span>
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent
-                          transition-all duration-150
-                          active:scale-[0.90]"
+                        className="h-6 w-6 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent transition-all duration-150 active:scale-[0.90]"
                         onClick={(e) => {
                           e.stopPropagation();
                           updateQuantity(product.id, 1, isLitro);
@@ -349,7 +347,11 @@ const Products = () => {
                         <Plus className="w-3 h-3" />
                       </Button>
                     </div>
-                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-sm">{formatPrice(totalPrice)}</span>
+
+                    {/* Preço */}
+                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-base leading-tight">
+                      {formatPrice(totalPrice)}
+                    </div>
                   </div>
 
                   <Button
