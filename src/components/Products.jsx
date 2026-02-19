@@ -450,13 +450,14 @@ const Products = () => {
             
             return (
               <>
+                <div className="pt-10 sm:pt-8">
                 <div className="relative">
                   <img
                     src={selectedProduct.image}
                     alt={selectedProduct.name}
                     loading="lazy"
                     decoding="async"
-                    className={`w-full h-64 md:h-80 object-cover transition-all duration-500 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.04]"}`}
+                    className={`w-full max-h-[260px] sm:max-h-[340px] object-contain mx-auto transition-all duration-700 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.08]"}`}
                   />
                   {selectedProduct.featured && (
                     <div className="absolute top-4 left-4">
@@ -476,6 +477,7 @@ const Products = () => {
                       <Badge className="bg-red-500 text-white">Últimas unidades!</Badge>
                     </div>
                   )}
+                </div>
                 </div>
                 
                 <div className="p-6">
