@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -19,8 +19,12 @@ import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 import ProductSkeleton from './ProductSkeleton';
+import ProductCardItem from './ProductCardItem';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
+
+// Presets rápidos (sem input) para seleção de litros no mobile
+const LITROS_PRESETS = [20, 30, 40, 50, 60, 80, 100, 150, 200];
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('chopp');
@@ -31,11 +35,14 @@ const Products = () => {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [litersPicker, setLitersPicker] = useState({ open: false, productId: null });
+  const [litrosPickerOpen, setLitrosPickerOpen] = useState(false);
+  const [litrosPickerProduct, setLitrosPickerProduct] = useState(null);
+  const [addedFeedback, setAddedFeedback] = useState({});
+  const addedTimersRef = useRef({});
   const { addItem } = useCart();
 
   // Ordem desejada das categorias (removido 'cerveja')
-  const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras'];
+  const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
 
   useEffect(() => {
     fetchProducts();
@@ -79,12 +86,13 @@ const Products = () => {
     }
   };
 
-  const filteredProducts = selectedCategory === 'todos'
-    ? products
-    : products.filter(p => p.category === selectedCategory);
+  const filteredProducts = useMemo(
+    () => (selectedCategory === 'todos' ? products : products.filter((p) => p.category === selectedCategory)),
+    [products, selectedCategory]
+  );
 
   // Ordenação no frontend (fallback + garantia)
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+  const sortedProducts = useMemo(() => [...filteredProducts].sort((a, b) => {
     // 1. Por order (quem não tem vai pro fim com 9999)
     const orderA = a.order ?? 9999;
     const orderB = b.order ?? 9999;
@@ -95,30 +103,33 @@ const Products = () => {
 
     // 3. Por nome (alfabético)
     return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
-  });
+  }), [filteredProducts]);
 
-  const handleAddToCart = (product) => {
-    const quantity = quantities[product.id] || 1;
-    const size = selectedSizes[product.id] || product.sizes[0];
-    addItem(product, quantity, size);
-  };
+  const handleAddToCart = useCallback(
+    (product) => {
+      const quantity = quantities[product.id] || 1;
+      const size = selectedSizes[product.id] || product.sizes[0];
+      addItem(product, quantity, size);
 
-  
-  const setQuantity = (productId, value, isLitro) => {
-    setQuantities(prev => {
-      const step = isLitro ? 10 : 1;
-      const min = isLitro ? 20 : 1;
-      // arredonda para o step (10 em 10 no chopp)
-      const rounded = isLitro ? Math.round(value / step) * step : value;
-      const newVal = Math.max(min, rounded);
-      return { ...prev, [productId]: newVal };
-    });
-  };
+      // Feedback visual (1.5s) + vibração leve (quando suportado)
+      setAddedFeedback((prev) => ({ ...prev, [product.id]: true }));
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try {
+          navigator.vibrate(20);
+        } catch (_) {
+          // ignore
+        }
+      }
+      if (addedTimersRef.current[product.id]) clearTimeout(addedTimersRef.current[product.id]);
+      addedTimersRef.current[product.id] = setTimeout(() => {
+        setAddedFeedback((prev) => ({ ...prev, [product.id]: false }));
+        delete addedTimersRef.current[product.id];
+      }, 1500);
+    },
+    [addItem, quantities, selectedSizes]
+  );
 
-  const openLitersPicker = (productId) => setLitersPicker({ open: true, productId });
-  const closeLitersPicker = () => setLitersPicker({ open: false, productId: null });
-
-const updateQuantity = (productId, delta, isLitro) => {
+  const updateQuantity = useCallback((productId, delta, isLitro) => {
     setQuantities(prev => {
       const current = prev[productId] || (isLitro ? 30 : 1);
       const step = isLitro ? 10 : 1;
@@ -126,12 +137,30 @@ const updateQuantity = (productId, delta, isLitro) => {
       const newVal = Math.max(min, current + (delta * step));
       return { ...prev, [productId]: newVal };
     });
-  };
+  }, []);
 
-  const openProductModal = (product) => {
+  const openProductModal = useCallback((product) => {
     setSelectedProduct(product);
     setModalOpen(true);
-  };
+  }, []);
+
+  const openLitrosPicker = useCallback((product) => {
+    setLitrosPickerProduct(product);
+    setLitrosPickerOpen(true);
+  }, []);
+
+  const setLitrosPreset = useCallback(
+    (litros) => {
+      if (!litrosPickerProduct) return;
+      setQuantities((prev) => ({ ...prev, [litrosPickerProduct.id]: Math.max(20, litros) }));
+      setLitrosPickerOpen(false);
+    },
+    [litrosPickerProduct]
+  );
+
+  const handleChangeSize = useCallback((productId, value) => {
+    setSelectedSizes((prev) => ({ ...prev, [productId]: value }));
+  }, []);
 
   const renderIcon = (iconName) => {
     const icons = {
@@ -234,170 +263,20 @@ const updateQuantity = (productId, delta, isLitro) => {
             const totalPrice = product.price * quantity;
 
             return (
-              <Card 
-                key={product.id} 
-                className="bg-white/5 border-amber-500/20 hover:border-amber-500 overflow-hidden cursor-pointer
-                  transition-all duration-200 ease-out
-                  hover:shadow-xl hover:shadow-amber-500/10
-                  hover:-translate-y-1
-                  active:scale-[0.98]
-                  group"
-                data-testid={`product-card-${product.id}`}
-                onClick={() => openProductModal(product)}
-              >
-                {/* Imagem com proporção equilibrada */}
-                <div className="relative aspect-[8/9] overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {/* Featured Badge */}
-                  {product.featured && (
-                    <div className="absolute top-2 left-2">
-                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Destaque
-                      </Badge>
-                    </div>
-                  )}
-                  <div className="absolute top-2 right-2">
-                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold text-xs px-2 py-0.5">
-                      {categories.find(c => c.id === product.category)?.name || product.category}
-                    </Badge>
-                  </div>
-                  {product.stock < 10 && product.stock > 0 && !product.featured && (
-                    <div className="absolute top-2 left-2">
-                      <Badge className="bg-red-500 text-white text-xs px-2 py-0.5">Últimas un.</Badge>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Conteúdo compacto */}
-                <div className="p-3">
-                  <h3 className="text-white text-sm font-bold mb-1 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-orange-600 group-hover:bg-clip-text transition-all line-clamp-1">
-                    {product.name}
-                  </h3>
-                  {/* Brand */}
-                  {product.brand && (
-                    <p className="text-amber-500 text-xs font-semibold mb-1">
-                      {product.brand}
-                    </p>
-                  )}
-                  <p className="text-gray-400 text-xs mb-2 line-clamp-1">
-                    {product.description}
-                  </p>
-                  
-                  {/* ABV e IBU */}
-                  {(product.abv || product.ibu) && (
-                    <div className="flex items-center gap-2 mb-2">
-                      {product.abv && (
-                        <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-500 px-1.5 py-0">
-                          {product.abv}% ABV
-                        </Badge>
-                      )}
-                      {product.ibu && (
-                        <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-500 px-1.5 py-0">
-                          {product.ibu} IBU
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Preço */}
-                  <div className="mb-2">
-                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-base">
-                      {formatPrice(product.price)}
-                    </span>
-                    <span className="text-gray-400 text-xs">/{product.price_unit}</span>
-                  </div>
-
-                  {/* Size Selection - Only for non-Chopp products */}
-                  {product.sizes.length > 1 && !isLitro && (
-                    <div className="mb-2" onClick={(e) => e.stopPropagation()}>
-                      <Select 
-                        value={selectedSizes[product.id]} 
-                        onValueChange={(value) => setSelectedSizes(prev => ({...prev, [product.id]: value}))}
-                      >
-                        <SelectTrigger className="h-8 text-xs bg-gray-900/50 border-amber-500/30 text-white">
-                          <SelectValue placeholder="Tamanho" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-amber-500/30">
-                          {product.sizes.map(size => (
-                            <SelectItem key={size} value={size} className="text-white text-xs">{size}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-
-                  {/* Layout compacto - tudo na mesma linha */}
-                  <div className="flex items-center justify-between gap-2 mb-2" onClick={(e) => e.stopPropagation()}>
-                    {/* Controles */}
-                    <div className="flex items-center gap-1.5">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-6 w-6 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent transition-all duration-150 active:scale-[0.90]"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          updateQuantity(product.id, -1, isLitro);
-                        }}
-                        data-testid={`decrease-qty-${product.id}`}
-                      >
-                        <Minus className="w-3 h-3" />
-                      </Button>
-                      {isLitro ? (
-                        <button
-                          type="button"
-                          className="text-white text-sm font-bold min-w-[2rem] text-center hover:underline underline-offset-4"
-                          onClick={(e) => { e.stopPropagation(); openLitersPicker(product.id); }}
-                          aria-label="Escolher litros"
-                        >
-                          {quantity}L
-                        </button>
-                      ) : (
-                        <span className="text-white text-sm font-bold min-w-[2rem] text-center">
-                          {quantity}
-                        </span>
-                      )}
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-6 w-6 border-amber-500/30 text-amber-500 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-black hover:border-transparent transition-all duration-150 active:scale-[0.90]"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          updateQuantity(product.id, 1, isLitro);
-                        }}
-                        data-testid={`increase-qty-${product.id}`}
-                      >
-                        <Plus className="w-3 h-3" />
-                      </Button>
-                    </div>
-
-                    {/* Preço */}
-                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent font-bold text-base leading-tight">
-                      {formatPrice(totalPrice)}
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToCart(product);
-                    }}
-                    className="w-full h-8 text-xs bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-black font-semibold shadow-lg shadow-orange-500/30
-                      transition-all duration-150
-                      hover:brightness-110
-                      active:scale-[0.97]"
-                    disabled={product.stock === 0}
-                    data-testid={`add-to-cart-${product.id}`}
-                  >
-                    <ShoppingCart className="w-3 h-3 mr-1" />
-                    {product.stock === 0 ? 'Esgotado' : 'Adicionar'}
-                  </Button>
-                </div>
-              </Card>
+              <ProductCardItem
+                key={product.id}
+                product={product}
+                categoryLabel={categories.find(c => c.id === product.category)?.name || product.category}
+                quantity={quantity}
+                selectedSize={selectedSizes[product.id]}
+                onChangeSize={handleChangeSize}
+                onUpdateQty={updateQuantity}
+                onOpenLitrosPicker={openLitrosPicker}
+                onOpenProductModal={openProductModal}
+                onAddToCart={handleAddToCart}
+                isAdded={!!addedFeedback[product.id]}
+                formatPrice={formatPrice}
+              />
             );
           })}
         </div>
@@ -468,6 +347,8 @@ const updateQuantity = (productId, delta, isLitro) => {
                   <img
                     src={selectedProduct.image}
                     alt={selectedProduct.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-64 md:h-80 object-cover"
                   />
                   {selectedProduct.featured && (
@@ -622,43 +503,33 @@ const updateQuantity = (productId, delta, isLitro) => {
           })()}
         </DialogContent>
       </Dialog>
-    
-      {/* Seletor rápido de litros (mobile-friendly, sem input) */}
-      <Dialog open={litersPicker.open} onOpenChange={(open) => { if (!open) closeLitersPicker(); }}>
-        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-          <div className="p-4 border-b border-gray-800 bg-gray-950">
-            <DialogHeader>
-              <DialogTitle className="text-white">Escolha os litros</DialogTitle>
-            </DialogHeader>
-            <p className="text-xs text-gray-400 mt-1">Mínimo de 20L • Ajuste em 10 em 10</p>
-          </div>
-          <div className="p-4 bg-gray-950">
-            <div className="grid grid-cols-3 gap-2">
-              {[20, 30, 40, 50, 60, 80, 100, 150, 200].map((l) => (
-                <button
-                  key={l}
-                  type="button"
-                  className="rounded-xl border border-gray-800 bg-gray-900 text-white py-3 text-sm font-semibold active:scale-[0.98] transition"
-                  onClick={() => {
-                    const pid = litersPicker.productId;
-                    if (!pid) return;
-                    setQuantity(pid, l, true);
-                    closeLitersPicker();
-                  }}
-                >
-                  {l}L
-                </button>
-              ))}
-            </div>
-            <div className="mt-4">
-              <Button variant="secondary" className="w-full" onClick={closeLitersPicker}>
-                Fechar
+
+      {/* Litros Picker (mobile-friendly, sem input) */}
+      <Dialog open={litrosPickerOpen} onOpenChange={setLitrosPickerOpen}>
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="text-white">Escolha os litros</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-3 gap-2">
+            {LITROS_PRESETS.map((l) => (
+              <Button
+                key={l}
+                variant="outline"
+                className="border-amber-500/30 text-white hover:bg-[#F59E0B] hover:text-black"
+                onClick={() => setLitrosPreset(l)}
+              >
+                {l}L
               </Button>
-            </div>
+            ))}
+          </div>
+          <div className="pt-2">
+            <Button className="w-full bg-white/10 hover:bg-white/20 text-white" onClick={() => setLitrosPickerOpen(false)}>
+              Fechar
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
-</section>
+    </section>
   );
 };
 
