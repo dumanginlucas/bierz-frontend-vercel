@@ -36,6 +36,15 @@ const AdminProducts = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  const isCategoryActive = (cat) => cat?.is_active !== false;
+  const getCategoryById = (id) => categories.find((c) => c.id === id);
+  const getCategoryDisplayName = (id) => {
+    const cat = getCategoryById(id);
+    if (!cat) return id || "";
+    return isCategoryActive(cat) ? cat.name : `${cat.name} (desativada)`;
+  };
+
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -91,8 +100,11 @@ const AdminProducts = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/categories`);
-      setCategories(response.data.filter(c => c.id !== "todos"));
+      if (!token) return;
+      const response = await axios.get(`${API_URL}/api/admin/categories`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCategories(response.data || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -407,9 +419,20 @@ const AdminProducts = () => {
             </SelectTrigger>
             <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
               <SelectItem value="todos" className="text-white">Todas Categorias</SelectItem>
-              {categories.map(cat => (
+              {categories.filter(isCategoryActive).map(cat => (
                 <SelectItem key={cat.id} value={cat.id} className="text-white">{cat.name}</SelectItem>
               ))}
+              {filterCategory !== "todos" && (() => {
+                const selected = getCategoryById(filterCategory);
+                if (selected && !isCategoryActive(selected)) {
+                  return (
+                    <SelectItem value={selected.id} disabled className="text-white opacity-70">
+                      {selected.name} (desativada)
+                    </SelectItem>
+                  );
+                }
+                return null;
+              })()}
             </SelectContent>
           </Select>
         </div>
@@ -438,7 +461,7 @@ const AdminProducts = () => {
                 {product.brand && (
                   <p className="text-amber-500 text-sm font-medium">{product.brand}</p>
                 )}
-                <p className="text-gray-400 text-sm mb-2">{product.category}</p>
+                <p className="text-gray-400 text-sm mb-2">{getCategoryDisplayName(product.category)}</p>
                 
                 {/* ABV e IBU */}
                 {(product.abv || product.ibu) && (
@@ -543,9 +566,33 @@ const AdminProducts = () => {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
-                    {categories.map(cat => (
-                      <SelectItem key={cat.id} value={cat.id} className="text-white">{cat.name}</SelectItem>
-                    ))}
+                    {[...categories]
+                      .sort((a, b) => {
+                        const aActive = isCategoryActive(a);
+                        const bActive = isCategoryActive(b);
+                        if (aActive !== bActive) return aActive ? -1 : 1; // ativas primeiro
+
+                        const ao = (a?.order && a.order > 0) ? a.order : 9999;
+                        const bo = (b?.order && b.order > 0) ? b.order : 9999;
+                        if (ao !== bo) return ao - bo;
+
+                        const an = (a?.name || "").toLowerCase();
+                        const bn = (b?.name || "").toLowerCase();
+                        return an.localeCompare(bn);
+                      })
+                      .map((cat) => {
+                        const active = isCategoryActive(cat);
+                        return (
+                          <SelectItem
+                            key={cat.id}
+                            value={cat.id}
+                            disabled={!active}
+                            className={`text-white ${!active ? "opacity-70" : ""}`}
+                          >
+                            {cat.name}{!active ? " (desativada)" : ""}
+                          </SelectItem>
+                        );
+                      })}
                   </SelectContent>
                 </Select>
               </div>
