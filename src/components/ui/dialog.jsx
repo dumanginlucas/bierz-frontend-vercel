@@ -41,24 +41,22 @@ const DialogContent = React.forwardRef(
         )}
         {...props}
       >
-        {/* Close button: fixed so it stays visible while content scrolls */}
+        {/* Close button: sticky so it stays visible while content scrolls */}
+        <div className="sticky top-3 z-[60] flex justify-end pr-3">
         <DialogPrimitive.Close
           className={cn(
-            "fixed z-[60] inline-flex h-11 w-11 items-center justify-center rounded-full",
-            "bg-black/60 text-white shadow-lg backdrop-blur-sm",
-            "ring-2 ring-amber-500/60",
+            "inline-flex h-11 w-11 items-center justify-center rounded-full",
+            "bg-black/60 text-white backdrop-blur-sm",
+            "border border-amber-500/60 shadow-lg",
             "active:scale-95 transition-transform",
-            "focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-background"
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 focus-visible:ring-offset-0",
+            className
           )}
-          style={{
-            // desce um pouco para não sobrepor badges no topo da imagem
-            top: "calc(env(safe-area-inset-top) + 80px)",
-            right: "calc(env(safe-area-inset-right) + 12px)",
-          }}
-          aria-label="Fechar"
         >
           <X className="h-5 w-5" />
+          <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
+      </div>
 
         {children}
       </DialogPrimitive.Content>
