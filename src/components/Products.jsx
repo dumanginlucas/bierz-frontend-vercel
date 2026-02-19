@@ -34,6 +34,17 @@ const Products = () => {
   const [modalImageAnim, setModalImageAnim] = useState(false);
   const { addItem } = useCart();
 
+  // Animação da imagem no modal (fade + scale) — garante que a imagem não fique presa em opacity-0
+  useEffect(() => {
+    if (!modalOpen || !selectedProduct) {
+      setModalImageAnim(false);
+      return;
+    }
+    setModalImageAnim(false);
+    const t = setTimeout(() => setModalImageAnim(true), 60);
+    return () => clearTimeout(t);
+  }, [modalOpen, selectedProduct?.id]);
+
   // Ordem desejada das categorias (removido 'cerveja')
   const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
 
@@ -86,8 +97,9 @@ const Products = () => {
   // Ordenação no frontend (fallback + garantia)
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     // 1. Por order (quem não tem vai pro fim com 9999)
-    const orderA = a.order ?? 9999;
-    const orderB = b.order ?? 9999;
+    // order = 0 deve ir para o final
+    const orderA = (a.order && a.order > 0) ? a.order : 9999;
+    const orderB = (b.order && b.order > 0) ? b.order : 9999;
     if (orderA !== orderB) return orderA - orderB;
 
     // 2. Por featured (destaques primeiro)
