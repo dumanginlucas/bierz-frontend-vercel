@@ -31,6 +31,7 @@ const Products = () => {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalImageAnim, setModalImageAnim] = useState(false);
   const { addItem } = useCart();
 
   // Ordem desejada das categorias (removido 'cerveja')
@@ -441,7 +442,9 @@ const Products = () => {
                   <img
                     src={selectedProduct.image}
                     alt={selectedProduct.name}
-                    className="w-full h-64 md:h-80 object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    className={`w-full h-64 md:h-80 object-cover transition-all duration-500 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.04]"}`}
                   />
                   {selectedProduct.featured && (
                     <div className="absolute top-4 left-4">
