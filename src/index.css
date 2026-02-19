@@ -1,10 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
 
 /* Animação fadeUp para elementos */
 @keyframes fadeUp {
