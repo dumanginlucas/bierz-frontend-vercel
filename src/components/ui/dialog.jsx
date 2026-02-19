@@ -33,20 +33,30 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
         className
       )}
       {...props}>
-      {children}
-      <DialogPrimitive.Close
-        className={cn(
-          // Mobile-first: alvo de toque grande e alto contraste (principalmente quando o header tem imagem)
-          "absolute right-3 top-3 inline-flex h-11 w-11 items-center justify-center rounded-full",
-          "bg-black/65 text-white shadow-lg backdrop-blur-sm border border-white/10",
-          "opacity-100 transition-colors hover:bg-black/80",
-          "focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-0",
-          "disabled:pointer-events-none"
-        )}
-      >
-        <X className="h-5 w-5" />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
+      {/* Barra de ações sticky (mantém o X visível ao rolar no mobile) */}
+<div
+  className={cn(
+    "sticky top-0 z-50 -mx-6 -mt-6 flex justify-end p-3",
+    "bg-background/80 backdrop-blur-sm border-b border-white/10",
+    "sm:bg-transparent sm:backdrop-blur-0 sm:border-b-0 sm:p-0 sm:mx-0 sm:mt-0"
+  )}
+>
+  <DialogPrimitive.Close
+    className={cn(
+      // alvo de toque grande e alto contraste (principalmente quando o header tem imagem)
+      "inline-flex h-11 w-11 items-center justify-center rounded-full",
+      "bg-black/65 text-white shadow-lg backdrop-blur-sm border border-white/10",
+      "opacity-100 transition-colors hover:bg-black/80",
+      "focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-0",
+      "disabled:pointer-events-none"
+    )}
+  >
+    <X className="h-5 w-5" />
+    <span className="sr-only">Close</span>
+  </DialogPrimitive.Close>
+</div>
+
+{children}
     </DialogPrimitive.Content>
   </DialogPortal>
 ))
