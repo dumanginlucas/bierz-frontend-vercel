@@ -15,20 +15,30 @@ const Hero = () => {
     <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image (mobile + desktop) */}
       <div className="absolute inset-0 bg-black">
-        <picture>
+        {/* Mobile banner */}
+        <picture className="block sm:hidden w-full h-full">
           <source srcSet="/banner.webp" type="image/webp" />
           <img
             src="/banner.jpg"
             alt="Bierz Background"
             loading="eager"
             decoding="async"
-            className="w-full h-full object-cover object-[center_35%] sm:object-center"
+            className="w-full h-full object-cover object-[center_35%]"
           />
         </picture>
-        {/* Overlay: mais forte no mobile (texto em cima da imagem) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/45 to-black sm:from-black/60 sm:via-black/40 sm:to-black/40" />
-        {/* Glow sutil (premium) */}
-        <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] rounded-full bg-[#F59E0B]/10 blur-3xl" />
+
+        {/* Desktop banner (original) */}
+        <img
+          src="/banner.jpg"
+          alt="Bierz Background"
+          className="hidden sm:block w-full h-full object-cover object-center"
+        />
+
+        {/* Overlay: mais forte no mobile, original no desktop */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/45 to-black sm:bg-black/40"></div>
+
+        {/* Glow sutil só no mobile */}
+        <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] rounded-full bg-[#F59E0B]/10 blur-3xl sm:hidden" />
       </div>{/* Content */}
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
