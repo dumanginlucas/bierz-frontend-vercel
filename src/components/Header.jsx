@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
 import { Button } from './ui/button';
@@ -20,8 +20,6 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const itemCount = getItemCount();
-  const prevItemCountRef = useRef(itemCount);
-  const [cartBump, setCartBump] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,18 +28,6 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Micro-interação: anima o carrinho quando itens aumentam
-  useEffect(() => {
-    const prev = prevItemCountRef.current;
-    if (itemCount > prev) {
-      setCartBump(true);
-      const t = setTimeout(() => setCartBump(false), 300);
-      prevItemCountRef.current = itemCount;
-      return () => clearTimeout(t);
-    }
-    prevItemCountRef.current = itemCount;
-  }, [itemCount]);
 
   const scrollToSection = (id) => {
     setIsMobileMenuOpen(false);
@@ -143,7 +129,7 @@ const Header = () => {
                 <ShoppingCart className="w-5 h-5" />
               </Button>
               {itemCount > 0 && (
-                <span className={`absolute -top-2 -right-2 bg-[#F59E0B] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${cartBump ? 'animate-bounce' : ''}`}>
+                <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {itemCount > 9 ? '9+' : itemCount}
                 </span>
               )}
@@ -249,31 +235,31 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 py-4">
               <button
                 onClick={() => scrollToSection('products')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
+                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Produtos
               </button>
               <button
                 onClick={() => scrollToSection('services')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
+                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Serviço
               </button>
               <button
                 onClick={() => scrollToSection('calculator')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
+                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Calculadora
               </button>
               <button
                 onClick={() => scrollToSection('about')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
+                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Sobre
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
+                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Contato
               </button>
