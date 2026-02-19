@@ -31,9 +31,11 @@ const Products = () => {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [litersPicker, setLitersPicker] = useState({ open: false, productId: null });
   const { addItem } = useCart();
 
-  // Categorias agora vêm do backend (com campo order). "todos" é um pseudo-filtro local.
+  // Ordem desejada das categorias (removido 'cerveja')
+  const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras'];
 
   useEffect(() => {
     fetchProducts();
@@ -63,19 +65,15 @@ const Products = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/categories`);
-
-      const sorted = [...(response.data || [])].sort((a, b) => {
-        const oa = a.order && a.order > 0 ? a.order : 9999;
-        const ob = b.order && b.order > 0 ? b.order : 9999;
-        if (oa !== ob) return oa - ob;
-        return (a.name || '').localeCompare(b.name || '');
-      });
-
-      // garantir que exista o filtro "todos" no começo
-      setCategories([
-        { id: 'todos', name: 'Todos', icon: '📦', order: -1 },
-        ...sorted,
-      ]);
+      // Filtrar apenas categorias desejadas e ordenar
+      const filteredAndSorted = response.data
+        .filter(cat => categoryOrder.includes(cat.id))
+        .sort((a, b) => {
+          const indexA = categoryOrder.indexOf(a.id);
+          const indexB = categoryOrder.indexOf(b.id);
+          return indexA - indexB;
+        });
+      setCategories(filteredAndSorted);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -88,8 +86,8 @@ const Products = () => {
   // Ordenação no frontend (fallback + garantia)
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     // 1. Por order (quem não tem vai pro fim com 9999)
-    const orderA = (a.order && a.order > 0) ? a.order : 9999;
-    const orderB = (b.order && b.order > 0) ? b.order : 9999;
+    const orderA = a.order ?? 9999;
+    const orderB = b.order ?? 9999;
     if (orderA !== orderB) return orderA - orderB;
 
     // 2. Por featured (destaques primeiro)
@@ -105,7 +103,22 @@ const Products = () => {
     addItem(product, quantity, size);
   };
 
-  const updateQuantity = (productId, delta, isLitro) => {
+  
+  const setQuantity = (productId, value, isLitro) => {
+    setQuantities(prev => {
+      const step = isLitro ? 10 : 1;
+      const min = isLitro ? 20 : 1;
+      // arredonda para o step (10 em 10 no chopp)
+      const rounded = isLitro ? Math.round(value / step) * step : value;
+      const newVal = Math.max(min, rounded);
+      return { ...prev, [productId]: newVal };
+    });
+  };
+
+  const openLitersPicker = (productId) => setLitersPicker({ open: true, productId });
+  const closeLitersPicker = () => setLitersPicker({ open: false, productId: null });
+
+const updateQuantity = (productId, delta, isLitro) => {
     setQuantities(prev => {
       const current = prev[productId] || (isLitro ? 30 : 1);
       const step = isLitro ? 10 : 1;
@@ -334,9 +347,20 @@ const Products = () => {
                       >
                         <Minus className="w-3 h-3" />
                       </Button>
-                      <span className="text-white text-sm font-bold min-w-[2rem] text-center">
-                        {quantity}{isLitro ? 'L' : ''}
-                      </span>
+                      {isLitro ? (
+                        <button
+                          type="button"
+                          className="text-white text-sm font-bold min-w-[2rem] text-center hover:underline underline-offset-4"
+                          onClick={(e) => { e.stopPropagation(); openLitersPicker(product.id); }}
+                          aria-label="Escolher litros"
+                        >
+                          {quantity}L
+                        </button>
+                      ) : (
+                        <span className="text-white text-sm font-bold min-w-[2rem] text-center">
+                          {quantity}
+                        </span>
+                      )}
                       <Button
                         variant="outline"
                         size="icon"
@@ -598,7 +622,43 @@ const Products = () => {
           })()}
         </DialogContent>
       </Dialog>
-    </section>
+    
+      {/* Seletor rápido de litros (mobile-friendly, sem input) */}
+      <Dialog open={litersPicker.open} onOpenChange={(open) => { if (!open) closeLitersPicker(); }}>
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+          <div className="p-4 border-b border-gray-800 bg-gray-950">
+            <DialogHeader>
+              <DialogTitle className="text-white">Escolha os litros</DialogTitle>
+            </DialogHeader>
+            <p className="text-xs text-gray-400 mt-1">Mínimo de 20L • Ajuste em 10 em 10</p>
+          </div>
+          <div className="p-4 bg-gray-950">
+            <div className="grid grid-cols-3 gap-2">
+              {[20, 30, 40, 50, 60, 80, 100, 150, 200].map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  className="rounded-xl border border-gray-800 bg-gray-900 text-white py-3 text-sm font-semibold active:scale-[0.98] transition"
+                  onClick={() => {
+                    const pid = litersPicker.productId;
+                    if (!pid) return;
+                    setQuantity(pid, l, true);
+                    closeLitersPicker();
+                  }}
+                >
+                  {l}L
+                </button>
+              ))}
+            </div>
+            <div className="mt-4">
+              <Button variant="secondary" className="w-full" onClick={closeLitersPicker}>
+                Fechar
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+</section>
   );
 };
 

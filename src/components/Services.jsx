@@ -22,30 +22,30 @@ const Services = () => {
   const [selectedView, setSelectedView] = useState('homebar'); // 'conventional', 'homebar', 'comparison'
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Imagens do HomeBar para o carrossel (apenas HomeBar Premium)
+  // Imagens do HomeBar para o carrossel (apenas HomeBar)
   const homebarImages = [
     {
       url: 'https://customer-assets.emergentagent.com/job_full-stack-deploy-38/artifacts/65568f34_D_NQ_NP_2X_993698-MLB100581419246_122025-F.webp',
       alt: 'HomeBar moderno com torneira',
-      title: 'HomeBar Completo'
+      title: 'HomeBar em Evento'
     },
     {
       url: 'https://customer-assets.emergentagent.com/job_full-stack-deploy-38/artifacts/wlovzyvh_SaveClip.App_588356761_18015442988800944_3145914457951544553_n.png',
       alt: 'Chopeira dupla HomeBar',
-      title: 'Sistema Duplo Premium'
+      title: 'HomeBar Duplo'
     }
   ];
 
-  // Imagens da Chopeira Elétrica para o carrossel
+  // Imagens da Chopeira Convencional para o carrossel
   const conventionalImages = [
     {
       url: 'https://customer-assets.emergentagent.com/job_808be6ee-315b-4ff7-9d87-e7df67a25bf9/artifacts/zocyhgq6_ChatGPT%20Image%2017%20de%20fev.%20de%202026%2C%2021_20_24.png',
-      alt: 'Chopeira Elétrica com barril',
+      alt: 'Chopeira Convencional com barril',
       title: 'Chopeira com Barril'
     },
     {
       url: 'https://customer-assets.emergentagent.com/job_full-stack-deploy-38/artifacts/ox30kitc_imagem_2026-02-17_202943222.png',
-      alt: 'Chopeira Elétrica dupla',
+      alt: 'Chopeira Convencional dupla',
       title: 'Modelo Duplo'
     }
   ];
@@ -88,7 +88,7 @@ const Services = () => {
 
   const services = {
     conventional: {
-      name: 'Chopeira Elétrica',
+      name: 'Chopeira Convencional',
       subtitle: 'Barril no Chão',
       image: 'https://customer-assets.emergentagent.com/job_full-stack-deploy-38/artifacts/ox30kitc_imagem_2026-02-17_202943222.png',
       description: 'Sistema elétrico tradicional, ideal para eventos outdoor e consumo rápido.',
@@ -146,44 +146,29 @@ const Services = () => {
 
   const comparisonData = [
     {
-      criteria: 'Sistema de Resfriamento',
-      conventional: 'Barril em temperatura ambiente',
-      homebar: 'Barril mantido sempre refrigerado (0° a 3°C)'
+      criteria: 'Apresentação no ambiente',
+      conventional: 'Estrutura tradicional de chopeira',
+      homebar: 'Visual mais elegante, integra melhor à decoração'
     },
     {
-      criteria: 'Durabilidade do Chopp',
-      conventional: '1 a 2 dias após aberto',
-      homebar: 'Até 30 dias refrigerado'
+      criteria: 'Organização do espaço',
+      conventional: 'Setup mais aparente (estrutura/barril conforme o evento)',
+      homebar: 'Mais compacto, sem barris no chão à vista'
     },
     {
-      criteria: 'Qualidade da Espuma',
-      conventional: 'Pode ficar mais espumosa no início',
-      homebar: 'Espuma mais cremosa e consistente do início ao fim'
+      criteria: 'Controle de temperatura',
+      conventional: 'Varia conforme o setup e o ambiente',
+      homebar: 'Refrigeração ativa com temperatura estável'
     },
     {
-      criteria: 'Sabor e Aroma',
-      conventional: 'Pode perder gás mais rapidamente',
-      homebar: 'Mantém sabor original e gás preservado'
+      criteria: 'Estilo de evento',
+      conventional: 'Ótima opção para áreas externas e alto fluxo',
+      homebar: 'Ideal para eventos indoor, áreas gourmet e ocasiões mais requintadas'
     },
     {
-      criteria: 'Controle de Temperatura',
-      conventional: 'Depende do ambiente',
-      homebar: 'Temperatura estável e controlada'
-    },
-    {
-      criteria: 'Estética e Design',
-      conventional: 'Industrial / Eventos simples',
-      homebar: 'Premium, elegante e moderno'
-    },
-    {
-      criteria: 'Experiência do Usuário',
-      conventional: 'Ideal para consumo rápido',
-      homebar: 'Ideal para consumo gradual com máxima qualidade'
-    },
-    {
-      criteria: 'Versatilidade de Uso',
-      conventional: 'Eventos outdoor',
-      homebar: 'Festas, áreas gourmet, residências, eventos indoor e outdoor'
+      criteria: 'Experiência de serviço',
+      conventional: 'Clássica e eficiente',
+      homebar: 'Experiência “bar” com presença premium'
     }
   ];
 
@@ -246,7 +231,7 @@ const Services = () => {
                 `}
               >
                 <Thermometer className="w-4 h-4" />
-                <span className="hidden sm:inline">Chopeira Elétrica</span>
+                <span className="hidden sm:inline">Chopeira Convencional</span>
                 <span className="sm:hidden">Elétrica</span>
               </button>
               
@@ -408,7 +393,7 @@ const Services = () => {
                       <th className="p-4 text-center bg-gradient-to-br from-gray-800/50 to-gray-900/50">
                         <div className="flex flex-col items-center gap-2">
                           <Thermometer className="w-6 h-6 text-gray-400" />
-                          <span className="text-white font-bold">Chopeira Elétrica</span>
+                          <span className="text-white font-bold">Chopeira Convencional</span>
                           <span className="text-xs text-gray-400">(Barril no Chão)</span>
                         </div>
                       </th>
