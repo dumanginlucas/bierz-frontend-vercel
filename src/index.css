@@ -142,3 +142,24 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+/* Modal scrollbar (desktop): refined + consistent with Bierz theme */
+.modal-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(245, 158, 11, 0.55) rgba(255, 255, 255, 0.06);
+}
+.modal-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.55);
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+}
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.75);
+}

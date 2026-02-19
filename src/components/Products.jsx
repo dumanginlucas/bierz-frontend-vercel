@@ -442,7 +442,7 @@ const Products = () => {
 
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0">
           {selectedProduct && (() => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
@@ -450,7 +450,7 @@ const Products = () => {
             
             return (
               <>
-                <div className="pt-10 sm:pt-8">
+                <div className="pt-3 sm:pt-3">
                 <div className="relative">
                   <img
                     src={selectedProduct.image}
