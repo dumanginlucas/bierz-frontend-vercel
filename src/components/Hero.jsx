@@ -29,29 +29,19 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/45 to-black sm:from-black/60 sm:via-black/40 sm:to-black/40" />
         {/* Glow sutil (premium) */}
         <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] rounded-full bg-[#F59E0B]/10 blur-3xl" />
-      </div>
-
-      {/* Content */}
-      <div className="container mx-auto px-4 pt-28 pb-20 sm:py-32 relative z-10">
+      </div>{/* Content */}
+      <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-
-          {/* Mobile Banner Pill */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-black/55 backdrop-blur-md border border-white/10 px-3 py-1 text-[11px] sm:text-sm text-gray-100 mb-4 sm:mb-6">
-            <span className="text-[#F59E0B] font-bold">Chopp</span>
-            <span className="opacity-80">para eventos</span>
-            <span className="opacity-40">•</span>
-            <span className="opacity-90">Homebar premium</span>
-          </div>
 
           {/* Tagline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 md:mb-6 animate-slide-up drop-shadow-2xl">
-            Chopp gelado para seu evento
-            <span className="text-[#F59E0B]"> em Sorocaba</span>
+            Distribuidora de Chopp e
+            <span className="text-[#F59E0B]"> Cervejas Especiais</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 md:mb-8 max-w-2xl mx-auto animate-slide-up drop-shadow-lg px-2" style={{ animationDelay: '0.2s' }}>
-            Escolha o chopp por litros (mínimo 20L) e receba tudo pronto para servir.
-            Cervejas especiais e extras ficam como complemento.
+            As melhores marcas de chopp e cerveja para seu evento em Sorocaba e região.
+            Qualidade, variedade e atendimento diferenciado.
           </p>
 
           {/* CTA Buttons */}
@@ -67,7 +57,7 @@ const Hero = () => {
               data-testid="view-products-hero"
             >
               <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              Ver Chopp e Litros
+              Ver Produtos e Preços
             </Button>
             <Button
               onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
@@ -88,7 +78,7 @@ const Hero = () => {
             <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
               <Beer className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
               <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Variedade</h3>
-              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Chopp por litros + extras</p>
+              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Chopp, cervejas especiais, gelo e mais</p>
             </div>
             <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
               <Zap className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
@@ -97,8 +87,8 @@ const Hero = () => {
             </div>
             <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
               <Star className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Pronto p/ servir</h3>
-              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Montagem e experiência premium</p>
+              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Tudo Gelado</h3>
+              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Bebidas na temperatura ideal</p>
             </div>
           </div>
         </div>
