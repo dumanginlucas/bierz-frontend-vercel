@@ -19,6 +19,7 @@ import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 import ProductSkeleton from './ProductSkeleton';
+import { getSocialTagLabelFromKey } from '../lib/socialTags';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -229,6 +230,7 @@ const Products = () => {
             const isLitro = product.price_unit === 'litro';
             const quantity = quantities[product.id] || (isLitro ? 30 : 1);
             const totalPrice = product.price * quantity;
+            const socialLabel = product.social_tag ? getSocialTagLabelFromKey(product.social_tag) : null;
 
             return (
               <Card 
@@ -249,12 +251,18 @@ const Products = () => {
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Featured Badge */}
-                  {product.featured && (
+                  {/* Social proof / Featured badge (sem emojis) */}
+                  {(socialLabel || product.featured) && (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Destaque
+                        {socialLabel ? (
+                          socialLabel
+                        ) : (
+                          <>
+                            <Sparkles className="w-3 h-3" />
+                            Destaque
+                          </>
+                        )}
                       </Badge>
                     </div>
                   )}
@@ -457,6 +465,7 @@ const Products = () => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
             const totalPrice = selectedProduct.price * quantity;
+            const socialLabel = selectedProduct.social_tag ? getSocialTagLabelFromKey(selectedProduct.social_tag) : null;
             
             return (
               <>
@@ -470,11 +479,17 @@ const Products = () => {
                     decoding="async"
                     className={`w-full max-h-[260px] sm:max-h-[340px] object-contain mx-auto transition-all duration-700 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.08]"}`}
                   />
-                  {selectedProduct.featured && (
+                  {(socialLabel || selectedProduct.featured) && (
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold flex items-center gap-1">
-                        <Sparkles className="w-4 h-4" />
-                        Destaque
+                        {socialLabel ? (
+                          socialLabel
+                        ) : (
+                          <>
+                            <Sparkles className="w-4 h-4" />
+                            Destaque
+                          </>
+                        )}
                       </Badge>
                     </div>
                   )}

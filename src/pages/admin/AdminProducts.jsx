@@ -29,18 +29,11 @@ import {
   Menu, X, Search, Upload, Image as ImageIcon, Loader2
 } from "lucide-react";
 
+import { DEFAULT_SOCIAL_TAGS, getSocialTagLabelFromKey } from "../../lib/socialTags";
+
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 // Tags padrão (fallback). Se o backend já semeou, isso só serve como “1 clique” para recriar.
-const DEFAULT_SOCIAL_TAGS = [
-  { key: "destaque", label: "Destaque" },
-  { key: "mais_vendidos", label: "Mais vendidos" },
-  { key: "mais_pedido_semana", label: "Mais pedido da semana" },
-  { key: "preferido_aniversarios", label: "Preferido para aniversários" },
-  { key: "preferido_churrascos", label: "Preferido para churrascos" },
-  { key: "perfeito_eventos", label: "Perfeito para eventos" },
-  { key: "escolha_da_casa", label: "Escolha da casa" },
-];
 
 const AdminProducts = () => {
   const { user, token, isAdmin, logout, loading: authLoading } = useAuth();
@@ -78,19 +71,10 @@ const AdminProducts = () => {
     order: 0
   });
 
-  // Remove emojis/símbolos no começo (ex: "✨ Destaque" => "Destaque")
-  const cleanSocialLabel = (label) => {
-    if (!label) return '';
-    const s = String(label).trim();
-    const cleaned = s.replace(/^[^A-Za-zÀ-ÿ0-9]+/g, '').trim();
-    return cleaned.replace(/\s{2,}/g, ' ').trim();
-  };
-
   const getSocialTagLabel = (key) => {
     if (!key) return null;
     const found = socialTags.find(t => t.key === key);
-    if (!found) return key;
-    return cleanSocialLabel(found.label) || `${found.label}`;
+    return getSocialTagLabelFromKey(key, found?.label);
   };
 
   useEffect(() => {
@@ -546,7 +530,7 @@ const AdminProducts = () => {
                 />
                 {(product.social_tag || product.featured) && (
                   <Badge className="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold">
-                    {getSocialTagLabel(product.social_tag || (product.featured ? 'destaque' : '')) || '⭐ Destaque'}
+                    {getSocialTagLabel(product.social_tag || (product.featured ? 'destaque' : '')) || 'Destaque'}
                   </Badge>
                 )}
                 {!product.is_active && (
@@ -924,7 +908,7 @@ const AdminProducts = () => {
                 <SelectContent className="bg-[#0B1220] border-amber-500/30 text-white">
                   <SelectItem
                     value="__none"
-                    className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
+                    className="text-white text-base py-2 focus:bg-amber-500/20 focus:text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
                   >
                     Nenhuma
                   </SelectItem>
@@ -934,9 +918,9 @@ const AdminProducts = () => {
                       <SelectItem
                         key={tag.id}
                         value={tag.key}
-                        className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
+                        className="text-white text-base py-2 focus:bg-amber-500/20 focus:text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
                       >
-                        <span className="font-medium">{cleanSocialLabel(tag.label) || tag.label}</span>
+                        <span className="font-semibold">{getSocialTagLabelFromKey(tag.key, tag.label)}</span>
                       </SelectItem>
                     ))}
                 </SelectContent>

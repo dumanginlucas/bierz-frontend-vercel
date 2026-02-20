@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { Minus, Plus, ShoppingCart, Sparkles } from 'lucide-react';
+import { getSocialTagLabelFromKey } from '../lib/socialTags';
 
 const ProductCardItem = React.memo(function ProductCardItem({
   product,
@@ -26,6 +27,7 @@ const ProductCardItem = React.memo(function ProductCardItem({
 }) {
   const isLitro = product.price_unit === 'litro';
   const totalPrice = product.price * quantity;
+  const socialLabel = product.social_tag ? getSocialTagLabelFromKey(product.social_tag) : null;
 
   return (
     <Card
@@ -46,11 +48,18 @@ const ProductCardItem = React.memo(function ProductCardItem({
           decoding="async"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        {product.featured && (
+        {(socialLabel || product.featured) && (
           <div className="absolute top-2 left-2">
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              Destaque
+              {/* Se existir uma prova social, mostramos só texto (sem emoji). */}
+              {socialLabel ? (
+                socialLabel
+              ) : (
+                <>
+                  <Sparkles className="w-3 h-3" />
+                  Destaque
+                </>
+              )}
             </Badge>
           </div>
         )}
