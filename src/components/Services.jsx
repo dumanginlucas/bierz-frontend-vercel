@@ -1,10 +1,14 @@
 import React, { useMemo, useState } from "react";
-import { Zap, Refrigerator, GitCompare } from "lucide-react";
+import { Zap, Refrigerator, GitCompare, Thermometer, Snowflake, CheckCircle2 } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 
 const Services = () => {
   const [active, setActive] = useState(null);
   const { chooseEquipment } = useCart();
+
+  // Debug visual version marker (helps confirm deploy is serving latest bundle)
+  // eslint-disable-next-line no-console
+  console.log("BIERZ FRONT v7 - Equipamentos/Comparativo");
 
   const cards = useMemo(
     () => [
@@ -19,8 +23,8 @@ const Services = () => {
         points: [
           "Barril em temperatura ambiente",
           "1 a 2 dias após aberto",
-          "Pode espumar mais no início",
-          "Perde gás mais rapidamente",
+          "Pode ficar mais espumosa no início",
+          "Pode perder gás mais rapidamente",
         ],
         equipment: { id: "electric", name: "Chopeira Elétrica" },
         icon: Zap,
@@ -34,10 +38,10 @@ const Services = () => {
         desc:
           "Barril refrigerado com temperatura estável. Qualidade do primeiro ao último copo.",
         points: [
-          "Barril sempre refrigerado (0° a 3°C)",
+          "Barril mantido sempre refrigerado (0° a 3°C)",
           "Até 30 dias refrigerado",
-          "Espuma mais cremosa e consistente",
-          "Sabor e gás preservados",
+          "Espuma mais cremosa e consistente do início ao fim",
+          "Mantém sabor original e gás preservado",
         ],
         equipment: { id: "homebar", name: "HomeBar" },
         icon: Refrigerator,
@@ -45,35 +49,34 @@ const Services = () => {
       {
         id: "compare",
         kicker: "Comparativo",
-        title: "Elétrica vs HomeBar",
-        desc:
-          "Veja os principais pontos. Passe o mouse/toque para ver mais.",
+        title: "",
+        desc: "",
         compareFront: {
           electric: [
-            "Temperatura depende do ambiente",
-            "Industrial / eventos simples",
+            "Barril em temperatura ambiente",
+            "1 a 2 dias após aberto",
+            "Pode ficar mais espumosa no início",
+            "Pode perder gás mais rapidamente",
+          ],
+          homebar: [
+            "Barril mantido sempre refrigerado (0° a 3°C)",
+            "Até 30 dias refrigerado",
+            "Espuma mais cremosa e consistente do início ao fim",
+            "Mantém sabor original e gás preservado",
+          ],
+        },
+        compareBack: {
+          electric: [
+            "Depende do ambiente",
+            "Industrial / Eventos simples",
             "Ideal para consumo rápido",
             "Eventos outdoor",
           ],
           homebar: [
             "Temperatura estável e controlada",
             "Premium, elegante e moderno",
-            "Consumo gradual com máxima qualidade",
-            "Residências / festas / indoor",
-          ],
-        },
-        compareBack: {
-          electric: [
-            "Setup simples",
-            "Mais econômica",
-            "Boa para alta rotatividade",
-            "Operação direta",
-          ],
-          homebar: [
-            "Experiência mais constante",
-            "Qualidade do início ao fim",
-            "Visual premium",
-            "Chopp sempre gelado",
+            "Ideal para consumo gradual com máxima qualidade",
+            "Festas, áreas gourmet, residências, eventos indoor e outdoor",
           ],
         },
         icon: GitCompare,
@@ -85,17 +88,34 @@ const Services = () => {
   const handleToggle = (id) => setActive((prev) => (prev === id ? null : id));
 
   const renderCompare = (data) => (
-    <div className="equip-compare">
-      <div className="equip-compare__head">
-        <div className="equip-compare__colTitle">Chopeira Elétrica</div>
-        <div className="equip-compare__colTitle">HomeBar</div>
+    <div className="equip-compare2">
+      <div className="equip-compare2__header">
+        <div className="equip-compare2__hcol equip-compare2__hcol--electric">
+          <div className="equip-compare2__hicon" aria-hidden="true"><Thermometer size={18} /></div>
+          <div className="equip-compare2__htxt">
+            <div className="equip-compare2__htitle">Chopeira Elétrica</div>
+            <div className="equip-compare2__hsub">(Barril no Chão)</div>
+          </div>
+        </div>
+        <div className="equip-compare2__hcol equip-compare2__hcol--homebar">
+          <div className="equip-compare2__hicon" aria-hidden="true"><Snowflake size={18} /></div>
+          <div className="equip-compare2__htxt">
+            <div className="equip-compare2__htitle">HomeBar</div>
+            <div className="equip-compare2__hsub equip-compare2__hsub--accent">(Barril Gelado)</div>
+          </div>
+          <div className="equip-compare2__badge">Premium</div>
+        </div>
       </div>
-      <div className="equip-compare__grid">
+
+      <div className="equip-compare2__rows">
         {data.electric.map((left, idx) => (
-          <React.Fragment key={idx}>
-            <div className="equip-compare__cell">{left}</div>
-            <div className="equip-compare__cell">{data.homebar[idx]}</div>
-          </React.Fragment>
+          <div className="equip-compare2__row" key={idx}>
+            <div className="equip-compare2__cell equip-compare2__cell--left">{left}</div>
+            <div className="equip-compare2__cell equip-compare2__cell--right">
+              <span className="equip-compare2__ok" aria-hidden="true"><CheckCircle2 size={16} /></span>
+              <span>{data.homebar[idx]}</span>
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -103,6 +123,7 @@ const Services = () => {
 
   return (
     <section id="services" className="py-16 bg-black relative overflow-visible">
+      <span className="sr-only">bierz-front-v7</span>
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.22)_0%,rgba(0,0,0,0)_60%)]" />
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
@@ -155,7 +176,7 @@ const Services = () => {
                       </div>
                     )}
 
-                    <div className="equip-card__title">{c.title}</div>
+                    {c.id !== "compare" && <div className="equip-card__title">{c.title}</div>}
                   </div>
 
                   {/* BACK */}

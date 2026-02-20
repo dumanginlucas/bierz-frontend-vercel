@@ -1,10 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calculator, Beer, Zap, MapPin, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
   const [active, setActive] = useState(null);
   const navigate = useNavigate();
+
+  // eslint-disable-next-line no-console
+  console.log("BIERZ FRONT v7 - Como funciona");
 
   const steps = useMemo(
     () => [
@@ -14,7 +17,6 @@ const HowItWorks = () => {
         title: "Calcule quantos litros você precisa",
         desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
-        icon: Calculator,
         action: () => {
           const el = document.getElementById("calculator");
           if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -26,7 +28,6 @@ const HowItWorks = () => {
         title: "Escolha o chopp da vez",
         desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
         cta: "Escolher chopp",
-        icon: Beer,
         action: () => {
           const el = document.getElementById("products");
           if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -38,7 +39,6 @@ const HowItWorks = () => {
         title: "Chopeira elétrica ou HomeBar?",
         desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
         cta: "Ver equipamentos",
-        icon: Zap,
         action: () => {
           const el = document.getElementById("services");
           if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -50,7 +50,6 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Finalize o pedido e combinamos data, horário e endereço pelo carrinho ou WhatsApp.",
         cta: "Finalizar pedido",
-        icon: MapPin,
         action: () => navigate("/cart"),
       },
     ],
@@ -67,6 +66,7 @@ const HowItWorks = () => {
       id="how-it-works"
       className="pt-36 pb-10 bg-black relative overflow-visible how-hero"
     >
+      <span className="sr-only">BIERZ_FRONT_VERSION_V7</span>
       <div className="absolute inset-0 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.25)_0%,rgba(0,0,0,0)_55%)]" />
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
@@ -88,7 +88,6 @@ const HowItWorks = () => {
           onMouseLeave={() => setActive(null)}
         >
           {steps.map((s) => {
-            const Icon = s.icon;
             const flipped = active === s.id;
 
             return (
@@ -112,14 +111,10 @@ const HowItWorks = () => {
                       <div className="how-card__badge">{s.id}</div>
                     </div>
 
+                    {/* Espaço reservado para imagem/arte (PNG sem fundo) */}
                     <div className="how-card__frontBody">
-                      <div className="how-card__iconWrap" aria-hidden="true">
-                        <Icon size={28} />
-                      </div>
-                      <div className="how-card__title">{s.title}</div>
+                      <div className="how-card__mediaSlot" aria-hidden="true" />
                     </div>
-
-                    <div className="how-card__hint"> </div>
                   </div>
 
                   {/* BACK */}
@@ -130,6 +125,7 @@ const HowItWorks = () => {
                     </div>
 
                     <div className="how-card__backBody">
+                      <div className="how-card__title">{s.title}</div>
                       <p className="how-card__desc">{s.desc}</p>
 
                       <button

@@ -107,10 +107,10 @@
   box-shadow: 0 10px 26px rgba(245,158,11,0.25);
 }
 .how-card__frontBody{
-  margin-top: 18px;
+  margin-top: 16px;
+  height: calc(100% - 40px);
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: flex-end;
 }
 .how-card__iconWrap{
   width: 44px;
@@ -148,7 +148,7 @@
 
 .how-card__mediaSlot{
   width: 100%;
-  height: 78px;
+  height: 170px;
   border-radius: 16px;
   background: transparent;
 }
@@ -318,7 +318,7 @@
 }
 .equip-card__imgWrap{
   margin-top: 14px;
-  height: 230px;
+  height: 210px;
   border-radius: 18px;
   background: transparent;
   border: 0;
@@ -328,9 +328,10 @@
 }
 
 .equip-card__img{
-  width: 92%;
+  width: auto;
   height: auto;
-  max-height: 220px;
+  max-width: 94%;
+  max-height: 190px;
   object-fit: contain;
 }
 
@@ -416,70 +417,83 @@
 /* anchor offset for fixed header */
 #how-it-works, #services { scroll-margin-top: 110px; }
 
-/* ===== Equip compare (2 columns, flip swaps bullets) ===== */
-.equip-compare{
-  margin-top: 14px;
-}
-.equip-compare__head{
+/* ===== Equip compare (header fixo; flip troca apenas os textos) ===== */
+.equip-compare2{ margin-top: 14px; }
+.equip-compare2__header{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.equip-compare__headCol{
+  gap: 0;
   border-radius: 16px;
-  padding: 12px 12px;
-  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.equip-compare__headCol--electric{
-  background: linear-gradient(180deg, rgba(37,99,235,0.20), rgba(0,0,0,0.12));
-}
-.equip-compare__headCol--homebar{
-  background: linear-gradient(180deg, rgba(245,158,11,0.20), rgba(0,0,0,0.12));
-  position: relative;
-}
-.equip-compare__headTop{
+.equip-compare2__hcol{
   display:flex;
   align-items:center;
-  gap: 8px;
-  color: rgba(255,255,255,0.92);
-  font-weight: 900;
+  gap: 10px;
+  padding: 12px 12px;
+  min-height: 56px;
 }
-.equip-compare__headTitle{
-  font-size: 14px;
+.equip-compare2__hcol--electric{
+  background: linear-gradient(180deg, rgba(14,27,44,0.95), rgba(10,18,30,0.95));
 }
-.equip-compare__headSub{
-  margin-top: 4px;
-  color: rgba(255,255,255,0.70);
-  font-size: 12px;
-  font-weight: 700;
+.equip-compare2__hcol--homebar{
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(44,30,14,0.95), rgba(28,19,9,0.95));
 }
-.equip-compare__badge{
-  margin-top: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.equip-compare2__hicon{
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.9);
-  background: linear-gradient(90deg, #f59e0b, #f97316);
+  display:grid;
+  place-items:center;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.10);
 }
-.equip-compare__grid{
+.equip-compare2__htxt{ display:flex; flex-direction:column; line-height: 1.05; }
+.equip-compare2__htitle{ font-weight: 900; color: rgba(255,255,255,0.95); font-size: 14px; }
+.equip-compare2__hsub{ font-weight: 700; color: rgba(255,255,255,0.70); font-size: 12px; margin-top: 4px; }
+.equip-compare2__hsub--accent{ color: rgba(245,158,11,0.95); }
+.equip-compare2__badge{
+  font-weight: 900;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: rgba(0,0,0,0.92);
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  border: 0;
+  white-space: nowrap;
+}
+.equip-compare2__rows{
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: 0;
+}
+.equip-compare2__row{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 0;
 }
-.equip-compare__cell{
-  padding: 10px 12px;
-  border-radius: 14px;
+.equip-compare2__cell{
+  padding: 12px 14px;
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.82);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.84);
   font-size: 13px;
   line-height: 1.35;
 }
+.equip-compare2__cell--left{
+  background: rgba(14,27,44,0.35);
+}
+.equip-compare2__cell--right{
+  background: rgba(44,30,14,0.25);
+  display:flex;
+  align-items:flex-start;
+  gap: 10px;
+}
+.equip-compare2__ok{ color: #22c55e; margin-top: 1px; flex: 0 0 auto; }
 .equip-card__ctaNote{
   margin-top: 8px;
   font-size: 12px;
