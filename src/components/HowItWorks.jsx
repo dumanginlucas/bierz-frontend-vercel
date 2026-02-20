@@ -1,223 +1,146 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calculator, Beer, Zap, MapPin, ArrowRight } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
 
-const scrollToId = (id) => {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
-export default function HowItWorks() {
+const HowItWorks = () => {
   const [active, setActive] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const steps = useMemo(
     () => [
       {
         id: 1,
         kicker: "Comece aqui",
-        titleFront: "Calcule quantos litros\nde chopp você precisa",
-        icon: Calculator,
-        frontLayout: "invert",
-        backTitle: "Calcule em segundos",
-        backText:
-          "Use nossa calculadora para estimar a quantidade ideal para o seu evento.",
+        title: "Calcule quantos litros você precisa",
+        desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
+        icon: Calculator,
         action: () => {
-          // se não estiver na home, navega antes
-          if (location.pathname !== "/") {
-            navigate("/", { state: { scrollTo: "calculator" } });
-            return;
-          }
-          scrollToId("calculator");
-          // tenta focar no primeiro input da calculadora
-          setTimeout(() => {
-            const firstInput = document.querySelector(
-              "#calculator input, #calculator select, #calculator textarea"
-            );
-            if (firstInput) firstInput.focus();
-          }, 350);
+          const el = document.getElementById("calculator");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
         },
       },
       {
         id: 2,
         kicker: "Escolha seu chopp",
-        titleFront: "Escolha o chopp\nda vez",
+        title: "Escolha o chopp da vez",
+        desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
+        cta: "Escolher chopp",
         icon: Beer,
-        backTitle: "Monte seu carrinho",
-        backText:
-          "Selecione seus estilos preferidos e adicione ao carrinho com poucos cliques.",
-        cta: "Ver produtos",
         action: () => {
-          if (location.pathname !== "/") {
-            navigate("/", { state: { scrollTo: "products" } });
-            return;
-          }
-          scrollToId("products");
+          const el = document.getElementById("products");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
         },
       },
       {
         id: 3,
         kicker: "Defina o equipamento",
-        titleFront: "Chopeira elétrica\nou HomeBar?",
+        title: "Chopeira elétrica ou HomeBar?",
+        desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
+        cta: "Ver equipamentos",
         icon: Zap,
-        backTitle: "Escolha o ideal",
-        backText:
-          "Compare as opções e selecione o equipamento perfeito para o seu evento.",
-        cta: "Ver opções",
         action: () => {
-          if (location.pathname !== "/") {
-            navigate("/", { state: { scrollTo: "about" } });
-            return;
-          }
-          // usa a seção "about" como destino padrão (onde costuma estar a explicação)
-          scrollToId("about");
+          const el = document.getElementById("services");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
         },
       },
       {
         id: 4,
         kicker: "Local do evento",
-        titleFront: "Local do Evento",
-        subtitleFront:
-          "Entregamos, instalamos e retiramos\nno horário programado.",
-        icon: MapPin,
-        backTitle: "Finalize o pedido",
-        backText:
-          "Revise seu carrinho e conclua o pedido. Se preferir, confirme detalhes pelo WhatsApp.",
+        title: "Entregamos, instalamos e retiramos",
+        desc: "Finalize o pedido e combinamos data, horário e endereço pelo carrinho ou WhatsApp.",
         cta: "Finalizar pedido",
-        action: () => navigate("/carrinho"),
+        icon: MapPin,
+        action: () => navigate("/cart"),
       },
     ],
-    [location.pathname, navigate]
+    [navigate]
   );
 
-  // mobile: tocar alterna o card
-  const handleActivate = (id) => {
+  const handleCardClick = (id) => {
+    // Mobile: toque alterna o flip
     setActive((prev) => (prev === id ? null : id));
   };
-
-  // desktop: hover ativa
-  const handleMouseEnter = (id) => {
-    // evita "piscar" em touch devices com emulação
-    if (window.matchMedia?.("(hover: hover)")?.matches) setActive(id);
-  };
-
-  useEffect(() => {
-    // se o usuário scrollar muito, fecha o flip
-    const onScroll = () => {
-      if (window.scrollY > 900 && active !== null) setActive(null);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [active]);
 
   return (
     <section
       id="how-it-works"
-      className="relative overflow-hidden bg-black pt-32 md:pt-36 pb-16"
+      className="pt-28 pb-10 bg-black relative overflow-hidden"
     >
-      {/* soft glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#F59E0B]/10 blur-3xl" />
-      </div>
-
+      <div className="absolute inset-0 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.25)_0%,rgba(0,0,0,0)_55%)]" />
       <div className="container mx-auto px-4">
-        {/* Title */}
-        <div className="mx-auto max-w-5xl text-center">
-          <div className="text-base sm:text-lg font-semibold tracking-wide text-white/90">
-            <span className="mr-2">Distribuidora</span>
-            <span className="hiw-gradient font-extrabold">BIERZ</span>
-          </div>
-
-          <p className="mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight sm:whitespace-nowrap">
-            Como funciona <span className="text-white/70 font-semibold">—</span>{" "}
-            <span className="text-white/90 font-semibold text-lg sm:text-xl md:text-2xl align-middle">
-              Em 4 passos você finaliza seu pedido e garante seu evento.
+        <div className="text-center mb-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">
+            Distribuidora{" "}
+            <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+              BIERZ
             </span>
+          </h2>
+          <p className="text-gray-300 text-base sm:text-lg">
+            <span className="text-white font-semibold">Como funciona</span>{" "}
+            <span className="text-gray-400">—</span>{" "}
+            Em 4 passos você finaliza seu pedido e garante seu evento.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          onMouseLeave={() => setActive(null)}
+        >
           {steps.map((s) => {
             const Icon = s.icon;
             const flipped = active === s.id;
+
             return (
               <div
                 key={s.id}
-                className={`hiw-card ${flipped ? "hiw-flipped" : ""}`}
-                onMouseEnter={() => handleMouseEnter(s.id)}
-                onClick={() => handleActivate(s.id)}
+                className={"how-card " + (flipped ? "is-flipped" : "")}
+                onMouseEnter={() => setActive(s.id)}
+                onClick={() => handleCardClick(s.id)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") handleActivate(s.id);
+                  if (e.key === "Enter" || e.key === " ") handleCardClick(s.id);
                 }}
+                aria-label={`Como funciona - ${s.kicker}`}
               >
-                <div className="hiw-inner">
+                <div className="how-card__inner">
                   {/* FRONT */}
-                  <div className="hiw-face hiw-front">
-                    <div className="hiw-shell">
-                      <div
-                        className={`flex items-start justify-between gap-4 ${
-                          s.frontLayout === "invert" ? "flex-row-reverse" : ""
-                        }`}
-                      >
-                        <div className="min-w-0">
-                          <div className="text-sm font-semibold text-white/70">
-                            {s.kicker}
-                          </div>
-                          <div className="mt-3 whitespace-pre-line text-xl md:text-2xl font-extrabold text-white leading-snug">
-                            {s.titleFront}
-                          </div>
-                          {s.subtitleFront && (
-                            <div className="mt-3 whitespace-pre-line text-sm md:text-base text-white/70 leading-relaxed">
-                              {s.subtitleFront}
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="hiw-iconWrap">
-                          <div className="hiw-icon">
-                            <Icon className="h-7 w-7" />
-                          </div>
-                          <div className="hiw-badge">{s.id}</div>
-                        </div>
-                      </div>
-
-                      <div className="mt-8 hiw-visual" aria-hidden="true">
-                        <div className="hiw-visualInner" />
-                      </div>
+                  <div className="how-card__face how-card__front">
+                    <div className="how-card__top">
+                      <div className="how-card__kicker">{s.kicker}</div>
+                      <div className="how-card__badge">{s.id}</div>
                     </div>
+
+                    <div className="how-card__frontBody">
+                      <div className="how-card__iconWrap" aria-hidden="true">
+                        <Icon size={28} />
+                      </div>
+                      <div className="how-card__title">{s.title}</div>
+                    </div>
+
+                    <div className="how-card__hint"> </div>
                   </div>
 
                   {/* BACK */}
-                  <div className="hiw-face hiw-back">
-                    <div className="hiw-shell">
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm font-semibold text-white/70">
-                          {s.kicker}
-                        </div>
-                        <div className="hiw-badge">{s.id}</div>
-                      </div>
+                  <div className="how-card__face how-card__back">
+                    <div className="how-card__top">
+                      <div className="how-card__kicker">{s.kicker}</div>
+                      <div className="how-card__badge">{s.id}</div>
+                    </div>
 
-                      <div className="mt-4 text-2xl font-extrabold text-white">
-                        {s.backTitle}
-                      </div>
-                      <div className="mt-3 text-sm md:text-base text-white/70 leading-relaxed">
-                        {s.backText}
-                      </div>
+                    <div className="how-card__backBody">
+                      <p className="how-card__desc">{s.desc}</p>
 
                       <button
-                        type="button"
+                        className="how-card__cta"
                         onClick={(e) => {
                           e.stopPropagation();
                           s.action();
+                          setActive(null);
                         }}
-                        className="mt-8 w-full rounded-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-extrabold py-3.5 flex items-center justify-center gap-2 transition"
                       >
-                        {s.cta} <ArrowRight className="h-5 w-5" />
+                        {s.cta} <ArrowRight size={16} />
                       </button>
                     </div>
                   </div>
@@ -229,4 +152,6 @@ export default function HowItWorks() {
       </div>
     </section>
   );
-}
+};
+
+export default HowItWorks;

@@ -87,17 +87,24 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
+            
             <button
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Como funciona
             </button>
-            <button
+<button
               onClick={() => scrollToSection('products')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Produtos
+            </button>
+            <button
+              onClick={() => scrollToSection('services')}
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
+            >
+              Serviço
             </button>
             <button
               onClick={() => scrollToSection('calculator')}
@@ -233,17 +240,24 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-black/98 backdrop-blur-md border-t border-[#F59E0B]/20 pb-4">
             <nav className="flex flex-col space-y-4 py-4">
-              <button
-                onClick={() => scrollToSection('how-it-works')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-              >
-                Como funciona
-              </button>
-              <button
+              
+            <button
+              onClick={() => scrollToSection('how-it-works')}
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left"
+            >
+              Como funciona
+            </button>
+<button
                 onClick={() => scrollToSection('products')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Produtos
+              </button>
+              <button
+                onClick={() => scrollToSection('services')}
+                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
+              >
+                Serviço
               </button>
               <button
                 onClick={() => scrollToSection('calculator')}
