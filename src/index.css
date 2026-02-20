@@ -20,26 +20,6 @@ html, body, #root {
     overflow-x: hidden;
 }
 
-/*
-  Fixed header offset
-  - Ensures anchor navigation (scroll into sections) isn't hidden under the fixed header.
-  - Header sets --header-h dynamically; we keep a safe fallback.
-*/
-:root {
-    --header-h: 128px;
-}
-
-html {
-    /* keep smooth scrolling even when we manually adjust offsets */
-    scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-h, 128px) + 12px);
-}
-
-/* Any element with an id acts as an anchor target */
-*[id] {
-    scroll-margin-top: calc(var(--header-h, 128px) + 12px);
-}
-
 body {
     margin: 0;
     font-family:
@@ -182,4 +162,19 @@ code {
 }
 .modal-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(245, 158, 11, 0.75);
+}
+
+
+/* Offset global para âncoras/scroll com header fixo */
+:root{
+  --header-h: 96px; /* será atualizado via ResizeObserver no Header */
+}
+
+html{
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+/* Qualquer elemento com id (âncora) respeita o header */
+[id]{
+  scroll-margin-top: calc(var(--header-h) + 12px);
 }

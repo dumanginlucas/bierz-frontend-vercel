@@ -6,7 +6,10 @@ const Footer = () => {
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const headerEl = document.querySelector('header');
+      const headerH = headerEl?.offsetHeight ?? 0;
+      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 

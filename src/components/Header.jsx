@@ -15,12 +15,12 @@ import {
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef(null);
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { getItemCount } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
   const itemCount = getItemCount();
-  const headerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,9 +30,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Keep a global CSS var with the real header height.
-  // This allows correct anchor navigation (without cutting under the fixed header)
-  // and lets other components (like the pinned section) align correctly.
+  // Atualiza a variável CSS com a altura real do header (para offset de âncoras/scroll)
   useEffect(() => {
     const el = headerRef.current;
     if (!el) return;
@@ -44,16 +42,13 @@ const Header = () => {
 
     setVar();
 
-    let ro;
-    if (typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(() => setVar());
-      ro.observe(el);
-    }
-
+    const ro = new ResizeObserver(() => setVar());
+    ro.observe(el);
     window.addEventListener('resize', setVar);
+
     return () => {
+      ro.disconnect();
       window.removeEventListener('resize', setVar);
-      if (ro) ro.disconnect();
     };
   }, []);
 
@@ -67,11 +62,11 @@ const Header = () => {
     }
     
     const element = document.getElementById(id);
-    if (!element) return;
-
-    const headerH = headerRef.current?.offsetHeight ?? 0;
-    const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    if (element) {
+      const headerH = headerRef.current?.offsetHeight ?? 0;
+      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   };
 
   // Efeito para scroll após navegação
@@ -79,11 +74,11 @@ const Header = () => {
     if (location.state?.scrollTo) {
       setTimeout(() => {
         const element = document.getElementById(location.state.scrollTo);
-        if (!element) return;
-
-        const headerH = headerRef.current?.offsetHeight ?? 0;
-        const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (element) {
+          const headerH = headerRef.current?.offsetHeight ?? 0;
+      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+        }
       }, 100);
       // Limpa o state
       window.history.replaceState({}, document.title);

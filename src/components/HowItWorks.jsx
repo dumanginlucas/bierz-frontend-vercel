@@ -19,7 +19,12 @@ const HowItWorks = () => {
         cta: "Calcular agora",
         action: () => {
           const el = document.getElementById("calculator");
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
         },
       },
       {
@@ -30,7 +35,12 @@ const HowItWorks = () => {
         cta: "Escolher chopp",
         action: () => {
           const el = document.getElementById("products");
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
         },
       },
       {
@@ -41,7 +51,12 @@ const HowItWorks = () => {
         cta: "Ver equipamentos",
         action: () => {
           const el = document.getElementById("services");
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
         },
       },
       {
