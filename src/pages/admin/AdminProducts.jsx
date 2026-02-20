@@ -424,6 +424,15 @@ const AdminProducts = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      <style>{`
+        /* Scrollbar refinada apenas para modais do Admin */
+        .admin-modal-scroll { scrollbar-width: thin; scrollbar-color: rgba(245,158,11,.55) rgba(255,255,255,.06); }
+        .admin-modal-scroll::-webkit-scrollbar { width: 10px; }
+        .admin-modal-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,.06); border-radius: 999px; }
+        .admin-modal-scroll::-webkit-scrollbar-thumb { background: rgba(245,158,11,.55); border-radius: 999px; border: 2px solid rgba(0,0,0,0); background-clip: padding-box; }
+        .admin-modal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(245,158,11,.75); }
+      `}</style>
+
       <Sidebar />
       
       {/* Mobile header */}
@@ -583,13 +592,13 @@ const AdminProducts = () => {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-gray-900 border-[#F59E0B]/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-gray-900 border-[#F59E0B]/30 text-white w-[95vw] max-w-3xl max-h-[90vh] overflow-y-auto admin-modal-scroll p-6">
           <DialogHeader>
             <DialogTitle className="text-[#F59E0B]">
               {selectedProduct ? "Editar Produto" : "Novo Produto"}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label className="text-gray-300">Nome</Label>
@@ -633,7 +642,7 @@ const AdminProducts = () => {
               
               {/* Drag and Drop Area */}
               <div
-                className={`relative border-2 border-dashed rounded-lg p-6 transition-colors ${
+                className={`relative border-2 border-dashed rounded-lg p-4 transition-colors ${
                   dragActive 
                     ? 'border-[#F59E0B] bg-[#F59E0B]/10' 
                     : 'border-[#F59E0B]/30 hover:border-[#F59E0B]/50'
@@ -710,7 +719,7 @@ const AdminProducts = () => {
                 <Input
                   value={formData.image}
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
-                  className="bg-black/50 border-[#F59E0B]/30 text-white mt-1"
+                  className="bg-black/50 border-[#F59E0B]/30 text-white mt-1 truncate text-xs font-mono"
                   placeholder="https://..."
                   data-testid="product-image"
                 />
@@ -830,8 +839,8 @@ const AdminProducts = () => {
                   max="999"
                   data-testid="product-order"
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  💡 Produtos com ordem 1-30 aparecem primeiro. Produtos com ordem 0 aparecem no final.
+                <p className="text-[11px] text-gray-400/80 mt-1 leading-snug">
+                  💡 Ordem 1–30 aparece primeiro. Ordem 0 vai para o final.
                 </p>
               </div>
             </div>
@@ -904,7 +913,7 @@ const AdminProducts = () => {
 
       {/* Social Tags Manager */}
       <Dialog open={socialTagsOpen} onOpenChange={setSocialTagsOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white w-[92vw] max-w-xl admin-modal-scroll p-6">
           <DialogHeader>
             <DialogTitle className="text-amber-200">Gerenciar Provas Sociais</DialogTitle>
           </DialogHeader>
