@@ -31,7 +31,10 @@ const ProductCardItem = React.memo(function ProductCardItem({
   const formatTagLabel = (key) => {
     if (!key) return '';
     if (key === 'destaque') return 'Destaque';
-    return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    // Preserve case as much as possible. For snake_case keys, convert to a
+    // human label without Title-Case (which was turning every word uppercase).
+    const s = String(key).replace(/_/g, ' ').trim();
+    return s.length ? s.charAt(0).toUpperCase() + s.slice(1) : '';
   };
 
   return (
@@ -55,7 +58,10 @@ const ProductCardItem = React.memo(function ProductCardItem({
         />
         {tagKey && (
           <div className="absolute top-2 left-2">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
+            <Badge
+              className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1"
+              style={{ textTransform: 'none' }}
+            >
               {tagKey === 'destaque' && <Sparkles className="w-3 h-3" />}
               {formatTagLabel(tagKey)}
             </Badge>
