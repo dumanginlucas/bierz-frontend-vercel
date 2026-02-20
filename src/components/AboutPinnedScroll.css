@@ -2,8 +2,9 @@
 
 .aboutPinnedRoot{
   position: relative;
-  /* 1 viewport base + track (set via inline CSS var) */
-  /* Considera a altura real do header fixo (setada via JS) */
+  /* 1 viewport base + track (set via inline CSS var)
+     We subtract the fixed header height from the effective viewport.
+  */
   height: calc((100vh - var(--header-h, 128px)) + var(--about-track, 200vh));
   padding: 0;
 }

@@ -56,36 +56,33 @@ export default function AboutPinnedScroll() {
     []
   );
 
-  // Track size: ajuste do "tempo" do pinned scroll (mais curto = menos espaço depois)
-  const trackVh = Math.max(1, screens.length - 1) * 65; // ex: 130vh for 3 screens
+  // Track size: how much scroll is available to transition between screens.
+  // Keep it tight to avoid a huge "empty" area after the pinned section.
+  const trackVh = Math.max(1, screens.length - 1) * 60; // ex: 120vh for 3 screens
 
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
 
     const onScroll = () => {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const headerVar = parseFloat(rootStyles.getPropertyValue("--header-h"));
-      const headerH = Number.isFinite(headerVar) && headerVar > 0 ? headerVar : (document.querySelector("header")?.offsetHeight ?? 0);
+      const headerEl = document.querySelector('header');
+      const headerH = headerEl?.offsetHeight ?? 0;
 
       const rect = el.getBoundingClientRect();
       const scrollY = window.scrollY || window.pageYOffset;
 
-      // começa quando o topo da seção encosta abaixo do header fixo
-      const start = scrollY + rect.top - headerH;
-
-      // viewport útil (sem o header)
+      // Start when the top of the section reaches just below the fixed header.
+      const sectionTop = scrollY + rect.top - headerH;
       const viewport = window.innerHeight - headerH;
 
-      // quanto a seção pode "rolar" enquanto o sticky segura
+      // px available while sticky holds (considering the usable viewport)
       const track = el.offsetHeight - viewport;
+      const y = scrollY - sectionTop;
 
-      const y = scrollY - start;
       const p = Math.max(0, Math.min(1, y / Math.max(1, track)));
-
       setProgress(p);
-      el.style.setProperty("--about-progress", String(p));
-      el.style.setProperty("--header-h", `${headerH}px`);
+      el.style.setProperty('--about-progress', String(p));
+      el.style.setProperty('--header-h', `${headerH}px`);
     };
 
     onScroll();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
 import { Button } from './ui/button';
@@ -15,12 +15,12 @@ import {
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const headerRef = useRef(null);
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { getItemCount } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
   const itemCount = getItemCount();
+  const headerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,21 +30,29 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useLayoutEffect(() => {
-    const setHeaderVar = () => {
-      const h = headerRef.current?.offsetHeight || 0;
-      if (h) document.documentElement.style.setProperty("--header-h", `${h}px`);
+  // Keep a global CSS var with the real header height.
+  // This allows correct anchor navigation (without cutting under the fixed header)
+  // and lets other components (like the pinned section) align correctly.
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const setVar = () => {
+      const h = el.offsetHeight || 0;
+      document.documentElement.style.setProperty('--header-h', `${h}px`);
     };
 
-    setHeaderVar();
+    setVar();
 
-    // Keep in sync on resize and layout changes
-    window.addEventListener("resize", setHeaderVar);
-    const ro = window.ResizeObserver ? new ResizeObserver(setHeaderVar) : null;
-    if (ro && headerRef.current) ro.observe(headerRef.current);
+    let ro;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => setVar());
+      ro.observe(el);
+    }
 
+    window.addEventListener('resize', setVar);
     return () => {
-      window.removeEventListener("resize", setHeaderVar);
+      window.removeEventListener('resize', setVar);
       if (ro) ro.disconnect();
     };
   }, []);
@@ -59,12 +67,11 @@ const Header = () => {
     }
     
     const element = document.getElementById(id);
-    const headerH = headerRef.current?.offsetHeight ?? 0;
+    if (!element) return;
 
-    if (element) {
-      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12; // 12px folga
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
+    const headerH = headerRef.current?.offsetHeight ?? 0;
+    const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+    window.scrollTo({ top: y, behavior: 'smooth' });
   };
 
   // Efeito para scroll após navegação
@@ -72,12 +79,11 @@ const Header = () => {
     if (location.state?.scrollTo) {
       setTimeout(() => {
         const element = document.getElementById(location.state.scrollTo);
-        const headerH = headerRef.current?.offsetHeight ?? 0;
+        if (!element) return;
 
-        if (element) {
-          const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
+        const headerH = headerRef.current?.offsetHeight ?? 0;
+        const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+        window.scrollTo({ top: y, behavior: 'smooth' });
       }, 100);
       // Limpa o state
       window.history.replaceState({}, document.title);

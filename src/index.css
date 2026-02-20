@@ -2,22 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Scroll offset for fixed header (prevents sections being hidden under the menu) --- */
-:root{
-  --header-h: 128px; /* updated at runtime by Header.jsx */
-}
-
-html{
-  scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 12px);
-}
-
-/* Works with scrollIntoView + hash navigation */
-[id]{
-  scroll-margin-top: calc(var(--header-h) + 12px);
-}
-
-
 /* Animação fadeUp para elementos */
 @keyframes fadeUp {
   from {
@@ -34,6 +18,26 @@ html, body, #root {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+}
+
+/*
+  Fixed header offset
+  - Ensures anchor navigation (scroll into sections) isn't hidden under the fixed header.
+  - Header sets --header-h dynamically; we keep a safe fallback.
+*/
+:root {
+    --header-h: 128px;
+}
+
+html {
+    /* keep smooth scrolling even when we manually adjust offsets */
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h, 128px) + 12px);
+}
+
+/* Any element with an id acts as an anchor target */
+*[id] {
+    scroll-margin-top: calc(var(--header-h, 128px) + 12px);
 }
 
 body {
