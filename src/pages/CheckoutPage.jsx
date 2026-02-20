@@ -17,7 +17,10 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const CheckoutPage = () => {
   const { 
-    items, 
+    items,
+    orderDetails,
+    setOrderDetails,
+    clearOrderDetails, 
     getTotal, 
     clearCart,
     hasChoppItems,
@@ -35,7 +38,10 @@ const CheckoutPage = () => {
   const [orderComplete, setOrderComplete] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [formData, setFormData] = useState({
-    delivery_address: user?.address || "",
+    delivery_address: orderDetails?.delivery_address || user?.address || "",
+    address_complement: orderDetails?.address_complement || "",
+    event_date: orderDetails?.event_date || "",
+    event_time: orderDetails?.event_time || "",
     notes: ""
   });
 
@@ -62,6 +68,13 @@ const CheckoutPage = () => {
     setLoading(true);
 
     try {
+      const extraInfo = [];
+      if (formData.address_complement?.trim()) extraInfo.push(`Complemento/Referência: ${formData.address_complement.trim()}`);
+      if (formData.event_date) extraInfo.push(`Data do evento: ${formData.event_date}`);
+      if (formData.event_time) extraInfo.push(`Horário do evento: ${formData.event_time}`);
+
+      const combinedNotes = [formData.notes?.trim(), ...extraInfo].filter(Boolean).join("\n");
+
       const orderData = {
         items: items.map(item => ({
           product_id: item.product_id,
@@ -69,7 +82,7 @@ const CheckoutPage = () => {
           size: item.size
         })),
         delivery_address: formData.delivery_address,
-        notes: formData.notes
+        notes: combinedNotes
       };
 
       const response = await axios.post(`${API_URL}/api/orders`, orderData, {
@@ -79,6 +92,7 @@ const CheckoutPage = () => {
       setOrderId(response.data.id);
       setOrderComplete(true);
       clearCart();
+      clearOrderDetails();
       toast.success("Pedido realizado com sucesso!");
     } catch (error) {
       console.error("Order error:", error);
@@ -156,12 +170,68 @@ const CheckoutPage = () => {
                       <Input
                         id="delivery_address"
                         value={formData.delivery_address}
-                        onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFormData({ ...formData, delivery_address: value });
+                          setOrderDetails({ delivery_address: value });
+                        }}
                         placeholder="Rua, número, bairro, cidade"
                         className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                         required
                         data-testid="delivery-address"
                       />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="address_complement" className="text-gray-200">
+                        Complemento / referência (opcional)
+                      </Label>
+                      <Input
+                        id="address_complement"
+                        value={formData.address_complement}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFormData({ ...formData, address_complement: value });
+                          setOrderDetails({ address_complement: value });
+                        }}
+                        placeholder="Apto, bloco, portaria, ponto de referência..."
+                        className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="event_date" className="text-gray-200">
+                          Data do evento (opcional)
+                        </Label>
+                        <Input
+                          id="event_date"
+                          type="date"
+                          value={formData.event_date}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData({ ...formData, event_date: value });
+                            setOrderDetails({ event_date: value });
+                          }}
+                          className="bg-gray-900/50 border-[#F59E0B]/30 text-white focus:border-[#F59E0B]"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="event_time" className="text-gray-200">
+                          Horário (opcional)
+                        </Label>
+                        <Input
+                          id="event_time"
+                          type="time"
+                          value={formData.event_time}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData({ ...formData, event_time: value });
+                            setOrderDetails({ event_time: value });
+                          }}
+                          className="bg-gray-900/50 border-[#F59E0B]/30 text-white focus:border-[#F59E0B]"
+                        />
+                      </div>
                     </div>
                   </div>
                 </Card>

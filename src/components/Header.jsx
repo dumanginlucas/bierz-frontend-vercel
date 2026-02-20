@@ -94,7 +94,7 @@ const Header = () => {
               Produtos
             </button>
             <button
-              onClick={() => scrollToSection('services')}
+              onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Serviço
@@ -240,7 +240,7 @@ const Header = () => {
                 Produtos
               </button>
               <button
-                onClick={() => scrollToSection('services')}
+                onClick={() => scrollToSection('how-it-works')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Serviço
