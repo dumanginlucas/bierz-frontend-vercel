@@ -1,14 +1,15 @@
-
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./AboutPinnedScroll.css";
 
 /**
- * BIERZ_ABOUT_PINNED_V14
- * Pinned section that DOES NOT lock page scroll.
- * Uses extra section height to "consume" scroll while content is fixed.
+ * BIERZ_ABOUT_PINNED_V15
+ * Sticky-pinned section (no fixed pin, no body lock).
+ * The section is taller than the viewport; the inner content is `position: sticky`.
+ * Scroll progress is computed from the section's own track (offsetHeight - viewportHeight).
  */
 export default function AboutPinnedScroll() {
   const rootRef = useRef(null);
+  const [progress, setProgress] = useState(0); // 0..1
 
   const screens = useMemo(
     () => [
@@ -55,58 +56,47 @@ export default function AboutPinnedScroll() {
     []
   );
 
-  const PIN_SCROLL = 1200; // px of scroll reserved for animation
-  const [isPinned, setIsPinned] = useState(false);
-  const [progress, setProgress] = useState(0); // 0..1
+  // Track size: 1 extra viewport per transition
+  const trackVh = Math.max(1, screens.length - 1) * 100; // ex: 200vh for 3 screens
 
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
+    const el = rootRef.current;
+    if (!el) return;
 
-    const update = () => {
-      const rect = root.getBoundingClientRect();
-      const vh = window.innerHeight || 0;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const scrollY = window.scrollY || window.pageYOffset;
+      const sectionTop = scrollY + rect.top;
 
-      // We pin when section top reaches 20% from the top.
-      const startLine = vh * 0.2;
+      const track = el.offsetHeight - window.innerHeight; // px available while sticky holds
+      const y = scrollY - sectionTop;
 
-      const entered = rect.top <= startLine;
-      const finished = rect.bottom <= startLine;
-
-      const pinActive = entered && !finished;
-
-      // How far we've "scrolled" within the pin range.
-      const raw = (startLine - rect.top) / PIN_SCROLL;
-      const clamped = Math.max(0, Math.min(1, raw));
-
-      setIsPinned(pinActive);
-      setProgress(pinActive ? clamped : rect.top > startLine ? 0 : 1);
-
-      // expose as CSS variable for transforms
-      root.style.setProperty("--about-progress", String(pinActive ? clamped : rect.top > startLine ? 0 : 1));
-      root.style.setProperty("--about-pin-scroll", `${PIN_SCROLL}px`);
+      const p = Math.max(0, Math.min(1, y / Math.max(1, track)));
+      setProgress(p);
+      el.style.setProperty("--about-progress", String(p));
     };
 
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
-  const stage = Math.round(progress * (screens.length - 1));
+  const maxStage = screens.length - 1;
+  const stage = Math.max(0, Math.min(maxStage, Math.floor(progress * (maxStage + 0.00001))));
   const active = screens[stage] || screens[0];
 
   return (
     <section
       ref={rootRef}
-      className={`aboutPinnedRoot ${isPinned ? "isPinned" : ""}`}
+      className="aboutPinnedRoot"
+      id="about"
       aria-label="Sobre a Bierz"
+      style={{ "--about-track": `${trackVh}vh` }}
     >
-      {/* spacer height is handled by CSS using --about-pin-scroll */}
       <div className="aboutPinnedPin">
         <div className="aboutPinnedInner">
           <header className="aboutPinnedHeader">
@@ -116,7 +106,7 @@ export default function AboutPinnedScroll() {
             <p className="aboutPinnedSub">
               Distribuidora de Chopp, Cervejas e Conveniência em Sorocaba — entrega rápida, atendimento ágil e experiência premium.
             </p>
-            <span className="srOnly">BIERZ_ABOUT_PINNED_V14</span>
+            <span className="srOnly">BIERZ_ABOUT_PINNED_V15</span>
           </header>
 
           <div className="aboutPinnedGrid">
@@ -133,7 +123,6 @@ export default function AboutPinnedScroll() {
             </div>
 
             <div className="aboutPinnedRight">
-              {/* "screens" stack - you can later replace the empty art slot with PNGs */}
               <div className="aboutPinnedStack" aria-hidden="true">
                 {screens.map((s, idx) => {
                   const d = idx - stage; // 0 active, positive behind
@@ -159,9 +148,7 @@ export default function AboutPinnedScroll() {
                   );
                 })}
               </div>
-              <div className="aboutPinnedHint">
-                Role para ver as telas mudando.
-              </div>
+              <div className="aboutPinnedHint">Role para ver as telas mudando.</div>
             </div>
           </div>
         </div>
