@@ -1,236 +1,168 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronRight, MapPin } from 'lucide-react';
-import './AboutPinnedScroll.css';
+
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import "./AboutPinnedScroll.css";
 
 /**
- * Sobre a Bierz — efeito "pinned" (sticky) + telas que sobem conforme o scroll.
- * - Não trava o scroll da página (não altera overflow do body)
+ * BIERZ_ABOUT_PINNED_V14
+ * Pinned section that DOES NOT lock page scroll.
+ * Uses extra section height to "consume" scroll while content is fixed.
  */
 export default function AboutPinnedScroll() {
-  const sectionRef = useRef(null);
-  const innerRef = useRef(null);
-  const rafRef = useRef(null);
-  const [progress, setProgress] = useState(0);
-  const [layout, setLayout] = useState({ heightPx: 0, topPx: 86, innerHeightPx: 0 });
-  const [pinState, setPinState] = useState('before');
+  const rootRef = useRef(null);
 
   const screens = useMemo(
     () => [
       {
-        kicker: 'Gestão',
-        title: 'Experiência baseada em dados',
-        subtitle:
-          'Do pedido ao pós-evento: controle, histórico e recorrência — com tudo registrado.',
-        theme: 'teal',
+        k: "tech",
+        leftTitle: "Tecnologia e operação simples.",
+        bullets: [
+          "Escolha rápida de chopp e equipamentos",
+          "Entrega, instalação e retirada programada",
+          "Atendimento ágil e direto",
+          "Processo pensado para eventos",
+        ],
+        cardTitle: "Experiência baseada em dados",
+        cardSubtitle: "Organização e praticidade do início ao fim.",
+        tag: "BIERZ",
       },
       {
-        kicker: 'Operação',
-        title: 'Entrega, instalação e retirada',
-        subtitle:
-          'Equipe preparada para deixar tudo pronto — você só aproveita o evento.',
-        theme: 'amber',
+        k: "quality",
+        leftTitle: "Qualidade e experiência premium.",
+        bullets: [
+          "Chopp sempre gelado (HomeBar)",
+          "Marcas selecionadas",
+          "Espuma consistente do início ao fim",
+          "Equipamentos revisados e higienizados",
+        ],
+        cardTitle: "Qualidade garantida",
+        cardSubtitle: "Produtos e equipamentos que elevam seu evento.",
+        tag: "Premium",
       },
       {
-        kicker: 'Qualidade',
-        title: 'Chopp gelado do início ao fim',
-        subtitle:
-          'Equipamentos e processo pensados para manter o padrão BIERZ em cada copo.',
-        theme: 'blue',
-      },
-      {
-        kicker: 'Atendimento',
-        title: 'Suporte rápido no WhatsApp',
-        subtitle:
-          'Precisa ajustar algo? A gente responde rápido e resolve sem complicação.',
-        theme: 'gold',
+        k: "service",
+        leftTitle: "Entrega rápida em Sorocaba.",
+        bullets: [
+          "Cobertura na região",
+          "Agendamento simples",
+          "Instalação no local",
+          "Retirada sem dor de cabeça",
+        ],
+        cardTitle: "Entrega e instalação",
+        cardSubtitle: "Você curte a festa — a gente cuida do resto.",
+        tag: "Rápido",
       },
     ],
     []
   );
 
-  // altura total (em px) para o "pinned" funcionar com 1 estágio por tela.
-  // Isso evita criar um espaço gigante e mantém o scroll fluido.
-  const stages = screens.length;
+  const PIN_SCROLL = 1200; // px of scroll reserved for animation
+  const [isPinned, setIsPinned] = useState(false);
+  const [progress, setProgress] = useState(0); // 0..1
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
+    const root = rootRef.current;
+    if (!root) return;
 
-    const calcLayout = () => {
-      const vh = Math.max(window.innerHeight || 0, 1);
-      // altura total da seção: (stages + 1) * viewport
-      // +1 dá respiro para entrar/sair sem "pulo".
-      const heightPx = vh * (stages + 1);
-      // tenta ler o header do site (se existir) para não colar no topo.
-      const header = document.querySelector('header');
-      const headerH = header ? header.getBoundingClientRect().height : 0;
-      const topPx = Math.max(74, Math.min(96, Math.round(headerH + 18)));
+    const update = () => {
+      const rect = root.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
 
-      // altura real do conteúdo interno (para "assentar" ao final)
-      const inner = innerRef.current;
-      const innerHeightPx = inner ? inner.getBoundingClientRect().height : 0;
+      // We pin when section top reaches 20% from the top.
+      const startLine = vh * 0.2;
 
-      setLayout({ heightPx, topPx, innerHeightPx });
+      const entered = rect.top <= startLine;
+      const finished = rect.bottom <= startLine;
+
+      const pinActive = entered && !finished;
+
+      // How far we've "scrolled" within the pin range.
+      const raw = (startLine - rect.top) / PIN_SCROLL;
+      const clamped = Math.max(0, Math.min(1, raw));
+
+      setIsPinned(pinActive);
+      setProgress(pinActive ? clamped : rect.top > startLine ? 0 : 1);
+
+      // expose as CSS variable for transforms
+      root.style.setProperty("--about-progress", String(pinActive ? clamped : rect.top > startLine ? 0 : 1));
+      root.style.setProperty("--about-pin-scroll", `${PIN_SCROLL}px`);
     };
 
-    const compute = () => {
-      const vh = Math.max(window.innerHeight || 0, 1);
-      const start = el.offsetTop;
-      const end = start + Math.max(layout.heightPx - vh, 1);
-      const y = window.scrollY;
-
-      if (y < start) setPinState('before');
-      else if (y > end) setPinState('after');
-      else setPinState('pinned');
-
-      const p = Math.min(Math.max((y - start) / Math.max(end - start, 1), 0), 1);
-      setProgress(p);
-
-      rafRef.current = requestAnimationFrame(compute);
-    };
-
-    calcLayout();
-    window.addEventListener('resize', calcLayout);
-    rafRef.current = requestAnimationFrame(compute);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
 
     return () => {
-      window.removeEventListener('resize', calcLayout);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
-  }, [layout.heightPx, layout.topPx, stages]);
+  }, []);
 
-  const activeFloat = progress * (screens.length - 1);
-
-  const scrollToStage = (idx) => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const vh = Math.max(window.innerHeight || 0, 1);
-    const total = Math.max(layout.heightPx - vh, 1);
-    const target =
-      el.getBoundingClientRect().top +
-      window.scrollY +
-      (idx / (screens.length - 1)) * total;
-    window.scrollTo({ top: target, behavior: 'smooth' });
-  };
+  const stage = Math.round(progress * (screens.length - 1));
+  const active = screens[stage] || screens[0];
 
   return (
     <section
-      id="about"
-      ref={sectionRef}
-      className="aboutPinnedSection"
-      style={{ height: `${layout.heightPx}px` }}
+      ref={rootRef}
+      className={`aboutPinnedRoot ${isPinned ? "isPinned" : ""}`}
       aria-label="Sobre a Bierz"
     >
-      {/* marcador de versão (para você validar no deploy) */}
-      <span className="sr-only">BIERZ_ABOUT_PINNED_V13</span>
+      {/* spacer height is handled by CSS using --about-pin-scroll */}
+      <div className="aboutPinnedPin">
+        <div className="aboutPinnedInner">
+          <header className="aboutPinnedHeader">
+            <h2 className="aboutPinnedTitle">
+              Sobre a <span className="brandGrad">BIERZ</span>
+            </h2>
+            <p className="aboutPinnedSub">
+              Distribuidora de Chopp, Cervejas e Conveniência em Sorocaba — entrega rápida, atendimento ágil e experiência premium.
+            </p>
+            <span className="srOnly">BIERZ_ABOUT_PINNED_V14</span>
+          </header>
 
-      <div
-        ref={innerRef}
-        className={`aboutPinnedSticky is-${pinState}`}
-        style={{
-          position: pinState === 'pinned' ? 'fixed' : 'absolute',
-          top:
-            pinState === 'pinned'
-              ? `${layout.topPx}px`
-              : pinState === 'before'
-                ? '0px'
-                : `${Math.max(layout.heightPx - layout.innerHeightPx, 0)}px`,
-          left: 0,
-          right: 0,
-        }}
-      >
-        <div className="aboutPinnedHeader">
-          <h2 className="aboutPinnedTitle">
-            Sobre a <span className="bierzGradientText">BIERZ</span>
-          </h2>
-          <p className="aboutPinnedSub">
-            Distribuidora de Chopp e Cervejas Especiais em Sorocaba — com entrega, instalação e retirada programada.
-          </p>
-        </div>
+          <div className="aboutPinnedGrid">
+            <div className="aboutPinnedLeft">
+              <h3 className="aboutPinnedLeftTitle">{active.leftTitle}</h3>
+              <ul className="aboutPinnedList">
+                {active.bullets.map((b) => (
+                  <li key={b} className="aboutPinnedBullet">
+                    <span className="dot" aria-hidden="true" />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <div className="aboutPinnedGrid">
-          {/* Painel esquerdo */}
-          <div className="aboutPinnedLeft">
-            <div className="aboutPinnedCard">
-              <h3 className="aboutPinnedCardTitle">Tecnologia e operação simples.</h3>
-              <p className="aboutPinnedCardText">
-                Você escolhe, a gente entrega e instala. Depois, retiramos no horário combinado.
-                Tudo com padrão premium e atendimento rápido.
-              </p>
-
-              <div className="aboutPinnedBullets">
+            <div className="aboutPinnedRight">
+              {/* "screens" stack - you can later replace the empty art slot with PNGs */}
+              <div className="aboutPinnedStack" aria-hidden="true">
                 {screens.map((s, idx) => {
-                  const isActive = Math.round(activeFloat) === idx;
+                  const d = idx - stage; // 0 active, positive behind
                   return (
-                    <button
-                      key={idx}
-                      type="button"
-                      className={`aboutPinnedBullet ${isActive ? 'isActive' : ''}`}
-                      onClick={() => scrollToStage(idx)}
+                    <div
+                      key={s.k}
+                      className="aboutPinnedCard"
+                      style={{
+                        transform: `translateY(${d * 22}px) scale(${1 - Math.abs(d) * 0.04})`,
+                        opacity: d === 0 ? 1 : 0.35,
+                        filter: d === 0 ? "blur(0px)" : "blur(1.5px)",
+                      }}
                     >
-                      <span className="aboutPinnedBulletDot" />
-                      <span className="aboutPinnedBulletText">{s.title}</span>
-                      <ChevronRight className="aboutPinnedBulletIcon" />
-                    </button>
+                      <div className="aboutPinnedCardTop">
+                        <div className="aboutPinnedTag">{s.tag}</div>
+                      </div>
+                      <div className="aboutPinnedCardBody">
+                        <h4>{s.cardTitle}</h4>
+                        <p>{s.cardSubtitle}</p>
+                        <div className="aboutPinnedArtSlot" />
+                      </div>
+                    </div>
                   );
                 })}
               </div>
-
-              <div className="aboutPinnedLocation">
-                <MapPin className="aboutPinnedLocationIcon" />
-                <div>
-                  <div className="aboutPinnedLocationTitle">Localização</div>
-                  <div className="aboutPinnedLocationText">
-                    Rua Professor Toledo, 665, Centro — Sorocaba/SP
-                  </div>
-                </div>
+              <div className="aboutPinnedHint">
+                Role para ver as telas mudando.
               </div>
             </div>
-          </div>
-
-          {/* Painel direito (telas animadas) */}
-          <div className="aboutPinnedRight" aria-hidden="false">
-            <div className="aboutPinnedStage">
-              {screens.map((s, idx) => {
-                const dist = idx - activeFloat;
-                const abs = Math.abs(dist);
-
-                const y = dist * 90; // px
-                const scale = 1 - Math.min(abs * 0.06, 0.18);
-                const opacity = 1 - Math.min(abs * 0.22, 0.75);
-                const blur = Math.min(abs * 1.2, 5);
-
-                return (
-                  <div
-                    key={idx}
-                    className={`aboutPinnedScreen theme-${s.theme}`}
-                    style={{
-                      transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-                      opacity,
-                      filter: `blur(${blur}px)`,
-                      zIndex: 100 - idx,
-                    }}
-                  >
-                    <div className="aboutPinnedScreenTop">
-                      <div className="aboutPinnedScreenKicker">{s.kicker}</div>
-                      <div className="aboutPinnedScreenBadge">BIERZ</div>
-                    </div>
-
-                    <div className="aboutPinnedScreenBody">
-                      <div className="aboutPinnedScreenText">
-                        <div className="aboutPinnedScreenTitle">{s.title}</div>
-                        <div className="aboutPinnedScreenSub">{s.subtitle}</div>
-                      </div>
-
-                      {/* Slot vazio para suas imagens PNG sem fundo */}
-                      <div className="aboutPinnedScreenArt" />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="aboutPinnedHint">Role para ver mais</div>
           </div>
         </div>
       </div>
