@@ -39,8 +39,12 @@ const Header = () => {
     }
     
     const element = document.getElementById(id);
+    const headerEl = document.querySelector('header');
+    const headerH = headerEl?.offsetHeight ?? 0;
+
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12; // 12px folga
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
@@ -49,8 +53,12 @@ const Header = () => {
     if (location.state?.scrollTo) {
       setTimeout(() => {
         const element = document.getElementById(location.state.scrollTo);
+        const headerEl = document.querySelector('header');
+        const headerH = headerEl?.offsetHeight ?? 0;
+
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+          window.scrollTo({ top: y, behavior: 'smooth' });
         }
       }, 100);
       // Limpa o state

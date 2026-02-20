@@ -3,14 +3,15 @@
 .aboutPinnedRoot{
   position: relative;
   /* 1 viewport base + track (set via inline CSS var) */
-  height: calc(100vh + var(--about-track, 200vh));
+  /* Considera a altura real do header fixo (setada via JS) */
+  height: calc((100vh - var(--header-h, 128px)) + var(--about-track, 200vh));
   padding: 0;
 }
 
 .aboutPinnedPin{
   position: sticky;
-  top: 0; /* if your header is fixed, change to 72px and reduce height below */
-  height: 100vh;
+  top: var(--header-h, 128px);
+  height: calc(100vh - var(--header-h, 128px));
   overflow: hidden;
   display: flex;
   align-items: center;

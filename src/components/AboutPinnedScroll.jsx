@@ -56,24 +56,35 @@ export default function AboutPinnedScroll() {
     []
   );
 
-  // Track size: 1 extra viewport per transition
-  const trackVh = Math.max(1, screens.length - 1) * 100; // ex: 200vh for 3 screens
+  // Track size: ajuste do "tempo" do pinned scroll (mais curto = menos espaço depois)
+  const trackVh = Math.max(1, screens.length - 1) * 65; // ex: 130vh for 3 screens
 
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
 
     const onScroll = () => {
+      const headerEl = document.querySelector("header");
+      const headerH = headerEl?.offsetHeight ?? 0;
+
       const rect = el.getBoundingClientRect();
       const scrollY = window.scrollY || window.pageYOffset;
-      const sectionTop = scrollY + rect.top;
 
-      const track = el.offsetHeight - window.innerHeight; // px available while sticky holds
-      const y = scrollY - sectionTop;
+      // começa quando o topo da seção encosta abaixo do header fixo
+      const start = scrollY + rect.top - headerH;
 
+      // viewport útil (sem o header)
+      const viewport = window.innerHeight - headerH;
+
+      // quanto a seção pode "rolar" enquanto o sticky segura
+      const track = el.offsetHeight - viewport;
+
+      const y = scrollY - start;
       const p = Math.max(0, Math.min(1, y / Math.max(1, track)));
+
       setProgress(p);
       el.style.setProperty("--about-progress", String(p));
+      el.style.setProperty("--header-h", `${headerH}px`);
     };
 
     onScroll();
