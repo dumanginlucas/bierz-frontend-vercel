@@ -14,11 +14,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from './ui/dialog';
 import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
-import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles, X } from 'lucide-react';
+import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 import ProductSkeleton from './ProductSkeleton';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
@@ -110,6 +109,7 @@ const Products = () => {
     return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
   });
 
+	// Tap List (sempre baseado em CHOPP)
 
   const handleAddToCart = (product) => {
     const quantity = quantities[product.id] || 1;
@@ -117,6 +117,7 @@ const Products = () => {
     addItem(product, quantity, size);
   };
 
+  // Tap List: adicionar rápido (litros) sem abrir modal
 
   const updateQuantity = (productId, delta, isLitro) => {
     setQuantities(prev => {
@@ -188,29 +189,6 @@ const Products = () => {
             Oferecemos uma ampla variedade de produtos gelados para tornar seu evento inesquecível
           </p>
         </div>
-
-		{/* Tap List (Opção A): cards horizontais, rápido para decidir no mobile */}
-		{sortedChoppProducts.length > 0 && (
-		  <div className="mb-6 sm:mb-8">
-		    <TapListChopp
-		      products={sortedChoppProducts}
-		      onOpen={(p) => openProductModal(p)}
-		      onQuickAddLitros={handleQuickAddLitros}
-		    />
-		  </div>
-		)}
-
-		{/* Tap List (Opção B): botão flutuante no mobile abre drawer */}
-		{sortedChoppProducts.length > 0 && (
-		  <TapListDrawer
-		    open={tapListOpen}
-		    onOpenChange={setTapListOpen}
-		    products={sortedChoppProducts}
-		    onOpen={(p) => openProductModal(p)}
-		    onQuickAddLitros={handleQuickAddLitros}
-		  />
-		)}
-
         {/* ✅ Category Navigation Bar - Barra única responsiva sem cortar */}
         <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
           <div className="flex px-4">
@@ -467,23 +445,7 @@ const Products = () => {
 
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl w-[95vw] sm:w-full max-h-[90vh] p-0 overflow-hidden">
-          <div className="relative max-h-[90vh] overflow-y-auto overflow-x-hidden modal-scrollbar rounded-lg">
-            {/* X fixo/visível ao rolar, sem criar espaço acima */}
-            <div className="sticky top-3 z-50 h-0">
-              <div className="flex justify-end pr-3">
-                <DialogClose asChild>
-                  <button
-                    type="button"
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white shadow-lg backdrop-blur-sm border border-white/10 hover:bg-black/80 active:scale-[0.98] transition"
-                    aria-label="Fechar"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </DialogClose>
-              </div>
-            </div>
-
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0">
           {selectedProduct && (() => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
@@ -652,7 +614,6 @@ const Products = () => {
               </>
             );
           })()}
-          </div>
         </DialogContent>
       </Dialog>
     </section>
