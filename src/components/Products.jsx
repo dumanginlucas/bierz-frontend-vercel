@@ -18,7 +18,7 @@ import {
 import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
-import { SOCIAL_TAGS } from '../lib/socialTags';
+import { getSocialTagLabel } from '../lib/socialTags';
 import ProductSkeleton from './ProductSkeleton';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
@@ -35,11 +35,7 @@ const Products = () => {
   const [modalImageAnim, setModalImageAnim] = useState(false);
   const { addItem } = useCart();
 
-  const getSocialLabel = (prod) => {
-    if (!prod?.social_tag) return null;
-    const found = SOCIAL_TAGS.find(t => t.key === prod.social_tag);
-    return (found?.label ?? String(prod.social_tag).replace(/_/g, ' ')).trim();
-  };
+  const getSocialLabel = (prod) => getSocialTagLabel(prod?.social_tag) || (prod?.social_tag ? String(prod.social_tag).replace(/_/g, ' ').trim() : null);
 
   // Animação da imagem no modal (fade + scale) — garante que a imagem não fique presa em opacity-0
   useEffect(() => {

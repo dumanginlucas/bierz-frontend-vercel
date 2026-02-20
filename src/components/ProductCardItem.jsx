@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { Minus, Plus, ShoppingCart, Sparkles } from 'lucide-react';
-import { SOCIAL_TAGS } from '../lib/socialTags';
+import { getSocialTagLabel } from '../lib/socialTags';
 
 const ProductCardItem = React.memo(function ProductCardItem({
   product,
@@ -28,12 +28,7 @@ const ProductCardItem = React.memo(function ProductCardItem({
   const isLitro = product.price_unit === 'litro';
   const totalPrice = product.price * quantity;
 
-  const socialLabel = (() => {
-    if (!product?.social_tag) return null;
-    const found = SOCIAL_TAGS.find(t => t.key === product.social_tag);
-    if (found?.label) return found.label;
-    return String(product.social_tag).replace(/_/g, ' ').trim();
-  })();
+  const socialLabel = getSocialTagLabel(product?.social_tag) || (product?.social_tag ? String(product.social_tag).replace(/_/g, ' ').trim() : null);
 
   return (
     <Card

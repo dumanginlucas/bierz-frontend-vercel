@@ -23,7 +23,7 @@ import {
 } from "../../components/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
-import { SOCIAL_TAGS } from "../../lib/socialTags";
+import { readSocialTags, writeSocialTags, slugifyTagKey } from "../../lib/socialTags";
 import { 
   Package, Plus, Edit, Trash2, Beer, 
   LayoutDashboard, ClipboardList, Users, LogOut,
@@ -64,6 +64,11 @@ const AdminProducts = () => {
     order: 0
   });
 
+  const [socialTags, setSocialTags] = useState(() => readSocialTags());
+  const [tagManagerOpen, setTagManagerOpen] = useState(false);
+  const [newTagLabel, setNewTagLabel] = useState("");
+  const [newTagKey, setNewTagKey] = useState("");
+
   // Remove emojis/símbolos no começo (ex: "✨ Destaque" => "Destaque")
   const cleanSocialLabel = (label) => {
     if (!label) return '';
@@ -74,12 +79,12 @@ const AdminProducts = () => {
 
   const getSocialTagLabel = (key) => {
     if (!key) return null;
-    const found = SOCIAL_TAGS.find(t => t.key === key);
-    if (!found) {
-      return cleanSocialLabel(String(key).replace(/_/g, ' '));
-    }
+    const found = readSocialTags().find(t => t.key === key);
+    if (!found) return cleanSocialLabel(String(key).replace(/_/g, ' '));
     return cleanSocialLabel(found.label) || `${found.label}`;
   };
+
+  const enabledSocialTags = socialTags.filter(t => t.enabled !== false);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -92,6 +97,17 @@ const AdminProducts = () => {
       fetchProducts();
       fetchCategories();    }
   }, [token, isAdmin]);
+
+  useEffect(() => {
+    // Sync tags if localStorage changes (same browser / other tabs)
+    const onStorage = (e) => {
+      if (e.key === "bierz_social_tags_v1") setSocialTags(readSocialTags());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+
 
   const fetchProducts = async () => {
     try {
@@ -114,6 +130,64 @@ const AdminProducts = () => {
       console.error("Error fetching categories:", error);
     }
   };
+
+  // ---------- Social Tags (frontend-only) ----------
+  const persistTags = (next) => {
+    setSocialTags(next);
+    writeSocialTags(next);
+  };
+
+  const openTagManager = () => {
+    setSocialTags(readSocialTags());
+    setNewTagLabel("");
+    setNewTagKey("");
+    setTagManagerOpen(true);
+  };
+
+  const addTag = () => {
+    const label = String(newTagLabel || "").trim();
+    const key = slugifyTagKey(newTagKey || newTagLabel);
+    if (!label) return toast.error("Digite o nome da tag");
+    if (!key) return toast.error("Chave inválida");
+
+    const exists = socialTags.some(t => t.key === key);
+    if (exists) return toast.error("Já existe uma tag com essa chave");
+
+    persistTags([...socialTags, { key, label, enabled: true }]);
+    setNewTagLabel("");
+    setNewTagKey("");
+    toast.success("Tag criada");
+  };
+
+  const updateTagLabel = (key, label) => {
+    const next = socialTags.map(t => t.key === key ? { ...t, label: String(label || "").trim() } : t);
+    persistTags(next);
+  };
+
+  const toggleTagEnabled = (key) => {
+    const next = socialTags.map(t => t.key === key ? { ...t, enabled: t.enabled === false ? true : false } : t);
+    persistTags(next);
+  };
+
+  const deleteTag = (key) => {
+    // Only delete from list; products that already use it will keep the string saved.
+    const next = socialTags.filter(t => t.key !== key);
+    persistTags(next.length ? next : []);
+    // If currently selected in form, clear it
+    if (formData.social_tag === key) setFormData({ ...formData, social_tag: "" });
+    toast.success("Tag removida");
+  };
+
+  const restoreDefaultTags = () => {
+    // Clearing storage makes it fallback to defaults
+    try { window.localStorage.removeItem("bierz_social_tags_v1"); } catch {}
+    const next = readSocialTags();
+    setSocialTags(next);
+    toast.success("Tags padrão restauradas");
+  };
+  // -----------------------------------------------
+
+
 
   const handleLogout = () => {
     logout();
@@ -810,7 +884,7 @@ const AdminProducts = () => {
                 <Label className="text-gray-300">Prova social (opcional)</Label>
               </div>
               <Select
-                value={formData.social_tag || ""}
+                value={formData.social_tag ? formData.social_tag : "__none"}
                 onValueChange={(value) => setFormData({ ...formData, social_tag: value === "__none" ? "" : value })}
               >
                 <SelectTrigger className="bg-black/50 border-[#F59E0B]/30 text-white">
@@ -823,7 +897,12 @@ const AdminProducts = () => {
                   >
                     Nenhuma
                   </SelectItem>
-                  {SOCIAL_TAGS.map((tag) => (
+                  {formData.social_tag && !enabledSocialTags.some(t => t.key === formData.social_tag) && (
+                    <SelectItem value={formData.social_tag} className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white">
+                      <span className="font-medium">{getSocialTagLabel(formData.social_tag) || cleanSocialLabel(formData.social_tag.replace(/_/g, " "))} (desativada)</span>
+                    </SelectItem>
+                  )}
+                  {enabledSocialTags.map((tag) => (
                       <SelectItem
                         key={tag.key}
                         value={tag.key}
@@ -837,6 +916,11 @@ const AdminProducts = () => {
               <p className="text-xs text-gray-500 mt-1">
                 💡 Apenas 1 por produto. Use para destacar (ex: “Mais pedido da semana”).
               </p>
+              <div className="mt-2">
+                <Button type="button" variant="outline" onClick={openTagManager} className="border-amber-500/40 text-amber-200 hover:bg-amber-500/10">
+                  Gerenciar tags
+                </Button>
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -882,6 +966,97 @@ const AdminProducts = () => {
               data-testid="confirm-delete-btn"
             >
               Excluir
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Social Tags Manager (frontend-only) */}
+      <Dialog open={tagManagerOpen} onOpenChange={setTagManagerOpen}>
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-amber-300">Gerenciar tags de prova social</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="p-3 rounded-lg bg-black/30 border border-amber-500/20">
+              <div className="text-sm text-gray-300 mb-2">Criar nova tag</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <Input
+                  value={newTagLabel}
+                  onChange={(e) => {
+                    setNewTagLabel(e.target.value);
+                    if (!newTagKey) setNewTagKey(slugifyTagKey(e.target.value));
+                  }}
+                  placeholder="Nome (ex: Mais pedido)"
+                  className="bg-black/50 border-amber-500/30 text-white"
+                />
+                <Input
+                  value={newTagKey}
+                  onChange={(e) => setNewTagKey(e.target.value)}
+                  placeholder="Chave (ex: mais_pedido)"
+                  className="bg-black/50 border-amber-500/30 text-white"
+                />
+                <Button onClick={addTag} className="bg-[#F59E0B] hover:bg-[#F97316] text-black">
+                  Criar
+                </Button>
+              </div>
+              <div className="text-xs text-gray-500 mt-2">
+                ⚠️ Essas tags ficam salvas no navegador (localStorage). Se você usar outro computador/navegador, precisa recriar ou copiar as tags.
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-black/30 border border-amber-500/20">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-sm text-gray-300">Tags existentes</div>
+                <Button variant="outline" onClick={restoreDefaultTags} className="border-amber-500/40 text-amber-200 hover:bg-amber-500/10">
+                  Restaurar padrão
+                </Button>
+              </div>
+
+              <div className="space-y-2 max-h-[45vh] overflow-auto pr-1">
+                {socialTags.map((t) => (
+                  <div key={t.key} className="flex items-center gap-2 p-2 rounded-md bg-black/40 border border-white/5">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs text-gray-500 truncate">{t.key}</div>
+                      <Input
+                        value={t.label}
+                        onChange={(e) => updateTagLabel(t.key, e.target.value)}
+                        className="bg-black/50 border-amber-500/20 text-white h-9"
+                      />
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => toggleTagEnabled(t.key)}
+                      className="border-gray-500/40 text-gray-200 hover:bg-white/5"
+                      title={t.enabled === false ? "Ativar" : "Desativar"}
+                    >
+                      {t.enabled === false ? "Ativar" : "Desativar"}
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => deleteTag(t.key)}
+                      className="border-red-500/40 text-red-200 hover:bg-red-500/10"
+                      title="Apagar"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+                {!socialTags.length && (
+                  <div className="text-sm text-gray-400">Nenhuma tag cadastrada.</div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTagManagerOpen(false)} className="border-gray-500 text-gray-300">
+              Fechar
             </Button>
           </DialogFooter>
         </DialogContent>
