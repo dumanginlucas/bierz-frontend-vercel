@@ -115,8 +115,9 @@ const Products = () => {
   // Ordenação no frontend (fallback + garantia)
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     // 1. Por order (quem não tem vai pro fim com 9999)
-    const orderA = a.order ?? 9999;
-    const orderB = b.order ?? 9999;
+    //    Regra: order <= 0 (inclui 0) deve ir pro fim.
+    const orderA = (typeof a.order === 'number' && a.order > 0) ? a.order : 9999;
+    const orderB = (typeof b.order === 'number' && b.order > 0) ? b.order : 9999;
     if (orderA !== orderB) return orderA - orderB;
 
     // 2. Por featured (destaques primeiro)
