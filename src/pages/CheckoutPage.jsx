@@ -39,7 +39,8 @@ const CheckoutPage = () => {
     delivery_address: user?.address || "",
     event_date: "",
     event_time: "",
-    event_type: "Churrasco"
+    event_type: "Churrasco",
+    event_type_other: ""
   });
 
   const formatPrice = (price) => {
@@ -54,6 +55,11 @@ const CheckoutPage = () => {
     
     if (!formData.delivery_address.trim()) {
       toast.error("Por favor, informe o local do evento");
+      return;
+    }
+
+    if (formData.event_type === "Outro" && !formData.event_type_other.trim()) {
+      toast.error("Por favor, informe o tipo de evento");
       return;
     }
 
@@ -73,10 +79,13 @@ const CheckoutPage = () => {
           size: item.size
         })),
         delivery_address: formData.delivery_address,
+        event_date: formData.event_date,
+        event_time: formData.event_time,
+        event_type: formData.event_type === "Outro" ? formData.event_type_other : formData.event_type,
         notes: `Local do evento: ${formData.delivery_address}
 Data: ${formData.event_date}
 Horário: ${formData.event_time}
-Tipo de evento: ${formData.event_type}${equipment ? `
+Tipo de evento: ${formData.event_type === "Outro" ? formData.event_type_other : formData.event_type}${equipment ? `
 
 Equipamento: ${equipment.name}` : ""}`.trim()
       };
@@ -154,6 +163,29 @@ Equipamento: ${equipment.name}` : ""}`.trim()
               <form onSubmit={handleSubmit}>
                 <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
                   <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <MapPin className="w-5 h-5 mr-2 text-[#F59E0B]" />
+                    Local do Evento
+                  </h2>
+
+                  <div>
+                    <Label htmlFor="delivery_address" className="text-gray-200">
+                      Endereço completo
+                    </Label>
+                    <Input
+                      id="delivery_address"
+                      type="text"
+                      value={formData.delivery_address}
+                      onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
+                      placeholder="Rua, número, bairro, cidade/UF"
+                      className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
+                      required
+                      data-testid="delivery-address"
+                    />
+                  </div>
+                </Card>
+
+                <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
+                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
                     <Calendar className="w-5 h-5 mr-2 text-[#F59E0B]" />
                     Dados do Evento
                   </h2>
@@ -211,6 +243,25 @@ Equipamento: ${equipment.name}` : ""}`.trim()
                         <option value="Confraternização">Confraternização</option>
                         <option value="Outro">Outro</option>
                       </select>
+
+                      {formData.event_type === "Outro" && (
+                        <div className="mt-3">
+                          <Label htmlFor="event_type_other" className="text-gray-200">
+                            Qual tipo?
+                          </Label>
+                          <Input
+                            id="event_type_other"
+                            type="text"
+                            value={formData.event_type_other}
+                            onChange={(e) => setFormData({ ...formData, event_type_other: e.target.value })}
+                            placeholder="Ex: Aniversário infantil, chá revelação..."
+                            className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
+                            required
+                            data-testid="event-type-other"
+                          />
+                        </div>
+                      )}
+
                     </div>
                   </div>
                 </Card>
