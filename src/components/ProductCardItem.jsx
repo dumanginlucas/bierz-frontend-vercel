@@ -27,6 +27,13 @@ const ProductCardItem = React.memo(function ProductCardItem({
   const isLitro = product.price_unit === 'litro';
   const totalPrice = product.price * quantity;
 
+  const tagKey = product.social_tag || (product.featured ? 'destaque' : null);
+  const formatTagLabel = (key) => {
+    if (!key) return '';
+    if (key === 'destaque') return 'Destaque';
+    return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
   return (
     <Card
       className="bg-white/5 border-amber-500/20 hover:border-amber-500 overflow-hidden cursor-pointer
@@ -46,11 +53,11 @@ const ProductCardItem = React.memo(function ProductCardItem({
           decoding="async"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        {product.featured && (
+        {tagKey && (
           <div className="absolute top-2 left-2">
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              Destaque
+              {tagKey === 'destaque' && <Sparkles className="w-3 h-3" />}
+              {formatTagLabel(tagKey)}
             </Badge>
           </div>
         )}

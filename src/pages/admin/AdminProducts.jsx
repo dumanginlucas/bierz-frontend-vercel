@@ -216,10 +216,10 @@ const AdminProducts = () => {
 
   const createSocialTag = async () => {
     try {
+      // Deixe o backend gerar o `key` (slug) a partir do label
       const payload = {
-        key: (newSocialTag.label || '').trim(),
         label: (newSocialTag.label || '').trim(),
-        is_active: true
+        is_active: true,
       };
       if (!payload.label) {
         toast.error('Informe o nome da tag');
@@ -236,9 +236,10 @@ const AdminProducts = () => {
     }
   };
 
-  const updateSocialTag = async (tagId, updates) => {
+  // Backend usa {key} na rota (não {id})
+  const updateSocialTag = async (tagKey, updates) => {
     try {
-      await axios.put(`${API_URL}/api/admin/social-tags/${tagId}`, updates, {
+      await axios.put(`${API_URL}/api/admin/social-tags/${tagKey}`, updates, {
         headers: { Authorization: `Bearer ${token}` }
       });
       await fetchSocialTags();
@@ -247,9 +248,9 @@ const AdminProducts = () => {
     }
   };
 
-  const deleteSocialTag = async (tagId) => {
+  const deleteSocialTag = async (tagKey) => {
     try {
-      await axios.delete(`${API_URL}/api/admin/social-tags/${tagId}`, {
+      await axios.delete(`${API_URL}/api/admin/social-tags/${tagKey}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Tag removida');
@@ -1009,7 +1010,7 @@ const AdminProducts = () => {
                   >
                     <Input
                       value={tag.label || ""}
-                      onChange={(e) => updateSocialTag(tag.id, { label: e.target.value })}
+                      onChange={(e) => updateSocialTag(tag.key, { label: e.target.value })}
                       className="bg-black/40 border-amber-500/20 text-white"
                     />
                     <div className="flex items-center justify-between sm:justify-end gap-3">
@@ -1017,14 +1018,14 @@ const AdminProducts = () => {
                         <input
                           type="checkbox"
                           checked={tag.is_active !== false}
-                          onChange={(e) => updateSocialTag(tag.id, { is_active: e.target.checked })}
+                          onChange={(e) => updateSocialTag(tag.key, { is_active: e.target.checked })}
                         />
                         Ativa
                       </label>
 
                       <Button
                         variant="outline"
-                        onClick={() => deleteSocialTag(tag.id)}
+                        onClick={() => deleteSocialTag(tag.key)}
                         disabled={tag.in_use}
                         className="border-red-500/30 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
                       >

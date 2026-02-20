@@ -95,7 +95,14 @@ const Products = () => {
     : products.filter(p => p.category === selectedCategory);
 
   // Ordenação no frontend (fallback + garantia)
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+  
+  const formatTagLabel = (key) => {
+    if (!key) return '';
+    if (key === 'destaque') return 'Destaque';
+    return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
+const sortedProducts = [...filteredProducts].sort((a, b) => {
     // 1. Por order (quem não tem vai pro fim com 9999)
     // order = 0 deve ir para o final
     const orderA = (a.order && a.order > 0) ? a.order : 9999;
@@ -249,12 +256,12 @@ const Products = () => {
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Featured Badge */}
-                  {product.featured && (
+                  {/* Social Tag Badge */}
+                  {(product.social_tag || product.featured) && (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Destaque
+                        {(product.social_tag || (product.featured ? 'destaque' : null)) === 'destaque' && <Sparkles className="w-3 h-3" />}
+                        {formatTagLabel(product.social_tag || (product.featured ? 'destaque' : ''))}
                       </Badge>
                     </div>
                   )}
@@ -470,11 +477,11 @@ const Products = () => {
                     decoding="async"
                     className={`w-full max-h-[260px] sm:max-h-[340px] object-contain mx-auto transition-all duration-700 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.08]"}`}
                   />
-                  {selectedProduct.featured && (
+                  {(selectedProduct.social_tag || selectedProduct.featured) && (
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold flex items-center gap-1">
-                        <Sparkles className="w-4 h-4" />
-                        Destaque
+                        {(selectedProduct.social_tag || (selectedProduct.featured ? 'destaque' : null)) === 'destaque' && <Sparkles className="w-4 h-4" />}
+                        {formatTagLabel(selectedProduct.social_tag || (selectedProduct.featured ? 'destaque' : ''))}
                       </Badge>
                     </div>
                   )}
