@@ -126,9 +126,13 @@ export const CartProvider = ({ children }) => {
   // Delivery fee
   const DELIVERY_FEE = 50;
   
-  // Chopeira rental fee (currently free for all chopp purchases)
+  // Chopeira rental fee
+  // Regra: só mostramos/consideramos aluguel de chopeira quando o cliente escolhe um equipamento.
+  // (O equipamento é um extra do pedido, selecionado em "Equipamentos")
   const CHOPEIRA_FEE = 100;
-  const CHOPEIRA_FREE = true; // Promo: chopeira grátis
+
+  const hasEquipmentSelected = () => !!equipment;
+  const hasFreeChopeira = () => hasChoppItems() && hasEquipmentSelected();
 
   const getDeliveryFee = () => {
     if (!hasChoppItems()) return 0;
@@ -136,8 +140,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const getChopeiraFee = () => {
+    // Só existe taxa/linha de chopeira quando há equipamento selecionado.
     if (!hasChoppItems()) return 0;
-    return CHOPEIRA_FREE ? 0 : CHOPEIRA_FEE;
+    if (!hasEquipmentSelected()) return 0;
+    // Promo atual: aluguel grátis quando seleciona equipamento
+    return 0;
   };
 
   const getFinalTotal = () => {
@@ -159,12 +166,15 @@ export const CartProvider = ({ children }) => {
     hasChoppItems,
     getChoppLiters,
     hasFreeDelivery,
+    hasEquipmentSelected,
+    hasFreeChopeira,
     getDeliveryFee,
     getChopeiraFee,
     getFinalTotal,
     DELIVERY_FEE,
     CHOPEIRA_FEE,
-    CHOPEIRA_FREE
+    // Compat: agora o "grátis" só existe quando há equipamento selecionado.
+    CHOPEIRA_FREE: hasFreeChopeira()
   };
 
   return (

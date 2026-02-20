@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Trash2, Plus, Minus, ShoppingCart, ArrowRight, Truck, Gift } from "lucide-react";
+import { toast } from "sonner";
 
 const CartPage = () => {
   const { 
@@ -33,6 +34,14 @@ const CartPage = () => {
   const litersToFreeDelivery = 30 - choppLiters;
 
   const handleCheckout = () => {
+    // Requisito: para pedidos com chopp, o cliente precisa escolher 1 equipamento.
+    if (hasChoppItems() && !equipment) {
+      toast.error("Selecione um equipamento para continuar (Chopeira Elétrica ou HomeBar).", {
+        description: "Role até a seção 'Equipamentos' e escolha o ideal para o seu evento."
+      });
+      navigate("/#equipamentos");
+      return;
+    }
     if (!isAuthenticated) {
       navigate("/login");
     } else {
@@ -207,8 +216,8 @@ const CartPage = () => {
                       </div>
                     )}
 
-                    {/* Chopeira Rental - only show if has chopp */}
-                    {hasChoppItems() && (
+                    {/* Chopeira Rental - só mostra quando existe equipamento selecionado */}
+                    {hasChoppItems() && equipment && (
                       <div className="flex justify-between items-center">
                         <span className="text-gray-400 flex items-center gap-1">
                           <Gift className="w-4 h-4" />
@@ -233,9 +242,9 @@ const CartPage = () => {
                       <span>Total</span>
                       <span className="text-[#F59E0B]">{formatPrice(getFinalTotal())}</span>
                     </div>
-                    {hasChoppItems() && (hasFreeDelivery() || CHOPEIRA_FREE) && (
+                    {hasChoppItems() && (hasFreeDelivery() || (equipment && CHOPEIRA_FREE)) && (
                       <p className="text-green-500 text-sm mt-2 text-right">
-                        Você economizou {formatPrice((hasFreeDelivery() ? DELIVERY_FEE : 0) + (CHOPEIRA_FREE ? CHOPEIRA_FEE : 0))}!
+                        Você economizou {formatPrice((hasFreeDelivery() ? DELIVERY_FEE : 0) + (equipment && CHOPEIRA_FREE ? CHOPEIRA_FEE : 0))}!
                       </p>
                     )}
                   </div>
