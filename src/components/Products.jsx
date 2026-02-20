@@ -57,18 +57,18 @@ const Products = () => {
     const key = product?.social_tag || (product?.featured ? 'destaque' : null);
     if (!key) return null;
     const found = socialTags.find(t => t.key === key);
-    if (found) return { key, label: found.label, emoji: found.emoji };
+    if (found) return { key, label: found.label };
     // fallback mínimo para tags padrão
     const fallback = {
-      destaque: { label: 'Destaque', emoji: '⭐' },
-      mais_vendidos: { label: 'Mais vendidos', emoji: '🏆' },
-      mais_pedido_semana: { label: 'Mais pedido da semana', emoji: '🔥' },
-      preferido_aniversarios: { label: 'Preferido para aniversários', emoji: '🎉' },
-      preferido_churrascos: { label: 'Preferido para churrascos', emoji: '🍖' },
-      perfeito_eventos: { label: 'Perfeito para eventos', emoji: '🎊' },
-      escolha_da_casa: { label: 'Escolha da casa', emoji: '✅' },
+      destaque: { label: 'Destaque' },
+      mais_vendidos: { label: 'Mais vendidos' },
+      mais_pedido_semana: { label: 'Mais pedido da semana' },
+      preferido_aniversarios: { label: 'Preferido para aniversários' },
+      preferido_churrascos: { label: 'Preferido para churrascos' },
+      perfeito_eventos: { label: 'Perfeito para eventos' },
+      escolha_da_casa: { label: 'Escolha da casa' },
     };
-    return { key, ...(fallback[key] || { label: key, emoji: '' }) };
+    return { key, ...(fallback[key] || { label: key }) };
   };
 
   const fetchProducts = async () => {
@@ -271,8 +271,7 @@ const Products = () => {
                   {getSocialTagDisplay(product) && (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-                        {getSocialTagDisplay(product).emoji ? (
-                          <span>{getSocialTagDisplay(product).emoji}</span>
+                        
                         ) : (
                           <Sparkles className="w-3 h-3" />
                         )}
@@ -481,8 +480,6 @@ const Products = () => {
                   {getSocialTagDisplay(selectedProduct) && (
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold flex items-center gap-1">
-                        {getSocialTagDisplay(selectedProduct).emoji ? (
-                          <span>{getSocialTagDisplay(selectedProduct).emoji}</span>
                         ) : (
                           <Sparkles className="w-4 h-4" />
                         )}

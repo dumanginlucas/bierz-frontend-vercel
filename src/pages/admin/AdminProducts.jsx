@@ -33,13 +33,13 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 // Tags padrão (fallback). Se o backend já semeou, isso só serve como “1 clique” para recriar.
 const DEFAULT_SOCIAL_TAGS = [
-  { key: "destaque", label: "Destaque", emoji: "⭐" },
-  { key: "mais_vendidos", label: "Mais vendidos", emoji: "🏆" },
-  { key: "mais_pedido_semana", label: "Mais pedido da semana", emoji: "🔥" },
-  { key: "preferido_aniversarios", label: "Preferido para aniversários", emoji: "🎉" },
-  { key: "preferido_churrascos", label: "Preferido para churrascos", emoji: "🍖" },
-  { key: "perfeito_eventos", label: "Perfeito para eventos", emoji: "🎊" },
-  { key: "escolha_da_casa", label: "Escolha da casa", emoji: "✅" },
+  { key: "destaque", label: "Destaque" },
+  { key: "mais_vendidos", label: "Mais vendidos" },
+  { key: "mais_pedido_semana", label: "Mais pedido da semana" },
+  { key: "preferido_aniversarios", label: "Preferido para aniversários" },
+  { key: "preferido_churrascos", label: "Preferido para churrascos" },
+  { key: "perfeito_eventos", label: "Perfeito para eventos" },
+  { key: "escolha_da_casa", label: "Escolha da casa" },
 ];
 
 const AdminProducts = () => {
@@ -59,7 +59,7 @@ const AdminProducts = () => {
   const fileInputRef = useRef(null);
   const [socialTags, setSocialTags] = useState([]);
   const [socialTagsOpen, setSocialTagsOpen] = useState(false);
-  const [newSocialTag, setNewSocialTag] = useState({ label: "", emoji: "" });
+  const [newSocialTag, setNewSocialTag] = useState({ label: "" });
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -82,7 +82,7 @@ const AdminProducts = () => {
     if (!key) return null;
     const found = socialTags.find(t => t.key === key);
     if (!found) return key;
-    return `${found.emoji ? found.emoji + ' ' : ''}${found.label}`;
+    return `${found.label}`;
   };
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const AdminProducts = () => {
         try {
           await axios.post(
             `${API_URL}/api/admin/social-tags`,
-            { key: t.key, label: t.label, emoji: t.emoji, is_active: true },
+            { key: t.key, label: t.label, is_active: true },
             { headers: { Authorization: `Bearer ${token}` } }
           );
         } catch (_) {
@@ -211,7 +211,6 @@ const AdminProducts = () => {
       const payload = {
         key: (newSocialTag.label || '').trim(),
         label: (newSocialTag.label || '').trim(),
-        emoji: (newSocialTag.emoji || '').trim(),
         is_active: true
       };
       if (!payload.label) {
@@ -222,7 +221,7 @@ const AdminProducts = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Tag criada!');
-      setNewSocialTag({ label: "", emoji: "" });
+      setNewSocialTag({ label: "" });
       await fetchSocialTags();
     } catch (e) {
       toast.error(e.response?.data?.detail || 'Erro ao criar tag');
@@ -920,7 +919,7 @@ const AdminProducts = () => {
                     .filter(t => t.is_active)
                     .map((tag) => (
                       <SelectItem key={tag.id} value={tag.key}>
-                        {(tag.emoji ? tag.emoji + " " : "") + tag.label}
+                        {tag.label}
                       </SelectItem>
                     ))}
                 </SelectContent>
@@ -949,7 +948,7 @@ const AdminProducts = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Social Tags Manager */}
+            {/* Social Tags Manager */}
       <Dialog open={socialTagsOpen} onOpenChange={setSocialTagsOpen}>
         <DialogContent className="bg-gray-900 border-amber-500/30 text-white w-[94vw] max-w-xl max-h-[85vh] overflow-y-auto overflow-x-hidden admin-modal-scroll p-6">
           <DialogHeader>
@@ -969,59 +968,55 @@ const AdminProducts = () => {
                     placeholder="Ex: Ideal para happy hour"
                   />
                 </div>
-                <div>
-                  <Label className="text-gray-400 text-xs">Emoji</Label>
-                  <Input
-                    value={newSocialTag.emoji}
-                    onChange={(e) => setNewSocialTag((p) => ({ ...p, emoji: e.target.value }))}
-                    className="bg-black/50 border-amber-500/30 text-white"
-                    placeholder="🍻"
-                  />
+                <div className="flex items-end">
+                  <Button
+                    onClick={createSocialTag}
+                    className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black"
+                  >
+                    Criar
+                  </Button>
                 </div>
               </div>
-              <div className="mt-3 flex justify-end">
-                <Button onClick={createSocialTag} className="bg-[#F59E0B] hover:bg-[#F97316] text-black">
-                  Criar
-                </Button>
-              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                💡 Dica: use nomes curtos (ex: “Mais pedido da semana”).
+              </p>
             </div>
 
             <div>
               <div className="text-sm text-gray-300 mb-2">Tags existentes</div>
               <div className="space-y-2 max-h-[45vh] overflow-auto pr-2">
                 {socialTags.map((tag) => (
-                  <div key={tag.id} className="flex items-center gap-3 p-3 rounded-lg bg-black/20 border border-white/10">
+                  <div
+                    key={tag.id}
+                    className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg bg-black/20 border border-white/10"
+                  >
                     <Input
-                      value={tag.emoji || ""}
-                      onChange={(e) => updateSocialTag(tag.id, { emoji: e.target.value })}
-                      className="w-16 bg-black/50 border-amber-500/30 text-white"
-                      placeholder="⭐"
-                    />
-                    <Input
-                      value={tag.label}
+                      value={tag.label || ""}
                       onChange={(e) => updateSocialTag(tag.id, { label: e.target.value })}
-                      className="flex-1 bg-black/50 border-amber-500/30 text-white"
+                      className="bg-black/40 border-amber-500/20 text-white"
                     />
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs text-gray-300 flex items-center gap-2">
+                    <div className="flex items-center justify-between sm:justify-end gap-3">
+                      <label className="flex items-center gap-2 text-xs text-gray-300 select-none">
                         <input
                           type="checkbox"
-                          checked={!!tag.is_active}
+                          checked={tag.is_active !== false}
                           onChange={(e) => updateSocialTag(tag.id, { is_active: e.target.checked })}
-                          className="rounded border-amber-500/30"
                         />
-                        ativa
+                        Ativa
                       </label>
+
                       <Button
                         variant="outline"
                         onClick={() => deleteSocialTag(tag.id)}
-                        className="border-red-500/30 text-red-200 hover:bg-red-500/10"
+                        disabled={tag.in_use}
+                        className="border-red-500/30 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
                       >
                         Remover
                       </Button>
                     </div>
                   </div>
                 ))}
+
                 {socialTags.length === 0 && (
                   <div className="space-y-3">
                     <div className="text-gray-500 text-sm">Nenhuma tag encontrada.</div>
@@ -1040,12 +1035,10 @@ const AdminProducts = () => {
                         Adicionar tags padrão
                       </Button>
                     </div>
-                    <p className="text-xs text-gray-500">
-                      Dica: você pode criar novas tags acima e ativar/desativar quando quiser.
-                    </p>
                   </div>
                 )}
               </div>
+
               <p className="text-xs text-gray-500 mt-2">
                 ⚠️ Não é possível remover uma tag que esteja em uso por algum produto.
               </p>
