@@ -78,11 +78,19 @@ const AdminProducts = () => {
     order: 0
   });
 
+  // Remove emojis/símbolos no começo (ex: "✨ Destaque" => "Destaque")
+  const cleanSocialLabel = (label) => {
+    if (!label) return '';
+    const s = String(label).trim();
+    const cleaned = s.replace(/^[^A-Za-zÀ-ÿ0-9]+/g, '').trim();
+    return cleaned.replace(/\s{2,}/g, ' ').trim();
+  };
+
   const getSocialTagLabel = (key) => {
     if (!key) return null;
     const found = socialTags.find(t => t.key === key);
     if (!found) return key;
-    return `${found.label}`;
+    return cleanSocialLabel(found.label) || `${found.label}`;
   };
 
   useEffect(() => {
@@ -913,13 +921,22 @@ const AdminProducts = () => {
                 <SelectTrigger className="bg-black/50 border-[#F59E0B]/30 text-white">
                   <SelectValue placeholder="Nenhuma" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-amber-500/30">
-                  <SelectItem value="__none">Nenhuma</SelectItem>
+                <SelectContent className="bg-[#0B1220] border-amber-500/30 text-white">
+                  <SelectItem
+                    value="__none"
+                    className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
+                  >
+                    Nenhuma
+                  </SelectItem>
                   {socialTags
                     .filter(t => t.is_active)
                     .map((tag) => (
-                      <SelectItem key={tag.id} value={tag.key}>
-                        {tag.label}
+                      <SelectItem
+                        key={tag.id}
+                        value={tag.key}
+                        className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
+                      >
+                        <span className="font-medium">{cleanSocialLabel(tag.label) || tag.label}</span>
                       </SelectItem>
                     ))}
                 </SelectContent>

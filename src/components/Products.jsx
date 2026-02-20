@@ -22,6 +22,17 @@ import ProductSkeleton from './ProductSkeleton';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Remove emojis/símbolos no começo (ex: "✨ Destaque" => "Destaque")
+// e também sequências estranhas que podem vir de migrações/edits antigos.
+const cleanSocialLabel = (label) => {
+  if (!label) return '';
+  const s = String(label).trim();
+  // Remove qualquer coisa que não seja letra/número no início (inclui emojis)
+  const cleaned = s.replace(/^[^A-Za-zÀ-ÿ0-9]+/g, '').trim();
+  // Normaliza múltiplos espaços
+  return cleaned.replace(/\s{2,}/g, ' ').trim();
+};
+
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('chopp');
   const [products, setProducts] = useState([]);
@@ -57,7 +68,10 @@ const Products = () => {
     const key = product?.social_tag || (product?.featured ? 'destaque' : null);
     if (!key) return null;
     const found = socialTags.find(t => t.key === key);
-    if (found) return { key, label: found.label };
+    if (found) {
+      const label = cleanSocialLabel(found.label);
+      return { key, label: label || found.label || key };
+    }
     // fallback mínimo para tags padrão
     const fallback = {
       destaque: { label: 'Destaque' },
@@ -68,7 +82,8 @@ const Products = () => {
       perfeito_eventos: { label: 'Perfeito para eventos' },
       escolha_da_casa: { label: 'Escolha da casa' },
     };
-    return { key, ...(fallback[key] || { label: key }) };
+    const label = (fallback[key]?.label) ? cleanSocialLabel(fallback[key].label) : '';
+    return { key, ...(fallback[key] || { label: key }), label: label || (fallback[key]?.label ?? key) };
   };
 
   const fetchProducts = async () => {
