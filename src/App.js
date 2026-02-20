@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "@/App.css";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -23,6 +23,24 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 
 function App() {
+  useEffect(() => {
+    // Remove any leftover deploy-check badge from testing (if it exists in DOM)
+    const removeDeployBadge = () => {
+      const candidates = Array.from(document.querySelectorAll("body *"));
+      for (const el of candidates) {
+        const txt = (el.textContent || "").trim();
+        if (!txt) continue;
+        if (txt.includes("DEPLOY_CHECK")) {
+          el.remove();
+        }
+      }
+    };
+
+    removeDeployBadge();
+    const t = setTimeout(removeDeployBadge, 800);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <AuthProvider>
       <CartProvider>

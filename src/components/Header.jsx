@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
 import { Button } from './ui/button';
@@ -15,6 +15,7 @@ import {
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef(null);
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { getItemCount } = useCart();
   const navigate = useNavigate();
@@ -29,6 +30,25 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useLayoutEffect(() => {
+    const setHeaderVar = () => {
+      const h = headerRef.current?.offsetHeight || 0;
+      if (h) document.documentElement.style.setProperty("--header-h", `${h}px`);
+    };
+
+    setHeaderVar();
+
+    // Keep in sync on resize and layout changes
+    window.addEventListener("resize", setHeaderVar);
+    const ro = window.ResizeObserver ? new ResizeObserver(setHeaderVar) : null;
+    if (ro && headerRef.current) ro.observe(headerRef.current);
+
+    return () => {
+      window.removeEventListener("resize", setHeaderVar);
+      if (ro) ro.disconnect();
+    };
+  }, []);
+
   const scrollToSection = (id) => {
     setIsMobileMenuOpen(false);
     
@@ -39,8 +59,7 @@ const Header = () => {
     }
     
     const element = document.getElementById(id);
-    const headerEl = document.querySelector('header');
-    const headerH = headerEl?.offsetHeight ?? 0;
+    const headerH = headerRef.current?.offsetHeight ?? 0;
 
     if (element) {
       const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12; // 12px folga
@@ -53,8 +72,7 @@ const Header = () => {
     if (location.state?.scrollTo) {
       setTimeout(() => {
         const element = document.getElementById(location.state.scrollTo);
-        const headerEl = document.querySelector('header');
-        const headerH = headerEl?.offsetHeight ?? 0;
+        const headerH = headerRef.current?.offsetHeight ?? 0;
 
         if (element) {
           const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
@@ -73,6 +91,7 @@ const Header = () => {
 
   return (
     <header
+      ref={headerRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-black/95 backdrop-blur-md'
       }`}

@@ -64,8 +64,9 @@ export default function AboutPinnedScroll() {
     if (!el) return;
 
     const onScroll = () => {
-      const headerEl = document.querySelector("header");
-      const headerH = headerEl?.offsetHeight ?? 0;
+      const rootStyles = getComputedStyle(document.documentElement);
+      const headerVar = parseFloat(rootStyles.getPropertyValue("--header-h"));
+      const headerH = Number.isFinite(headerVar) && headerVar > 0 ? headerVar : (document.querySelector("header")?.offsetHeight ?? 0);
 
       const rect = el.getBoundingClientRect();
       const scrollY = window.scrollY || window.pageYOffset;
