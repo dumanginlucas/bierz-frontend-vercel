@@ -20,7 +20,6 @@ import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 import ProductSkeleton from './ProductSkeleton';
 
-
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Products = () => {
@@ -32,20 +31,8 @@ const Products = () => {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalImageAnim, setModalImageAnim] = useState(false);
-	// TapList removida (não será usada)
+  const [socialTags, setSocialTags] = useState([]);
   const { addItem } = useCart();
-
-  // Animação da imagem no modal (fade + scale) — garante que a imagem não fique presa em opacity-0
-  useEffect(() => {
-    if (!modalOpen || !selectedProduct) {
-      setModalImageAnim(false);
-      return;
-    }
-    setModalImageAnim(false);
-    const t = setTimeout(() => setModalImageAnim(true), 60);
-    return () => clearTimeout(t);
-  }, [modalOpen, selectedProduct?.id]);
 
   // Ordem desejada das categorias (removido 'cerveja')
   const categoryOrder = ['chopp', 'cerveja-especial', 'energetico', 'copos', 'gelo', 'outras', 'todos'];
@@ -53,7 +40,36 @@ const Products = () => {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
+    fetchSocialTags();
   }, []);
+
+  const fetchSocialTags = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/social-tags`);
+      setSocialTags(res.data || []);
+    } catch (e) {
+      // silencioso: site funciona mesmo sem tags
+      console.warn('Error fetching social tags:', e);
+    }
+  };
+
+  const getSocialTagDisplay = (product) => {
+    const key = product?.social_tag || (product?.featured ? 'destaque' : null);
+    if (!key) return null;
+    const found = socialTags.find(t => t.key === key);
+    if (found) return { key, label: found.label, emoji: found.emoji };
+    // fallback mínimo para tags padrão
+    const fallback = {
+      destaque: { label: 'Destaque', emoji: '⭐' },
+      mais_vendidos: { label: 'Mais vendidos', emoji: '🏆' },
+      mais_pedido_semana: { label: 'Mais pedido da semana', emoji: '🔥' },
+      preferido_aniversarios: { label: 'Preferido para aniversários', emoji: '🎉' },
+      preferido_churrascos: { label: 'Preferido para churrascos', emoji: '🍖' },
+      perfeito_eventos: { label: 'Perfeito para eventos', emoji: '🎊' },
+      escolha_da_casa: { label: 'Escolha da casa', emoji: '✅' },
+    };
+    return { key, ...(fallback[key] || { label: key, emoji: '' }) };
+  };
 
   const fetchProducts = async () => {
     try {
@@ -99,9 +115,8 @@ const Products = () => {
   // Ordenação no frontend (fallback + garantia)
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     // 1. Por order (quem não tem vai pro fim com 9999)
-    // order = 0 deve ir para o final
-    const orderA = (a.order && a.order > 0) ? a.order : 9999;
-    const orderB = (b.order && b.order > 0) ? b.order : 9999;
+    const orderA = a.order ?? 9999;
+    const orderB = b.order ?? 9999;
     if (orderA !== orderB) return orderA - orderB;
 
     // 2. Por featured (destaques primeiro)
@@ -111,28 +126,10 @@ const Products = () => {
     return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
   });
 
-	// Tap List (sempre baseado em CHOPP)
-	const choppProducts = products.filter(p => p.category === 'chopp');
-	const sortedChoppProducts = [...choppProducts].sort((a, b) => {
-	  const orderA = (a.order && a.order > 0) ? a.order : 9999;
-	  const orderB = (b.order && b.order > 0) ? b.order : 9999;
-	  if (orderA !== orderB) return orderA - orderB;
-	  if (a.featured !== b.featured) return a.featured ? -1 : 1;
-	  return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
-	});
-
   const handleAddToCart = (product) => {
     const quantity = quantities[product.id] || 1;
     const size = selectedSizes[product.id] || product.sizes[0];
     addItem(product, quantity, size);
-  };
-
-  // Tap List: adicionar rápido (litros) sem abrir modal
-  const handleQuickAddLitros = (product, litros) => {
-    const safeLitros = Math.max(20, Number(litros) || 20);
-    const size = selectedSizes[product.id] || product.sizes[0];
-    setQuantities(prev => ({ ...prev, [product.id]: safeLitros }));
-    addItem(product, safeLitros, size);
   };
 
   const updateQuantity = (productId, delta, isLitro) => {
@@ -206,8 +203,6 @@ const Products = () => {
           </p>
         </div>
 
-			{/* TapList removida */}
-
         {/* ✅ Category Navigation Bar - Barra única responsiva sem cortar */}
         <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
           <div className="flex px-4">
@@ -271,12 +266,16 @@ const Products = () => {
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Featured Badge */}
-                  {product.featured && (
+                  {/* Social Tag (Prova social) */}
+                  {getSocialTagDisplay(product) && (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Destaque
+                        {getSocialTagDisplay(product).emoji ? (
+                          <span>{getSocialTagDisplay(product).emoji}</span>
+                        ) : (
+                          <Sparkles className="w-3 h-3" />
+                        )}
+                        {getSocialTagDisplay(product).label}
                       </Badge>
                     </div>
                   )}
@@ -285,7 +284,7 @@ const Products = () => {
                       {categories.find(c => c.id === product.category)?.name || product.category}
                     </Badge>
                   </div>
-                  {product.stock < 10 && product.stock > 0 && !product.featured && (
+                  {product.stock < 10 && product.stock > 0 && !getSocialTagDisplay(product) && (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-red-500 text-white text-xs px-2 py-0.5">Últimas un.</Badge>
                     </div>
@@ -464,7 +463,7 @@ const Products = () => {
 
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {selectedProduct && (() => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
@@ -472,21 +471,21 @@ const Products = () => {
             
             return (
               <>
-						{/* topo bem sutil (não interfere no X) */}
-						<div className="pt-0">
                 <div className="relative">
                   <img
                     src={selectedProduct.image}
                     alt={selectedProduct.name}
-                    loading="lazy"
-                    decoding="async"
-                    className={`w-full max-h-[260px] sm:max-h-[340px] object-contain mx-auto transition-all duration-700 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.08]"}`}
+                    className="w-full h-64 md:h-80 object-cover"
                   />
-                  {selectedProduct.featured && (
+                  {getSocialTagDisplay(selectedProduct) && (
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold flex items-center gap-1">
-                        <Sparkles className="w-4 h-4" />
-                        Destaque
+                        {getSocialTagDisplay(selectedProduct).emoji ? (
+                          <span>{getSocialTagDisplay(selectedProduct).emoji}</span>
+                        ) : (
+                          <Sparkles className="w-4 h-4" />
+                        )}
+                        {getSocialTagDisplay(selectedProduct).label}
                       </Badge>
                     </div>
                   )}
@@ -500,7 +499,6 @@ const Products = () => {
                       <Badge className="bg-red-500 text-white">Últimas unidades!</Badge>
                     </div>
                   )}
-                </div>
                 </div>
                 
                 <div className="p-6">

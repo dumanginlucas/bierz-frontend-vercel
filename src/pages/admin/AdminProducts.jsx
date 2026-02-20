@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { 
   Package, Plus, Edit, Trash2, Beer, 
-  LayoutDashboard, ClipboardList, Users, Tags, LogOut,
+  LayoutDashboard, ClipboardList, Users, LogOut,
   Menu, X, Search, Upload, Image as ImageIcon, Loader2
 } from "lucide-react";
 
@@ -36,15 +36,6 @@ const AdminProducts = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-
-  const isCategoryActive = (cat) => cat?.is_active !== false;
-  const getCategoryById = (id) => categories.find((c) => c.id === id);
-  const getCategoryDisplayName = (id) => {
-    const cat = getCategoryById(id);
-    if (!cat) return id || "";
-    return isCategoryActive(cat) ? cat.name : `${cat.name} (desativada)`;
-  };
-
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -55,6 +46,9 @@ const AdminProducts = () => {
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
+  const [socialTags, setSocialTags] = useState([]);
+  const [socialTagsOpen, setSocialTagsOpen] = useState(false);
+  const [newSocialTag, setNewSocialTag] = useState({ label: "", emoji: "" });
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -68,9 +62,17 @@ const AdminProducts = () => {
     ibu: "",
     stock: "",
     is_active: true,
-    featured: false,
+    // Prova social (1 por vez)
+    social_tag: "",
     order: 0
   });
+
+  const getSocialTagLabel = (key) => {
+    if (!key) return null;
+    const found = socialTags.find(t => t.key === key);
+    if (!found) return key;
+    return `${found.emoji ? found.emoji + ' ' : ''}${found.label}`;
+  };
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -82,8 +84,20 @@ const AdminProducts = () => {
     if (token && isAdmin) {
       fetchProducts();
       fetchCategories();
+      fetchSocialTags();
     }
   }, [token, isAdmin]);
+
+  const fetchSocialTags = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/admin/social-tags`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSocialTags(res.data || []);
+    } catch (e) {
+      console.error('Error fetching social tags:', e);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -100,11 +114,8 @@ const AdminProducts = () => {
 
   const fetchCategories = async () => {
     try {
-      if (!token) return;
-      const response = await axios.get(`${API_URL}/api/admin/categories`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setCategories(response.data || []);
+      const response = await axios.get(`${API_URL}/api/categories`);
+      setCategories(response.data.filter(c => c.id !== "todos"));
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -131,7 +142,7 @@ const AdminProducts = () => {
       ibu: "",
       stock: "",
       is_active: true,
-      featured: false,
+      social_tag: "",
       order: 0  // ✅ Campo order sempre inicializado
     });
     setDialogOpen(true);
@@ -152,10 +163,56 @@ const AdminProducts = () => {
       ibu: product.ibu ? product.ibu.toString() : "",
       stock: product.stock.toString(),
       is_active: product.is_active,
-      featured: product.featured || false,
+      social_tag: product.social_tag || (product.featured ? 'destaque' : ''),
       order: product.order || 0
     });
     setDialogOpen(true);
+  };
+
+  const createSocialTag = async () => {
+    try {
+      const payload = {
+        key: (newSocialTag.label || '').trim(),
+        label: (newSocialTag.label || '').trim(),
+        emoji: (newSocialTag.emoji || '').trim(),
+        is_active: true
+      };
+      if (!payload.label) {
+        toast.error('Informe o nome da tag');
+        return;
+      }
+      await axios.post(`${API_URL}/api/admin/social-tags`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Tag criada!');
+      setNewSocialTag({ label: "", emoji: "" });
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao criar tag');
+    }
+  };
+
+  const updateSocialTag = async (tagId, updates) => {
+    try {
+      await axios.put(`${API_URL}/api/admin/social-tags/${tagId}`, updates, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao atualizar tag');
+    }
+  };
+
+  const deleteSocialTag = async (tagId) => {
+    try {
+      await axios.delete(`${API_URL}/api/admin/social-tags/${tagId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Tag removida');
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao remover tag');
+    }
   };
 
   // Image Upload Handler
@@ -245,7 +302,9 @@ const AdminProducts = () => {
         ibu: formData.ibu ? parseInt(formData.ibu) : null,
         stock: parseInt(formData.stock),
         is_active: formData.is_active,
-        featured: formData.featured,
+        social_tag: formData.social_tag ? formData.social_tag : null,
+        // Compat: backend sincroniza, mas enviamos featured coerente também
+        featured: formData.social_tag === 'destaque',
         order: orderValue  // ✅ Sempre será um número válido (0 ou maior)
       };
 
@@ -339,10 +398,6 @@ const AdminProducts = () => {
             <Package className="w-5 h-5" />
             <span>Produtos</span>
           </Link>
-          <Link to="/admin/categorias" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
-            <Tags className="w-5 h-5" />
-            <span>Categorias</span>
-          </Link>
           <Link to="/admin/pedidos" className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-[#F59E0B]/10 hover:text-[#F59E0B] transition-colors">
             <ClipboardList className="w-5 h-5" />
             <span>Pedidos</span>
@@ -419,20 +474,9 @@ const AdminProducts = () => {
             </SelectTrigger>
             <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
               <SelectItem value="todos" className="text-white">Todas Categorias</SelectItem>
-              {categories.filter(isCategoryActive).map(cat => (
+              {categories.map(cat => (
                 <SelectItem key={cat.id} value={cat.id} className="text-white">{cat.name}</SelectItem>
               ))}
-              {filterCategory !== "todos" && (() => {
-                const selected = getCategoryById(filterCategory);
-                if (selected && !isCategoryActive(selected)) {
-                  return (
-                    <SelectItem value={selected.id} disabled className="text-white opacity-70">
-                      {selected.name} (desativada)
-                    </SelectItem>
-                  );
-                }
-                return null;
-              })()}
             </SelectContent>
           </Select>
         </div>
@@ -447,9 +491,9 @@ const AdminProducts = () => {
                   alt={product.name}
                   className="w-full h-full object-cover rounded-t-lg"
                 />
-                {product.featured && (
+                {(product.social_tag || product.featured) && (
                   <Badge className="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold">
-                    ⭐ Destaque
+                    {getSocialTagLabel(product.social_tag || (product.featured ? 'destaque' : '')) || '⭐ Destaque'}
                   </Badge>
                 )}
                 {!product.is_active && (
@@ -461,7 +505,7 @@ const AdminProducts = () => {
                 {product.brand && (
                   <p className="text-amber-500 text-sm font-medium">{product.brand}</p>
                 )}
-                <p className="text-gray-400 text-sm mb-2">{getCategoryDisplayName(product.category)}</p>
+                <p className="text-gray-400 text-sm mb-2">{product.category}</p>
                 
                 {/* ABV e IBU */}
                 {(product.abv || product.ibu) && (
@@ -566,33 +610,9 @@ const AdminProducts = () => {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 border-[#F59E0B]/30">
-                    {[...categories]
-                      .sort((a, b) => {
-                        const aActive = isCategoryActive(a);
-                        const bActive = isCategoryActive(b);
-                        if (aActive !== bActive) return aActive ? -1 : 1; // ativas primeiro
-
-                        const ao = (a?.order && a.order > 0) ? a.order : 9999;
-                        const bo = (b?.order && b.order > 0) ? b.order : 9999;
-                        if (ao !== bo) return ao - bo;
-
-                        const an = (a?.name || "").toLowerCase();
-                        const bn = (b?.name || "").toLowerCase();
-                        return an.localeCompare(bn);
-                      })
-                      .map((cat) => {
-                        const active = isCategoryActive(cat);
-                        return (
-                          <SelectItem
-                            key={cat.id}
-                            value={cat.id}
-                            disabled={!active}
-                            className={`text-white ${!active ? "opacity-70" : ""}`}
-                          >
-                            {cat.name}{!active ? " (desativada)" : ""}
-                          </SelectItem>
-                        );
-                      })}
+                    {categories.map(cat => (
+                      <SelectItem key={cat.id} value={cat.id} className="text-white">{cat.name}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -826,18 +846,41 @@ const AdminProducts = () => {
                 />
                 <Label htmlFor="is_active" className="text-gray-300">Produto ativo</Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="featured"
-                  checked={formData.featured}
-                  onChange={(e) => setFormData({...formData, featured: e.target.checked})}
-                  className="rounded border-amber-500/30"
-                />
-                <Label htmlFor="featured" className="text-gray-300 flex items-center gap-1">
-                  <span className="text-amber-500">⭐</span> Produto em Destaque
-                </Label>
+            </div>
+
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-2">
+                <Label className="text-gray-300">Prova social (opcional)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setSocialTagsOpen(true)}
+                  className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+                >
+                  Gerenciar
+                </Button>
               </div>
+              <Select
+                value={formData.social_tag || ""}
+                onValueChange={(value) => setFormData({ ...formData, social_tag: value === "__none" ? "" : value })}
+              >
+                <SelectTrigger className="bg-black/50 border-[#F59E0B]/30 text-white">
+                  <SelectValue placeholder="Nenhuma" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-900 border-amber-500/30">
+                  <SelectItem value="__none">Nenhuma</SelectItem>
+                  {socialTags
+                    .filter(t => t.is_active)
+                    .map((tag) => (
+                      <SelectItem key={tag.id} value={tag.key}>
+                        {(tag.emoji ? tag.emoji + " " : "") + tag.label}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-gray-500 mt-1">
+                💡 Apenas 1 por produto. Use para destacar (ex: “Mais pedido da semana”).
+              </p>
             </div>
           </div>
           <DialogFooter>
@@ -854,6 +897,101 @@ const AdminProducts = () => {
               data-testid="save-product-btn"
             >
               {selectedProduct ? "Salvar" : "Criar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Social Tags Manager */}
+      <Dialog open={socialTagsOpen} onOpenChange={setSocialTagsOpen}>
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-amber-200">Gerenciar Provas Sociais</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="p-4 rounded-lg bg-black/30 border border-white/10">
+              <div className="text-sm text-gray-300 mb-3">Criar nova tag</div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-2">
+                  <Label className="text-gray-400 text-xs">Nome</Label>
+                  <Input
+                    value={newSocialTag.label}
+                    onChange={(e) => setNewSocialTag((p) => ({ ...p, label: e.target.value }))}
+                    className="bg-black/50 border-amber-500/30 text-white"
+                    placeholder="Ex: Ideal para happy hour"
+                  />
+                </div>
+                <div>
+                  <Label className="text-gray-400 text-xs">Emoji</Label>
+                  <Input
+                    value={newSocialTag.emoji}
+                    onChange={(e) => setNewSocialTag((p) => ({ ...p, emoji: e.target.value }))}
+                    className="bg-black/50 border-amber-500/30 text-white"
+                    placeholder="🍻"
+                  />
+                </div>
+              </div>
+              <div className="mt-3 flex justify-end">
+                <Button onClick={createSocialTag} className="bg-[#F59E0B] hover:bg-[#F97316] text-black">
+                  Criar
+                </Button>
+              </div>
+            </div>
+
+            <div>
+              <div className="text-sm text-gray-300 mb-2">Tags existentes</div>
+              <div className="space-y-2 max-h-[45vh] overflow-auto pr-2">
+                {socialTags.map((tag) => (
+                  <div key={tag.id} className="flex items-center gap-3 p-3 rounded-lg bg-black/20 border border-white/10">
+                    <Input
+                      value={tag.emoji || ""}
+                      onChange={(e) => updateSocialTag(tag.id, { emoji: e.target.value })}
+                      className="w-16 bg-black/50 border-amber-500/30 text-white"
+                      placeholder="⭐"
+                    />
+                    <Input
+                      value={tag.label}
+                      onChange={(e) => updateSocialTag(tag.id, { label: e.target.value })}
+                      className="flex-1 bg-black/50 border-amber-500/30 text-white"
+                    />
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs text-gray-300 flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={!!tag.is_active}
+                          onChange={(e) => updateSocialTag(tag.id, { is_active: e.target.checked })}
+                          className="rounded border-amber-500/30"
+                        />
+                        ativa
+                      </label>
+                      <Button
+                        variant="outline"
+                        onClick={() => deleteSocialTag(tag.id)}
+                        className="border-red-500/30 text-red-200 hover:bg-red-500/10"
+                      >
+                        Remover
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                {socialTags.length === 0 && (
+                  <div className="text-gray-500 text-sm">Nenhuma tag encontrada.</div>
+                )}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                ⚠️ Não é possível remover uma tag que esteja em uso por algum produto.
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setSocialTagsOpen(false)}
+              className="border-gray-500 text-gray-300"
+            >
+              Fechar
             </Button>
           </DialogFooter>
         </DialogContent>
