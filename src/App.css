@@ -318,7 +318,7 @@
 }
 .equip-card__imgWrap{
   margin-top: 14px;
-  height: 260px;
+  height: 230px;
   border-radius: 18px;
   background: transparent;
   border: 0;
@@ -328,8 +328,9 @@
 }
 
 .equip-card__img{
-  width: 100%;
-  height: 100%;
+  width: 92%;
+  height: auto;
+  max-height: 220px;
   object-fit: contain;
 }
 
@@ -425,10 +426,45 @@
   gap: 10px;
   margin-bottom: 10px;
 }
-.equip-compare__colTitle{
-  font-weight: 800;
-  color: rgba(255,255,255,0.9);
+.equip-compare__headCol{
+  border-radius: 16px;
+  padding: 12px 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.equip-compare__headCol--electric{
+  background: linear-gradient(180deg, rgba(37,99,235,0.20), rgba(0,0,0,0.12));
+}
+.equip-compare__headCol--homebar{
+  background: linear-gradient(180deg, rgba(245,158,11,0.20), rgba(0,0,0,0.12));
+  position: relative;
+}
+.equip-compare__headTop{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  color: rgba(255,255,255,0.92);
+  font-weight: 900;
+}
+.equip-compare__headTitle{
   font-size: 14px;
+}
+.equip-compare__headSub{
+  margin-top: 4px;
+  color: rgba(255,255,255,0.70);
+  font-size: 12px;
+  font-weight: 700;
+}
+.equip-compare__badge{
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.9);
+  background: linear-gradient(90deg, #f59e0b, #f97316);
 }
 .equip-compare__grid{
   display:grid;
