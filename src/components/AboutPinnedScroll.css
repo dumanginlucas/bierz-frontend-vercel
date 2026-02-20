@@ -1,0 +1,295 @@
+/* About (Pinned Scroll) — isolado do App.css */
+
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+.aboutPinnedSection{
+  position: relative;
+  padding: 88px 0 110px;
+}
+
+/* Profundidade sutil (sem criar "faixa" de fundo) */
+.aboutPinnedSection::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 420px at 18% 22%, rgba(245,158,11,0.14), transparent 60%),
+    radial-gradient(800px 520px at 72% 38%, rgba(34,197,94,0.10), transparent 62%),
+    radial-gradient(760px 420px at 62% 82%, rgba(59,130,246,0.08), transparent 55%);
+  opacity: .9;
+}
+
+.aboutPinnedSticky{
+  position: sticky;
+  top: 86px;
+  padding: 0 18px;
+}
+
+.aboutPinnedHeader{
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.aboutPinnedTitle{
+  margin: 0;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1.05;
+  font-weight: 900;
+  color: #fff;
+}
+
+.aboutPinnedSub{
+  margin: 10px auto 0;
+  max-width: 880px;
+  color: rgba(255,255,255,0.72);
+  font-size: 15px;
+}
+
+.bierzGradientText{
+  background: linear-gradient(90deg, #f59e0b 0%, #fb923c 55%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.aboutPinnedGrid{
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 18px;
+  align-items: start;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.aboutPinnedCard{
+  border-radius: 24px;
+  border: 1px solid rgba(245,158,11,0.30);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+  padding: 22px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.aboutPinnedCardTitle{
+  margin: 0 0 8px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.aboutPinnedCardText{
+  margin: 0 0 18px;
+  color: rgba(255,255,255,0.72);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.aboutPinnedBullets{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.aboutPinnedBullet{
+  display: grid;
+  grid-template-columns: 14px 1fr 18px;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.86);
+  cursor: pointer;
+  transition: transform .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.aboutPinnedBullet:hover{
+  transform: translateY(-1px);
+  border-color: rgba(245,158,11,0.45);
+  background: rgba(245,158,11,0.10);
+}
+
+.aboutPinnedBullet.isActive{
+  border-color: rgba(245,158,11,0.75);
+  background: rgba(245,158,11,0.16);
+}
+
+.aboutPinnedBulletDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.25);
+}
+
+.aboutPinnedBullet.isActive .aboutPinnedBulletDot{
+  background: #f59e0b;
+  box-shadow: 0 0 0 4px rgba(245,158,11,0.20);
+}
+
+.aboutPinnedBulletText{
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.aboutPinnedBulletIcon{
+  width: 16px;
+  height: 16px;
+  opacity: .7;
+}
+
+.aboutPinnedLocation{
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+}
+
+.aboutPinnedLocationIcon{
+  width: 18px;
+  height: 18px;
+  color: #f59e0b;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.aboutPinnedLocationTitle{
+  color: rgba(255,255,255,0.92);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.aboutPinnedLocationText{
+  color: rgba(255,255,255,0.70);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.aboutPinnedRight{
+  position: relative;
+  min-height: 560px;
+}
+
+.aboutPinnedStage{
+  position: relative;
+  height: 560px;
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  padding: 22px;
+  box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+}
+
+.aboutPinnedScreen{
+  position: absolute;
+  inset: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  padding: 18px;
+  transform-origin: center;
+  transition: opacity .15s linear, filter .15s linear;
+}
+
+.aboutPinnedScreenTop{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.aboutPinnedScreenKicker{
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+}
+
+.aboutPinnedScreenBadge{
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .10em;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(245,158,11,0.35);
+  background: rgba(245,158,11,0.10);
+  color: rgba(255,255,255,0.92);
+}
+
+.aboutPinnedScreenBody{
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.aboutPinnedScreenTitle{
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.aboutPinnedScreenSub{
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.72);
+}
+
+.aboutPinnedScreenArt{
+  width: 100%;
+  height: 260px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.02);
+}
+
+.theme-teal{
+  background: radial-gradient(520px 220px at 18% 20%, rgba(20,184,166,0.18), transparent 55%), rgba(255,255,255,0.06);
+}
+.theme-amber{
+  background: radial-gradient(520px 220px at 18% 20%, rgba(245,158,11,0.22), transparent 55%), rgba(255,255,255,0.06);
+}
+.theme-blue{
+  background: radial-gradient(520px 220px at 18% 20%, rgba(59,130,246,0.18), transparent 55%), rgba(255,255,255,0.06);
+}
+.theme-gold{
+  background: radial-gradient(520px 220px at 18% 20%, rgba(251,146,60,0.20), transparent 55%), rgba(255,255,255,0.06);
+}
+
+.aboutPinnedHint{
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+}
+
+@media (max-width: 980px){
+  .aboutPinnedSticky{ top: 74px; }
+  .aboutPinnedGrid{ grid-template-columns: 1fr; }
+  .aboutPinnedRight{ min-height: 520px; }
+  .aboutPinnedStage{ height: 520px; }
+  .aboutPinnedScreenBody{ grid-template-columns: 1fr; }
+  .aboutPinnedScreenArt{ height: 220px; }
+}
