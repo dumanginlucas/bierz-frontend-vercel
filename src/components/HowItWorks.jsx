@@ -48,7 +48,7 @@ const HowItWorks = () => {
         id: 4,
         kicker: "Preencha os dados e finalize",
         title: "Entregamos, instalamos e retiramos",
-        desc: "Finalize o pedido e combinamos data, horário e endereço pelo carrinho ou WhatsApp.",
+        desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
         action: () => navigate("/cart"),
       },

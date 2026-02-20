@@ -7,17 +7,18 @@ import Footer from "../components/Footer";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
 import { Card } from "../components/ui/card";
 import { toast } from "sonner";
 import axios from "axios";
-import { CheckCircle, MapPin, FileText, Truck, Gift } from "lucide-react";
+import { CheckCircle, MapPin, Calendar, Clock, PartyPopper, Truck, Gift } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const CheckoutPage = () => {
   const { 
-    items, 
+    items,
+    equipment,
+    hasEquipmentSelected, 
     getTotal, 
     clearCart,
     hasChoppItems,
@@ -36,7 +37,9 @@ const CheckoutPage = () => {
   const [orderId, setOrderId] = useState(null);
   const [formData, setFormData] = useState({
     delivery_address: user?.address || "",
-    notes: ""
+    event_date: "",
+    event_time: "",
+    event_type: "Churrasco"
   });
 
   const formatPrice = (price) => {
@@ -50,7 +53,7 @@ const CheckoutPage = () => {
     e.preventDefault();
     
     if (!formData.delivery_address.trim()) {
-      toast.error("Por favor, informe o endereço de entrega");
+      toast.error("Por favor, informe o local do evento");
       return;
     }
 
@@ -70,13 +73,12 @@ const CheckoutPage = () => {
           size: item.size
         })),
         delivery_address: formData.delivery_address,
-        notes: `${formData.notes || ''}${equipment ? `
+        notes: `Local do evento: ${formData.delivery_address}
+Data: ${formData.event_date}
+Horário: ${formData.event_time}
+Tipo de evento: ${formData.event_type}${equipment ? `
 
-Equipamento: ${equipment.name}` : ''}${formData.event_date || formData.event_time || formData.event_address ? `
-
-Local do evento: ${formData.event_address || ''}
-Data: ${formData.event_date || ''}
-Horário: ${formData.event_time || ''}` : ''}`.trim()
+Equipamento: ${equipment.name}` : ""}`.trim()
       };
 
       const response = await axios.post(`${API_URL}/api/orders`, orderData, {
@@ -152,39 +154,65 @@ Horário: ${formData.event_time || ''}` : ''}`.trim()
               <form onSubmit={handleSubmit}>
                 <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
                   <h2 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <MapPin className="w-5 h-5 mr-2 text-[#F59E0B]" />
-                    Endereço de Entrega
+                    <Calendar className="w-5 h-5 mr-2 text-[#F59E0B]" />
+                    Dados do Evento
                   </h2>
-                  <div className="space-y-4">
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <Label htmlFor="delivery_address" className="text-gray-200">
-                        Endereço completo
+                      <Label htmlFor="event_date" className="text-gray-200">
+                        Data
                       </Label>
                       <Input
-                        id="delivery_address"
-                        value={formData.delivery_address}
-                        onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
-                        placeholder="Rua, número, bairro, cidade"
+                        id="event_date"
+                        type="date"
+                        value={formData.event_date}
+                        onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
                         className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
                         required
-                        data-testid="delivery-address"
+                        data-testid="event-date"
                       />
                     </div>
-                  </div>
-                </Card>
 
-                <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
-                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <FileText className="w-5 h-5 mr-2 text-[#F59E0B]" />
-                    Observações
-                  </h2>
-                  <Textarea
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder="Instruções especiais para entrega, horário preferido, etc."
-                    className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B] min-h-[100px]"
-                    data-testid="order-notes"
-                  />
+                    <div>
+                      <Label htmlFor="event_time" className="text-gray-200 flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-[#F59E0B]" />
+                        Horário
+                      </Label>
+                      <Input
+                        id="event_time"
+                        type="time"
+                        value={formData.event_time}
+                        onChange={(e) => setFormData({ ...formData, event_time: e.target.value })}
+                        className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
+                        required
+                        data-testid="event-time"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="event_type" className="text-gray-200 flex items-center gap-2">
+                        <PartyPopper className="w-4 h-4 text-[#F59E0B]" />
+                        Tipo de evento
+                      </Label>
+                      <select
+                        id="event_type"
+                        value={formData.event_type}
+                        onChange={(e) => setFormData({ ...formData, event_type: e.target.value })}
+                        className="w-full h-10 rounded-md px-3 bg-gray-900/50 border border-[#F59E0B]/30 text-white focus:outline-none focus:border-[#F59E0B]"
+                        data-testid="event-type"
+                        required
+                      >
+                        <option value="Churrasco">Churrasco</option>
+                        <option value="Aniversário">Aniversário</option>
+                        <option value="Casamento">Casamento</option>
+                        <option value="Evento Corporativo">Evento Corporativo</option>
+                        <option value="Festa">Festa</option>
+                        <option value="Confraternização">Confraternização</option>
+                        <option value="Outro">Outro</option>
+                      </select>
+                    </div>
+                  </div>
                 </Card>
 
                 <Button
@@ -238,8 +266,8 @@ Horário: ${formData.event_time || ''}` : ''}`.trim()
                     </div>
                   )}
 
-                  {/* Chopeira Rental - only show if has chopp */}
-                  {hasChoppItems() && (
+                  {/* Chopeira Rental - only show if has chopp AND equipment selected */}
+                  {hasChoppItems() && hasEquipmentSelected() && (
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400 flex items-center gap-1">
                         <Gift className="w-4 h-4" />
@@ -260,10 +288,10 @@ Horário: ${formData.event_time || ''}` : ''}`.trim()
                 </div>
 
                 {/* Savings banner */}
-                {hasChoppItems() && (hasFreeDelivery() || CHOPEIRA_FREE) && (
+                {hasChoppItems() && (hasFreeDelivery() || (hasEquipmentSelected() && CHOPEIRA_FREE)) && (
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 mb-4">
                     <p className="text-green-400 text-sm text-center font-medium">
-                      🎉 Você está economizando {formatPrice((hasFreeDelivery() ? DELIVERY_FEE : 0) + (CHOPEIRA_FREE ? CHOPEIRA_FEE : 0))}!
+                      🎉 Você está economizando {formatPrice((hasFreeDelivery() ? DELIVERY_FEE : 0) + (hasEquipmentSelected() && CHOPEIRA_FREE ? CHOPEIRA_FEE : 0))}!
                     </p>
                   </div>
                 )}
