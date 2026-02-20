@@ -19,8 +19,7 @@ import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 import ProductSkeleton from './ProductSkeleton';
-import TapListChopp from './TapListChopp';
-import TapListDrawer from './TapListDrawer';
+
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -34,7 +33,7 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImageAnim, setModalImageAnim] = useState(false);
-	const [tapListOpen, setTapListOpen] = useState(false);
+	// TapList removida (não será usada)
   const { addItem } = useCart();
 
   // Animação da imagem no modal (fade + scale) — garante que a imagem não fique presa em opacity-0
@@ -207,27 +206,7 @@ const Products = () => {
           </p>
         </div>
 
-		{/* Tap List (Opção A): cards horizontais, rápido para decidir no mobile */}
-		{sortedChoppProducts.length > 0 && (
-		  <div className="mb-6 sm:mb-8">
-		    <TapListChopp
-		      products={sortedChoppProducts}
-		      onOpen={(p) => openProductModal(p)}
-		      onQuickAddLitros={handleQuickAddLitros}
-		    />
-		  </div>
-		)}
-
-		{/* Tap List (Opção B): botão flutuante no mobile abre drawer */}
-		{sortedChoppProducts.length > 0 && (
-		  <TapListDrawer
-		    open={tapListOpen}
-		    onOpenChange={setTapListOpen}
-		    products={sortedChoppProducts}
-		    onOpen={(p) => openProductModal(p)}
-		    onQuickAddLitros={handleQuickAddLitros}
-		  />
-		)}
+			{/* TapList removida */}
 
         {/* ✅ Category Navigation Bar - Barra única responsiva sem cortar */}
         <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
@@ -494,7 +473,7 @@ const Products = () => {
             return (
               <>
 						{/* topo bem sutil (não interfere no X) */}
-						<div className="pt-1 sm:pt-2">
+						<div className="pt-0">
                 <div className="relative">
                   <img
                     src={selectedProduct.image}
