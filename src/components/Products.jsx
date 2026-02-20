@@ -18,8 +18,8 @@ import {
 import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
+import { SOCIAL_TAGS } from '../lib/socialTags';
 import ProductSkeleton from './ProductSkeleton';
-import { getSocialTagLabelFromKey } from '../lib/socialTags';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -34,6 +34,12 @@ const Products = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImageAnim, setModalImageAnim] = useState(false);
   const { addItem } = useCart();
+
+  const getSocialLabel = (prod) => {
+    if (!prod?.social_tag) return null;
+    const found = SOCIAL_TAGS.find(t => t.key === prod.social_tag);
+    return (found?.label ?? String(prod.social_tag).replace(/_/g, ' ')).trim();
+  };
 
   // Animação da imagem no modal (fade + scale) — garante que a imagem não fique presa em opacity-0
   useEffect(() => {
@@ -103,7 +109,12 @@ const Products = () => {
     const orderB = (b.order && b.order > 0) ? b.order : 9999;
     if (orderA !== orderB) return orderA - orderB;
 
-    // 2. Por featured (destaques primeiro)
+    // 2. Por social_tag (quem tem prova social primeiro)
+    const aHasTag = !!a.social_tag;
+    const bHasTag = !!b.social_tag;
+    if (aHasTag !== bHasTag) return aHasTag ? -1 : 1;
+
+    // 2b. Por featured (legado)
     if (a.featured !== b.featured) return a.featured ? -1 : 1;
 
     // 3. Por nome (alfabético)
@@ -230,7 +241,6 @@ const Products = () => {
             const isLitro = product.price_unit === 'litro';
             const quantity = quantities[product.id] || (isLitro ? 30 : 1);
             const totalPrice = product.price * quantity;
-            const socialLabel = product.social_tag ? getSocialTagLabelFromKey(product.social_tag) : null;
 
             return (
               <Card 
@@ -251,21 +261,22 @@ const Products = () => {
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Social proof / Featured badge (sem emojis) */}
-                  {(socialLabel || product.featured) && (
+                  {/* Featured Badge */}
+                  {getSocialLabel(product) ? (
                     <div className="absolute top-2 left-2">
                       <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-                        {socialLabel ? (
-                          socialLabel
-                        ) : (
-                          <>
-                            <Sparkles className="w-3 h-3" />
-                            Destaque
-                          </>
-                        )}
+                        <Sparkles className="w-3 h-3" />
+                        {getSocialLabel(product)}
                       </Badge>
                     </div>
-                  )}
+                  ) : product.featured ? (
+                    <div className="absolute top-2 left-2">
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        Destaque
+                      </Badge>
+                    </div>
+                  ) : null}
                   <div className="absolute top-2 right-2">
                     <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold text-xs px-2 py-0.5">
                       {categories.find(c => c.id === product.category)?.name || product.category}
@@ -465,7 +476,6 @@ const Products = () => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
             const totalPrice = selectedProduct.price * quantity;
-            const socialLabel = selectedProduct.social_tag ? getSocialTagLabelFromKey(selectedProduct.social_tag) : null;
             
             return (
               <>
@@ -479,20 +489,17 @@ const Products = () => {
                     decoding="async"
                     className={`w-full max-h-[260px] sm:max-h-[340px] object-contain mx-auto transition-all duration-700 ease-out will-change-transform ${modalImageAnim ? "opacity-100 scale-100" : "opacity-0 scale-[1.08]"}`}
                   />
-                  {(socialLabel || selectedProduct.featured) && (
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold flex items-center gap-1">
-                        {socialLabel ? (
-                          socialLabel
-                        ) : (
-                          <>
-                            <Sparkles className="w-4 h-4" />
-                            Destaque
-                          </>
-                        )}
-                      </Badge>
-                    </div>
-                  )}
+                  {getSocialLabel(selectedProduct) ? (
+                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-sm px-3 py-1 flex items-center gap-1">
+                      <Sparkles className="w-4 h-4" />
+                      {getSocialLabel(selectedProduct)}
+                    </Badge>
+                  ) : selectedProduct.featured ? (
+                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-sm px-3 py-1 flex items-center gap-1">
+                      <Sparkles className="w-4 h-4" />
+                      Destaque
+                    </Badge>
+                  ) : null}
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold">
                       {categories.find(c => c.id === selectedProduct.category)?.name || selectedProduct.category}

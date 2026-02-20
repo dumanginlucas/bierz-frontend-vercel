@@ -23,17 +23,14 @@ import {
 } from "../../components/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
+import { SOCIAL_TAGS } from "../../lib/socialTags";
 import { 
   Package, Plus, Edit, Trash2, Beer, 
   LayoutDashboard, ClipboardList, Users, LogOut,
   Menu, X, Search, Upload, Image as ImageIcon, Loader2
 } from "lucide-react";
 
-import { DEFAULT_SOCIAL_TAGS, getSocialTagLabelFromKey } from "../../lib/socialTags";
-
 const API_URL = process.env.REACT_APP_BACKEND_URL;
-
-// Tags padrão (fallback). Se o backend já semeou, isso só serve como “1 clique” para recriar.
 
 const AdminProducts = () => {
   const { user, token, isAdmin, logout, loading: authLoading } = useAuth();
@@ -49,11 +46,7 @@ const AdminProducts = () => {
   const [filterCategory, setFilterCategory] = useState("todos");
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef(null);
-  const [socialTags, setSocialTags] = useState([]);
-  const [socialTagsOpen, setSocialTagsOpen] = useState(false);
-  const [newSocialTag, setNewSocialTag] = useState({ label: "" });
-  const [formData, setFormData] = useState({
+  const fileInputRef = useRef(null);  const [formData, setFormData] = useState({
     name: "",
     description: "",
     category: "",
@@ -71,10 +64,21 @@ const AdminProducts = () => {
     order: 0
   });
 
+  // Remove emojis/símbolos no começo (ex: "✨ Destaque" => "Destaque")
+  const cleanSocialLabel = (label) => {
+    if (!label) return '';
+    const s = String(label).trim();
+    const cleaned = s.replace(/^[^A-Za-zÀ-ÿ0-9]+/g, '').trim();
+    return cleaned.replace(/\s{2,}/g, ' ').trim();
+  };
+
   const getSocialTagLabel = (key) => {
     if (!key) return null;
-    const found = socialTags.find(t => t.key === key);
-    return getSocialTagLabelFromKey(key, found?.label);
+    const found = SOCIAL_TAGS.find(t => t.key === key);
+    if (!found) {
+      return cleanSocialLabel(String(key).replace(/_/g, ' '));
+    }
+    return cleanSocialLabel(found.label) || `${found.label}`;
   };
 
   useEffect(() => {
@@ -86,47 +90,8 @@ const AdminProducts = () => {
   useEffect(() => {
     if (token && isAdmin) {
       fetchProducts();
-      fetchCategories();
-      fetchSocialTags();
-    }
+      fetchCategories();    }
   }, [token, isAdmin]);
-
-  const fetchSocialTags = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/api/admin/social-tags`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setSocialTags(res.data || []);
-    } catch (e) {
-      console.error('Error fetching social tags:', e);
-      toast.error('Não foi possível carregar as tags (prova social).');
-    }
-  };
-
-  const openSocialTagsManager = async () => {
-    setSocialTagsOpen(true);
-    await fetchSocialTags();
-  };
-
-  const seedDefaultSocialTags = async () => {
-    try {
-      for (const t of DEFAULT_SOCIAL_TAGS) {
-        try {
-          await axios.post(
-            `${API_URL}/api/admin/social-tags`,
-            { key: t.key, label: t.label, is_active: true },
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-        } catch (_) {
-          // Duplicadas: ignora
-        }
-      }
-      toast.success('Tags padrão adicionadas!');
-      await fetchSocialTags();
-    } catch (e) {
-      toast.error(e.response?.data?.detail || 'Erro ao adicionar tags padrão');
-    }
-  };
 
   const fetchProducts = async () => {
     try {
@@ -192,55 +157,10 @@ const AdminProducts = () => {
       ibu: product.ibu ? product.ibu.toString() : "",
       stock: product.stock.toString(),
       is_active: product.is_active,
-      social_tag: product.social_tag || (product.featured ? 'destaque' : ''),
+      social_tag: product.social_tag || '',
       order: product.order || 0
     });
     setDialogOpen(true);
-  };
-
-  const createSocialTag = async () => {
-    try {
-      const payload = {
-        key: (newSocialTag.label || '').trim(),
-        label: (newSocialTag.label || '').trim(),
-        is_active: true
-      };
-      if (!payload.label) {
-        toast.error('Informe o nome da tag');
-        return;
-      }
-      await axios.post(`${API_URL}/api/admin/social-tags`, payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success('Tag criada!');
-      setNewSocialTag({ label: "" });
-      await fetchSocialTags();
-    } catch (e) {
-      toast.error(e.response?.data?.detail || 'Erro ao criar tag');
-    }
-  };
-
-  const updateSocialTag = async (tagId, updates) => {
-    try {
-      await axios.put(`${API_URL}/api/admin/social-tags/${tagId}`, updates, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      await fetchSocialTags();
-    } catch (e) {
-      toast.error(e.response?.data?.detail || 'Erro ao atualizar tag');
-    }
-  };
-
-  const deleteSocialTag = async (tagId) => {
-    try {
-      await axios.delete(`${API_URL}/api/admin/social-tags/${tagId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success('Tag removida');
-      await fetchSocialTags();
-    } catch (e) {
-      toast.error(e.response?.data?.detail || 'Erro ao remover tag');
-    }
   };
 
   // Image Upload Handler
@@ -332,7 +252,6 @@ const AdminProducts = () => {
         is_active: formData.is_active,
         social_tag: formData.social_tag ? formData.social_tag : null,
         // Compat: backend sincroniza, mas enviamos featured coerente também
-        featured: formData.social_tag === 'destaque',
         order: orderValue  // ✅ Sempre será um número válido (0 ou maior)
       };
 
@@ -528,9 +447,9 @@ const AdminProducts = () => {
                   alt={product.name}
                   className="w-full h-full object-cover rounded-t-lg"
                 />
-                {(product.social_tag || product.featured) && (
+                {(product.social_tag) && (
                   <Badge className="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold">
-                    {getSocialTagLabel(product.social_tag || (product.featured ? 'destaque' : '')) || 'Destaque'}
+                    {getSocialTagLabel(product.social_tag || '') || 'Destaque'}
                   </Badge>
                 )}
                 {!product.is_active && (
@@ -887,16 +806,8 @@ const AdminProducts = () => {
             </div>
 
             <div className="mt-4">
-              <div className="flex items-center justify-between mb-2">
+              <div className="mb-2">
                 <Label className="text-gray-300">Prova social (opcional)</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={openSocialTagsManager}
-                  className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
-                >
-                  Gerenciar
-                </Button>
               </div>
               <Select
                 value={formData.social_tag || ""}
@@ -908,19 +819,17 @@ const AdminProducts = () => {
                 <SelectContent className="bg-[#0B1220] border-amber-500/30 text-white">
                   <SelectItem
                     value="__none"
-                    className="text-white text-base py-2 focus:bg-amber-500/20 focus:text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
+                    className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
                   >
                     Nenhuma
                   </SelectItem>
-                  {socialTags
-                    .filter(t => t.is_active)
-                    .map((tag) => (
+                  {SOCIAL_TAGS.map((tag) => (
                       <SelectItem
-                        key={tag.id}
+                        key={tag.key}
                         value={tag.key}
-                        className="text-white text-base py-2 focus:bg-amber-500/20 focus:text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
+                        className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
                       >
-                        <span className="font-semibold">{getSocialTagLabelFromKey(tag.key, tag.label)}</span>
+                        <span className="font-medium">{cleanSocialLabel(tag.label) || tag.label}</span>
                       </SelectItem>
                     ))}
                 </SelectContent>
@@ -944,115 +853,6 @@ const AdminProducts = () => {
               data-testid="save-product-btn"
             >
               {selectedProduct ? "Salvar" : "Criar"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-            {/* Social Tags Manager */}
-      <Dialog open={socialTagsOpen} onOpenChange={setSocialTagsOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white w-[94vw] max-w-xl max-h-[85vh] overflow-y-auto overflow-x-hidden admin-modal-scroll p-6">
-          <DialogHeader>
-            <DialogTitle className="text-amber-200">Gerenciar Provas Sociais</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-4">
-            <div className="p-4 rounded-lg bg-black/30 border border-white/10">
-              <div className="text-sm text-gray-300 mb-3">Criar nova tag</div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="sm:col-span-2">
-                  <Label className="text-gray-400 text-xs">Nome</Label>
-                  <Input
-                    value={newSocialTag.label}
-                    onChange={(e) => setNewSocialTag((p) => ({ ...p, label: e.target.value }))}
-                    className="bg-black/50 border-amber-500/30 text-white"
-                    placeholder="Ex: Ideal para happy hour"
-                  />
-                </div>
-                <div className="flex items-end">
-                  <Button
-                    onClick={createSocialTag}
-                    className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black"
-                  >
-                    Criar
-                  </Button>
-                </div>
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                💡 Dica: use nomes curtos (ex: “Mais pedido da semana”).
-              </p>
-            </div>
-
-            <div>
-              <div className="text-sm text-gray-300 mb-2">Tags existentes</div>
-              <div className="space-y-2 max-h-[45vh] overflow-auto pr-2">
-                {socialTags.map((tag) => (
-                  <div
-                    key={tag.id}
-                    className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg bg-black/20 border border-white/10"
-                  >
-                    <Input
-                      value={tag.label || ""}
-                      onChange={(e) => updateSocialTag(tag.id, { label: e.target.value })}
-                      className="bg-black/40 border-amber-500/20 text-white"
-                    />
-                    <div className="flex items-center justify-between sm:justify-end gap-3">
-                      <label className="flex items-center gap-2 text-xs text-gray-300 select-none">
-                        <input
-                          type="checkbox"
-                          checked={tag.is_active !== false}
-                          onChange={(e) => updateSocialTag(tag.id, { is_active: e.target.checked })}
-                        />
-                        Ativa
-                      </label>
-
-                      <Button
-                        variant="outline"
-                        onClick={() => deleteSocialTag(tag.id)}
-                        disabled={tag.in_use}
-                        className="border-red-500/30 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
-                      >
-                        Remover
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-
-                {socialTags.length === 0 && (
-                  <div className="space-y-3">
-                    <div className="text-gray-500 text-sm">Nenhuma tag encontrada.</div>
-                    <div className="flex flex-wrap gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={fetchSocialTags}
-                        className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
-                      >
-                        Recarregar
-                      </Button>
-                      <Button
-                        onClick={seedDefaultSocialTags}
-                        className="bg-[#F59E0B] hover:bg-[#F97316] text-black"
-                      >
-                        Adicionar tags padrão
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <p className="text-xs text-gray-500 mt-2">
-                ⚠️ Não é possível remover uma tag que esteja em uso por algum produto.
-              </p>
-            </div>
-          </div>
-
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setSocialTagsOpen(false)}
-              className="border-gray-500 text-gray-300"
-            >
-              Fechar
             </Button>
           </DialogFooter>
         </DialogContent>

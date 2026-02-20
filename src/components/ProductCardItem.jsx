@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { Minus, Plus, ShoppingCart, Sparkles } from 'lucide-react';
-import { getSocialTagLabelFromKey } from '../lib/socialTags';
+import { SOCIAL_TAGS } from '../lib/socialTags';
 
 const ProductCardItem = React.memo(function ProductCardItem({
   product,
@@ -27,7 +27,13 @@ const ProductCardItem = React.memo(function ProductCardItem({
 }) {
   const isLitro = product.price_unit === 'litro';
   const totalPrice = product.price * quantity;
-  const socialLabel = product.social_tag ? getSocialTagLabelFromKey(product.social_tag) : null;
+
+  const socialLabel = (() => {
+    if (!product?.social_tag) return null;
+    const found = SOCIAL_TAGS.find(t => t.key === product.social_tag);
+    if (found?.label) return found.label;
+    return String(product.social_tag).replace(/_/g, ' ').trim();
+  })();
 
   return (
     <Card
@@ -48,21 +54,21 @@ const ProductCardItem = React.memo(function ProductCardItem({
           decoding="async"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        {(socialLabel || product.featured) && (
+        {socialLabel ? (
           <div className="absolute top-2 left-2">
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
-              {/* Se existir uma prova social, mostramos só texto (sem emoji). */}
-              {socialLabel ? (
-                socialLabel
-              ) : (
-                <>
-                  <Sparkles className="w-3 h-3" />
-                  Destaque
-                </>
-              )}
+              <Sparkles className="w-3 h-3" />
+              {socialLabel}
             </Badge>
           </div>
-        )}
+        ) : product.featured ? (
+          <div className="absolute top-2 left-2">
+            <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-xs px-2 py-1 flex items-center gap-1">
+              <Sparkles className="w-3 h-3" />
+              Destaque
+            </Badge>
+          </div>
+        ) : null}
         <div className="absolute top-2 right-2">
           <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold text-xs px-2 py-0.5">
             {categoryLabel}
