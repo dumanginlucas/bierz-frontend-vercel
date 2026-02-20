@@ -443,11 +443,11 @@ const Products = () => {
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0 [&>button[aria-label='Close']]:hidden">
-          {/* Close (sem barra extra; rola junto com o conteúdo) */}
-          <div className="flex justify-end px-3 pt-3">
+          {/* Close (sticky dentro do container que scrolla) */}
+          <div className="sticky top-2 z-50 flex justify-end px-2 pt-2">
             <button
               onClick={() => setModalOpen(false)}
-              className="h-10 w-10 rounded-full border border-amber-600/60 text-white flex items-center justify-center hover:bg-white/5 transition"
+              className="h-9 w-9 rounded-full border border-amber-600/60 text-white flex items-center justify-center hover:bg-white/5 transition"
               aria-label="Fechar"
             >
               ✕
