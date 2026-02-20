@@ -23,7 +23,6 @@ import {
 } from "../../components/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
-import { readSocialTags, writeSocialTags, slugifyTagKey } from "../../lib/socialTags";
 import { 
   Package, Plus, Edit, Trash2, Beer, 
   LayoutDashboard, ClipboardList, Users, LogOut,
@@ -31,6 +30,17 @@ import {
 } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
+
+// Tags padrão (fallback). Se o backend já semeou, isso só serve como “1 clique” para recriar.
+const DEFAULT_SOCIAL_TAGS = [
+  { key: "destaque", label: "Destaque" },
+  { key: "mais_vendidos", label: "Mais vendidos" },
+  { key: "mais_pedido_semana", label: "Mais pedido da semana" },
+  { key: "preferido_aniversarios", label: "Preferido para aniversários" },
+  { key: "preferido_churrascos", label: "Preferido para churrascos" },
+  { key: "perfeito_eventos", label: "Perfeito para eventos" },
+  { key: "escolha_da_casa", label: "Escolha da casa" },
+];
 
 const AdminProducts = () => {
   const { user, token, isAdmin, logout, loading: authLoading } = useAuth();
@@ -46,7 +56,11 @@ const AdminProducts = () => {
   const [filterCategory, setFilterCategory] = useState("todos");
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef(null);  const [formData, setFormData] = useState({
+  const fileInputRef = useRef(null);
+  const [socialTags, setSocialTags] = useState([]);
+  const [socialTagsOpen, setSocialTagsOpen] = useState(false);
+  const [newSocialTag, setNewSocialTag] = useState({ label: "" });
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     category: "",
@@ -64,11 +78,6 @@ const AdminProducts = () => {
     order: 0
   });
 
-  const [socialTags, setSocialTags] = useState(() => readSocialTags());
-  const [tagManagerOpen, setTagManagerOpen] = useState(false);
-  const [newTagLabel, setNewTagLabel] = useState("");
-  const [newTagKey, setNewTagKey] = useState("");
-
   // Remove emojis/símbolos no começo (ex: "✨ Destaque" => "Destaque")
   const cleanSocialLabel = (label) => {
     if (!label) return '';
@@ -79,12 +88,10 @@ const AdminProducts = () => {
 
   const getSocialTagLabel = (key) => {
     if (!key) return null;
-    const found = readSocialTags().find(t => t.key === key);
-    if (!found) return cleanSocialLabel(String(key).replace(/_/g, ' '));
+    const found = socialTags.find(t => t.key === key);
+    if (!found) return key;
     return cleanSocialLabel(found.label) || `${found.label}`;
   };
-
-  const enabledSocialTags = socialTags.filter(t => t.enabled !== false);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -95,19 +102,47 @@ const AdminProducts = () => {
   useEffect(() => {
     if (token && isAdmin) {
       fetchProducts();
-      fetchCategories();    }
+      fetchCategories();
+      fetchSocialTags();
+    }
   }, [token, isAdmin]);
 
-  useEffect(() => {
-    // Sync tags if localStorage changes (same browser / other tabs)
-    const onStorage = (e) => {
-      if (e.key === "bierz_social_tags_v1") setSocialTags(readSocialTags());
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
+  const fetchSocialTags = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/admin/social-tags`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSocialTags(res.data || []);
+    } catch (e) {
+      console.error('Error fetching social tags:', e);
+      toast.error('Não foi possível carregar as tags (prova social).');
+    }
+  };
 
+  const openSocialTagsManager = async () => {
+    setSocialTagsOpen(true);
+    await fetchSocialTags();
+  };
 
+  const seedDefaultSocialTags = async () => {
+    try {
+      for (const t of DEFAULT_SOCIAL_TAGS) {
+        try {
+          await axios.post(
+            `${API_URL}/api/admin/social-tags`,
+            { key: t.key, label: t.label, is_active: true },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (_) {
+          // Duplicadas: ignora
+        }
+      }
+      toast.success('Tags padrão adicionadas!');
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao adicionar tags padrão');
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -130,64 +165,6 @@ const AdminProducts = () => {
       console.error("Error fetching categories:", error);
     }
   };
-
-  // ---------- Social Tags (frontend-only) ----------
-  const persistTags = (next) => {
-    setSocialTags(next);
-    writeSocialTags(next);
-  };
-
-  const openTagManager = () => {
-    setSocialTags(readSocialTags());
-    setNewTagLabel("");
-    setNewTagKey("");
-    setTagManagerOpen(true);
-  };
-
-  const addTag = () => {
-    const label = String(newTagLabel || "").trim();
-    const key = slugifyTagKey(newTagKey || newTagLabel);
-    if (!label) return toast.error("Digite o nome da tag");
-    if (!key) return toast.error("Chave inválida");
-
-    const exists = socialTags.some(t => t.key === key);
-    if (exists) return toast.error("Já existe uma tag com essa chave");
-
-    persistTags([...socialTags, { key, label, enabled: true }]);
-    setNewTagLabel("");
-    setNewTagKey("");
-    toast.success("Tag criada");
-  };
-
-  const updateTagLabel = (key, label) => {
-    const next = socialTags.map(t => t.key === key ? { ...t, label: String(label || "").trim() } : t);
-    persistTags(next);
-  };
-
-  const toggleTagEnabled = (key) => {
-    const next = socialTags.map(t => t.key === key ? { ...t, enabled: t.enabled === false ? true : false } : t);
-    persistTags(next);
-  };
-
-  const deleteTag = (key) => {
-    // Only delete from list; products that already use it will keep the string saved.
-    const next = socialTags.filter(t => t.key !== key);
-    persistTags(next.length ? next : []);
-    // If currently selected in form, clear it
-    if (formData.social_tag === key) setFormData({ ...formData, social_tag: "" });
-    toast.success("Tag removida");
-  };
-
-  const restoreDefaultTags = () => {
-    // Clearing storage makes it fallback to defaults
-    try { window.localStorage.removeItem("bierz_social_tags_v1"); } catch {}
-    const next = readSocialTags();
-    setSocialTags(next);
-    toast.success("Tags padrão restauradas");
-  };
-  // -----------------------------------------------
-
-
 
   const handleLogout = () => {
     logout();
@@ -231,10 +208,55 @@ const AdminProducts = () => {
       ibu: product.ibu ? product.ibu.toString() : "",
       stock: product.stock.toString(),
       is_active: product.is_active,
-      social_tag: product.social_tag || '',
+      social_tag: product.social_tag || (product.featured ? 'destaque' : ''),
       order: product.order || 0
     });
     setDialogOpen(true);
+  };
+
+  const createSocialTag = async () => {
+    try {
+      const payload = {
+        key: (newSocialTag.label || '').trim(),
+        label: (newSocialTag.label || '').trim(),
+        is_active: true
+      };
+      if (!payload.label) {
+        toast.error('Informe o nome da tag');
+        return;
+      }
+      await axios.post(`${API_URL}/api/admin/social-tags`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Tag criada!');
+      setNewSocialTag({ label: "" });
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao criar tag');
+    }
+  };
+
+  const updateSocialTag = async (tagId, updates) => {
+    try {
+      await axios.put(`${API_URL}/api/admin/social-tags/${tagId}`, updates, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao atualizar tag');
+    }
+  };
+
+  const deleteSocialTag = async (tagId) => {
+    try {
+      await axios.delete(`${API_URL}/api/admin/social-tags/${tagId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Tag removida');
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao remover tag');
+    }
   };
 
   // Image Upload Handler
@@ -326,6 +348,7 @@ const AdminProducts = () => {
         is_active: formData.is_active,
         social_tag: formData.social_tag ? formData.social_tag : null,
         // Compat: backend sincroniza, mas enviamos featured coerente também
+        featured: formData.social_tag === 'destaque',
         order: orderValue  // ✅ Sempre será um número válido (0 ou maior)
       };
 
@@ -521,9 +544,9 @@ const AdminProducts = () => {
                   alt={product.name}
                   className="w-full h-full object-cover rounded-t-lg"
                 />
-                {(product.social_tag) && (
+                {(product.social_tag || product.featured) && (
                   <Badge className="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold">
-                    {getSocialTagLabel(product.social_tag || '') || 'Destaque'}
+                    {getSocialTagLabel(product.social_tag || (product.featured ? 'destaque' : '')) || '⭐ Destaque'}
                   </Badge>
                 )}
                 {!product.is_active && (
@@ -880,11 +903,19 @@ const AdminProducts = () => {
             </div>
 
             <div className="mt-4">
-              <div className="mb-2">
+              <div className="flex items-center justify-between mb-2">
                 <Label className="text-gray-300">Prova social (opcional)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={openSocialTagsManager}
+                  className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+                >
+                  Gerenciar
+                </Button>
               </div>
               <Select
-                value={formData.social_tag ? formData.social_tag : "__none"}
+                value={formData.social_tag || ""}
                 onValueChange={(value) => setFormData({ ...formData, social_tag: value === "__none" ? "" : value })}
               >
                 <SelectTrigger className="bg-black/50 border-[#F59E0B]/30 text-white">
@@ -897,14 +928,11 @@ const AdminProducts = () => {
                   >
                     Nenhuma
                   </SelectItem>
-                  {formData.social_tag && !enabledSocialTags.some(t => t.key === formData.social_tag) && (
-                    <SelectItem value={formData.social_tag} className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white">
-                      <span className="font-medium">{getSocialTagLabel(formData.social_tag) || cleanSocialLabel(formData.social_tag.replace(/_/g, " "))} (desativada)</span>
-                    </SelectItem>
-                  )}
-                  {enabledSocialTags.map((tag) => (
+                  {socialTags
+                    .filter(t => t.is_active)
+                    .map((tag) => (
                       <SelectItem
-                        key={tag.key}
+                        key={tag.id}
                         value={tag.key}
                         className="text-white data-[highlighted]:bg-amber-500/20 data-[highlighted]:text-white"
                       >
@@ -916,11 +944,6 @@ const AdminProducts = () => {
               <p className="text-xs text-gray-500 mt-1">
                 💡 Apenas 1 por produto. Use para destacar (ex: “Mais pedido da semana”).
               </p>
-              <div className="mt-2">
-                <Button type="button" variant="outline" onClick={openTagManager} className="border-amber-500/40 text-amber-200 hover:bg-amber-500/10">
-                  Gerenciar tags
-                </Button>
-              </div>
             </div>
           </div>
           <DialogFooter>
@@ -937,6 +960,115 @@ const AdminProducts = () => {
               data-testid="save-product-btn"
             >
               {selectedProduct ? "Salvar" : "Criar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+            {/* Social Tags Manager */}
+      <Dialog open={socialTagsOpen} onOpenChange={setSocialTagsOpen}>
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white w-[94vw] max-w-xl max-h-[85vh] overflow-y-auto overflow-x-hidden admin-modal-scroll p-6">
+          <DialogHeader>
+            <DialogTitle className="text-amber-200">Gerenciar Provas Sociais</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="p-4 rounded-lg bg-black/30 border border-white/10">
+              <div className="text-sm text-gray-300 mb-3">Criar nova tag</div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-2">
+                  <Label className="text-gray-400 text-xs">Nome</Label>
+                  <Input
+                    value={newSocialTag.label}
+                    onChange={(e) => setNewSocialTag((p) => ({ ...p, label: e.target.value }))}
+                    className="bg-black/50 border-amber-500/30 text-white"
+                    placeholder="Ex: Ideal para happy hour"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <Button
+                    onClick={createSocialTag}
+                    className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black"
+                  >
+                    Criar
+                  </Button>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                💡 Dica: use nomes curtos (ex: “Mais pedido da semana”).
+              </p>
+            </div>
+
+            <div>
+              <div className="text-sm text-gray-300 mb-2">Tags existentes</div>
+              <div className="space-y-2 max-h-[45vh] overflow-auto pr-2">
+                {socialTags.map((tag) => (
+                  <div
+                    key={tag.id}
+                    className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg bg-black/20 border border-white/10"
+                  >
+                    <Input
+                      value={tag.label || ""}
+                      onChange={(e) => updateSocialTag(tag.id, { label: e.target.value })}
+                      className="bg-black/40 border-amber-500/20 text-white"
+                    />
+                    <div className="flex items-center justify-between sm:justify-end gap-3">
+                      <label className="flex items-center gap-2 text-xs text-gray-300 select-none">
+                        <input
+                          type="checkbox"
+                          checked={tag.is_active !== false}
+                          onChange={(e) => updateSocialTag(tag.id, { is_active: e.target.checked })}
+                        />
+                        Ativa
+                      </label>
+
+                      <Button
+                        variant="outline"
+                        onClick={() => deleteSocialTag(tag.id)}
+                        disabled={tag.in_use}
+                        className="border-red-500/30 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
+                      >
+                        Remover
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                {socialTags.length === 0 && (
+                  <div className="space-y-3">
+                    <div className="text-gray-500 text-sm">Nenhuma tag encontrada.</div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={fetchSocialTags}
+                        className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+                      >
+                        Recarregar
+                      </Button>
+                      <Button
+                        onClick={seedDefaultSocialTags}
+                        className="bg-[#F59E0B] hover:bg-[#F97316] text-black"
+                      >
+                        Adicionar tags padrão
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <p className="text-xs text-gray-500 mt-2">
+                ⚠️ Não é possível remover uma tag que esteja em uso por algum produto.
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setSocialTagsOpen(false)}
+              className="border-gray-500 text-gray-300"
+            >
+              Fechar
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -966,97 +1098,6 @@ const AdminProducts = () => {
               data-testid="confirm-delete-btn"
             >
               Excluir
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Social Tags Manager (frontend-only) */}
-      <Dialog open={tagManagerOpen} onOpenChange={setTagManagerOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-amber-300">Gerenciar tags de prova social</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-4">
-            <div className="p-3 rounded-lg bg-black/30 border border-amber-500/20">
-              <div className="text-sm text-gray-300 mb-2">Criar nova tag</div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <Input
-                  value={newTagLabel}
-                  onChange={(e) => {
-                    setNewTagLabel(e.target.value);
-                    if (!newTagKey) setNewTagKey(slugifyTagKey(e.target.value));
-                  }}
-                  placeholder="Nome (ex: Mais pedido)"
-                  className="bg-black/50 border-amber-500/30 text-white"
-                />
-                <Input
-                  value={newTagKey}
-                  onChange={(e) => setNewTagKey(e.target.value)}
-                  placeholder="Chave (ex: mais_pedido)"
-                  className="bg-black/50 border-amber-500/30 text-white"
-                />
-                <Button onClick={addTag} className="bg-[#F59E0B] hover:bg-[#F97316] text-black">
-                  Criar
-                </Button>
-              </div>
-              <div className="text-xs text-gray-500 mt-2">
-                ⚠️ Essas tags ficam salvas no navegador (localStorage). Se você usar outro computador/navegador, precisa recriar ou copiar as tags.
-              </div>
-            </div>
-
-            <div className="p-3 rounded-lg bg-black/30 border border-amber-500/20">
-              <div className="flex items-center justify-between mb-2">
-                <div className="text-sm text-gray-300">Tags existentes</div>
-                <Button variant="outline" onClick={restoreDefaultTags} className="border-amber-500/40 text-amber-200 hover:bg-amber-500/10">
-                  Restaurar padrão
-                </Button>
-              </div>
-
-              <div className="space-y-2 max-h-[45vh] overflow-auto pr-1">
-                {socialTags.map((t) => (
-                  <div key={t.key} className="flex items-center gap-2 p-2 rounded-md bg-black/40 border border-white/5">
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs text-gray-500 truncate">{t.key}</div>
-                      <Input
-                        value={t.label}
-                        onChange={(e) => updateTagLabel(t.key, e.target.value)}
-                        className="bg-black/50 border-amber-500/20 text-white h-9"
-                      />
-                    </div>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => toggleTagEnabled(t.key)}
-                      className="border-gray-500/40 text-gray-200 hover:bg-white/5"
-                      title={t.enabled === false ? "Ativar" : "Desativar"}
-                    >
-                      {t.enabled === false ? "Ativar" : "Desativar"}
-                    </Button>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => deleteTag(t.key)}
-                      className="border-red-500/40 text-red-200 hover:bg-red-500/10"
-                      title="Apagar"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                ))}
-                {!socialTags.length && (
-                  <div className="text-sm text-gray-400">Nenhuma tag cadastrada.</div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setTagManagerOpen(false)} className="border-gray-500 text-gray-300">
-              Fechar
             </Button>
           </DialogFooter>
         </DialogContent>
