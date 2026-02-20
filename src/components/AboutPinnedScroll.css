@@ -31,9 +31,8 @@
 }
 
 .aboutPinnedSticky{
-  position: sticky;
-  top: 86px;
   padding: 0 18px;
+  width: 100%;
 }
 
 .aboutPinnedHeader{

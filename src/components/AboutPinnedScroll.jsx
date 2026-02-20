@@ -8,8 +8,11 @@ import './AboutPinnedScroll.css';
  */
 export default function AboutPinnedScroll() {
   const sectionRef = useRef(null);
+  const innerRef = useRef(null);
   const rafRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const [layout, setLayout] = useState({ heightPx: 0, topPx: 86, innerHeightPx: 0 });
+  const [pinState, setPinState] = useState('before');
 
   const screens = useMemo(
     () => [
@@ -45,32 +48,56 @@ export default function AboutPinnedScroll() {
     []
   );
 
-  // altura extra para o pinned funcionar
-  const sectionHeightVh = screens.length * 90 + 40; // ex.: 4 telas => 400vh aprox.
+  // altura total (em px) para o "pinned" funcionar com 1 estágio por tela.
+  // Isso evita criar um espaço gigante e mantém o scroll fluido.
+  const stages = screens.length;
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
 
-    const compute = () => {
-      const rect = el.getBoundingClientRect();
+    const calcLayout = () => {
       const vh = Math.max(window.innerHeight || 0, 1);
-      const total = Math.max(el.offsetHeight - vh, 1);
+      // altura total da seção: (stages + 1) * viewport
+      // +1 dá respiro para entrar/sair sem "pulo".
+      const heightPx = vh * (stages + 1);
+      // tenta ler o header do site (se existir) para não colar no topo.
+      const header = document.querySelector('header');
+      const headerH = header ? header.getBoundingClientRect().height : 0;
+      const topPx = Math.max(74, Math.min(96, Math.round(headerH + 18)));
 
-      // quanto já "andou" dentro da seção
-      const traveled = Math.min(Math.max(-rect.top, 0), total);
-      const p = traveled / total;
+      // altura real do conteúdo interno (para "assentar" ao final)
+      const inner = innerRef.current;
+      const innerHeightPx = inner ? inner.getBoundingClientRect().height : 0;
 
+      setLayout({ heightPx, topPx, innerHeightPx });
+    };
+
+    const compute = () => {
+      const vh = Math.max(window.innerHeight || 0, 1);
+      const start = el.offsetTop;
+      const end = start + Math.max(layout.heightPx - vh, 1);
+      const y = window.scrollY;
+
+      if (y < start) setPinState('before');
+      else if (y > end) setPinState('after');
+      else setPinState('pinned');
+
+      const p = Math.min(Math.max((y - start) / Math.max(end - start, 1), 0), 1);
       setProgress(p);
+
       rafRef.current = requestAnimationFrame(compute);
     };
 
+    calcLayout();
+    window.addEventListener('resize', calcLayout);
     rafRef.current = requestAnimationFrame(compute);
 
     return () => {
+      window.removeEventListener('resize', calcLayout);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [layout.heightPx, layout.topPx, stages]);
 
   const activeFloat = progress * (screens.length - 1);
 
@@ -78,7 +105,7 @@ export default function AboutPinnedScroll() {
     const el = sectionRef.current;
     if (!el) return;
     const vh = Math.max(window.innerHeight || 0, 1);
-    const total = Math.max(el.offsetHeight - vh, 1);
+    const total = Math.max(layout.heightPx - vh, 1);
     const target =
       el.getBoundingClientRect().top +
       window.scrollY +
@@ -91,13 +118,27 @@ export default function AboutPinnedScroll() {
       id="about"
       ref={sectionRef}
       className="aboutPinnedSection"
-      style={{ minHeight: `${sectionHeightVh}vh` }}
+      style={{ height: `${layout.heightPx}px` }}
       aria-label="Sobre a Bierz"
     >
       {/* marcador de versão (para você validar no deploy) */}
-      <span className="sr-only">BIERZ_ABOUT_PINNED_V12</span>
+      <span className="sr-only">BIERZ_ABOUT_PINNED_V13</span>
 
-      <div className="aboutPinnedSticky">
+      <div
+        ref={innerRef}
+        className={`aboutPinnedSticky is-${pinState}`}
+        style={{
+          position: pinState === 'pinned' ? 'fixed' : 'absolute',
+          top:
+            pinState === 'pinned'
+              ? `${layout.topPx}px`
+              : pinState === 'before'
+                ? '0px'
+                : `${Math.max(layout.heightPx - layout.innerHeightPx, 0)}px`,
+          left: 0,
+          right: 0,
+        }}
+      >
         <div className="aboutPinnedHeader">
           <h2 className="aboutPinnedTitle">
             Sobre a <span className="bierzGradientText">BIERZ</span>
