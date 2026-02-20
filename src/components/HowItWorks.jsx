@@ -1,170 +1,224 @@
-import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
-import {
-  Calculator,
-  Beer,
-  GitCompare,
-  MapPin,
-  ArrowRight,
-} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Calculator, Beer, Zap, MapPin, ArrowRight } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const HowItWorks = () => {
+const scrollToId = (id) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+export default function HowItWorks() {
   const [active, setActive] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const steps = useMemo(
     () => [
       {
         id: 1,
-        badge: "Passo 1",
-        title: "Calcule quantos litros\n de chopp você precisa",
-        description: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
+        kicker: "Comece aqui",
+        titleFront: "Calcule quantos litros\nde chopp você precisa",
         icon: Calculator,
+        frontLayout: "invert",
+        backTitle: "Calcule em segundos",
+        backText:
+          "Use nossa calculadora para estimar a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
         action: () => {
-          const el = document.getElementById("calculator");
-          el?.scrollIntoView({ behavior: "smooth" });
-          // opcional: foco no primeiro input depois do scroll
+          // se não estiver na home, navega antes
+          if (location.pathname !== "/") {
+            navigate("/", { state: { scrollTo: "calculator" } });
+            return;
+          }
+          scrollToId("calculator");
+          // tenta focar no primeiro input da calculadora
           setTimeout(() => {
-            const input = el?.querySelector("input");
-            input?.focus?.();
-          }, 450);
+            const firstInput = document.querySelector(
+              "#calculator input, #calculator select, #calculator textarea"
+            );
+            if (firstInput) firstInput.focus();
+          }, 350);
         },
       },
       {
         id: 2,
-        badge: "Passo 2",
-        title: "Escolha o chopp\n da vez",
-        description: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
+        kicker: "Escolha seu chopp",
+        titleFront: "Escolha o chopp\nda vez",
         icon: Beer,
-        cta: "Escolher chopp",
+        backTitle: "Monte seu carrinho",
+        backText:
+          "Selecione seus estilos preferidos e adicione ao carrinho com poucos cliques.",
+        cta: "Ver produtos",
         action: () => {
-          document.getElementById("products")?.scrollIntoView({ behavior: "smooth" });
+          if (location.pathname !== "/") {
+            navigate("/", { state: { scrollTo: "products" } });
+            return;
+          }
+          scrollToId("products");
         },
       },
       {
         id: 3,
-        badge: "Passo 3",
-        title: "Chopeira elétrica\n ou HomeBar?",
-        description: "Compare as opções e escolha o equipamento ideal para o seu evento.",
-        icon: GitCompare,
-        cta: "Ver equipamentos",
+        kicker: "Defina o equipamento",
+        titleFront: "Chopeira elétrica\nou HomeBar?",
+        icon: Zap,
+        backTitle: "Escolha o ideal",
+        backText:
+          "Compare as opções e selecione o equipamento perfeito para o seu evento.",
+        cta: "Ver opções",
         action: () => {
-          document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+          if (location.pathname !== "/") {
+            navigate("/", { state: { scrollTo: "about" } });
+            return;
+          }
+          // usa a seção "about" como destino padrão (onde costuma estar a explicação)
+          scrollToId("about");
         },
       },
       {
         id: 4,
-        badge: "Passo 4",
-        title: "Local do Evento",
-        description:
-          "Entregamos, instalamos e retiramos no horário programado.",
+        kicker: "Local do evento",
+        titleFront: "Local do Evento",
+        subtitleFront:
+          "Entregamos, instalamos e retiramos\nno horário programado.",
         icon: MapPin,
+        backTitle: "Finalize o pedido",
+        backText:
+          "Revise seu carrinho e conclua o pedido. Se preferir, confirme detalhes pelo WhatsApp.",
         cta: "Finalizar pedido",
         action: () => navigate("/carrinho"),
       },
     ],
-    [navigate]
+    [location.pathname, navigate]
   );
 
-  const onEnter = (id) => setActive(id);
-  const onToggle = (id) => setActive((prev) => (prev === id ? null : id));
+  // mobile: tocar alterna o card
+  const handleActivate = (id) => {
+    setActive((prev) => (prev === id ? null : id));
+  };
+
+  // desktop: hover ativa
+  const handleMouseEnter = (id) => {
+    // evita "piscar" em touch devices com emulação
+    if (window.matchMedia?.("(hover: hover)")?.matches) setActive(id);
+  };
+
+  useEffect(() => {
+    // se o usuário scrollar muito, fecha o flip
+    const onScroll = () => {
+      if (window.scrollY > 900 && active !== null) setActive(null);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [active]);
 
   return (
     <section
       id="how-it-works"
-      className="pt-36 pb-16 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden"
+      className="relative overflow-hidden bg-black pt-32 md:pt-36 pb-16"
     >
-      {/* soft background glow */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-[#F59E0B] rounded-full blur-3xl" />
+      {/* soft glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#F59E0B]/10 blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-10">
-          <p className="text-gray-400 text-sm tracking-wide">
-            Bierz Distribuidora
-          </p>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mt-2">
-            Como funciona
-          </h1>
-          <p className="text-gray-300 mt-3 text-base md:text-lg">
-            Em 4 passos você finaliza seu pedido e garante seu evento.
+      <div className="container mx-auto px-4">
+        {/* Title */}
+        <div className="mx-auto max-w-5xl text-center">
+          <div className="text-base sm:text-lg font-semibold tracking-wide text-white/90">
+            <span className="mr-2">Distribuidora</span>
+            <span className="hiw-gradient font-extrabold">BIERZ</span>
+          </div>
+
+          <p className="mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight sm:whitespace-nowrap">
+            Como funciona <span className="text-white/70 font-semibold">—</span>{" "}
+            <span className="text-white/90 font-semibold text-lg sm:text-xl md:text-2xl align-middle">
+              Em 4 passos você finaliza seu pedido e garante seu evento.
+            </span>
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Cards */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {steps.map((s) => {
             const Icon = s.icon;
             const flipped = active === s.id;
-
             return (
               <div
                 key={s.id}
-                className={`flip-card h-[320px] sm:h-[340px] lg:h-[360px] rounded-3xl ${
-                  flipped ? "is-flipped" : ""
-                }`}
-                onMouseEnter={() => onEnter(s.id)}
-                onClick={() => onToggle(s.id)}
+                className={`hiw-card ${flipped ? "hiw-flipped" : ""}`}
+                onMouseEnter={() => handleMouseEnter(s.id)}
+                onClick={() => handleActivate(s.id)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") onToggle(s.id);
+                  if (e.key === "Enter" || e.key === " ") handleActivate(s.id);
                 }}
               >
-                <div className="flip-inner rounded-3xl">
+                <div className="hiw-inner">
                   {/* FRONT */}
-                  <div className="flip-face rounded-3xl">
-                    <div className="h-full rounded-3xl bg-gradient-to-br from-white/8 to-white/[0.02] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.45)] p-6 flex flex-col">
-                      <div className="flex items-center justify-between">
-                        <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-[#F59E0B]" />
+                  <div className="hiw-face hiw-front">
+                    <div className="hiw-shell">
+                      <div
+                        className={`flex items-start justify-between gap-4 ${
+                          s.frontLayout === "invert" ? "flex-row-reverse" : ""
+                        }`}
+                      >
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-white/70">
+                            {s.kicker}
+                          </div>
+                          <div className="mt-3 whitespace-pre-line text-xl md:text-2xl font-extrabold text-white leading-snug">
+                            {s.titleFront}
+                          </div>
+                          {s.subtitleFront && (
+                            <div className="mt-3 whitespace-pre-line text-sm md:text-base text-white/70 leading-relaxed">
+                              {s.subtitleFront}
+                            </div>
+                          )}
                         </div>
-                        <span className="text-xs text-gray-300 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
-                          {s.badge}
-                        </span>
+
+                        <div className="hiw-iconWrap">
+                          <div className="hiw-icon">
+                            <Icon className="h-7 w-7" />
+                          </div>
+                          <div className="hiw-badge">{s.id}</div>
+                        </div>
                       </div>
 
-                      <h3 className="text-white font-bold text-xl mt-6 leading-snug whitespace-pre-line text-left">
-                        {s.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm mt-3 leading-relaxed text-left">
-                        {s.description}
-                      </p>
-
-                      <div className="mt-auto" />
+                      <div className="mt-8 hiw-visual" aria-hidden="true">
+                        <div className="hiw-visualInner" />
+                      </div>
                     </div>
                   </div>
 
                   {/* BACK */}
-                  <div className="flip-face flip-back rounded-3xl">
-                    <div className="h-full rounded-3xl bg-gradient-to-br from-white/10 to-white/[0.03] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.45)] p-6 flex flex-col">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-[#F59E0B]" />
+                  <div className="hiw-face hiw-back">
+                    <div className="hiw-shell">
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-semibold text-white/70">
+                          {s.kicker}
                         </div>
-                        <div className="text-left">
-                          <p className="text-xs text-gray-300">{s.badge}</p>
-                          <p className="text-white font-semibold leading-tight">
-                            {s.id === 4 ? "Vamos fechar?" : "Próximo passo"}
-                          </p>
-                        </div>
+                        <div className="hiw-badge">{s.id}</div>
                       </div>
 
-                      {/* placeholder para imagem futura */}
-                      <div className="mt-6 flex-1 rounded-2xl bg-gradient-to-br from-black/40 to-white/[0.04] border border-white/10" />
+                      <div className="mt-4 text-2xl font-extrabold text-white">
+                        {s.backTitle}
+                      </div>
+                      <div className="mt-3 text-sm md:text-base text-white/70 leading-relaxed">
+                        {s.backText}
+                      </div>
 
-                      <Button
+                      <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           s.action();
                         }}
-                        className="mt-6 w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold py-6"
+                        className="mt-8 w-full rounded-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-extrabold py-3.5 flex items-center justify-center gap-2 transition"
                       >
-                        {s.cta}
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
+                        {s.cta} <ArrowRight className="h-5 w-5" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -175,6 +229,4 @@ const HowItWorks = () => {
       </div>
     </section>
   );
-};
-
-export default HowItWorks;
+}

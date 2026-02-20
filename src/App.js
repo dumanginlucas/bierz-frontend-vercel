@@ -4,6 +4,7 @@ import "@/App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { Toaster } from "./components/ui/sonner";
+import AgeVerificationModal from "./components/AgeVerificationModal";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -27,6 +28,7 @@ function App() {
       <CartProvider>
         <Router>
           <div className="App">
+            <AgeVerificationModal />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
