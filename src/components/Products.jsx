@@ -110,7 +110,6 @@ const Products = () => {
     return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
   });
 
-	});
 
   const handleAddToCart = (product) => {
     const quantity = quantities[product.id] || 1;
