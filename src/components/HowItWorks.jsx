@@ -46,7 +46,7 @@ const HowItWorks = () => {
       },
       {
         id: 4,
-        kicker: "Local do evento",
+        kicker: "Preencha os dados e finalize",
         title: "Entregamos, instalamos e retiramos",
         desc: "Finalize o pedido e combinamos data, horário e endereço pelo carrinho ou WhatsApp.",
         cta: "Finalizar pedido",
@@ -65,7 +65,7 @@ const HowItWorks = () => {
   return (
     <section
       id="how-it-works"
-      className="pt-28 pb-10 bg-black relative overflow-hidden"
+      className="pt-36 pb-10 bg-black relative overflow-visible how-hero"
     >
       <div className="absolute inset-0 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.25)_0%,rgba(0,0,0,0)_55%)]" />
       <div className="container mx-auto px-4">

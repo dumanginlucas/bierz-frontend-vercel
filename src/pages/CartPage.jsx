@@ -10,7 +10,9 @@ import { Trash2, Plus, Minus, ShoppingCart, ArrowRight, Truck, Gift } from "luci
 
 const CartPage = () => {
   const { 
-    items, 
+    items,
+    equipment,
+    clearEquipment,
     removeItem, 
     updateQuantity, 
     getTotal,
@@ -53,6 +55,25 @@ const CartPage = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
             Seu <span className="text-[#F59E0B]">Carrinho</span>
           </h1>
+
+          {equipment && (
+            <Card className="mb-6 bg-black/40 border border-amber-500/20 rounded-2xl p-4">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <div className="text-sm text-gray-300">Equipamento selecionado</div>
+                  <div className="text-lg font-semibold text-white">{equipment.name}</div>
+                </div>
+                <Button
+                  variant="outline"
+                  className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+                  onClick={clearEquipment}
+                >
+                  Remover
+                </Button>
+              </div>
+            </Card>
+          )}
+
 
           {/* Free Delivery Banner */}
           {hasChoppItems() && (

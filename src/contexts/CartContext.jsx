@@ -17,14 +17,9 @@ export const CartProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [orderDetails, setOrderDetailsState] = useState(() => {
-    const saved = localStorage.getItem('bierz_order_details');
-    return saved ? JSON.parse(saved) : {
-      delivery_address: "",
-      address_complement: "",
-      event_date: "",
-      event_time: ""
-    };
+  const [equipment, setEquipment] = useState(() => {
+    const saved = localStorage.getItem('bierz_equipment');
+    return saved ? JSON.parse(saved) : null;
   });
 
   useEffect(() => {
@@ -32,8 +27,8 @@ export const CartProvider = ({ children }) => {
   }, [items]);
 
   useEffect(() => {
-    localStorage.setItem('bierz_order_details', JSON.stringify(orderDetails));
-  }, [orderDetails]);
+    localStorage.setItem('bierz_equipment', JSON.stringify(equipment));
+  }, [equipment]);
 
   const addItem = (product, quantity, size) => {
     setItems(prev => {
@@ -84,22 +79,19 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setItems([]);
+    setEquipment(null);
     localStorage.removeItem('bierz_cart');
+    localStorage.removeItem('bierz_equipment');
   };
 
-  const setOrderDetails = (details) => {
-    setOrderDetailsState(prev => ({ ...prev, ...details }));
+  const chooseEquipment = (equip) => {
+    setEquipment(equip);
+    toast.success(`Equipamento selecionado: ${equip?.name || ''}`.trim());
   };
 
-  const clearOrderDetails = () => {
-    const cleared = {
-      delivery_address: "",
-      address_complement: "",
-      event_date: "",
-      event_time: ""
-    };
-    setOrderDetailsState(cleared);
-    localStorage.setItem('bierz_order_details', JSON.stringify(cleared));
+  const clearEquipment = () => {
+    setEquipment(null);
+    toast.success('Equipamento removido');
   };
 
   const getTotal = () => {
@@ -154,13 +146,13 @@ export const CartProvider = ({ children }) => {
 
   const value = {
     items,
-    orderDetails,
-    setOrderDetails,
-    clearOrderDetails,
+    equipment,
     addItem,
     removeItem,
     updateQuantity,
     clearCart,
+    chooseEquipment,
+    clearEquipment,
     getTotal,
     getItemCount,
     getTotalQuantity,

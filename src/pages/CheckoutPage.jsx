@@ -36,8 +36,6 @@ const CheckoutPage = () => {
   const [orderId, setOrderId] = useState(null);
   const [formData, setFormData] = useState({
     delivery_address: user?.address || "",
-    event_date: "",
-    event_time: "",
     notes: ""
   });
 
@@ -65,19 +63,20 @@ const CheckoutPage = () => {
 
     try {
       const orderData = {
+        equipment: equipment ? equipment.id : null,
         items: items.map(item => ({
           product_id: item.product_id,
           quantity: item.quantity,
           size: item.size
         })),
         delivery_address: formData.delivery_address,
-        notes: [
-          formData.event_date ? `Data do evento: ${formData.event_date}` : null,
-          formData.event_time ? `Horário do evento: ${formData.event_time}` : null,
-          formData.notes?.trim() ? formData.notes.trim() : null,
-        ]
-          .filter(Boolean)
-          .join("\n")
+        notes: `${formData.notes || ''}${equipment ? `
+
+Equipamento: ${equipment.name}` : ''}${formData.event_date || formData.event_time || formData.event_address ? `
+
+Local do evento: ${formData.event_address || ''}
+Data: ${formData.event_date || ''}
+Horário: ${formData.event_time || ''}` : ''}`.trim()
       };
 
       const response = await axios.post(`${API_URL}/api/orders`, orderData, {
@@ -154,7 +153,7 @@ const CheckoutPage = () => {
                 <Card className="bg-black/50 border-[#F59E0B]/30 p-6 mb-6">
                   <h2 className="text-xl font-bold text-white mb-4 flex items-center">
                     <MapPin className="w-5 h-5 mr-2 text-[#F59E0B]" />
-                    Local do Evento
+                    Endereço de Entrega
                   </h2>
                   <div className="space-y-4">
                     <div>
@@ -170,35 +169,6 @@ const CheckoutPage = () => {
                         required
                         data-testid="delivery-address"
                       />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="event_date" className="text-gray-200">
-                          Data do evento (opcional)
-                        </Label>
-                        <Input
-                          id="event_date"
-                          type="date"
-                          value={formData.event_date}
-                          onChange={(e) => setFormData({ ...formData, event_date: e.target.value })}
-                          className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
-                          data-testid="event-date"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="event_time" className="text-gray-200">
-                          Horário do evento (opcional)
-                        </Label>
-                        <Input
-                          id="event_time"
-                          type="time"
-                          value={formData.event_time}
-                          onChange={(e) => setFormData({ ...formData, event_time: e.target.value })}
-                          className="bg-gray-900/50 border-[#F59E0B]/30 text-white placeholder-gray-500 focus:border-[#F59E0B]"
-                          data-testid="event-time"
-                        />
-                      </div>
                     </div>
                   </div>
                 </Card>

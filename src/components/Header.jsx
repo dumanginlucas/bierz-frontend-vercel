@@ -104,7 +104,7 @@ const Header = () => {
               onClick={() => scrollToSection('services')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
-              Serviço
+              Equipamentos
             </button>
             <button
               onClick={() => scrollToSection('calculator')}
@@ -257,7 +257,7 @@ const Header = () => {
                 onClick={() => scrollToSection('services')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
-                Serviço
+                Equipamentos
               </button>
               <button
                 onClick={() => scrollToSection('calculator')}
