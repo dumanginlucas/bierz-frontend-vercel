@@ -442,15 +442,17 @@ const Products = () => {
 
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="relative bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0 [&>button[aria-label='Close']]:hidden">
           {/* Close (sem barra extra; rola junto com o conteúdo) */}
-          <button
-            onClick={() => setModalOpen(false)}
-            className="absolute right-3 top-3 z-10 h-10 w-10 rounded-full border border-amber-600/60 text-white flex items-center justify-center hover:bg-white/5 transition"
-            aria-label="Fechar"
-          >
-            ✕
-          </button>
+          <div className="flex justify-end px-3 pt-3">
+            <button
+              onClick={() => setModalOpen(false)}
+              className="h-10 w-10 rounded-full border border-amber-600/60 text-white flex items-center justify-center hover:bg-white/5 transition"
+              aria-label="Fechar"
+            >
+              ✕
+            </button>
+          </div>
           {selectedProduct && (() => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
