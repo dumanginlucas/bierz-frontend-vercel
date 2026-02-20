@@ -19,8 +19,6 @@ import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
 import { Beer, Wine, Star, Snowflake, Zap, CupSoda, ShoppingCart, GlassWater, Plus, Minus, Truck, Sparkles } from 'lucide-react';
 import ProductSkeleton from './ProductSkeleton';
-import TapListChopp from './TapListChopp';
-import TapListDrawer from './TapListDrawer';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -34,7 +32,6 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImageAnim, setModalImageAnim] = useState(false);
-	const [tapListOpen, setTapListOpen] = useState(false);
   const { addItem } = useCart();
 
   // Animação da imagem no modal (fade + scale) — garante que a imagem não fique presa em opacity-0
@@ -112,28 +109,10 @@ const Products = () => {
     return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
   });
 
-	// Tap List (sempre baseado em CHOPP)
-	const choppProducts = products.filter(p => p.category === 'chopp');
-	const sortedChoppProducts = [...choppProducts].sort((a, b) => {
-	  const orderA = (a.order && a.order > 0) ? a.order : 9999;
-	  const orderB = (b.order && b.order > 0) ? b.order : 9999;
-	  if (orderA !== orderB) return orderA - orderB;
-	  if (a.featured !== b.featured) return a.featured ? -1 : 1;
-	  return (a.name ?? "").localeCompare(b.name ?? "", "pt-BR");
-	});
-
   const handleAddToCart = (product) => {
     const quantity = quantities[product.id] || 1;
     const size = selectedSizes[product.id] || product.sizes[0];
     addItem(product, quantity, size);
-  };
-
-  // Tap List: adicionar rápido (litros) sem abrir modal
-  const handleQuickAddLitros = (product, litros) => {
-    const safeLitros = Math.max(20, Number(litros) || 20);
-    const size = selectedSizes[product.id] || product.sizes[0];
-    setQuantities(prev => ({ ...prev, [product.id]: safeLitros }));
-    addItem(product, safeLitros, size);
   };
 
   const updateQuantity = (productId, delta, isLitro) => {
@@ -206,28 +185,6 @@ const Products = () => {
             Oferecemos uma ampla variedade de produtos gelados para tornar seu evento inesquecível
           </p>
         </div>
-
-		{/* Tap List (Opção A): cards horizontais, rápido para decidir no mobile */}
-		{sortedChoppProducts.length > 0 && (
-		  <div className="mb-6 sm:mb-8">
-		    <TapListChopp
-		      products={sortedChoppProducts}
-		      onOpen={(p) => openProductModal(p)}
-		      onQuickAddLitros={handleQuickAddLitros}
-		    />
-		  </div>
-		)}
-
-		{/* Tap List (Opção B): botão flutuante no mobile abre drawer */}
-		{sortedChoppProducts.length > 0 && (
-		  <TapListDrawer
-		    open={tapListOpen}
-		    onOpenChange={setTapListOpen}
-		    products={sortedChoppProducts}
-		    onOpen={(p) => openProductModal(p)}
-		    onQuickAddLitros={handleQuickAddLitros}
-		  />
-		)}
 
         {/* ✅ Category Navigation Bar - Barra única responsiva sem cortar */}
         <div className="w-full mb-8 overflow-x-auto scrollbar-hide">
@@ -485,32 +442,26 @@ const Products = () => {
 
       {/* Product Detail Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar product-modal p-0">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto modal-scrollbar p-0 [&>button[aria-label='Close']]:hidden">
+          {/* Close (sem barra extra; rola junto com o conteúdo) */}
+          <div className="flex justify-end px-3 pt-3">
+            <button
+              onClick={() => setModalOpen(false)}
+              className="h-10 w-10 rounded-full border border-amber-600/60 text-white flex items-center justify-center hover:bg-white/5 transition"
+              aria-label="Fechar"
+            >
+              ✕
+            </button>
+          </div>
           {selectedProduct && (() => {
             const isLitro = selectedProduct.price_unit === 'litro';
             const quantity = quantities[selectedProduct.id] || (isLitro ? 30 : 1);
             const totalPrice = selectedProduct.price * quantity;
             
             return (
-            <>
-              <style>{`
-                /* Esconde o botão de fechar padrão do shadcn (mantemos o nosso) */
-                .product-modal > button[aria-label="Close"] { display: none; }
-              `}</style>
-              {/* Fechar fixo e sutil (rola junto, mas fica sempre acessível) */}
-              <div className="sticky top-3 z-50 flex justify-end px-3">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  aria-label="Fechar"
-                  className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-amber-500/70 bg-slate-950/40 text-white shadow-lg backdrop-blur-sm transition hover:bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-amber-500/60"
-                >
-                  ×
-                </button>
-              </div>
-
+              <>
 						{/* topo bem sutil (não interfere no X) */}
-						<div className="pt-0">
+						<div className="pt-1 sm:pt-2">
                 <div className="relative">
                   <img
                     src={selectedProduct.image}
