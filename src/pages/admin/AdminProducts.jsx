@@ -31,6 +31,17 @@ import {
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Tags padrão (fallback). Se o backend já semeou, isso só serve como “1 clique” para recriar.
+const DEFAULT_SOCIAL_TAGS = [
+  { key: "destaque", label: "Destaque", emoji: "⭐" },
+  { key: "mais_vendidos", label: "Mais vendidos", emoji: "🏆" },
+  { key: "mais_pedido_semana", label: "Mais pedido da semana", emoji: "🔥" },
+  { key: "preferido_aniversarios", label: "Preferido para aniversários", emoji: "🎉" },
+  { key: "preferido_churrascos", label: "Preferido para churrascos", emoji: "🍖" },
+  { key: "perfeito_eventos", label: "Perfeito para eventos", emoji: "🎊" },
+  { key: "escolha_da_casa", label: "Escolha da casa", emoji: "✅" },
+];
+
 const AdminProducts = () => {
   const { user, token, isAdmin, logout, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -96,6 +107,32 @@ const AdminProducts = () => {
       setSocialTags(res.data || []);
     } catch (e) {
       console.error('Error fetching social tags:', e);
+      toast.error('Não foi possível carregar as tags (prova social).');
+    }
+  };
+
+  const openSocialTagsManager = async () => {
+    setSocialTagsOpen(true);
+    await fetchSocialTags();
+  };
+
+  const seedDefaultSocialTags = async () => {
+    try {
+      for (const t of DEFAULT_SOCIAL_TAGS) {
+        try {
+          await axios.post(
+            `${API_URL}/api/admin/social-tags`,
+            { key: t.key, label: t.label, emoji: t.emoji, is_active: true },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (_) {
+          // Duplicadas: ignora
+        }
+      }
+      toast.success('Tags padrão adicionadas!');
+      await fetchSocialTags();
+    } catch (e) {
+      toast.error(e.response?.data?.detail || 'Erro ao adicionar tags padrão');
     }
   };
 
@@ -592,7 +629,7 @@ const AdminProducts = () => {
 
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-gray-900 border-[#F59E0B]/30 text-white w-[95vw] max-w-3xl max-h-[90vh] overflow-y-auto admin-modal-scroll p-6">
+        <DialogContent className="bg-gray-900 border-[#F59E0B]/30 text-white w-[96vw] max-w-[980px] max-h-[90vh] overflow-y-auto overflow-x-hidden admin-modal-scroll p-6">
           <DialogHeader>
             <DialogTitle className="text-[#F59E0B]">
               {selectedProduct ? "Editar Produto" : "Novo Produto"}
@@ -719,6 +756,7 @@ const AdminProducts = () => {
                 <Input
                   value={formData.image}
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
+                  title={formData.image}
                   className="bg-black/50 border-[#F59E0B]/30 text-white mt-1 truncate text-xs font-mono"
                   placeholder="https://..."
                   data-testid="product-image"
@@ -738,7 +776,7 @@ const AdminProducts = () => {
             </div>
             
             {/* Novos campos: Brand, ABV, IBU */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <Label className="text-gray-300">Marca</Label>
                 <Input
@@ -774,7 +812,7 @@ const AdminProducts = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <Label className="text-gray-300">Preço (R$)</Label>
                 <Input
@@ -863,7 +901,7 @@ const AdminProducts = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setSocialTagsOpen(true)}
+                  onClick={openSocialTagsManager}
                   className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
                 >
                   Gerenciar
@@ -913,7 +951,7 @@ const AdminProducts = () => {
 
       {/* Social Tags Manager */}
       <Dialog open={socialTagsOpen} onOpenChange={setSocialTagsOpen}>
-        <DialogContent className="bg-gray-900 border-amber-500/30 text-white w-[92vw] max-w-xl admin-modal-scroll p-6">
+        <DialogContent className="bg-gray-900 border-amber-500/30 text-white w-[94vw] max-w-xl max-h-[85vh] overflow-y-auto overflow-x-hidden admin-modal-scroll p-6">
           <DialogHeader>
             <DialogTitle className="text-amber-200">Gerenciar Provas Sociais</DialogTitle>
           </DialogHeader>
@@ -985,7 +1023,27 @@ const AdminProducts = () => {
                   </div>
                 ))}
                 {socialTags.length === 0 && (
-                  <div className="text-gray-500 text-sm">Nenhuma tag encontrada.</div>
+                  <div className="space-y-3">
+                    <div className="text-gray-500 text-sm">Nenhuma tag encontrada.</div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={fetchSocialTags}
+                        className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+                      >
+                        Recarregar
+                      </Button>
+                      <Button
+                        onClick={seedDefaultSocialTags}
+                        className="bg-[#F59E0B] hover:bg-[#F97316] text-black"
+                      >
+                        Adicionar tags padrão
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Dica: você pode criar novas tags acima e ativar/desativar quando quiser.
+                    </p>
+                  </div>
                 )}
               </div>
               <p className="text-xs text-gray-500 mt-2">
