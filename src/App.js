@@ -27,18 +27,41 @@ function App() {
     // Remove any leftover deploy-check badge from testing (if it exists in DOM)
     const removeDeployBadge = () => {
       const candidates = Array.from(document.querySelectorAll("body *"));
+
       for (const el of candidates) {
+        // Never remove critical containers
+        if (el === document.documentElement) continue;
+        if (el === document.body) continue;
+        if (el.id === "root") continue;
+        if (el.classList?.contains("App")) continue;
+
         const txt = (el.textContent || "").trim();
         if (!txt) continue;
-        if (txt.includes("DEPLOY_CHECK")) {
-          el.remove();
-        }
+        if (!txt.includes("DEPLOY_CHECK")) continue;
+
+        // Only remove the *badge element itself*, not its parents.
+        // So: prefer leaf nodes (no element-children that also include DEPLOY_CHECK).
+        const childHas = Array.from(el.children || []).some((c) =>
+          ((c.textContent || "").trim() || "").includes("DEPLOY_CHECK")
+        );
+        if (childHas) continue;
+
+        // Extra guard: don't remove large layout blocks
+        const rect = el.getBoundingClientRect?.();
+        const tooBig = rect && (rect.width > window.innerWidth * 0.6 || rect.height > window.innerHeight * 0.35);
+        if (tooBig) continue;
+
+        el.remove();
       }
     };
 
     removeDeployBadge();
-    const t = setTimeout(removeDeployBadge, 800);
-    return () => clearTimeout(t);
+    const t1 = setTimeout(removeDeployBadge, 500);
+    const t2 = setTimeout(removeDeployBadge, 1500);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
 
   return (
