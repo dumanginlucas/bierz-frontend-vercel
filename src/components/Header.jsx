@@ -59,16 +59,6 @@ const Header = () => {
 
   const scrollToSection = (id) => {
     setIsMobileMenuOpen(false);
-
-    // Topo da página
-    if (id === "top") {
-      if (location.pathname !== "/") {
-        navigate("/", { state: { scrollTo: "top" } });
-        return;
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
     
     // Se não estiver na home, navega para home primeiro
     if (location.pathname !== '/') {
@@ -89,12 +79,12 @@ const Header = () => {
       // Wait a tick for the HomePage sections to mount, then scroll.
       const id = location.state.scrollTo;
       const t = setTimeout(() => {
-        if (id === "top") {
+        if (id === "__top__") {
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       const element = document.getElementById(id);
-      if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 120);
       // Limpa o state
       window.history.replaceState({}, document.title);
@@ -120,7 +110,15 @@ const Header = () => {
           <div className="flex items-center">
             <Link 
               to="/"
-              onClick={(e) => { e.preventDefault(); scrollToSection("top"); }}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(false);
+                if (location.pathname !== "/") {
+                  navigate("/", { state: { scrollTo: "__top__" } });
+                  return;
+                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
             >
               <img
                 src="/logo.jpg"
