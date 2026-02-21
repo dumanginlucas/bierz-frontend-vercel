@@ -347,7 +347,7 @@ body::before {
 }
 
 
-/* ===== Equipamentos (flip cards) ===== */
+/* ===== Equipamentos (flips) ===== */
 .equip-card{
   height: 420px;
   border-radius: 26px;
@@ -970,12 +970,16 @@ body::before {
 }
 
 
-/* ===== CARD 2 (BARRIL) FIX ===== */
-/* Remove o 'quadrado interno' apenas no card 2 */
-.how-card[data-step="2"] .how-card__mediaSlot {
-  background: transparent !important;
-  box-shadow: none !important;
+/* ===== CARD 2 (BARRIL) SIZE UPGRADE ===== */
+
+.how-card[data-step="2"] .how-keg-pro {
+  width: 110% !important;   /* maior que o container */
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  transform: scale(1.2);   /* aumenta visualmente ~50% comparado aos 85% anteriores */
 }
+
 
 /* Barril 85% com respiro */
 .how-card[data-step="2"] .how-keg-pro {
