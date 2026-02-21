@@ -156,7 +156,7 @@ const HowItWorks = () => {
                       <div className="how-card__title">{s.title}</div>
                       <p className="how-card__desc">{s.desc}</p>
 
-                      <button type=\"button\"
+                      <button type="button"
                         className="how-card__cta"
                         onClick={(e) => {
                           e.stopPropagation();
