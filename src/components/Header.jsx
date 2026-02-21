@@ -99,11 +99,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-black/95 backdrop-blur-md'
-      }`}
-    style={{ paddingRight: 'var(--sbw, 0px)' }}
-    >
+      }`}      style={{ right: 'var(--sbw, 0px)' }}
+>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-28 md:h-32">
           {/* Logo */}
