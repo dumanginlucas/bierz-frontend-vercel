@@ -815,3 +815,65 @@ body::before {
   .aboutPinnedScreenBody{ grid-template-columns: 1fr; }
   .aboutPinnedScreenArt{ height: 220px; }
 }
+
+/* ===== How It Works Media (variants) ===== */
+.how-media{
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.how-media__icon{
+  width: 76px;
+  height: 76px;
+  filter: drop-shadow(0 18px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 18px rgba(245,158,11,0.18));
+  transform: translateY(2px);
+  transition: transform .55s cubic-bezier(0.22,1,0.36,1), filter .55s cubic-bezier(0.22,1,0.36,1), opacity .55s;
+  opacity: 0.95;
+}
+.how-media__glow{
+  position: absolute;
+  width: 240px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 50%, rgba(245,158,11,0.22), rgba(245,158,11,0.0) 65%);
+  filter: blur(6px);
+  opacity: 0.9;
+  transform: translateY(26px);
+  pointer-events: none;
+}
+.how-media::after{
+  content: attr(data-step);
+  position: absolute;
+  right: -6px;
+  top: 20px;
+  font-weight: 900;
+  font-size: 120px;
+  line-height: 1;
+  letter-spacing: -4px;
+  color: rgba(245,158,11,0.06);
+  pointer-events: none;
+}
+.how-card:not(.is-flipped):hover .how-media__icon{
+  transform: translateY(-4px) scale(1.03);
+  filter: drop-shadow(0 22px 28px rgba(0,0,0,0.6)) drop-shadow(0 0 26px rgba(245,158,11,0.28));
+}
+
+/* V1: 3D minimal + subtle sheen */
+.how-media{
+  background:
+    radial-gradient(600px 220px at 50% 10%, rgba(245,158,11,0.12), rgba(0,0,0,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.0));
+}
+.how-media::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(400px 120px at 30% 25%, rgba(255,255,255,0.10), rgba(255,255,255,0) 60%),
+    radial-gradient(300px 110px at 70% 60%, rgba(245,158,11,0.08), rgba(0,0,0,0) 65%);
+  opacity: .9;
+  pointer-events:none;
+}
