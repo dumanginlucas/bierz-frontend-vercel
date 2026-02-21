@@ -108,6 +108,7 @@ const HowItWorks = () => {
             return (
               <div
                 key={s.id}
+                data-step={s.id}
                 className={"how-card " + (flipped ? "is-flipped" : "")}
                 onMouseEnter={() => setActive(s.id)}
                 onClick={() => handleCardClick(s.id)}

@@ -970,29 +970,17 @@ body::before {
 }
 
 
-/* ===== HOW IT WORKS - SAFE FIX (scoped) ===== */
-
-.how-card .how-card__mediaSlot {
+/* ===== CARD 2 (BARRIL) FIX ===== */
+/* Remove o 'quadrado interno' apenas no card 2 */
+.how-card[data-step="2"] .how-card__mediaSlot {
   background: transparent !important;
   box-shadow: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.how-card .how-card__obj {
-  width: 85%;
+/* Barril 85% com respiro */
+.how-card[data-step="2"] .how-keg-pro {
+  width: 85% !important;
+  max-width: 420px;
   height: auto;
   object-fit: contain;
-}
-
-.how-card .how-card__inner {
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.how-card .how-card__front,
-.how-card .how-card__back {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
