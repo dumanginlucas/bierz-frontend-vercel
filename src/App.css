@@ -1009,3 +1009,61 @@ body::before {
   /* ajuste fino */
   margin: -34px auto 0 10px !important;
 }
+
+/* ===== CARD 2 - PREMIUM EFFECTS ===== */
+
+/* 1) Permite "sair" um pouco do card sem cortar */
+.how-card[data-step="2"] .how-card__front,
+.how-card[data-step="2"] .how-card__back,
+.how-card[data-step="2"] .how-card__inner,
+.how-card[data-step="2"] {
+  overflow: visible !important;
+}
+
+/* 2) Slot vira palco (para sombra no chão + posicionamento) */
+.how-card[data-step="2"] .how-card__mediaSlot{
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* 3) Sombra realista no "chão" (não usa transform na imagem) */
+.how-card[data-step="2"] .how-card__mediaSlot::after{
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 18px !important;        /* ajusta altura da sombra */
+  width: 68% !important;
+  height: 22px !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.55) !important;
+  filter: blur(18px) !important;
+  transform: translateX(-50%) !important;
+  opacity: .75 !important;
+  pointer-events: none !important;
+}
+
+/* 4) Depth: "sai" levemente do card com margem negativa (sem transform) */
+.how-card[data-step="2"] .how-keg-pro{
+  position: relative !important;
+  z-index: 2 !important;
+  margin-top: -18px !important;   /* sobe (parece mais próximo da câmera) */
+  margin-bottom: -10px !important;/* desce um pouco pra dar presença */
+  filter: drop-shadow(0 26px 40px rgba(0,0,0,.55)) !important;
+}
+
+/* 5) Flutuação leve (apenas em filtros/pequena variação, sem mexer no transform do hover) */
+@keyframes kegFloat {
+  0%   { filter: drop-shadow(0 26px 40px rgba(0,0,0,.52)); }
+  50%  { filter: drop-shadow(0 34px 52px rgba(0,0,0,.62)); }
+  100% { filter: drop-shadow(0 26px 40px rgba(0,0,0,.52)); }
+}
+
+.how-card[data-step="2"] .how-keg-pro{
+  animation: kegFloat 3.6s ease-in-out infinite;
+}
+
+/* 6) No hover, aumenta um pouco a presença sem brigar com o transform existente */
+.how-card[data-step="2"]:hover .how-card__mediaSlot::after{
+  opacity: .95 !important;
+  filter: blur(22px) !important;
+}
