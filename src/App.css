@@ -1087,7 +1087,7 @@ body::before {
   display: block !important;
 
   /* ajuste fino */
-  margin: -34px auto 0 10 !important;
+  margin: -14px auto 0 -22 !important;
 
   /* presença */
   filter: drop-shadow(0 26px 44px rgba(0,0,0,0.58)) !important;
