@@ -1148,14 +1148,14 @@ body::before {
 
 /* imagem (entrega/carrinho) */
 .how-card[data-step="4"] .how-delivery-pro{
-  width: 150% !important;
+  width: 170% !important;
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
   display: block !important;
 
   /* ajuste fino (subir + puxar levemente à direita) */
-  margin: -40px -10px 0 26px !important;
+  margin: -80px -10px 0 26px !important;
 
   /* presença */
   filter: drop-shadow(0 26px 44px rgba(0,0,0,0.58)) !important;
