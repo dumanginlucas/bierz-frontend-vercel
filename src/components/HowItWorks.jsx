@@ -65,7 +65,7 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        action: () => navigate("/cart"),
+        action: () => navigate("/carrinho"),
       },
     ],
     [navigate]
@@ -109,6 +109,7 @@ const HowItWorks = () => {
               <div
                 key={s.id}
                 className={"how-card " + (flipped ? "is-flipped" : "")}
+                data-step={s.id}
                 onMouseEnter={() => setActive(s.id)}
                 onClick={() => handleCardClick(s.id)}
                 role="button"
@@ -154,16 +155,7 @@ const HowItWorks = () => {
 
                       <button
                         className="how-card__cta"
-                       
-                        onPointerDown={(e) => {
-                          e.preventDefault();
-                          e.preventDefault();
-                          e.stopPropagation();
-                          s.action();
-                          setActive(null);
-                        }}
                         onClick={(e) => {
-                          e.preventDefault();
                           e.stopPropagation();
                           s.action();
                           setActive(null);

@@ -503,7 +503,7 @@ body::before {
 
 
 /* anchor offset for fixed header */
-#how-it-works, #services { scroll-margin-top: 110px; }
+section[id] { scroll-margin-top: calc(var(--header-h, 0px) + 12px); }
 
 /* ===== Equip compare (header fixo; flip troca apenas os textos) ===== */
 .equip-compare2{ margin-top: 14px; }
@@ -930,22 +930,16 @@ body::before {
   transform: translate(-50%, calc(-50% - 10px));
   filter: drop-shadow(0 40px 58px rgba(0,0,0,.68));
 }
-.how-card, .how-card__front{
+.how-card__front, .how-card__back{
   background: radial-gradient(900px 420px at 50% 0%, rgba(255,170,0,.10), transparent 55%), rgba(0,0,0,.40) !important;
 }
 
 
 /* ===== FIX: clickability for header + HowItWorks (scoped, non-destructive) ===== */
 
-/* Keep header above any section overlays */
+/* Keep header above any section overlays (don't override positioning from JSX) */
 header, .site-header, .Header, .navbar, .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10000;
-}
-/* If the header is fixed in JSX, still keep it above */
-header * {
-  pointer-events: auto;
+  z-index: 10000 !important;
 }
 
 /* Common decorative overlays should never block clicks */

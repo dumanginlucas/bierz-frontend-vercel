@@ -67,28 +67,24 @@ const Header = () => {
     }
     
     const element = document.getElementById(id);
-    const headerEl = document.querySelector('header');
-    const headerH = headerEl?.offsetHeight ?? 0;
     if (element) {
-      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      // Prefer scrollIntoView + scroll-margin-top (set in CSS) for reliability.
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   // Efeito para scroll após navegação
   useEffect(() => {
     if (location.state?.scrollTo) {
-      setTimeout(() => {
-        const element = document.getElementById(location.state.scrollTo);
-        const headerEl = document.querySelector('header');
-        const headerH = headerEl?.offsetHeight ?? 0;
-        if (element) {
-          const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-      }, 100);
+      // Wait a tick for the HomePage sections to mount, then scroll.
+      const id = location.state.scrollTo;
+      const t = setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
       // Limpa o state
       window.history.replaceState({}, document.title);
+      return () => clearTimeout(t);
     }
   }, [location]);
 
