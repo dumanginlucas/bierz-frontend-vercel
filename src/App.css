@@ -970,21 +970,39 @@ body::before {
 }
 
 
-/* ===== CARD 2 (BARRIL) SIZE UPGRADE ===== */
+/* ===== CARD 2 (BARRIL) - FIX DEFINITIVO ===== */
 
-.how-card[data-step="2"] .how-keg-pro {
-  width: 110% !important;   /* maior que o container */
-  max-width: none;
-  height: auto;
-  object-fit: contain;
-  transform: scale(1.2);   /* aumenta visualmente ~50% comparado aos 85% anteriores */
+/* Mata o "quadrado interno" (fundo/sombra/borda) APENAS no card 2 */
+.how-card[data-step="2"] .how-card__mediaSlot,
+.how-card[data-step="2"] .how-card__mediaSlot * {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: none !important;
 }
 
+/* Se o quadrado estiver vindo de pseudo-elementos */
+.how-card[data-step="2"] .how-card__mediaSlot::before,
+.how-card[data-step="2"] .how-card__mediaSlot::after {
+  content: none !important;
+  display: none !important;
+}
 
-/* Barril 85% com respiro */
+/* Centraliza e permite crescer sem cortar */
+.how-card[data-step="2"] .how-card__mediaSlot {
+  display: flex !important;
+  align-items: flex-end !important;   /* "pisa" no chão do card */
+  justify-content: center !important; /* centraliza */
+  overflow: visible !important;       /* não corta quando aumentar */
+  padding: 0 !important;
+}
+
+/* Aumenta o barril sem bagunçar layout */
 .how-card[data-step="2"] .how-keg-pro {
-  width: 85% !important;
-  max-width: 420px;
-  height: auto;
-  object-fit: contain;
+  width: 85% !important;              /* base */
+  max-width: none !important;
+  height: auto !important;
+  object-fit: contain !important;
+  transform: scale(1.5) !important;   /* +50% de verdade */
+  transform-origin: center bottom !important;
 }
