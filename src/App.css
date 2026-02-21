@@ -970,20 +970,43 @@ body::before {
 }
 
 
-/* ===== CARD 2 - AJUSTE LIMPO ===== */
+/* ===== CARD 2 (BARRIL) - REMOVER MOLDURA + CENTRALIZAR ===== */
 
-.how-card[data-step="2"] .how-card__mediaSlot {
-  display: flex !important;
-  align-items: flex-end !important;
-  justify-content: center !important;
-  overflow: hidden !important;
-  padding: 0 !important;
+/* 1) Mata qualquer moldura (borda/sombra/fundo) do slot e de wrappers internos */
+.how-card[data-step="2"] .how-card__mediaSlot,
+.how-card[data-step="2"] .how-card__mediaSlot * {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
 }
 
+/* Se a moldura for desenhada por pseudo-elementos */
+.how-card[data-step="2"] .how-card__mediaSlot::before,
+.how-card[data-step="2"] .how-card__mediaSlot::after,
+.how-card[data-step="2"] .how-card__front::before,
+.how-card[data-step="2"] .how-card__front::after,
+.how-card[data-step="2"] .how-card__back::before,
+.how-card[data-step="2"] .how-card__back::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* 2) Centralização e respiro lateral real */
+.how-card[data-step="2"] .how-card__mediaSlot {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-end !important;
+  padding: 0 18px 10px !important;   /* respiro nas laterais + base */
+  overflow: hidden !important;
+}
+
+/* 3) Barril maior e melhor centrado sem usar transform */
 .how-card[data-step="2"] .how-keg-pro {
-  width: 115% !important;   /* aumenta ~50% comparado aos 85% */
+  width: 125% !important;            /* ocupa mais do card */
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
-  margin-bottom: -10px;     /* desce levemente */
+  margin: 0 auto -6px auto !important; /* centraliza e desce um pouco */
+  display: block !important;
 }
