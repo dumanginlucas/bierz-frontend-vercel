@@ -130,6 +130,14 @@ const HowItWorks = () => {
                       <div className="how-card__mediaSlot" aria-hidden="true">
                       {s.id === 2 && (
                         <img
+                          className="how-keg-pro"
+                          src="/howitworks/step2.png"
+                          alt=""
+                          loading="lazy"
+                        />
+                      )}
+                      {s.id === 2 && (
+                        <img
                           className="how-card__obj how-card__obj--keg"
                           src="/howitworks/step2.png"
                           alt=""

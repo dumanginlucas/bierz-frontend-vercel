@@ -933,3 +933,37 @@ body::before {
 .how-card, .how-card__front{
   background: radial-gradient(900px 420px at 50% 0%, rgba(255,170,0,.10), transparent 55%), rgba(0,0,0,.40) !important;
 }
+
+
+/* ===== FINAL Step 2 Protagonist ===== */
+
+.how-card {
+  height: 500px;
+}
+
+.how-card__mediaSlot {
+  position: relative;
+  height: 350px;
+  background: radial-gradient(800px 400px at 50% 35%, rgba(255,170,0,.15), transparent 60%);
+}
+
+.how-keg-pro {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  width: min(460px, 88%);
+  height: auto;
+  filter: drop-shadow(0 40px 70px rgba(0,0,0,.75));
+  transition: transform .45s cubic-bezier(.22,.68,0,1.01), filter .4s ease;
+}
+
+.how-card:hover .how-keg-pro {
+  transform: translate(-50%, calc(-50% - 14px));
+  filter: drop-shadow(0 55px 90px rgba(0,0,0,.85));
+}
+
+.how-card__mediaSlot::before,
+.how-card__mediaSlot::after {
+  display: none !important;
+}
