@@ -935,57 +935,88 @@ body::before {
 }
 
 
-/* ===== HOTFIX: Header/menu not clickable + HowItWorks buttons not clickable =====
-   Cause: decorative overlays/pseudo-elements can sit above interactive UI.
-   Fix: enforce z-index for header, and ensure HowItWorks decorative layers never capture clicks.
-*/
+/* ===== FIX: clickability for header + HowItWorks (scoped, non-destructive) ===== */
 
-/* Header always above page content */
-header, .header, .navbar, .topbar, .site-header {
+/* Keep header above any section overlays */
+header, .site-header, .Header, .navbar, .topbar {
   position: sticky;
   top: 0;
-  z-index: 9999 !important;
+  z-index: 10000;
+}
+/* If the header is fixed in JSX, still keep it above */
+header * {
   pointer-events: auto;
 }
 
-/* If your header is fixed instead of sticky, keep it on top */
-header[style*="position: fixed"], .navbar[style*="position: fixed"]{
-  z-index: 9999 !important;
-}
-
-/* Ensure any hero/section overlays don't block clicks */
+/* Common decorative overlays should never block clicks */
 .hero::before, .hero::after,
 .section::before, .section::after,
-.bg-overlay, .page-overlay {
+.bg-overlay, .page-overlay,
+.gradient-overlay, .noise-overlay {
   pointer-events: none !important;
 }
 
-/* HowItWorks: decorative media slot must never block clicks */
+/* Don't let HowItWorks decorative layers steal clicks */
 .how-card__mediaSlot,
 .how-card__mediaSlot::before,
 .how-card__mediaSlot::after,
-.how-card__obj,
-.how-keg-pro,
-.how-card__frontBody {
-  pointer-events: none !important;
+.how-keg-pro {
+  pointer-events: none;
 }
-
-/* HowItWorks: keep interactive back content above everything */
+/* Ensure back face CTA stays clickable */
+.how-card__cta,
 .how-card__back,
-.how-card__backBody,
-.how-card__cta {
-  position: relative;
-  z-index: 20 !important;
-  pointer-events: auto !important;
-}
-
-/* Also keep the card itself interactive for flip */
-.how-card, .how-card__inner, .how-card__face {
+.how-card__backBody {
   pointer-events: auto;
+  position: relative;
+  z-index: 5;
 }
 
-/* If something in the HowItWorks section creates an overlay, force it behind */
-.how-card__front::before, .how-card__front::after,
-.how-card__back::before, .how-card__back::after {
-  pointer-events: none !important;
+
+/* ===== HowItWorks Step 2 visual (scoped) ===== */
+.how-card[data-step="2"] .how-card__mediaSlot{
+  position: relative;
+  height: 320px;          /* gives room for protagonist */
+  background: none;       /* keep clean */
+  overflow: visible;
+}
+.how-card[data-step="2"] .how-keg-pro{
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -50%);
+  width: min(520px, 92%);
+  height: auto;
+  filter: drop-shadow(0 40px 70px rgba(0,0,0,.75));
+  transition: transform .45s cubic-bezier(.22,.68,0,1.01), filter .35s ease;
+}
+.how-card:hover[data-step="2"] .how-keg-pro,
+.how-card[data-step="2"]:hover .how-keg-pro{
+  transform: translate(-50%, calc(-50% - 10px));
+  filter: drop-shadow(0 58px 92px rgba(0,0,0,.85));
+}
+.how-card[data-step="2"] .how-card__mediaSlot::after{
+  content:"";
+  position:absolute;
+  inset:-10% -10% -30% -10%;
+  background: radial-gradient(700px 320px at 50% 45%, rgba(255,170,0,.16), transparent 62%);
+  pointer-events:none;
+}
+.how-card[data-step="2"] .how-card__mediaSlot::before{
+  content:"";
+  position:absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62%;
+  height: 26px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 72%);
+  filter: blur(14px);
+  opacity: .85;
+  pointer-events:none;
+}
+
+/* Reduce muddy brown on HowItWorks cards (keep amber accents) */
+.how-card__front{
+  background: radial-gradient(1000px 520px at 50% 0%, rgba(255,170,0,.10), transparent 55%), rgba(0,0,0,.42);
 }

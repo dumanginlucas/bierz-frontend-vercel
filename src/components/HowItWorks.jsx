@@ -137,7 +137,16 @@ const HowItWorks = () => {
                           decoding="async"
                         />
                       )}
-</div>
+                      {s.id === 2 && (
+                        <img
+                          className="how-card__obj how-card__obj--keg"
+                          src="/howitworks/step2.png"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )}
+                    </div>
                     </div>
                   </div>
 
@@ -154,7 +163,7 @@ const HowItWorks = () => {
 
                       <button
                         className="how-card__cta"
-                        onClick={(e) => {
+                        onClick={(e) = type="button"> {
                           e.stopPropagation();
                           s.action();
                           setActive(null);
