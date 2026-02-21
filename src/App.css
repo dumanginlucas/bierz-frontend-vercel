@@ -1010,30 +1010,22 @@ body::before {
   margin: -34px auto 0 10px !important;
 }
 
-/* ===== CARD 2 - PREMIUM EFFECTS ===== */
+/* ===== CARD 2 - PREMIUM v2 (SEM MEXER NA POSIÇÃO) ===== */
 
-/* 1) Permite "sair" um pouco do card sem cortar */
-.how-card[data-step="2"] .how-card__front,
-.how-card[data-step="2"] .how-card__back,
-.how-card[data-step="2"] .how-card__inner,
-.how-card[data-step="2"] {
-  overflow: visible !important;
-}
-
-/* 2) Slot vira palco (para sombra no chão + posicionamento) */
+/* garante que a sombra (pseudo) apareça */
 .how-card[data-step="2"] .how-card__mediaSlot{
   position: relative !important;
   overflow: visible !important;
 }
 
-/* 3) Sombra realista no "chão" (não usa transform na imagem) */
+/* sombra realista no chão (não altera layout da imagem) */
 .how-card[data-step="2"] .how-card__mediaSlot::after{
   content: "" !important;
   position: absolute !important;
   left: 50% !important;
-  bottom: 18px !important;        /* ajusta altura da sombra */
-  width: 68% !important;
-  height: 22px !important;
+  bottom: 14px !important;
+  width: 66% !important;
+  height: 20px !important;
   border-radius: 999px !important;
   background: rgba(0,0,0,.55) !important;
   filter: blur(18px) !important;
@@ -1042,28 +1034,21 @@ body::before {
   pointer-events: none !important;
 }
 
-/* 4) Depth: "sai" levemente do card com margem negativa (sem transform) */
+/* flutuação premium SEM usar transform (não briga com hover) */
+@keyframes kegFloatShadow {
+  0%   { filter: drop-shadow(0 24px 38px rgba(0,0,0,.52)); }
+  50%  { filter: drop-shadow(0 32px 48px rgba(0,0,0,.62)); }
+  100% { filter: drop-shadow(0 24px 38px rgba(0,0,0,.52)); }
+}
+
+/* só adiciona sombra/efeito — não mexe em margin/width */
 .how-card[data-step="2"] .how-keg-pro{
-  position: relative !important;
-  z-index: 2 !important;
-  margin-top: -18px !important;   /* sobe (parece mais próximo da câmera) */
-  margin-bottom: -10px !important;/* desce um pouco pra dar presença */
-  filter: drop-shadow(0 26px 40px rgba(0,0,0,.55)) !important;
+  animation: kegFloatShadow 3.8s ease-in-out infinite;
+  filter: drop-shadow(0 24px 38px rgba(0,0,0,.55)) !important;
 }
 
-/* 5) Flutuação leve (apenas em filtros/pequena variação, sem mexer no transform do hover) */
-@keyframes kegFloat {
-  0%   { filter: drop-shadow(0 26px 40px rgba(0,0,0,.52)); }
-  50%  { filter: drop-shadow(0 34px 52px rgba(0,0,0,.62)); }
-  100% { filter: drop-shadow(0 26px 40px rgba(0,0,0,.52)); }
-}
-
-.how-card[data-step="2"] .how-keg-pro{
-  animation: kegFloat 3.6s ease-in-out infinite;
-}
-
-/* 6) No hover, aumenta um pouco a presença sem brigar com o transform existente */
+/* no hover: um pouco mais de presença */
 .how-card[data-step="2"]:hover .how-card__mediaSlot::after{
-  opacity: .95 !important;
+  opacity: .92 !important;
   filter: blur(22px) !important;
 }
