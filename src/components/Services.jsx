@@ -122,7 +122,7 @@ const Services = () => {
   );
 
   return (
-    <section id="services" className="py-16 bg-black relative overflow-visible">
+    <section id="equipamentos" className="py-16 bg-black relative overflow-visible">
       <span className="sr-only">bierz-front-v7</span>
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.22)_0%,rgba(0,0,0,0)_60%)]" />
       <div className="container mx-auto px-4">

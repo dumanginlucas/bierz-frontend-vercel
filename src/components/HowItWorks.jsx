@@ -18,7 +18,7 @@ const HowItWorks = () => {
         desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
         action: () => {
-          const el = document.getElementById("calculator");
+          const el = document.getElementById("calculadora");
           if (el) {
             const headerEl = document.querySelector('header');
             const headerH = headerEl?.offsetHeight ?? 0;
@@ -34,7 +34,7 @@ const HowItWorks = () => {
         desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
         cta: "Escolher chopp",
         action: () => {
-          const el = document.getElementById("products");
+          const el = document.getElementById("produtos");
           if (el) {
             const headerEl = document.querySelector('header');
             const headerH = headerEl?.offsetHeight ?? 0;
@@ -50,7 +50,7 @@ const HowItWorks = () => {
         desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
         cta: "Ver equipamentos",
         action: () => {
-          const el = document.getElementById("services");
+          const el = document.getElementById("equipamentos");
           if (el) {
             const headerEl = document.querySelector('header');
             const headerH = headerEl?.offsetHeight ?? 0;
@@ -65,7 +65,7 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        action: () => navigate("/cart"),
+        action: () => navigate("/carrinho"),
       },
     ],
     [navigate]
