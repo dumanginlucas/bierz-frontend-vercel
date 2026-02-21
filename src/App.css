@@ -1007,5 +1007,5 @@ body::before {
   display: block !important;
 
   /* ajuste fino */
-  margin: -19px auto 0 -3px !important;
+  margin: -30px auto 0 3px !important;
 }
