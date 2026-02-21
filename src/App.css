@@ -1080,14 +1080,14 @@ body::before {
 
 /* imagem (equipamentos) */
 .how-card[data-step="3"] .how-equip-pro{
-  width: 128% !important;
+  width: 145% !important;
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
   display: block !important;
 
   /* NOVO AJUSTE FINO */
-  margin: -55px -20px 0 40px !important;
+  margin: -65px -20px 0 40px !important;
 
   filter: drop-shadow(0 26px 44px rgba(0,0,0,0.58)) !important;
   animation: equipFloat 4.2s ease-in-out infinite;
