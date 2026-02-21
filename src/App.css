@@ -970,21 +970,20 @@ body::before {
 }
 
 
-/* ===== CARD 2 - AJUSTE DE POSIÇÃO FINAL ===== */
+/* ===== CARD 2 - AJUSTE LIMPO ===== */
 
 .how-card[data-step="2"] .how-card__mediaSlot {
   display: flex !important;
-  align-items: flex-end !important;   /* encosta no chão */
-  justify-content: center !important; /* centraliza */
-  overflow: hidden !important;        /* evita vazamento lateral */
+  align-items: flex-end !important;
+  justify-content: center !important;
+  overflow: hidden !important;
   padding: 0 !important;
 }
 
-/* controla posição fina do barril */
 .how-card[data-step="2"] .how-keg-pro {
-  width: 85% !important;
+  width: 115% !important;   /* aumenta ~50% comparado aos 85% */
+  max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
-  transform: scale(1.45) translateY(8%) !important;
-  transform-origin: center bottom !important;
+  margin-bottom: -10px;     /* desce levemente */
 }
