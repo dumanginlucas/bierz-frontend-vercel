@@ -162,8 +162,10 @@ const HowItWorks = () => {
                       <p className="how-card__desc">{s.desc}</p>
 
                       <button
+                        type="button"
                         className="how-card__cta"
-                        onClick={(e) = type="button"> {
+                        onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           s.action();
                           setActive(null);
