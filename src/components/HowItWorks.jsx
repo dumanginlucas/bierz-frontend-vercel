@@ -124,9 +124,7 @@ const HowItWorks = () => {
                     <div className="how-card__top">
                       <div className="how-card__kicker">{s.kicker}</div>
                       <div className="how-card__badge">{s.id}</div>
-                    </div>
-
-                    {/* Espaço reservado para imagem/arte (PNG sem fundo) */}
+{/* Espaço reservado para imagem/arte (PNG sem fundo) */}
                     <div className="how-card__frontBody">
                       <div className="how-card__mediaSlot" aria-hidden="true">
                       {s.id === 2 && (

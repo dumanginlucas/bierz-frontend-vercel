@@ -878,3 +878,58 @@ body::before {
   .aboutPinnedScreenBody{ grid-template-columns: 1fr; }
   .aboutPinnedScreenArt{ height: 220px; }
 }
+
+
+/* === Step2 Premium cleanup v2 === */
+.how-media__frame, .how-media-inset{
+  display:none !important;
+}
+.how-media{
+  position: relative;
+  height: 260px;
+  width: 100%;
+  border-radius: 0; /* no inner card */
+  overflow: visible;
+  background: none;
+}
+.how-media::before{
+  content:"";
+  position:absolute;
+  bottom: 12px;
+  left:50%;
+  transform: translateX(-50%);
+  width: 62%;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 70%);
+  filter: blur(16px);
+  opacity: .7;
+  pointer-events:none;
+}
+
+.how-media::after{
+  content:"";
+  position:absolute;
+  inset:-10% -10% -30% -10%;
+  background: radial-gradient(600px 260px at 50% 40%, rgba(255,170,0,.16), transparent 62%);
+  opacity: .9;
+  pointer-events:none;
+}
+.how-keg{
+  position:absolute;
+  left:50%;
+  top:58%;
+  transform: translate(-50%,-50%);
+  width: min(320px, 82%);
+  height: auto;
+  filter: drop-shadow(0 26px 38px rgba(0,0,0,.60));
+  transition: transform .4s cubic-bezier(.22,.68,0,1.01), filter .4s ease;
+  pointer-events:none;
+}
+
+.how-card:hover .how-keg{
+  transform: translate(-50%, calc(-50% - 10px));
+  filter: drop-shadow(0 40px 58px rgba(0,0,0,.68));
+}
+.how-card, .how-card__front{
+  background: radial-gradient(900px 420px at 50% 0%, rgba(255,170,0,.10), transparent 55%), rgba(0,0,0,.40) !important;
+}
