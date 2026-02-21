@@ -861,17 +861,17 @@ body::before {
 }
 
 /* HOWITWORKS_ART_VARIANTS */
-@keyframes howGlowBreath{
-  0%,100%{ opacity: .55; transform: scale(1); }
-  50%{ opacity: .9; transform: scale(1.03); }
-}
-.how-card__mediaSlot--v2::before{
+.how-card__mediaSlot--v3::before{
   content:"";
   position:absolute;
-  inset:-28%;
-  background: radial-gradient(circle at 40% 35%, rgba(245,158,11,0.22), rgba(0,0,0,0) 58%);
-  filter: blur(8px);
-  opacity: .6;
-  animation: howGlowBreath 6s ease-in-out infinite;
+  inset:-40%;
+  background: linear-gradient(120deg, transparent 40%, rgba(255,210,140,0.16), transparent 60%);
+  transform: translateX(-40%) rotate(10deg);
+  opacity: 0;
+  transition: opacity .35s ease, transform .65s ease;
   pointer-events:none;
+}
+.how-card:hover .how-card__mediaSlot--v3::before{
+  opacity: 1;
+  transform: translateX(40%) rotate(10deg);
 }

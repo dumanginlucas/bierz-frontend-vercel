@@ -129,11 +129,11 @@ const HowItWorks = () => {
                     {/* Espaço reservado para imagem/arte (PNG sem fundo) */}
                     
                     <div className="how-card__frontBody">
-                      <div className="how-card__mediaSlot how-card__mediaSlot--v2" aria-hidden="true">
+                      <div className="how-card__mediaSlot how-card__mediaSlot--v3" aria-hidden="true">
                         <span className="how-card__wm">{s.id}</span>
                         <img
                           className="how-card__art"
-                          src={`/howitworks/v2/${s.id === 1 ? "calc" : s.id === 2 ? "keg" : s.id === 3 ? "tap" : "van"}.png`}
+                          src={`/howitworks/v3/${s.id === 1 ? "calc" : s.id === 2 ? "keg" : s.id === 3 ? "tap" : "van"}.png`}
                           alt=""
                           loading="lazy"
                           draggable="false"
