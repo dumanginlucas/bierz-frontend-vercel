@@ -347,7 +347,7 @@ body::before {
 }
 
 
-/* ===== Equipamentos (flip cards) ===== */
+/* ===== Equipamentos (flips) ===== */
 .equip-card{
   height: 420px;
   border-radius: 26px;
@@ -935,107 +935,260 @@ body::before {
 }
 
 
-/* ===== FIX: clickability for header + HowItWorks (scoped, non-destructive) ===== */
+/* ===== Step 2 Protagonist Version ===== */
 
-/* Keep header above any section overlays */
-header, .site-header, .Header, .navbar, .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10000;
-}
-/* If the header is fixed in JSX, still keep it above */
-header * {
-  pointer-events: auto;
+.how-card {
+  height: 480px;
 }
 
-/* Common decorative overlays should never block clicks */
-.hero::before, .hero::after,
-.section::before, .section::after,
-.bg-overlay, .page-overlay,
-.gradient-overlay, .noise-overlay {
+.how-card__mediaSlot {
+  position: relative;
+  height: 320px;
+  background: radial-gradient(800px 400px at 50% 30%, rgba(255,170,0,.12), transparent 60%);
+}
+
+.how-keg-pro {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 85%);
+  height: auto;
+  filter: drop-shadow(0 35px 60px rgba(0,0,0,.7));
+  transition: transform .4s cubic-bezier(.22,.68,0,1.01), filter .4s ease;
+}
+
+.how-card:hover .how-keg-pro {
+  transform: translate(-50%, calc(-50% - 12px));
+  filter: drop-shadow(0 50px 80px rgba(0,0,0,.8));
+}
+
+/* remove inner container look */
+.how-card__mediaSlot::before,
+.how-card__mediaSlot::after {
+  display:none !important;
+}
+
+
+/* ===== CARD 2 - SEM FRAME INTERNO, BORDA EXTERNA OK ===== */
+
+/* Mantém o card como está (borda externa), só remove o frame interno */
+.how-card[data-step="2"] .how-card__mediaSlot{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+
+  /* layout */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  /* não corta */
+  overflow: visible !important;
+
+  /* respiro */
+  padding: 0 22px 8px !important;
+}
+
+/* se o frame interno vier por pseudo-elementos */
+.how-card[data-step="2"] .how-card__mediaSlot::before,
+.how-card[data-step="2"] .how-card__mediaSlot::after{
+  content: none !important;
+  display: none !important;
+}
+
+/* imagem maior e central, sem transform (não briga com hover) */
+.how-card[data-step="2"] .how-keg-pro{
+  width: 108% !important;
+  max-width: none !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+
+  /* ajuste fino */
+  margin: -34px auto 0 10px !important;
+}
+
+/* ===== CARD 2 - PREMIUM v2 (SEM MEXER NA POSIÇÃO) ===== */
+
+/* garante que a sombra (pseudo) apareça */
+.how-card[data-step="2"] .how-card__mediaSlot{
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* sombra realista no chão (não altera layout da imagem) */
+.how-card[data-step="2"] .how-card__mediaSlot::after{
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 14px !important;
+  width: 66% !important;
+  height: 20px !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.55) !important;
+  filter: blur(18px) !important;
+  transform: translateX(-50%) !important;
+  opacity: .75 !important;
   pointer-events: none !important;
 }
 
-/* Don't let HowItWorks decorative layers steal clicks */
-.how-card__mediaSlot,
-.how-card__mediaSlot::before,
-.how-card__mediaSlot::after,
-.how-keg-pro {
-  pointer-events: none;
-}
-/* Ensure back face CTA stays clickable */
-.how-card__cta,
-.how-card__back,
-.how-card__backBody {
-  pointer-events: auto;
-  position: relative;
-  z-index: 5;
+/* flutuação premium SEM usar transform (não briga com hover) */
+@keyframes kegFloatShadow {
+  0%   { filter: drop-shadow(0 24px 38px rgba(0,0,0,.52)); }
+  50%  { filter: drop-shadow(0 32px 48px rgba(0,0,0,.62)); }
+  100% { filter: drop-shadow(0 24px 38px rgba(0,0,0,.52)); }
 }
 
-
-/* ===== HowItWorks Step 2 visual (scoped) ===== */
-.how-card[data-step="2"] .how-card__mediaSlot{
-  position: relative;
-  height: 320px;          /* gives room for protagonist */
-  background: none;       /* keep clean */
-  overflow: visible;
-}
+/* só adiciona sombra/efeito — não mexe em margin/width */
 .how-card[data-step="2"] .how-keg-pro{
-  position: absolute;
-  left: 50%;
-  top: 62%;
-  transform: translate(-50%, -50%);
-  width: min(520px, 92%);
-  height: auto;
-  filter: drop-shadow(0 40px 70px rgba(0,0,0,.75));
-  transition: transform .45s cubic-bezier(.22,.68,0,1.01), filter .35s ease;
-}
-.how-card:hover[data-step="2"] .how-keg-pro,
-.how-card[data-step="2"]:hover .how-keg-pro{
-  transform: translate(-50%, calc(-50% - 10px));
-  filter: drop-shadow(0 58px 92px rgba(0,0,0,.85));
-}
-.how-card[data-step="2"] .how-card__mediaSlot::after{
-  content:"";
-  position:absolute;
-  inset:-10% -10% -30% -10%;
-  background: radial-gradient(700px 320px at 50% 45%, rgba(255,170,0,.16), transparent 62%);
-  pointer-events:none;
-}
-.how-card[data-step="2"] .how-card__mediaSlot::before{
-  content:"";
-  position:absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 62%;
-  height: 26px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 72%);
-  filter: blur(14px);
-  opacity: .85;
-  pointer-events:none;
+  animation: kegFloatShadow 3.8s ease-in-out infinite;
+  filter: drop-shadow(0 24px 38px rgba(0,0,0,.55)) !important;
 }
 
-/* Reduce muddy brown on HowItWorks cards (keep amber accents) */
-.how-card__front{
-  background: radial-gradient(1000px 520px at 50% 0%, rgba(255,170,0,.10), transparent 55%), rgba(0,0,0,.42);
+/* no hover: um pouco mais de presença */
+.how-card[data-step="2"]:hover .how-card__mediaSlot::after{
+  opacity: .92 !important;
+  filter: blur(22px) !important;
 }
 
 
-/* ===== FLOAT GLOBAL PADRÃO (Cards 2/3/4) ===== */
+/* ===== CARD 3 - EQUIPAMENTOS (PREMIUM) ===== */
+/* Remove frame interno (não mexe na borda externa do card) */
+.how-card[data-step="3"] .how-card__mediaSlot{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  overflow: visible !important;
+  padding: 0 22px 8px !important;
+
+  position: relative !important; /* para sombra */
+}
+
+/* garante que pseudo do slot não desenhe moldura antiga */
+.how-card[data-step="3"] .how-card__mediaSlot::before{
+  content: none !important;
+  display: none !important;
+}
+
+/* imagem (equipamentos) */
+.how-card[data-step="3"] .how-equip-pro{
+  width: 155% !important;
+  max-width: none !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+
+  /* NOVO AJUSTE FINO */
+  margin: -75px 10px 0 80px !important;
+
+  filter: drop-shadow(0 26px 44px rgba(0,0,0,0.58)) !important;
+  animation: equipFloat 4.2s ease-in-out infinite;
+}
+
+@keyframes equipFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* sombra realista no chão */
+.how-card[data-step="3"] .how-card__mediaSlot::after{
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 14px !important;
+  width: 72% !important;
+  height: 22px !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.55) !important;
+  filter: blur(18px) !important;
+  transform: translateX(-50%) !important;
+  opacity: .80 !important;
+  pointer-events: none !important;
+}
+
+/* no hover: um pouco mais de presença */
+.how-card[data-step="3"]:hover .how-card__mediaSlot::after{
+  opacity: .95 !important;
+  filter: blur(22px) !important;
+}
+
+
+/* ===== FLOAT PREMIUM PADRONIZADO (CARDS 2, 3 e 4) ===== */
 @keyframes premiumFloat {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 }
 
-/* cobre nomes antigos e novos */
+/* força o mesmo comportamento nos 3 cards (mesma intensidade) */
 .how-card[data-step="2"] .how-keg-pro,
 .how-card[data-step="3"] .how-equip-pro,
-.how-card[data-step="4"] .how-delivery-pro,
-.how-card__obj--keg,
-.how-card__obj--equip,
-.how-card__obj--delivery{
+.how-card[data-step="4"] .how-delivery-pro{
   animation: premiumFloat 4.2s ease-in-out infinite !important;
   filter: drop-shadow(0 26px 44px rgba(0,0,0,0.58)) !important;
+}
+
+
+/* ===== CARD 4 - ENTREGA (PREMIUM) ===== */
+.how-card[data-step="4"] .how-card__mediaSlot{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  overflow: visible !important;
+  padding: 0 22px 8px !important;
+  position: relative !important;
+}
+
+.how-card[data-step="4"] .how-card__mediaSlot::before{
+  content: none !important;
+  display: none !important;
+}
+
+.how-card[data-step="4"] .how-delivery-pro{
+  width: 150% !important;
+  max-width: none !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+
+  /* ajuste fino (pode mexer depois) */
+  margin: -65px 0 0 55px !important;
+}
+
+/* sombra realista no chão */
+.how-card[data-step="4"] .how-card__mediaSlot::after{
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 14px !important;
+  width: 72% !important;
+  height: 22px !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.55) !important;
+  filter: blur(18px) !important;
+  transform: translateX(-50%) !important;
+  opacity: .80 !important;
+  pointer-events: none !important;
+}
+
+.how-card[data-step="4"]:hover .how-card__mediaSlot::after{
+  opacity: .95 !important;
+  filter: blur(22px) !important;
 }

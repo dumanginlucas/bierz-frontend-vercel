@@ -71,28 +71,9 @@ const HowItWorks = () => {
     [navigate]
   );
 
-
-const touchStartRef = React.useRef({ x: 0, y: 0 });
-const onTouchStart = (e) => {
-  const t = e.touches && e.touches[0];
-  if (!t) return;
-  touchStartRef.current = { x: t.clientX, y: t.clientY };
-};
-
-const onTouchEnd = (id) => (e) => {
-  const t0 = touchStartRef.current;
-  const t = e.changedTouches && e.changedTouches[0];
-  if (!t) return;
-
-  const dx = t.clientX - t0.x;
-  const dy = t.clientY - t0.y;
-
-  // swipe horizontal para virar (evita tap virar)
-  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+  const handleCardClick = (id) => {
+    // Mobile: toque alterna o flip
     setActive((prev) => (prev === id ? null : id));
-  }
-};
-
   };
 
   return (
@@ -127,12 +108,10 @@ const onTouchEnd = (id) => (e) => {
             return (
               <div
                 key={s.id}
-                className={"how-card " + (flipped ? "is-flipped" : "")}
                 data-step={s.id}
+                className={"how-card " + (flipped ? "is-flipped" : "")}
                 onMouseEnter={() => setActive(s.id)}
-                onMouseLeave={() => setActive(null)}
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd(s.id)}
+                onClick={() => handleCardClick(s.id)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -152,31 +131,29 @@ const onTouchEnd = (id) => (e) => {
                       <div className="how-card__mediaSlot" aria-hidden="true">
                       {s.id === 2 && (
                         <img
-                          className="how-card__obj how-card__obj--keg"
+                          className="how-keg-pro"
                           src="/howitworks/step2.png"
                           alt=""
                           loading="lazy"
-                          decoding="async"
                         />
                       )}
-{s.id === 3 && (
-  <img
-    className="how-card__obj how-card__obj--equip how-equip-pro"
-    src="/howitworks/step3.png"
-    alt=""
-    loading="lazy"
-    decoding="async"
-  />
-)}
-{s.id === 4 && (
-  <img
-    className="how-card__obj how-card__obj--delivery how-delivery-pro"
-    src="/howitworks/step4.png"
-    alt=""
-    loading="lazy"
-    decoding="async"
-  />
-)}
+                      {s.id === 3 && (
+                        <img
+                          className="how-equip-pro"
+                          src="/howitworks/step3.png"
+                          alt=""
+                          loading="lazy"
+                        />
+                      )}
+					  {s.id === 4 && (
+					    <img
+					      className="how-delivery-pro"
+					      src="/howitworks/step4.png"
+					      alt=""
+					      loading="lazy"
+					    />
+					  )}
+
                     </div>
                     </div>
                   </div>
@@ -194,16 +171,7 @@ const onTouchEnd = (id) => (e) => {
 
                       <button
                         className="how-card__cta"
-                       
-                        onPointerDown={(e) => {
-                          e.preventDefault();
-                          e.preventDefault();
-                          e.stopPropagation();
-                          s.action();
-                          setActive(null);
-                        }}
                         onClick={(e) => {
-                          e.preventDefault();
                           e.stopPropagation();
                           s.action();
                           setActive(null);
