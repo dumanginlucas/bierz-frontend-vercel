@@ -1000,7 +1000,7 @@ body::before {
 
 /* imagem maior e central, sem transform (não briga com hover) */
 .how-card[data-step="2"] .how-keg-pro{
-  width: 118% !important;
+  width: 108% !important;
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
