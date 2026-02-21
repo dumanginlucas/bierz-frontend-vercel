@@ -130,10 +130,10 @@ const HowItWorks = () => {
                     
                     <div className="how-card__frontBody">
                       <div className="how-card__mediaSlot how-card__mediaSlot--v1" aria-hidden="true">
-                        <span className="how-card__wm">{{s.id}}</span>
+                        <span className="how-card__wm">{s.id}</span>
                         <img
                           className="how-card__art"
-                          src={`/howitworks/v1/${{s.id === 1 ? "calc" : s.id === 2 ? "keg" : s.id === 3 ? "tap" : "van"}}.png`}
+                          src={`/howitworks/v1/${s.id === 1 ? "calc" : s.id === 2 ? "keg" : s.id === 3 ? "tap" : "van"}.png`}
                           alt=""
                           loading="lazy"
                           draggable="false"
