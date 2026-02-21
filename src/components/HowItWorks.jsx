@@ -4,6 +4,8 @@ import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
   const [active, setActive] = useState(null);
+  const touchStartRef = React.useRef(null);
+  const touchFlippedRef = React.useRef(false);
   const navigate = useNavigate();
 
   // eslint-disable-next-line no-console
@@ -65,16 +67,11 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        action: () => navigate("/carrinho"),
+        action: () => navigate("/cart"),
       },
     ],
     [navigate]
   );
-
-  const handleCardClick = (id) => {
-    // Mobile: toque alterna o flip
-    setActive((prev) => (prev === id ? null : id));
-  };
 
   return (
     <section
@@ -111,11 +108,28 @@ const HowItWorks = () => {
                 data-step={s.id}
                 className={"how-card " + (flipped ? "is-flipped" : "")}
                 onMouseEnter={() => setActive(s.id)}
-                onClick={() => handleCardClick(s.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") handleCardClick(s.id);
+                onTouchStart={(e) => {
+                  // swipe para virar (tap não vira)
+                  const t = e.touches?.[0];
+                  if (!t) return;
+                  touchStartRef.current = { x: t.clientX, y: t.clientY };
+                  touchFlippedRef.current = false;
+                }}
+                onTouchMove={(e) => {
+                  const start = touchStartRef.current;
+                  const t = e.touches?.[0];
+                  if (!start || !t || touchFlippedRef.current) return;
+                  const dx = t.clientX - start.x;
+                  const dy = t.clientY - start.y;
+                  // só vira com swipe horizontal claro
+                  if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+                    touchFlippedRef.current = true;
+                    setActive((prev) => (prev === s.id ? null : s.id));
+                  }
+                }}
+                onTouchEnd={() => {
+                  touchStartRef.current = null;
+                  touchFlippedRef.current = false;
                 }}
                 aria-label={`Como funciona - ${s.kicker}`}
               >
@@ -145,14 +159,6 @@ const HowItWorks = () => {
                           loading="lazy"
                         />
                       )}
-					  {s.id === 4 && (
-					    <img
-					      className="how-delivery-pro"
-					      src="/howitworks/step4.png"
-					      alt=""
-					      loading="lazy"
-					    />
-					  )}
 
                     </div>
                     </div>
@@ -170,7 +176,9 @@ const HowItWorks = () => {
                       <p className="how-card__desc">{s.desc}</p>
 
                       <button
+                        type="button"
                         className="how-card__cta"
+                        onTouchStart={(e) => e.stopPropagation()}
                         onClick={(e) => {
                           e.stopPropagation();
                           s.action();
