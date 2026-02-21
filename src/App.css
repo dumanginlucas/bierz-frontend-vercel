@@ -970,63 +970,40 @@ body::before {
 }
 
 
-/* ===== CARD 2 - SEM CORTE (SEM CLIP) ===== */
+/* ===== CARD 2 - SEM FRAME INTERNO, BORDA EXTERNA OK ===== */
 
-/* deixa o card e o front/back permitirem overflow */
-.how-card[data-step="2"],
-.how-card[data-step="2"] .how-card__inner,
-.how-card[data-step="2"] .how-card__front,
-.how-card[data-step="2"] .how-card__back {
-  overflow: visible !important;
-}
+/* Mantém o card como está (borda externa), só remove o frame interno */
+.how-card[data-step="2"] .how-card__mediaSlot{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
 
-/* o slot não corta mais */
-.how-card[data-step="2"] .how-card__mediaSlot {
-  overflow: visible !important;
-  height: auto !important;
-  min-height: 260px;               /* ajuste fino: dá “respiro” vertical */
+  /* layout */
   display: flex !important;
   justify-content: center !important;
   align-items: flex-end !important;
-  padding: 0 18px 6px !important;
+
+  /* não corta */
+  overflow: visible !important;
+
+  /* respiro */
+  padding: 0 22px 8px !important;
 }
 
-/* barril grande, sem cortar */
-.how-card[data-step="2"] .how-keg-pro {
-  width: 125% !important;
+/* se o frame interno vier por pseudo-elementos */
+.how-card[data-step="2"] .how-card__mediaSlot::before,
+.how-card[data-step="2"] .how-card__mediaSlot::after{
+  content: none !important;
+  display: none !important;
+}
+
+/* imagem maior e central, sem transform (não briga com hover) */
+.how-card[data-step="2"] .how-keg-pro{
+  width: 120% !important;     /* grande */
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
   margin: 0 auto !important;
   display: block !important;
-}
-
-/* ===== CARD 2 - REMOVER QUADRADO INTERNO DEFINITIVO ===== */
-
-/* 1) Mata qualquer frame desenhado por pseudo-elementos */
-.how-card[data-step="2"]::before,
-.how-card[data-step="2"]::after,
-.how-card[data-step="2"] .how-card__inner::before,
-.how-card[data-step="2"] .how-card__inner::after,
-.how-card[data-step="2"] .how-card__front::before,
-.how-card[data-step="2"] .how-card__front::after,
-.how-card[data-step="2"] .how-card__back::before,
-.how-card[data-step="2"] .how-card__back::after,
-.how-card[data-step="2"] .how-card__mediaSlot::before,
-.how-card[data-step="2"] .how-card__mediaSlot::after {
-  content: none !important;
-  display: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  border: 0 !important;
-}
-
-/* 2) Garante que nenhum wrapper interno desenhe borda/sombra/fundo */
-.how-card[data-step="2"] .how-card__front,
-.how-card[data-step="2"] .how-card__back,
-.how-card[data-step="2"] .how-card__mediaSlot {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: 0 !important;
-  outline: 0 !important;
 }
