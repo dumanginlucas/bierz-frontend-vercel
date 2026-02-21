@@ -982,7 +982,7 @@ body::before {
   /* layout */
   display: flex !important;
   justify-content: center !important;
-  align-items: flex-end !important;
+  align-items: center !important;
 
   /* não corta */
   overflow: visible !important;
@@ -1000,10 +1000,12 @@ body::before {
 
 /* imagem maior e central, sem transform (não briga com hover) */
 .how-card[data-step="2"] .how-keg-pro{
-  width: 120% !important;     /* grande */
+  width: 118% !important;
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
-  margin: 0 auto !important;
   display: block !important;
+
+  /* ajuste fino */
+  margin: -10px auto 0 -8px !important;
 }
