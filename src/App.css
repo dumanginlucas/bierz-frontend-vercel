@@ -1000,3 +1000,33 @@ body::before {
   margin: 0 auto !important;
   display: block !important;
 }
+
+/* ===== CARD 2 - REMOVER QUADRADO INTERNO DEFINITIVO ===== */
+
+/* 1) Mata qualquer frame desenhado por pseudo-elementos */
+.how-card[data-step="2"]::before,
+.how-card[data-step="2"]::after,
+.how-card[data-step="2"] .how-card__inner::before,
+.how-card[data-step="2"] .how-card__inner::after,
+.how-card[data-step="2"] .how-card__front::before,
+.how-card[data-step="2"] .how-card__front::after,
+.how-card[data-step="2"] .how-card__back::before,
+.how-card[data-step="2"] .how-card__back::after,
+.how-card[data-step="2"] .how-card__mediaSlot::before,
+.how-card[data-step="2"] .how-card__mediaSlot::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* 2) Garante que nenhum wrapper interno desenhe borda/sombra/fundo */
+.how-card[data-step="2"] .how-card__front,
+.how-card[data-step="2"] .how-card__back,
+.how-card[data-step="2"] .how-card__mediaSlot {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
