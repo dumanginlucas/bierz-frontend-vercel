@@ -137,6 +137,15 @@ const HowItWorks = () => {
                           loading="lazy"
                         />
                       )}
+                      {s.id === 3 && (
+                        <img
+                          className="how-equip-pro"
+                          src="/howitworks/step3.png"
+                          alt=""
+                          loading="lazy"
+                        />
+                      )}
+
                     </div>
                     </div>
                   </div>
