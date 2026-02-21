@@ -57,20 +57,27 @@ const Header = () => {
     };
   }, []);
 
-  const scrollToSection = (id) => {
+    const scrollToSection = (id) => {
     setIsMobileMenuOpen(false);
-    
+
+    const doScroll = () => {
+      const element = document.getElementById(id);
+      if (!element) return;
+
+      const headerEl = document.querySelector('header');
+      const headerH = headerEl?.offsetHeight ?? 0;
+
+      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    };
+
     // Se não estiver na home, navega para home primeiro
     if (location.pathname !== '/') {
       navigate('/', { state: { scrollTo: id } });
       return;
     }
-    
-    const element = document.getElementById(id);
-    if (element) {
-      // Prefer scrollIntoView + scroll-margin-top (set in CSS) for reliability.
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+
+    doScroll();
   };
 
   // Efeito para scroll após navegação
@@ -80,7 +87,12 @@ const Header = () => {
       const id = location.state.scrollTo;
       const t = setTimeout(() => {
         const element = document.getElementById(id);
-        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (element) {
+          const headerEl = document.querySelector('header');
+          const headerH = headerEl?.offsetHeight ?? 0;
+          const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
       }, 120);
       // Limpa o state
       window.history.replaceState({}, document.title);
