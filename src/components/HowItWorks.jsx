@@ -65,7 +65,7 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        action: () => navigate("/carrinho"),
+        action: () => navigate("/cart"),
       },
     ],
     [navigate]
@@ -108,6 +108,7 @@ const HowItWorks = () => {
             return (
               <div
                 key={s.id}
+                data-step={s.id}
                 className={"how-card " + (flipped ? "is-flipped" : "")}
                 onMouseEnter={() => setActive(s.id)}
                 onClick={() => handleCardClick(s.id)}
@@ -130,13 +131,21 @@ const HowItWorks = () => {
                       <div className="how-card__mediaSlot" aria-hidden="true">
                       {s.id === 2 && (
                         <img
-                          className="how-card__obj how-card__obj--keg"
+                          className="how-keg-pro"
                           src="/howitworks/step2.png"
                           alt=""
                           loading="lazy"
-                          decoding="async"
                         />
                       )}
+                      {s.id === 3 && (
+                        <img
+                          className="how-equip-pro"
+                          src="/howitworks/step3.png"
+                          alt=""
+                          loading="lazy"
+                        />
+                      )}
+
                     </div>
                     </div>
                   </div>
@@ -154,16 +163,7 @@ const HowItWorks = () => {
 
                       <button
                         className="how-card__cta"
-                       
-                        onPointerDown={(e) => {
-                          e.preventDefault();
-                          e.preventDefault();
-                          e.stopPropagation();
-                          s.action();
-                          setActive(null);
-                        }}
                         onClick={(e) => {
-                          e.preventDefault();
                           e.stopPropagation();
                           s.action();
                           setActive(null);

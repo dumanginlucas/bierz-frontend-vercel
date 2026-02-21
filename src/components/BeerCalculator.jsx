@@ -43,7 +43,7 @@ const BeerCalculator = () => {
   ];
 
   return (
-    <section id="calculadora" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+    <section id="calculator" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 w-32 h-32 bg-[#F59E0B] rounded-full blur-3xl"></div>
