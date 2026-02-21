@@ -130,15 +130,6 @@ const HowItWorks = () => {
                       <div className="how-card__mediaSlot" aria-hidden="true">
                       {s.id === 2 && (
                         <img
-                          className="how-keg-pro"
-                          src="/howitworks/step2.png"
-                          alt=""
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      )}
-                      {s.id === 2 && (
-                        <img
                           className="how-card__obj how-card__obj--keg"
                           src="/howitworks/step2.png"
                           alt=""
@@ -162,8 +153,15 @@ const HowItWorks = () => {
                       <p className="how-card__desc">{s.desc}</p>
 
                       <button
-                        type="button"
                         className="how-card__cta"
+                       
+                        onPointerDown={(e) => {
+                          e.preventDefault();
+                          e.preventDefault();
+                          e.stopPropagation();
+                          s.action();
+                          setActive(null);
+                        }}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();

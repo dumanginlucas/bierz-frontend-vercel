@@ -124,36 +124,42 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-6">
             
             <button
+              onPointerDown={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Como funciona
             </button>
 <button
+              onPointerDown={() => scrollToSection('products')}
               onClick={() => scrollToSection('products')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Produtos
             </button>
             <button
+              onPointerDown={() => scrollToSection('services')}
               onClick={() => scrollToSection('services')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Equipamentos
             </button>
             <button
+              onPointerDown={() => scrollToSection('calculator')}
               onClick={() => scrollToSection('calculator')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Calculadora
             </button>
             <button
+              onPointerDown={() => scrollToSection('about')}
               onClick={() => scrollToSection('about')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Sobre
             </button>
             <button
+              onPointerDown={() => scrollToSection('contact')}
               onClick={() => scrollToSection('contact')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
@@ -277,37 +283,43 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 py-4">
               
             <button
+              onPointerDown={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left"
             >
               Como funciona
             </button>
 <button
-                onClick={() => scrollToSection('products')}
+                onPointerDown={() => scrollToSection('products')}
+              onClick={() => scrollToSection('products')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Produtos
               </button>
               <button
-                onClick={() => scrollToSection('services')}
+                onPointerDown={() => scrollToSection('services')}
+              onClick={() => scrollToSection('services')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Equipamentos
               </button>
               <button
-                onClick={() => scrollToSection('calculator')}
+                onPointerDown={() => scrollToSection('calculator')}
+              onClick={() => scrollToSection('calculator')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Calculadora
               </button>
               <button
-                onClick={() => scrollToSection('about')}
+                onPointerDown={() => scrollToSection('about')}
+              onClick={() => scrollToSection('about')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Sobre
               </button>
               <button
-                onClick={() => scrollToSection('contact')}
+                onPointerDown={() => scrollToSection('contact')}
+              onClick={() => scrollToSection('contact')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Contato
