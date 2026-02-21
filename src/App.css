@@ -970,43 +970,33 @@ body::before {
 }
 
 
-/* ===== CARD 2 (BARRIL) - REMOVER MOLDURA + CENTRALIZAR ===== */
+/* ===== CARD 2 - SEM CORTE (SEM CLIP) ===== */
 
-/* 1) Mata qualquer moldura (borda/sombra/fundo) do slot e de wrappers internos */
-.how-card[data-step="2"] .how-card__mediaSlot,
-.how-card[data-step="2"] .how-card__mediaSlot * {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  outline: none !important;
+/* deixa o card e o front/back permitirem overflow */
+.how-card[data-step="2"],
+.how-card[data-step="2"] .how-card__inner,
+.how-card[data-step="2"] .how-card__front,
+.how-card[data-step="2"] .how-card__back {
+  overflow: visible !important;
 }
 
-/* Se a moldura for desenhada por pseudo-elementos */
-.how-card[data-step="2"] .how-card__mediaSlot::before,
-.how-card[data-step="2"] .how-card__mediaSlot::after,
-.how-card[data-step="2"] .how-card__front::before,
-.how-card[data-step="2"] .how-card__front::after,
-.how-card[data-step="2"] .how-card__back::before,
-.how-card[data-step="2"] .how-card__back::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* 2) Centralização e respiro lateral real */
+/* o slot não corta mais */
 .how-card[data-step="2"] .how-card__mediaSlot {
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 260px;               /* ajuste fino: dá “respiro” vertical */
   display: flex !important;
   justify-content: center !important;
   align-items: flex-end !important;
-  padding: 0 18px 10px !important;   /* respiro nas laterais + base */
-  overflow: hidden !important;
+  padding: 0 18px 6px !important;
 }
 
-/* 3) Barril maior e melhor centrado sem usar transform */
+/* barril grande, sem cortar */
 .how-card[data-step="2"] .how-keg-pro {
-  width: 125% !important;            /* ocupa mais do card */
+  width: 125% !important;
   max-width: none !important;
   height: auto !important;
   object-fit: contain !important;
-  margin: 0 auto -6px auto !important; /* centraliza e desce um pouco */
+  margin: 0 auto !important;
   display: block !important;
 }
