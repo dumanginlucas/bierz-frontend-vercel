@@ -861,42 +861,37 @@ body::before {
   filter: drop-shadow(0 22px 28px rgba(0,0,0,0.6)) drop-shadow(0 0 26px rgba(245,158,11,0.28));
 }
 
-/* V2: animated premium background + outline vibe */
-@keyframes howSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes howBreathe {
-  0%,100% { opacity: .55; transform: translateY(26px) scale(1); }
-  50% { opacity: .85; transform: translateY(24px) scale(1.05); }
+/* V3: premium mockup feel (shine + depth) */
+@keyframes howShine {
+  0% { transform: translateX(-60%) rotate(18deg); opacity: 0; }
+  15% { opacity: .8; }
+  50% { opacity: .15; }
+  100% { transform: translateX(80%) rotate(18deg); opacity: 0; }
 }
 .how-media{
   background:
-    radial-gradient(700px 260px at 50% 12%, rgba(245,158,11,0.14), rgba(0,0,0,0) 58%),
-    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.0));
+    radial-gradient(700px 260px at 50% 18%, rgba(245,158,11,0.16), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(0,0,0,0.0));
 }
 .how-media::before{
   content:"";
   position:absolute;
-  width: 260px;
-  height: 260px;
-  left: 50%;
-  top: 52%;
-  transform: translate(-50%,-50%);
-  background: conic-gradient(from 0deg, rgba(245,158,11,0.0), rgba(245,158,11,0.22), rgba(245,158,11,0.0));
-  border-radius: 999px;
-  filter: blur(2px);
-  opacity: .65;
-  animation: howSpin 10s linear infinite;
+  inset:-40px -60px;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0) 65%);
+  filter: blur(0px);
+  animation: howShine 5.2s ease-in-out infinite;
   pointer-events:none;
 }
-.how-media__glow{
-  animation: howBreathe 3.8s ease-in-out infinite;
-}
 .how-media__icon{
-  opacity: .55;
-  filter: drop-shadow(0 18px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 30px rgba(245,158,11,0.12));
+  width: 88px;
+  height: 88px;
+  opacity: .98;
+  transform: translateY(6px);
+}
+.how-media__glow{
+  opacity: 1;
+  transform: translateY(32px);
 }
 .how-card:not(.is-flipped):hover .how-media__icon{
-  opacity: .85;
+  transform: translateY(-6px) scale(1.04);
 }
