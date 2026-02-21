@@ -935,35 +935,63 @@ body::before {
 }
 
 
-/* ===== FINAL Step 2 Protagonist ===== */
-
-.how-card {
-  height: 500px;
+/* ===== HowItWorks Step 2 (Clean premium, option A) ===== */
+.how-card{
+  height: 520px;
 }
 
-.how-card__mediaSlot {
+.how-card__mediaSlot{
   position: relative;
-  height: 350px;
-  background: radial-gradient(800px 400px at 50% 35%, rgba(255,170,0,.15), transparent 60%);
+  height: 360px;
+  width: 100%;
+  background: none !important;     /* remove inner brown/inset */
+  border: none !important;
+  box-shadow: none !important;
+  overflow: visible;               /* let the object breathe */
 }
 
-.how-keg-pro {
+/* subtle clean glow behind the object (CSS, not baked into image) */
+.how-card__mediaSlot::after{
+  content:"";
+  position:absolute;
+  inset:-10% -10% -30% -10%;
+  background: radial-gradient(700px 320px at 50% 45%, rgba(255,170,0,.16), transparent 62%);
+  pointer-events:none;
+}
+
+/* Ground shadow (depth) */
+.how-card__mediaSlot::before{
+  content:"";
+  position:absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62%;
+  height: 26px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 72%);
+  filter: blur(14px);
+  opacity: .85;
+  pointer-events:none;
+}
+
+.how-keg-pro{
   position: absolute;
   left: 50%;
-  top: 60%;
+  top: 62%;
   transform: translate(-50%, -50%);
-  width: min(460px, 88%);
+  width: min(520px, 92%);          /* big (C) */
   height: auto;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,.75));
-  transition: transform .45s cubic-bezier(.22,.68,0,1.01), filter .4s ease;
+  transition: transform .45s cubic-bezier(.22,.68,0,1.01), filter .35s ease;
+  pointer-events:none;
 }
 
-.how-card:hover .how-keg-pro {
-  transform: translate(-50%, calc(-50% - 14px));
-  filter: drop-shadow(0 55px 90px rgba(0,0,0,.85));
+.how-card:hover .how-keg-pro{
+  transform: translate(-50%, calc(-50% - 12px));
+  filter: drop-shadow(0 58px 92px rgba(0,0,0,.85));
 }
 
-.how-card__mediaSlot::before,
-.how-card__mediaSlot::after {
-  display: none !important;
+/* Optional: make the card front background cleaner (reduce muddy brown) */
+.how-card__front{
+  background: radial-gradient(1000px 520px at 50% 0%, rgba(255,170,0,.10), transparent 55%), rgba(0,0,0,.38) !important;
 }

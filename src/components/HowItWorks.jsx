@@ -134,18 +134,10 @@ const HowItWorks = () => {
                           src="/howitworks/step2.png"
                           alt=""
                           loading="lazy"
-                        />
-                      )}
-                      {s.id === 2 && (
-                        <img
-                          className="how-card__obj how-card__obj--keg"
-                          src="/howitworks/step2.png"
-                          alt=""
-                          loading="lazy"
                           decoding="async"
                         />
                       )}
-                    </div>
+</div>
                     </div>
                   </div>
 
