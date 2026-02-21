@@ -1,25 +1,11 @@
-import React, { useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
-const HowItWorks = () => {
-  const [active, setActive] = useState(null);
-  const navigate = useNavigate();
-  const location = useLocation();
+const HowItWorks = () => {  const navigate = useNavigate();
 
   // eslint-disable-next-line no-console
   console.log("BIERZ FRONT v7 - Como funciona");
-
-  const goToSection = (id) => {
-    // Reaproveita a mesma lógica do Header: se não estiver na home, navega e deixa o Header fazer o scroll.
-    if (location.pathname !== "/") {
-      navigate("/", { state: { scrollTo: id } });
-      return;
-    }
-
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   const steps = useMemo(
     () => [
@@ -29,7 +15,15 @@ const HowItWorks = () => {
         title: "Calcule quantos litros você precisa",
         desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
-        action: () => goToSection("calculator"),
+        action: () => {
+          const el = document.getElementById("calculator");
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        },
       },
       {
         id: 2,
@@ -37,7 +31,15 @@ const HowItWorks = () => {
         title: "Escolha o chopp da vez",
         desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
         cta: "Escolher chopp",
-        action: () => goToSection("products"),
+        action: () => {
+          const el = document.getElementById("products");
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        },
       },
       {
         id: 3,
@@ -45,7 +47,15 @@ const HowItWorks = () => {
         title: "Chopeira elétrica ou HomeBar?",
         desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
         cta: "Ver equipamentos",
-        action: () => goToSection("services"),
+        action: () => {
+          const el = document.getElementById("services");
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        },
       },
       {
         id: 4,
@@ -53,16 +63,11 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        action: () => navigate("/carrinho"),
+        action: () => navigate("/cart"),
       },
     ],
-    [navigate, location.pathname]
+    [navigate]
   );
-
-  const handleCardClick = (id) => {
-    // Mobile: toque alterna o flip
-    setActive((prev) => (prev === id ? null : id));
-  };
 
   return (
     <section
@@ -91,15 +96,11 @@ const HowItWorks = () => {
           onMouseLeave={() => setActive(null)}
         >
           {steps.map((s) => {
-            const flipped = active === s.id;
-
             return (
               <div
                 key={s.id}
                 data-step={s.id}
-                className={"how-card " + (flipped ? "is-flipped" : "")}
-                onMouseEnter={() => setActive(s.id)}
-                onClick={() => handleCardClick(s.id)}
+                className="how-card"
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -150,12 +151,10 @@ const HowItWorks = () => {
                       <p className="how-card__desc">{s.desc}</p>
 
                       <button
-                        type="button"
                         className="how-card__cta"
                         onClick={(e) => {
                           e.stopPropagation();
                           s.action();
-                          setActive(null);
                         }}
                       >
                         {s.cta} <ArrowRight size={16} />
