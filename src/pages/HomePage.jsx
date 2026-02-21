@@ -14,9 +14,9 @@ const HomePage = () => {
       <Header />
       <main>
         <HowItWorks />
-        <Products />
-        <Services />
-        <BeerCalculator />
+        <section id="products"><Products /></section>
+        <section id="services"><Services /></section>
+        <section id="calculator"><BeerCalculator /></section>
         <About />
         <Contact />
       </main>

@@ -1,32 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
   const [active, setActive] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
 
   // eslint-disable-next-line no-console
   console.log("BIERZ FRONT v7 - Como funciona");
-  const goTo = (id) => {
-    // If not on home, navigate first (Header will handle scroll state via location.state.scrollTo)
-    if (location.pathname !== "/") {
-      navigate("/", { state: { scrollTo: id } });
-      return;
-    }
-
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    const headerEl = document.querySelector("header");
-    const headerH = headerEl?.offsetHeight ?? 0;
-    const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-
-    window.scrollTo({ top: y, behavior: "smooth" });
-  };
-
-
 
   const steps = useMemo(
     () => [
@@ -36,7 +17,15 @@ const HowItWorks = () => {
         title: "Calcule quantos litros você precisa",
         desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
-        action: () => goTo("calculator"),
+        action: () => {
+          const el = document.getElementById("calculator");
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        },
       },
       {
         id: 2,
@@ -44,7 +33,15 @@ const HowItWorks = () => {
         title: "Escolha o chopp da vez",
         desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
         cta: "Escolher chopp",
-        action: () => goTo("products"),
+        action: () => {
+          const el = document.getElementById("products");
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        },
       },
       {
         id: 3,
@@ -52,7 +49,15 @@ const HowItWorks = () => {
         title: "Chopeira elétrica ou HomeBar?",
         desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
         cta: "Ver equipamentos",
-        action: () => goTo("services"),
+        action: () => {
+          const el = document.getElementById("services");
+          if (el) {
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        },
       },
       {
         id: 4,
@@ -60,10 +65,10 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        action: () => navigate("/cart"),
+        action: () => navigate("/carrinho"),
       },
     ],
-    [navigate, location]
+    [navigate]
   );
 
   const handleCardClick = (id) => {
@@ -103,7 +108,6 @@ const HowItWorks = () => {
             return (
               <div
                 key={s.id}
-                data-step={s.id}
                 className={"how-card " + (flipped ? "is-flipped" : "")}
                 onMouseEnter={() => setActive(s.id)}
                 onClick={() => handleCardClick(s.id)}
@@ -126,21 +130,13 @@ const HowItWorks = () => {
                       <div className="how-card__mediaSlot" aria-hidden="true">
                       {s.id === 2 && (
                         <img
-                          className="how-keg-pro"
+                          className="how-card__obj how-card__obj--keg"
                           src="/howitworks/step2.png"
                           alt=""
                           loading="lazy"
+                          decoding="async"
                         />
                       )}
-                      {s.id === 3 && (
-                        <img
-                          className="how-equip-pro"
-                          src="/howitworks/step3.png"
-                          alt=""
-                          loading="lazy"
-                        />
-                      )}
-
                     </div>
                     </div>
                   </div>
@@ -156,9 +152,18 @@ const HowItWorks = () => {
                       <div className="how-card__title">{s.title}</div>
                       <p className="how-card__desc">{s.desc}</p>
 
-                      <button type="button"
+                      <button
                         className="how-card__cta"
+                       
+                        onPointerDown={(e) => {
+                          e.preventDefault();
+                          e.preventDefault();
+                          e.stopPropagation();
+                          s.action();
+                          setActive(null);
+                        }}
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           s.action();
                           setActive(null);
