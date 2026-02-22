@@ -1,198 +1,332 @@
-import React, { useMemo, useState } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import "./HowItWorks.css";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { Calculator, Beer, Zap, MapPin, ArrowRight, ChevronRight } from "lucide-react";
 
-const HowItWorks = () => {
-  const [active, setActive] = useState(null);
-  const touchStartRef = React.useRef(null);
-  const touchFlippedRef = React.useRef(false);
-  const navigate = useNavigate();
+/* ─────────────────────────────────────────────
+   Dados dos passos
+───────────────────────────────────────────── */
+const STEPS = [
+  {
+    id: 1,
+    number: "01",
+    icon: Calculator,
+    accent: "#f59e0b",
+    accentRgb: "245,158,11",
+    tag: "Primeiro passo",
+    title: "Calcule quanto Chopp você precisa",
+    subtitle: "Descubra a quantidade exata para o seu evento",
+    desc: "Use nossa calculadora inteligente e saiba exatamente quantos litros de chopp você precisa. Sem desperdício, sem falta — só a medida certa para a sua festa.",
+    cta: "Calcular",
+    targetId: "calculator",
+    particles: ["🍺", "🍻", "🫧"],
+  },
+  {
+    id: 2,
+    number: "02",
+    icon: Beer,
+    accent: "#fb923c",
+    accentRgb: "251,146,60",
+    tag: "Segundo passo",
+    title: "Escolha o seu Chopp da vez",
+    subtitle: "Aproveite e selecione outros produtos para complementar",
+    desc: "Explore nosso catálogo com os melhores rótulos e estilos de chopp. Adicione ao carrinho em poucos cliques e complemente com outros produtos para tornar seu evento ainda mais especial.",
+    cta: "Ver produtos",
+    targetId: "products",
+    particles: ["🍺", "🌾", "✨"],
+  },
+  {
+    id: 3,
+    number: "03",
+    icon: Zap,
+    accent: "#eab308",
+    accentRgb: "234,179,8",
+    tag: "Terceiro passo",
+    title: "Selecione o equipamento ideal para o seu evento",
+    subtitle: "Chopeira elétrica ou HomeBar — você escolhe",
+    desc: "Temos o equipamento perfeito para cada tipo de evento. Compare as opções, veja as especificações e escolha o que melhor se encaixa no seu espaço e no seu estilo.",
+    cta: "Escolher",
+    targetId: "services",
+    particles: ["⚡", "🔧", "🏆"],
+  },
+  {
+    id: 4,
+    number: "04",
+    icon: MapPin,
+    accent: "#22c55e",
+    accentRgb: "34,197,94",
+    tag: "Último passo",
+    title: "Informe o endereço do seu evento",
+    subtitle: "Entregamos, instalamos e recolhemos no horário programado",
+    desc: "Preencha os dados do evento com data, horário e endereço. Nossa equipe entrega, instala tudo no local e recolhe ao final — você só precisa aproveitar.",
+    cta: "Finalizar meu pedido",
+    targetId: "cart",
+    particles: ["📍", "🚚", "🎉"],
+  },
+];
 
-  // eslint-disable-next-line no-console
-  console.log("BIERZ FRONT v7 - Como funciona");
-
-  const steps = useMemo(
-    () => [
-      {
-        id: 1,
-        kicker: "Comece aqui",
-        title: "Calcule quantos litros você precisa",
-        desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
-        cta: "Calcular agora",
-        action: () => {
-          const el = document.getElementById("calculator");
-          if (el) {
-            const headerEl = document.querySelector('header');
-            const headerH = headerEl?.offsetHeight ?? 0;
-            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        },
-      },
-      {
-        id: 2,
-        kicker: "Escolha seu chopp",
-        title: "Escolha o chopp da vez",
-        desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
-        cta: "Escolher chopp",
-        action: () => {
-          const el = document.getElementById("products");
-          if (el) {
-            const headerEl = document.querySelector('header');
-            const headerH = headerEl?.offsetHeight ?? 0;
-            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        },
-      },
-      {
-        id: 3,
-        kicker: "Defina o equipamento",
-        title: "Chopeira elétrica ou HomeBar?",
-        desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
-        cta: "Ver equipamentos",
-        action: () => {
-          const el = document.getElementById("services");
-          if (el) {
-            const headerEl = document.querySelector('header');
-            const headerH = headerEl?.offsetHeight ?? 0;
-            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        },
-      },
-      {
-        id: 4,
-        kicker: "Preencha os dados e finalize",
-        title: "Entregamos, instalamos e retiramos",
-        desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
-        cta: "Finalizar pedido",
-        action: () => navigate("/cart"),
-      },
-    ],
-    [navigate]
+/* ─────────────────────────────────────────────
+   Partículas flutuantes por card
+───────────────────────────────────────────── */
+function FloatingParticles({ particles, active, accent }) {
+  return (
+    <div className="hiw-particles" aria-hidden="true">
+      {particles.map((p, i) => (
+        <span
+          key={i}
+          className={`hiw-particle hiw-particle--${i + 1} ${active ? "hiw-particle--active" : ""}`}
+          style={{ "--accent": accent }}
+        >
+          {p}
+        </span>
+      ))}
+    </div>
   );
+}
+
+/* ─────────────────────────────────────────────
+   Card individual
+───────────────────────────────────────────── */
+function StepCard({ step, index, isActive, onHover, onLeave, onAction }) {
+  const cardRef = useRef(null);
+  const glowRef = useRef(null);
+
+  /* Efeito de spotlight magnético no mouse */
+  const handleMouseMove = useCallback((e) => {
+    const card = cardRef.current;
+    const glow = glowRef.current;
+    if (!card || !glow) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const rotX = ((y - cy) / cy) * -8;
+    const rotY = ((x - cx) / cx) * 8;
+    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(6px)`;
+    glow.style.background = `radial-gradient(280px circle at ${x}px ${y}px, rgba(${step.accentRgb},0.22), transparent 70%)`;
+  }, [step.accentRgb]);
+
+  const handleMouseLeave = useCallback(() => {
+    const card = cardRef.current;
+    const glow = glowRef.current;
+    if (card) card.style.transform = "";
+    if (glow) glow.style.background = "";
+    onLeave();
+  }, [onLeave]);
+
+  const Icon = step.icon;
+
+  return (
+    <div
+      ref={cardRef}
+      className={`hiw-card ${isActive ? "hiw-card--active" : ""}`}
+      style={{ "--accent": step.accent, "--accent-rgb": step.accentRgb, "--delay": `${index * 0.12}s` }}
+      onMouseEnter={onHover}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      role="article"
+      aria-label={`Passo ${step.id}: ${step.title}`}
+    >
+      {/* Glow spotlight */}
+      <div ref={glowRef} className="hiw-card__glow" aria-hidden="true" />
+
+      {/* Borda animada */}
+      <div className="hiw-card__border" aria-hidden="true" />
+
+      {/* Partículas */}
+      <FloatingParticles particles={step.particles} active={isActive} accent={step.accent} />
+
+      {/* Conteúdo */}
+      <div className="hiw-card__inner">
+        {/* Topo: número + tag */}
+        <div className="hiw-card__head">
+          <span className="hiw-card__tag">{step.tag}</span>
+          <span className="hiw-card__num">{step.number}</span>
+        </div>
+
+        {/* Ícone com anel pulsante */}
+        <div className="hiw-card__iconWrap">
+          <div className="hiw-card__iconRing" aria-hidden="true" />
+          <div className="hiw-card__iconBg">
+            <Icon size={26} strokeWidth={1.8} />
+          </div>
+        </div>
+
+        {/* Textos */}
+        <div className="hiw-card__body">
+          <h3 className="hiw-card__title">{step.title}</h3>
+          <p className="hiw-card__subtitle">{step.subtitle}</p>
+          <p className="hiw-card__desc">{step.desc}</p>
+        </div>
+
+        {/* CTA */}
+        {step.targetId === 'cart' ? (
+          <button
+            type="button"
+            className="hiw-card__cta"
+            onClick={() => onAction(step)}
+          >
+            <span>{step.cta}</span>
+            <span className="hiw-card__ctaArrow">
+              <ArrowRight size={15} strokeWidth={2.5} />
+            </span>
+          </button>
+        ) : (
+          <a
+            href={`#${step.targetId}`}
+            className="hiw-card__cta"
+          >
+            <span>{step.cta}</span>
+            <span className="hiw-card__ctaArrow">
+              <ArrowRight size={15} strokeWidth={2.5} />
+            </span>
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Linha conectora animada
+───────────────────────────────────────────── */
+function ConnectorLine({ activeStep }) {
+  const progress = activeStep ? ((activeStep - 1) / 3) * 100 : 0;
+  return (
+    <div className="hiw-connector" aria-hidden="true">
+      <div className="hiw-connector__track" />
+      <div
+        className="hiw-connector__fill"
+        style={{ width: `${progress}%` }}
+      />
+      {STEPS.map((s) => (
+        <div
+          key={s.id}
+          className={`hiw-connector__dot ${activeStep >= s.id ? "hiw-connector__dot--active" : ""}`}
+          style={{
+            left: `calc(${((s.id - 1) / 3) * 100}% + ${s.id === 1 ? "0px" : s.id === 4 ? "0px" : "0px"})`,
+            "--accent": s.accent,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Componente principal
+───────────────────────────────────────────── */
+const HowItWorks = () => {
+  const navigate = useNavigate();
+  const [activeStep, setActiveStep] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  /* Intersection Observer para animação de entrada */
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    // Verifica se já está visível no carregamento inicial
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      setVisible(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.05 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const scrollTo = useCallback((id) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        const headerH = document.querySelector("header")?.offsetHeight ?? 80;
+        const targetY = el.offsetTop - headerH - 20;
+        window.scrollTo({ top: targetY, behavior: "smooth" });
+      }
+    }, 100);
+  }, []);
+
+  const handleAction = useCallback((step) => {
+    console.log('handleAction called with:', step.targetId);
+    if (step.targetId === "cart") {
+      console.log('Navigating to cart');
+      navigate("/carrinho");
+    } else {
+      console.log('Scrolling to:', step.targetId);
+      scrollTo(step.targetId);
+    }
+  }, [navigate, scrollTo]);
 
   return (
     <section
       id="how-it-works"
-      className="pt-36 pb-10 bg-black relative overflow-visible how-hero"
+      ref={sectionRef}
+      className={`hiw-section ${visible ? "hiw-section--visible" : ""}`}
     >
-      <span className="sr-only">BIERZ_FRONT_VERSION_V7</span>
-      <div className="absolute inset-0 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.25)_0%,rgba(0,0,0,0)_55%)]" />
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">
-            Distribuidora{" "}
-            <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
-              BIERZ
-            </span>
+      {/* Background decorativo */}
+      <div className="hiw-bg" aria-hidden="true">
+        <div className="hiw-bg__orb hiw-bg__orb--1" />
+        <div className="hiw-bg__orb hiw-bg__orb--2" />
+        <div className="hiw-bg__orb hiw-bg__orb--3" />
+        <div className="hiw-bg__grid" />
+      </div>
+
+      <div className="hiw-container">
+        {/* Header da seção */}
+        <div className="hiw-header">
+          <div className="hiw-header__badge">
+            <span className="hiw-header__badgeDot" />
+            Como funciona
+          </div>
+          <h2 className="hiw-header__title">
+            Seu evento perfeito em{" "}
+            <span className="hiw-header__titleAccent">4 passos</span>
           </h2>
-          <p className="text-gray-300 text-base sm:text-lg">
-            <span className="text-white font-semibold">Como funciona</span>{" "}
-            <span className="text-gray-400">—</span>{" "}
-            Em 4 passos você finaliza seu pedido e garante seu evento.
+          <p className="hiw-header__sub">
+            Da calculadora à entrega — tudo simples, rápido e sem complicação.
           </p>
         </div>
 
+        {/* Linha conectora (desktop) */}
+        <ConnectorLine activeStep={activeStep} />
+
+        {/* Grid de cards */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-          onMouseLeave={() => setActive(null)}
+          className="hiw-grid"
+          onMouseLeave={() => setActiveStep(null)}
         >
-          {steps.map((s) => {
-            const flipped = active === s.id;
+          {STEPS.map((step, i) => (
+            <StepCard
+              key={step.id}
+              step={step}
+              index={i}
+              isActive={activeStep === step.id}
+              onHover={() => setActiveStep(step.id)}
+              onLeave={() => setActiveStep(null)}
+              onAction={handleAction}
+            />
+          ))}
+        </div>
 
-            return (
-              <div
-                key={s.id}
-                data-step={s.id}
-                className={"how-card " + (flipped ? "is-flipped" : "")}
-                onMouseEnter={() => setActive(s.id)}
-                onTouchStart={(e) => {
-                  // swipe para virar (tap não vira)
-                  const t = e.touches?.[0];
-                  if (!t) return;
-                  touchStartRef.current = { x: t.clientX, y: t.clientY };
-                  touchFlippedRef.current = false;
-                }}
-                onTouchMove={(e) => {
-                  const start = touchStartRef.current;
-                  const t = e.touches?.[0];
-                  if (!start || !t || touchFlippedRef.current) return;
-                  const dx = t.clientX - start.x;
-                  const dy = t.clientY - start.y;
-                  // só vira com swipe horizontal claro
-                  if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-                    touchFlippedRef.current = true;
-                    setActive((prev) => (prev === s.id ? null : s.id));
-                  }
-                }}
-                onTouchEnd={() => {
-                  touchStartRef.current = null;
-                  touchFlippedRef.current = false;
-                }}
-                aria-label={`Como funciona - ${s.kicker}`}
-              >
-                <div className="how-card__inner">
-                  {/* FRONT */}
-                  <div className="how-card__face how-card__front">
-                    <div className="how-card__top">
-                      <div className="how-card__kicker">{s.kicker}</div>
-                      <div className="how-card__badge">{s.id}</div>
-                    </div>
-{/* Espaço reservado para imagem/arte (PNG sem fundo) */}
-                    <div className="how-card__frontBody">
-                      <div className="how-card__mediaSlot" aria-hidden="true">
-                      {s.id === 2 && (
-                        <img
-                          className="how-keg-pro"
-                          src="/howitworks/step2.png"
-                          alt=""
-                          loading="lazy"
-                        />
-                      )}
-                      {s.id === 3 && (
-                        <img
-                          className="how-equip-pro"
-                          src="/howitworks/step3.png"
-                          alt=""
-                          loading="lazy"
-                        />
-                      )}
-
-                    </div>
-                    </div>
-                  </div>
-
-                  {/* BACK */}
-                  <div className="how-card__face how-card__back">
-                    <div className="how-card__top">
-                      <div className="how-card__kicker">{s.kicker}</div>
-                      <div className="how-card__badge">{s.id}</div>
-                    </div>
-
-                    <div className="how-card__backBody">
-                      <div className="how-card__title">{s.title}</div>
-                      <p className="how-card__desc">{s.desc}</p>
-
-                      <button
-                        type="button"
-                        className="how-card__cta"
-                        onTouchStart={(e) => e.stopPropagation()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          s.action();
-                          setActive(null);
-                        }}
-                      >
-                        {s.cta} <ArrowRight size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        {/* Rodapé da seção */}
+        <div className="hiw-footer">
+          <p className="hiw-footer__text">
+            Pronto para começar?
+          </p>
+          <button
+            type="button"
+            className="hiw-footer__cta"
+            onClick={() => scrollTo("calculator")}
+          >
+            Começar agora
+            <ChevronRight size={16} strokeWidth={2.5} />
+          </button>
         </div>
       </div>
     </section>
