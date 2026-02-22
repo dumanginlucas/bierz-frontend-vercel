@@ -1121,3 +1121,24 @@ body::before {
   opacity: .95 !important;
   filter: blur(22px) !important;
 }
+
+/* ==========================================================
+   Como funciona (novo layout) — classes isoladas
+   ========================================================== */
+
+.section-number{
+  font-size: clamp(80px, 12vw, 160px);
+  line-height: 1;
+  color: rgba(245, 158, 11, 0.06);
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+
+.text-amber-gradient{
+  background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
