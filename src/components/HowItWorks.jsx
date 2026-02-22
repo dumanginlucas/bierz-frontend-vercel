@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
-  const sectionRef = useRef(null);
-  const dragRef = useRef(null);
-  const [visible, setVisible] = useState(false);
-  const [flipped, setFlipped] = useState(null);
+  const [active, setActive] = useState(null);
+  const touchStartRef = React.useRef(null);
+  const touchFlippedRef = React.useRef(false);
   const navigate = useNavigate();
 
   // eslint-disable-next-line no-console
@@ -20,14 +19,13 @@ const HowItWorks = () => {
         title: "Calcule quantos litros você precisa",
         desc: "Use a calculadora e descubra a quantidade ideal para o seu evento.",
         cta: "Calcular agora",
-        hasImage: false,
         action: () => {
           const el = document.getElementById("calculator");
           if (el) {
-            const headerEl = document.querySelector("header");
+            const headerEl = document.querySelector('header');
             const headerH = headerEl?.offsetHeight ?? 0;
             const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-            window.scrollTo({ top: y, behavior: "smooth" });
+            window.scrollTo({ top: y, behavior: 'smooth' });
           }
         },
       },
@@ -37,15 +35,13 @@ const HowItWorks = () => {
         title: "Escolha o chopp da vez",
         desc: "Selecione seus estilos preferidos e adicione ao carrinho em poucos cliques.",
         cta: "Escolher chopp",
-        hasImage: true,
-        imageUrl: "/howitworks/step2.png",
         action: () => {
           const el = document.getElementById("products");
           if (el) {
-            const headerEl = document.querySelector("header");
+            const headerEl = document.querySelector('header');
             const headerH = headerEl?.offsetHeight ?? 0;
             const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-            window.scrollTo({ top: y, behavior: "smooth" });
+            window.scrollTo({ top: y, behavior: 'smooth' });
           }
         },
       },
@@ -55,15 +51,13 @@ const HowItWorks = () => {
         title: "Chopeira elétrica ou HomeBar?",
         desc: "Compare as opções e escolha o equipamento ideal para o seu evento.",
         cta: "Ver equipamentos",
-        hasImage: true,
-        imageUrl: "/howitworks/step3.png",
         action: () => {
           const el = document.getElementById("services");
           if (el) {
-            const headerEl = document.querySelector("header");
+            const headerEl = document.querySelector('header');
             const headerH = headerEl?.offsetHeight ?? 0;
             const y = el.getBoundingClientRect().top + window.scrollY - headerH - 12;
-            window.scrollTo({ top: y, behavior: "smooth" });
+            window.scrollTo({ top: y, behavior: 'smooth' });
           }
         },
       },
@@ -73,66 +67,21 @@ const HowItWorks = () => {
         title: "Entregamos, instalamos e retiramos",
         desc: "Preencha os dados do evento e finalize seu pedido com data, horário e local definidos.",
         cta: "Finalizar pedido",
-        hasImage: false,
         action: () => navigate("/cart"),
       },
     ],
     [navigate]
   );
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
       id="how-it-works"
-      ref={sectionRef}
-      className="relative pt-36 pb-10 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #050505 0%, #0A0A0A 100%)" }}
+      className="pt-36 pb-10 bg-black relative overflow-visible how-hero"
     >
       <span className="sr-only">BIERZ_FRONT_VERSION_V7</span>
-
-      {/* Section number oversized */}
-      <span className="section-number" style={{ top: "1rem", right: "2rem" }}>
-        01
-      </span>
-
-      {/* Radial glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(245,158,11,0.12) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12">
-          <div
-            className={
-              "inline-flex items-center gap-2 border border-[rgba(245,158,11,0.30)] rounded-full px-4 py-1.5 mb-6 transition-all duration-700 " +
-              (visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")
-            }
-            style={{ background: "rgba(245,158,11,0.06)" }}
-          >
-            <span className="text-[rgba(245,158,11,1)] text-xs font-bold tracking-widest uppercase">
-              Como funciona
-            </span>
-          </div>
-
-          {/* Mantém os textos do arquivo original */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.25)_0%,rgba(0,0,0,0)_55%)]" />
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-8">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">
             Distribuidora{" "}
             <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
@@ -146,172 +95,106 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((s, idx) => (
-            <div
-              key={s.id}
-              className={
-                "transition-all duration-700 " +
-                (visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12")
-              }
-              style={{ transitionDelay: `${0.15 + idx * 0.12}s` }}
-            >
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          onMouseLeave={() => setActive(null)}
+        >
+          {steps.map((s) => {
+            const flipped = active === s.id;
+
+            return (
               <div
-                className="relative h-[340px] cursor-pointer"
-                style={{ perspective: "1000px" }}
-                onMouseEnter={() => setFlipped(s.id)}
-                onMouseLeave={() => setFlipped(null)}
-                onPointerDown={(e) => {
-                  // Mobile/tablet: flip with drag/swipe only (no tap-to-flip).
-                  if (e.pointerType === "mouse") return;
-                  if (e.target?.closest?.("button")) return;
-                  dragRef.current = { x: e.clientX, y: e.clientY, id: s.id, pid: e.pointerId };
-                  try {
-                    e.currentTarget.setPointerCapture(e.pointerId);
-                  } catch {}
+                key={s.id}
+                data-step={s.id}
+                className={"how-card " + (flipped ? "is-flipped" : "")}
+                onMouseEnter={() => setActive(s.id)}
+                onTouchStart={(e) => {
+                  // swipe para virar (tap não vira)
+                  const t = e.touches?.[0];
+                  if (!t) return;
+                  touchStartRef.current = { x: t.clientX, y: t.clientY };
+                  touchFlippedRef.current = false;
                 }}
-                onPointerMove={(e) => {
-                  if (!dragRef.current) return;
-                  if (dragRef.current.id !== s.id) return;
-
-                  const dx = e.clientX - dragRef.current.x;
-                  const dy = e.clientY - dragRef.current.y;
-
-                  // Only treat as a flip gesture if it's a mostly-horizontal swipe.
-                  const TH = 28;
-                  if (Math.abs(dx) < TH) return;
-                  if (Math.abs(dx) < Math.abs(dy)) return;
-
-                  // Swipe left -> show back. Swipe right -> show front.
-                  if (dx < 0) setFlipped(s.id);
-                  else setFlipped(null);
-
-                  dragRef.current = null;
+                onTouchMove={(e) => {
+                  const start = touchStartRef.current;
+                  const t = e.touches?.[0];
+                  if (!start || !t || touchFlippedRef.current) return;
+                  const dx = t.clientX - start.x;
+                  const dy = t.clientY - start.y;
+                  // só vira com swipe horizontal claro
+                  if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+                    touchFlippedRef.current = true;
+                    setActive((prev) => (prev === s.id ? null : s.id));
+                  }
                 }}
-                onPointerUp={(e) => {
-                  if (dragRef.current?.pid === e.pointerId) dragRef.current = null;
-                }}
-                onPointerCancel={(e) => {
-                  if (dragRef.current?.pid === e.pointerId) dragRef.current = null;
+                onTouchEnd={() => {
+                  touchStartRef.current = null;
+                  touchFlippedRef.current = false;
                 }}
                 aria-label={`Como funciona - ${s.kicker}`}
               >
-                {/* Card inner */}
-                <div
-                  className="absolute inset-0 transition-transform duration-500"
-                  style={{
-                    transformStyle: "preserve-3d",
-                    transform: flipped === s.id ? "rotateY(180deg)" : "rotateY(0deg)",
-                  }}
-                >
+                <div className="how-card__inner">
                   {/* FRONT */}
-                  <div
-                    className="absolute inset-0 rounded-lg overflow-hidden"
-                    style={{
-                      backfaceVisibility: "hidden",
-                      pointerEvents: flipped === s.id ? "none" : "auto",
-                      background:
-                        "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-                      border: "1px solid rgba(245,158,11,0.20)",
-                    }}
-                  >
-                    {/* Step number */}
-                    <div className="absolute top-4 right-4">
-                      <span className="text-[rgba(245,158,11,1)] text-4xl font-extrabold leading-none opacity-60">
-                        {String(s.id).padStart(2, "0")}
-                      </span>
+                  <div className="how-card__face how-card__front">
+                    <div className="how-card__top">
+                      <div className="how-card__kicker">{s.kicker}</div>
+                      <div className="how-card__badge">{s.id}</div>
                     </div>
-
-                    {/* Kicker */}
-                    <div className="absolute top-4 left-4">
-                      <span className="text-xs font-bold tracking-widest uppercase text-[rgba(245,158,11,1)]">
-                        {s.kicker}
-                      </span>
-                    </div>
-
-                    {/* Image or fallback */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {s.hasImage ? (
+{/* Espaço reservado para imagem/arte (PNG sem fundo) */}
+                    <div className="how-card__frontBody">
+                      <div className="how-card__mediaSlot" aria-hidden="true">
+                      {s.id === 2 && (
                         <img
-                          src={s.imageUrl}
+                          className="how-keg-pro"
+                          src="/howitworks/step2.png"
                           alt=""
-                          className="w-4/5 h-auto object-contain"
                           loading="lazy"
-                          style={{
-                            filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.7))",
-                            animation: "floatY 4s ease-in-out infinite",
-                          }}
                         />
-                      ) : (
-                        <div className="flex flex-col items-center gap-3 opacity-30">
-                          <div className="w-16 h-16 rounded-full border-2 border-[rgba(245,158,11,1)] flex items-center justify-center">
-                            <span className="text-[rgba(245,158,11,1)] text-3xl font-extrabold">
-                              {s.id}
-                            </span>
-                          </div>
-                          <span className="text-white text-lg font-bold">{s.kicker}</span>
-                        </div>
                       )}
+                      {s.id === 3 && (
+                        <img
+                          className="how-equip-pro"
+                          src="/howitworks/step3.png"
+                          alt=""
+                          loading="lazy"
+                        />
+                      )}
+
+                    </div>
                     </div>
                   </div>
 
                   {/* BACK */}
-                  <div
-                    className="absolute inset-0 rounded-lg flex flex-col justify-between p-6"
-                    style={{
-                      backfaceVisibility: "hidden",
-                      transform: "rotateY(180deg)",
-                      pointerEvents: flipped === s.id ? "auto" : "none",
-                      background:
-                        "linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(249,115,22,0.08) 100%)",
-                      border: "1px solid rgba(245,158,11,0.40)",
-                    }}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-xs font-bold tracking-widest uppercase text-[rgba(245,158,11,1)]">
-                          {s.kicker}
-                        </span>
-                        <span className="text-[rgba(245,158,11,1)] text-3xl font-extrabold opacity-50">
-                          {String(s.id).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <h3 className="text-white text-2xl font-extrabold mb-3">{s.title}</h3>
-                      <p className="text-gray-300 text-sm leading-relaxed">{s.desc}</p>
+                  <div className="how-card__face how-card__back">
+                    <div className="how-card__top">
+                      <div className="how-card__kicker">{s.kicker}</div>
+                      <div className="how-card__badge">{s.id}</div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        s.action();
-                        setFlipped(null);
-                      }}
-                      className="mt-4 px-6 py-2.5 rounded-lg font-bold text-sm uppercase transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-1"
-                      style={{
-                        letterSpacing: "0.05em",
-                        background: "linear-gradient(135deg, #F59E0B 0%, #F97316 100%)",
-                        color: "#050505",
-                      }}
-                    >
-                      {s.cta} <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <div className="how-card__backBody">
+                      <div className="how-card__title">{s.title}</div>
+                      <p className="how-card__desc">{s.desc}</p>
+
+                      <button
+                        type="button"
+                        className="how-card__cta"
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          s.action();
+                          setActive(null);
+                        }}
+                      >
+                        {s.cta} <ArrowRight size={16} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
-
-      {/* Float animation */}
-      <style>{`
-        @keyframes floatY {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-      `}</style>
     </section>
   );
 };
