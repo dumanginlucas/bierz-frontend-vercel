@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
   const sectionRef = useRef(null);
+  const dragRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [flipped, setFlipped] = useState(null);
   const navigate = useNavigate();
@@ -161,7 +162,39 @@ const HowItWorks = () => {
                 style={{ perspective: "1000px" }}
                 onMouseEnter={() => setFlipped(s.id)}
                 onMouseLeave={() => setFlipped(null)}
-                onClick={() => setFlipped((prev) => (prev === s.id ? null : s.id))}
+                onPointerDown={(e) => {
+                  // Mobile/tablet: flip with drag/swipe only (no tap-to-flip).
+                  if (e.pointerType === "mouse") return;
+                  if (e.target?.closest?.("button")) return;
+                  dragRef.current = { x: e.clientX, y: e.clientY, id: s.id, pid: e.pointerId };
+                  try {
+                    e.currentTarget.setPointerCapture(e.pointerId);
+                  } catch {}
+                }}
+                onPointerMove={(e) => {
+                  if (!dragRef.current) return;
+                  if (dragRef.current.id !== s.id) return;
+
+                  const dx = e.clientX - dragRef.current.x;
+                  const dy = e.clientY - dragRef.current.y;
+
+                  // Only treat as a flip gesture if it's a mostly-horizontal swipe.
+                  const TH = 28;
+                  if (Math.abs(dx) < TH) return;
+                  if (Math.abs(dx) < Math.abs(dy)) return;
+
+                  // Swipe left -> show back. Swipe right -> show front.
+                  if (dx < 0) setFlipped(s.id);
+                  else setFlipped(null);
+
+                  dragRef.current = null;
+                }}
+                onPointerUp={(e) => {
+                  if (dragRef.current?.pid === e.pointerId) dragRef.current = null;
+                }}
+                onPointerCancel={(e) => {
+                  if (dragRef.current?.pid === e.pointerId) dragRef.current = null;
+                }}
                 aria-label={`Como funciona - ${s.kicker}`}
               >
                 {/* Card inner */}
@@ -177,6 +210,7 @@ const HowItWorks = () => {
                     className="absolute inset-0 rounded-lg overflow-hidden"
                     style={{
                       backfaceVisibility: "hidden",
+                      pointerEvents: flipped === s.id ? "none" : "auto",
                       background:
                         "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
                       border: "1px solid rgba(245,158,11,0.20)",
@@ -228,6 +262,7 @@ const HowItWorks = () => {
                     style={{
                       backfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
+                      pointerEvents: flipped === s.id ? "auto" : "none",
                       background:
                         "linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(249,115,22,0.08) 100%)",
                       border: "1px solid rgba(245,158,11,0.40)",
