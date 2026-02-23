@@ -69,6 +69,7 @@ function App() {
       <CartProvider>
         <Router>
           <div className="App">
+            <AgeVerificationModal />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
