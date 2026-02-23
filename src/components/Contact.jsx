@@ -8,6 +8,25 @@ import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import { companyInfo } from '../mock';
 
 const Contact = () => {
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      setVisible(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -44,7 +63,13 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-b from-gray-900 to-black">
+    <section
+      id="contact"
+      ref={sectionRef}
+      className={`py-20 bg-gradient-to-b from-gray-900 to-black transition-all duration-700 ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

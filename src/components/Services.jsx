@@ -6,10 +6,6 @@ const Services = () => {
   const [active, setActive] = useState(null);
   const { chooseEquipment } = useCart();
 
-  // Debug visual version marker (helps confirm deploy is serving latest bundle)
-  // eslint-disable-next-line no-console
-  console.log("BIERZ FRONT v7 - Equipamentos/Comparativo");
-
   const cards = useMemo(
     () => [
       {
@@ -28,6 +24,7 @@ const Services = () => {
         ],
         equipment: { id: "electric", name: "Chopeira Elétrica" },
         icon: Zap,
+        imageClass: "equip-card__img--electric",
       },
       {
         id: "homebar",
@@ -45,6 +42,7 @@ const Services = () => {
         ],
         equipment: { id: "homebar", name: "HomeBar" },
         icon: Refrigerator,
+        imageClass: "equip-card__img--homebar",
       },
       {
         id: "compare",
@@ -91,17 +89,15 @@ const Services = () => {
     <div className="equip-compare2">
       <div className="equip-compare2__header">
         <div className="equip-compare2__hcol equip-compare2__hcol--electric">
-          <div className="equip-compare2__hicon" aria-hidden="true"><Thermometer size={18} /></div>
+          <div className="equip-compare2__hicon" aria-hidden="true"><Thermometer size={16} /></div>
           <div className="equip-compare2__htxt">
             <div className="equip-compare2__htitle">Chopeira Elétrica</div>
-            <div className="equip-compare2__hsub">(Barril no Chão)</div>
           </div>
         </div>
         <div className="equip-compare2__hcol equip-compare2__hcol--homebar">
-          <div className="equip-compare2__hicon" aria-hidden="true"><Snowflake size={18} /></div>
+          <div className="equip-compare2__hicon" aria-hidden="true"><Snowflake size={16} /></div>
           <div className="equip-compare2__htxt">
             <div className="equip-compare2__htitle">HomeBar</div>
-            <div className="equip-compare2__hsub equip-compare2__hsub--accent">(Barril Gelado)</div>
           </div>
           <div className="equip-compare2__badge">Premium</div>
         </div>
@@ -112,7 +108,7 @@ const Services = () => {
           <div className="equip-compare2__row" key={idx}>
             <div className="equip-compare2__cell equip-compare2__cell--left">{left}</div>
             <div className="equip-compare2__cell equip-compare2__cell--right">
-              <span className="equip-compare2__ok" aria-hidden="true"><CheckCircle2 size={16} /></span>
+              <span className="equip-compare2__ok" aria-hidden="true"><CheckCircle2 size={14} /></span>
               <span>{data.homebar[idx]}</span>
             </div>
           </div>
@@ -123,7 +119,6 @@ const Services = () => {
 
   return (
     <section id="services" className="py-16 bg-black relative overflow-visible">
-      <span className="sr-only">bierz-front-v7</span>
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.22)_0%,rgba(0,0,0,0)_60%)]" />
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
@@ -164,7 +159,7 @@ const Services = () => {
                     <div className="equip-card__top">
                       <div className="equip-card__kicker">{c.kicker}</div>
                       <div className="equip-card__icon">
-                        <Icon size={22} />
+                        <Icon size={20} />
                       </div>
                     </div>
 
@@ -172,11 +167,23 @@ const Services = () => {
                       renderCompare(c.compareFront)
                     ) : (
                       <div className="equip-card__imgWrap">
-                        <img className="equip-card__img" src={c.image} alt={c.kicker} />
+                        <img
+                          className={"equip-card__img " + (c.imageClass || "")}
+                          src={c.image}
+                          alt={c.kicker}
+                        />
                       </div>
                     )}
 
-                    {c.id !== "compare" && <div className="equip-card__title">{c.title}</div>}
+                    {c.id !== "compare" && (
+                      <div className="equip-card__frontFooter">
+                        <div className="equip-card__title">{c.title}</div>
+                        <div className="equip-card__hoverHint">Passe o mouse para ver detalhes</div>
+                      </div>
+                    )}
+
+                    {/* Brilho hover */}
+                    <div className="equip-card__shine" aria-hidden="true" />
                   </div>
 
                   {/* BACK */}
@@ -184,34 +191,34 @@ const Services = () => {
                     <div className="equip-card__top">
                       <div className="equip-card__kicker">{c.kicker}</div>
                       <div className="equip-card__icon">
-                        <Icon size={22} />
+                        <Icon size={20} />
                       </div>
                     </div>
 
                     <div className="equip-card__body">
-                      <p className="equip-card__desc">{c.desc}</p>
-
                       {c.id === "compare" ? (
                         renderCompare(c.compareBack)
                       ) : (
                         <>
+                          <p className="equip-card__desc">{c.desc}</p>
                           <ul className="equip-card__list">
                             {c.points.map((p) => (
                               <li key={p}>{p}</li>
                             ))}
                           </ul>
-
-                          <button
-                            className="equip-card__cta"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              chooseEquipment(c.equipment);
-                              setActive(null);
-                            }}
-                          >
-                            Escolher este equipamento
-                          </button>
-                          <div className="equip-card__ctaNote">Verificar disponibilidade</div>
+                          <div className="equip-card__actions">
+                            <button
+                              className="equip-card__cta"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                chooseEquipment(c.equipment);
+                                setActive(null);
+                              }}
+                            >
+                              Escolher este equipamento
+                            </button>
+                            <div className="equip-card__ctaNote">Verificar disponibilidade</div>
+                          </div>
                         </>
                       )}
                     </div>

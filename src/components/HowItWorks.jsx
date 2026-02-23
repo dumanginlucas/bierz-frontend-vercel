@@ -314,20 +314,7 @@ const HowItWorks = () => {
           ))}
         </div>
 
-        {/* Rodapé da seção */}
-        <div className="hiw-footer">
-          <p className="hiw-footer__text">
-            Pronto para começar?
-          </p>
-          <button
-            type="button"
-            className="hiw-footer__cta"
-            onClick={() => scrollTo("calculator")}
-          >
-            Começar agora
-            <ChevronRight size={16} strokeWidth={2.5} />
-          </button>
-        </div>
+        {/* Rodapé da seção removido - botão sem destino estratégico */}
       </div>
     </section>
   );

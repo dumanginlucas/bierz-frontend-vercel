@@ -5,6 +5,24 @@ import { Slider } from './ui/slider';
 import { Users, Clock, Beer, Phone, Sparkles } from 'lucide-react';
 
 const BeerCalculator = () => {
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      setVisible(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
   const [people, setPeople] = useState(50);
   const [hours, setHours] = useState(4);
   const [consumption, setConsumption] = useState(450); // ml por pessoa/hora
@@ -43,7 +61,13 @@ const BeerCalculator = () => {
   ];
 
   return (
-    <section id="calculator" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+    <section
+      id="calculator"
+      ref={sectionRef}
+      className={`py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden transition-all duration-700 ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 w-32 h-32 bg-[#F59E0B] rounded-full blur-3xl"></div>
