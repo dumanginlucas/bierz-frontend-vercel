@@ -1,130 +1,41 @@
-import React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button } from './ui/button';
-import { Phone, ArrowDown, Beer, Zap, Star, ShoppingCart } from 'lucide-react';
-const Hero = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+import React from "react";
 
-  const go = (id) => {
-    // Works both on Home and other routes
-    if (location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: id } });
-      return;
-    }
-    if (id === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-return (
-    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-28 md:pt-32">
-      {/* Background Image (mobile + desktop) */}
-      {/*
-        IMPORTANT: Header is fixed. To avoid the banner looking "cut" at the top,
-        we start the background right under the header height.
-      */}
-      <div className="absolute left-0 right-0 bottom-0 top-28 md:top-32 bg-black">
-        {/* Mobile banner */}
-        <picture className="block sm:hidden w-full h-full">
-          <source srcSet="/banner.webp" type="image/webp" />
-          <img
-            src="/banner.jpg"
-            alt="Bierz Background"
-            loading="eager"
-            decoding="async"
-            className="w-full h-full object-contain object-top"
-          />
-        </picture>
+export default function Hero() {
+  return (
+    <section className="relative h-screen w-full overflow-hidden bg-black">
+      <img
+        src="/banner.jpg"
+        alt="Bierz Banner"
+        className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
+      />
 
-        {/* Desktop banner (original) */}
-        <img
-          src="/banner.jpg"
-          alt="Bierz Background"
-          className="hidden sm:block w-full h-full object-contain object-top"
-        />
+      <div className="absolute inset-0 bg-black/40" />
 
-        {/* Overlay: mais forte no mobile, original no desktop */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/45 to-black sm:bg-black/40"></div>
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+        <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+          <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 bg-clip-text text-transparent">
+            Bierz
+          </span>
+          <br />
+          <span className="text-white">
+            Distribuidora
+          </span>
+        </h1>
 
-        {/* Glow sutil só no mobile */}
-        <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] rounded-full bg-[#F59E0B]/10 blur-3xl sm:hidden" />
-      </div>{/* Content */}
-      <div className="container mx-auto px-4 py-32 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <p className="mt-6 text-gray-300 max-w-2xl text-lg">
+          As melhores marcas de chopp e cerveja para seu evento.
+          Qualidade, variedade e atendimento diferenciado.
+        </p>
 
-          {/* Tagline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 md:mb-6 animate-slide-up drop-shadow-2xl">
-            Distribuidora de Chopp e
-            <span className="text-[#F59E0B]"> Cervejas Especiais</span>
-          </h1>
-
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 md:mb-8 max-w-2xl mx-auto animate-slide-up drop-shadow-lg px-2" style={{ animationDelay: '0.2s' }}>
-            As melhores marcas de chopp e cerveja para seu evento em Sorocaba e região.
-            Qualidade, variedade e atendimento diferenciado.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 md:mb-12 animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
-            <Button
-              onClick={() => go('products')}
-              size="lg"
-              className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 shadow-lg hover:shadow-2xl w-full sm:w-auto
-                transition-all duration-200
-                hover:brightness-110
-                hover:scale-105
-                active:scale-[0.98]"
-              data-testid="view-products-hero"
-            >
-              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              Ver Produtos e Preços
-            </Button>
-            <Button
-              onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
-              size="lg"
-              variant="outline"
-              className="border-2 border-[#F59E0B] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto
-                transition-all duration-200
-                hover:scale-105
-                active:scale-[0.98]"
-            >
-              <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              WhatsApp
-            </Button>
-          </div>
-
-          {/* Features */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto animate-slide-up px-2" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
-              <Beer className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Variedade</h3>
-              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Chopp, cervejas especiais, gelo e mais</p>
-            </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
-              <Zap className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Entrega Rápida</h3>
-              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Atendimento ágil em Sorocaba e região</p>
-            </div>
-            <div className="bg-black/70 backdrop-blur-md border border-[#F59E0B]/30 rounded-lg p-2 sm:p-4 md:p-6 hover:border-[#F59E0B] hover:bg-black/80 transition-all duration-300">
-              <Star className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F59E0B] mx-auto mb-1 sm:mb-2 md:mb-3" />
-              <h3 className="text-[#F59E0B] font-bold text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 md:mb-2">Tudo Gelado</h3>
-              <p className="text-gray-200 text-[10px] sm:text-xs md:text-sm leading-tight">Bebidas na temperatura ideal</p>
-            </div>
-          </div>
+        <div className="mt-8 flex gap-4 flex-wrap justify-center">
+          <button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition">
+            Como funciona
+          </button>
+          <button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition">
+            Ver Produtos
+          </button>
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <button
-        onClick={() => go('products')}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-[#F59E0B] animate-bounce cursor-pointer hover:text-[#F97316] transition-colors"
-      >
-        <ArrowDown className="w-8 h-8" />
-      </button>
     </section>
   );
-};
-
-export default Hero;
+}
