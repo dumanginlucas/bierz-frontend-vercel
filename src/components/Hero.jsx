@@ -11,15 +11,13 @@ const Hero = () => {
   const go = (id) => scrollToSection(id, { navigate, location });
 
   return (
-    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ paddingTop: "var(--header-h)" }}>
+    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-[var(--header-h)]">
       {/* Background Image (mobile + desktop) */}
       {/*
         IMPORTANT: Header is fixed. To avoid the banner looking "cut" at the top,
         we start the background right under the header height.
       */}
-      <div className="absolute left-0 right-0 bottom-0 bg-black"
-      style={{ top: "var(--header-h)" }}>
+      <div className="absolute left-0 right-0 bottom-0 top-[var(--header-h)] bg-black">
         {/* Mobile banner */}
         <picture className="block sm:hidden w-full h-full">
           <source srcSet="/banner.webp" type="image/webp" />

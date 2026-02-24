@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
@@ -114,16 +114,26 @@ const Header = () => {
         <div className="flex items-center justify-between h-28 md:h-32">
           {/* Logo */}
           <div className="flex items-center">
-            <Link 
-              to="/"
-              onClick={() => { scrollToTop(); }}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToTop();
+              }}
+              onPointerDown={(e) => {
+                // makes mobile feel more responsive
+                e.preventDefault();
+                scrollToTop();
+              }}
+              className="inline-flex"
+              aria-label="Ir para o topo"
             >
               <img
                 src="/logo.png"
                 alt="Bierz Logo"
                 className="h-20 md:h-24 w-auto cursor-pointer transition-transform hover:scale-105"
               />
-            </Link>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
