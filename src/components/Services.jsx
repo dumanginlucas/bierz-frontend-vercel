@@ -175,6 +175,12 @@ const Services = () => {
                       </div>
                     )}
 
+                    {c.id === "compare" && (
+                      <div className="equip-card__frontFooter md:hidden">
+                        <div className="equip-card__hoverHint">Clique para virar</div>
+                      </div>
+                    )}
+
                     {c.id !== "compare" && (
                       <div className="equip-card__frontFooter">
                         <div className="equip-card__title">{c.title}</div>

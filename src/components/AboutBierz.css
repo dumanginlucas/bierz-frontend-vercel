@@ -640,9 +640,10 @@
   margin-bottom: 12px;
   display: block;
   transition: transform 0.3s ease;
+  text-align: right;
 }
 .ab-pillar:hover .ab-pillar__icon {
-  transform: scale(1.15) rotate(-5deg);
+  transform: scale(1.15) rotate(5deg) translateX(8px);
 }
 .ab-pillar__title {
   font-size: 15px;

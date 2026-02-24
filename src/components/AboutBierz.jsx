@@ -264,7 +264,7 @@ export default function AboutBierz() {
               Sobre a
             </span>
             <span className="ab-hero__title-line ab-hero__title-line--2">
-              <span className="ab-grad">BIERZ</span>
+              <span className="ab-grad">Bierz</span>
             </span>
           </h2>
 
