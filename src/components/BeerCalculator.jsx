@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
 import { Users, Clock, Beer, Phone, Sparkles } from 'lucide-react';
+import { scrollToSection } from '../lib/scrollToSection';
 
 const BeerCalculator = () => {
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -77,7 +81,7 @@ const BeerCalculator = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-10">
+          <div className={`text-center mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="inline-flex items-center gap-2 bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-full px-4 py-2 mb-4">
               <Sparkles className="w-4 h-4 text-[#F59E0B]" />
               <span className="text-[#F59E0B] text-sm font-medium">Ferramenta Interativa</span>
@@ -92,7 +96,7 @@ const BeerCalculator = () => {
 
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Controls */}
-            <div className="space-y-4">
+            <div className={`space-y-4 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
               {/* People Slider */}
               <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] border-[#F59E0B]/20">
                 <CardContent className="p-5">
@@ -182,7 +186,7 @@ const BeerCalculator = () => {
             </div>
 
             {/* Result */}
-            <Card className="bg-gradient-to-br from-[#F59E0B]/10 to-[#F59E0B]/5 border-[#F59E0B]/30">
+            <Card className={`bg-gradient-to-br from-[#F59E0B]/10 to-[#F59E0B]/5 border-[#F59E0B]/30 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
               <CardContent className="p-5 flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-4">
                   <Beer className="w-5 h-5 text-[#F59E0B]" />
@@ -232,11 +236,11 @@ const BeerCalculator = () => {
 
                     {/* CTA Button */}
                     <Button
-                      onClick={sendToWhatsApp}
-                      className="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-5 text-base transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      onClick={() => scrollToSection('products', { navigate, location })}
+                      className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold py-5 text-base transition-all hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <Phone className="w-5 h-5 mr-2" />
-                      Solicitar Orçamento
+                      Escolher o Chopp do meu evento
                     </Button>
                   </div>
                 )}

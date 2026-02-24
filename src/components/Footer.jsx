@@ -1,17 +1,14 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Beer, Phone, Mail, MapPin } from 'lucide-react';
 import { companyInfo } from '../mock';
+import { scrollToSection } from '../lib/scrollToSection';
 
 const Footer = () => {
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerEl = document.querySelector('header');
-      const headerH = headerEl?.offsetHeight ?? 0;
-      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const go = (id) => scrollToSection(id, { navigate, location });
 
   return (
     <footer className="bg-black border-t border-[#F59E0B]/20">
@@ -21,7 +18,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="https://customer-assets.emergentagent.com/job_c70f340d-b80f-4dca-ae89-1a5b8817d263/artifacts/6ab410nu_Escudo%20dourado%20da%20Bierz%20%281%29%20%281%29.jpg"
+                src="/logo.png"
                 alt="Bierz Logo"
                 className="h-12 w-auto"
               />
@@ -37,7 +34,23 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <button
-                  onClick={() => scrollToSection('products')}
+                  onClick={() => go('identification')}
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
+                >
+                  Início
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => go('how-it-works')}
+                  className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
+                >
+                  Como Funciona
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => go('products')}
                   className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Produtos
@@ -45,15 +58,15 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('services')}
+                  onClick={() => go('services')}
                   className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
-                  Serviço
+                  Serviços
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('calculator')}
+                  onClick={() => go('calculator')}
                   className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Calculadora de Chopp
@@ -61,7 +74,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('about')}
+                  onClick={() => go('about')}
                   className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Sobre Nós
@@ -69,7 +82,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('contact')}
+                  onClick={() => go('contact')}
                   className="text-gray-400 hover:text-[#F59E0B] transition-colors text-sm"
                 >
                   Contato

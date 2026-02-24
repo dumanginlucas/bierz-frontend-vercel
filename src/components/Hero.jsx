@@ -1,18 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Phone, ArrowDown, Beer, Zap, Star, ShoppingCart } from 'lucide-react';
+import { scrollToSection } from '../lib/scrollToSection';
 
 const Hero = () => {
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerEl = document.querySelector('header');
-      const headerH = headerEl?.offsetHeight ?? 0;
-      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const go = (id) => scrollToSection(id, { navigate, location });
 
   return (
     <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden">
@@ -26,7 +22,7 @@ const Hero = () => {
             alt="Bierz Background"
             loading="eager"
             decoding="async"
-            className="w-full h-full object-cover object-[center_35%]"
+            className="w-full h-full object-cover object-top"
           />
         </picture>
 
@@ -34,7 +30,7 @@ const Hero = () => {
         <img
           src="/banner.jpg"
           alt="Bierz Background"
-          className="hidden sm:block w-full h-full object-cover object-center"
+          className="hidden sm:block w-full h-full object-cover object-top"
         />
 
         {/* Overlay: mais forte no mobile, original no desktop */}
@@ -60,7 +56,7 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 md:mb-12 animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
             <Button
-              onClick={() => scrollToSection('products')}
+              onClick={() => go('products')}
               size="lg"
               className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-bold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 shadow-lg hover:shadow-2xl w-full sm:w-auto
                 transition-all duration-200
@@ -109,7 +105,7 @@ const Hero = () => {
 
       {/* Scroll Indicator */}
       <button
-        onClick={() => scrollToSection('products')}
+        onClick={() => go('products')}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-[#F59E0B] animate-bounce cursor-pointer hover:text-[#F97316] transition-colors"
       >
         <ArrowDown className="w-8 h-8" />

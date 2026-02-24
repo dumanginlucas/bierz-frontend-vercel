@@ -72,7 +72,7 @@ const Contact = () => {
     >
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className={`text-center mb-12 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Entre em <span className="text-[#F59E0B]">Contato</span>
           </h2>
@@ -83,7 +83,7 @@ const Contact = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Info */}
-          <div className="space-y-6">
+          <div className={`space-y-6 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <Card className="bg-white/5 backdrop-blur-sm border-[#F59E0B]/20">
               <CardHeader>
                 <CardTitle className="text-white">Informações de Contato</CardTitle>
@@ -168,7 +168,7 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <Card className="bg-white/5 backdrop-blur-sm border-[#F59E0B]/20">
+          <Card className={`bg-white/5 backdrop-blur-sm border-[#F59E0B]/20 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <CardHeader>
               <CardTitle className="text-white">Solicite um Orçamento</CardTitle>
               <CardDescription className="text-gray-400">

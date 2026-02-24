@@ -96,7 +96,7 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-black/95 backdrop-blur-md'
+        isScrolled ? 'bg-black/80 backdrop-blur-md shadow-lg' : 'bg-black/70 backdrop-blur-md'
       }`}
     style={{ right: 'var(--sbw, 0px)' }}
     >
@@ -106,10 +106,10 @@ const Header = () => {
           <div className="flex items-center">
             <Link 
               to="/"
-              onClick={(e) => { e.preventDefault(); scrollToSection('how-it-works'); }}
+              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             >
               <img
-                src="/logo.jpg"
+                src="/logo.png"
                 alt="Bierz Logo"
                 className="h-20 md:h-24 w-auto cursor-pointer transition-transform hover:scale-105"
               />

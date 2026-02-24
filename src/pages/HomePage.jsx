@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/Header";
+import Identification from "../components/Identification";
 import HowItWorks from "../components/HowItWorks";
 import Products from "../components/Products";
 import Services from "../components/Services";
@@ -13,6 +14,7 @@ const HomePage = () => {
     <>
       <Header />
       <main>
+        <Identification />
         <HowItWorks />
         <Products />
         <Services />

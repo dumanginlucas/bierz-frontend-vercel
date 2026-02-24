@@ -33,7 +33,7 @@ const AgeVerificationModal = () => {
         <div className="age-modal__logoWrap">
           <img
             className="age-modal__logo"
-            src="https://customer-assets.emergentagent.com/job_c70f340d-b80f-4dca-ae89-1a5b8817d263/artifacts/6ab410nu_Escudo%20dourado%20da%20Bierz%20%281%29%20%281%29.jpg"
+            src="/logo.png"
             alt="BIERZ"
           />
         </div>
