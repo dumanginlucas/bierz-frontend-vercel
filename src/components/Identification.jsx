@@ -9,48 +9,40 @@ const Identification = () => {
     setIsVisible(true);
   }, []);
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerEl = document.querySelector('header');
-      const headerH = headerEl?.offsetHeight ?? 0;
-      const y = element.getBoundingClientRect().top + window.scrollY - headerH - 12;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
   return (
     <section
       id="identification"
       className="relative pt-32 pb-20 md:pt-40 md:pb-28 flex items-center justify-center overflow-hidden bg-black"
     >
-      <div className="absolute inset-0 bg-black" style={{ pointerEvents: 'none' }}>
+      {/* Banner (does not block clicks) */}
+      <div className="pointer-events-none absolute inset-0 bg-black">
         <img
           src="/banner.jpg"
           alt="Bierz Banner"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/75" />
+        {/* Lighter overlay (banner was too dark) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/55" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl px-6 text-center">
         <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          
-          {/* Bierz back to premium gold gradient (NOT orange, NOT white) */}
+          {/* Bierz: premium gold (pre-orange), Distribuidora: white */}
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
-            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] 
-              bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 
-              bg-clip-text text-transparent 
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem]
+              bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500
+              bg-clip-text text-transparent
               drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               Bierz
             </span>
-            <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem] 
-              text-white 
+            <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem]
+              text-white
               drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               Distribuidora
             </span>
           </h1>
 
+          {/* Tags (keep as you liked) */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <div className="group inline-flex items-center gap-2 rounded-lg border border-orange-500/40 bg-black/30 px-4 py-2 text-sm md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-orange-500/70 hover:shadow-[0_12px_30px_rgba(255,120,0,0.25)]">
               <Wine className="h-4 w-4 text-orange-400 transition duration-200 group-hover:scale-110" />
@@ -70,23 +62,21 @@ const Identification = () => {
             As melhores marcas de chopp e cerveja para seu evento. Qualidade, variedade e atendimento diferenciado em Sorocaba e região.
           </p>
 
+          {/* CTAs: use anchors so they ALWAYS work (no JS dependency) */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={() => scrollToSection('how-it-works')}
-              className="min-w-[200px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
+            <a
+              href="#how-it-works"
+              className="min-w-[200px] inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
             >
               Como funciona
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToSection('products')}
-              className="min-w-[200px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
+            </a>
+            <a
+              href="#products"
+              className="min-w-[200px] inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
             >
               Ver Produtos
-            </button>
+            </a>
           </div>
-
         </div>
       </div>
     </section>
