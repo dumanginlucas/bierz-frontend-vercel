@@ -82,6 +82,9 @@
 #identification h1 {
   animation: slideInUp 1s ease-out forwards;
   opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #identification img {
@@ -216,13 +219,9 @@
 }
 
 /* Efeito de text glow em destaque */
-#identification span.text-\[\#F59E0B\] {
-  text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
-  transition: text-shadow 0.3s ease;
-}
-
-#identification .group:hover span.text-\[\#F59E0B\] {
-  text-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+#identification span.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* Delay classes para animações em cascata */

@@ -30,9 +30,10 @@ const Identification = () => {
           {/* Bierz: premium gold (pre-orange), Distribuidora: white */}
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
             <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem]
-              bg-gradient-to-r from-amber-500 to-orange-600
+              bg-gradient-to-r from-amber-500 via-orange-500 to-orange-600
               bg-clip-text text-transparent
-              drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
+              drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]
+              font-black uppercase">
               BIERZ
             </span>
             <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem]
@@ -66,13 +67,13 @@ const Identification = () => {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="#how-it-works"
-              className="min-w-[200px] inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
+              className="min-w-[220px] inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-8 py-4 text-lg md:text-xl font-bold text-black shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 hover:brightness-110 hover:shadow-orange-500/20 active:scale-95"
             >
               Como funciona
             </a>
             <a
               href="#products"
-              className="min-w-[200px] inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
+              className="min-w-[220px] inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-8 py-4 text-lg md:text-xl font-bold text-black shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 hover:brightness-110 hover:shadow-orange-500/20 active:scale-95"
             >
               Ver Produtos
             </a>
