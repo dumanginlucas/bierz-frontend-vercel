@@ -78,7 +78,13 @@ const Header = () => {
       navigate('/', { state: { scrollTo: 'top' } });
       return;
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Se já está na home, scroll para o topo
+    const element = document.getElementById('identification');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   // Efeito para scroll após navegação

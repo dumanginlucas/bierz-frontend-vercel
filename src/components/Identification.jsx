@@ -22,7 +22,7 @@ const Identification = () => {
           className="w-full h-full object-cover object-center"
         />
         {/* Lighter overlay (banner was too dark) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 to-black/25" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl px-6 text-center">
@@ -30,10 +30,10 @@ const Identification = () => {
           {/* Bierz: premium gold (pre-orange), Distribuidora: white */}
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
             <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem]
-              bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500
+              bg-gradient-to-r from-amber-500 to-orange-600
               bg-clip-text text-transparent
               drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
-              Bierz
+              BIERZ
             </span>
             <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem]
               text-white
