@@ -116,7 +116,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link 
               to="/"
-              onClick={(e) => { e.preventDefault(); scrollToTop(); }}
+              onClick={() => { scrollToTop(); }}
             >
               <img
                 src="/logo.png"
