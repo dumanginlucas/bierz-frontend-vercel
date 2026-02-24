@@ -24,42 +24,43 @@ const Identification = () => {
       id="identification"
       className="relative pt-32 pb-20 md:pt-40 md:pb-28 flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Single banner, full width */}
+      {/* Banner */}
       <div className="absolute inset-0 bg-black">
         <img
           src="/banner.jpg"
           alt="Bierz Banner"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/75" />
+        {/* Stronger glow/contrast overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl px-6 text-center">
         <div
           className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
-          {/* Refined Title */}
+          {/* Title with stronger glow */}
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
-            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] bg-gradient-to-r from-yellow-300 via-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_10px_28px_rgba(0,0,0,0.55)]">
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] bg-gradient-to-r from-orange-400 via-orange-500 to-amber-600 bg-clip-text text-transparent drop-shadow-[0_15px_35px_rgba(255,140,0,0.45)]">
               Bierz
             </span>
-            <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem] text-white drop-shadow-[0_10px_28px_rgba(0,0,0,0.55)]">
+            <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem] text-white drop-shadow-[0_15px_35px_rgba(0,0,0,0.65)]">
               Distribuidora
             </span>
           </h1>
 
-          {/* Tags (restore premium hover/glow) */}
+          {/* Tags with premium orange */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <div className="group inline-flex items-center gap-2 rounded-lg border border-amber-500/35 bg-black/30 px-4 py-2 text-sm md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-amber-400/60 hover:shadow-[0_10px_30px_rgba(245,158,11,0.18)]">
-              <Wine className="h-4 w-4 text-amber-400 transition duration-200 group-hover:scale-110" />
+            <div className="group inline-flex items-center gap-2 rounded-lg border border-orange-500/40 bg-black/30 px-4 py-2 text-sm md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-orange-500/70 hover:shadow-[0_12px_30px_rgba(255,120,0,0.25)]">
+              <Wine className="h-4 w-4 text-orange-400 transition duration-200 group-hover:scale-110" />
               <span>
-                Chopp <span className="text-amber-300 font-semibold">Premium</span>
+                Chopp <span className="text-orange-400 font-semibold">Premium</span>
               </span>
             </div>
-            <div className="group inline-flex items-center gap-2 rounded-lg border border-amber-500/35 bg-black/30 px-4 py-2 text-sm md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-amber-400/60 hover:shadow-[0_10px_30px_rgba(245,158,11,0.18)]">
-              <Sparkles className="h-4 w-4 text-amber-400 transition duration-200 group-hover:scale-110" />
+            <div className="group inline-flex items-center gap-2 rounded-lg border border-orange-500/40 bg-black/30 px-4 py-2 text-sm md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-orange-500/70 hover:shadow-[0_12px_30px_rgba(255,120,0,0.25)]">
+              <Sparkles className="h-4 w-4 text-orange-400 transition duration-200 group-hover:scale-110" />
               <span>
-                Cervejas <span className="text-amber-300 font-semibold">Especiais</span>
+                Cervejas <span className="text-orange-400 font-semibold">Especiais</span>
               </span>
             </div>
           </div>
@@ -68,17 +69,17 @@ const Identification = () => {
             As melhores marcas de chopp e cerveja para seu evento. Qualidade, variedade e atendimento diferenciado em Sorocaba e região.
           </p>
 
-          {/* CTA Buttons: same subtle hover, no "balanço" */}
+          {/* CTA Buttons - equal, subtle, working */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button
               onClick={() => scrollToSection('how-it-works')}
-              className="min-w-[180px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-[1.03] hover:shadow-lg hover:shadow-black/25 active:brightness-100"
+              className="min-w-[200px] rounded-lg bg-gradient-to-r from-orange-400 via-orange-500 to-amber-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-[0_8px_20px_rgba(255,120,0,0.35)] active:brightness-100"
             >
               Como funciona
             </button>
             <button
               onClick={() => scrollToSection('products')}
-              className="min-w-[180px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-[1.03] hover:shadow-lg hover:shadow-black/25 active:brightness-100"
+              className="min-w-[200px] rounded-lg bg-gradient-to-r from-orange-400 via-orange-500 to-amber-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-[0_8px_20px_rgba(255,120,0,0.35)] active:brightness-100"
             >
               Ver Produtos
             </button>
