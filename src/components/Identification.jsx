@@ -24,32 +24,33 @@ const Identification = () => {
       id="identification"
       className="relative pt-32 pb-20 md:pt-40 md:pb-28 flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Banner (pointer-events-none so it never blocks clicks) */}
       <div className="pointer-events-none absolute inset-0 bg-black">
         <img
           src="/banner.jpg"
           alt="Bierz Banner"
           className="w-full h-full object-cover object-center"
         />
-        {/* Overlay for contrast */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/75" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl px-6 text-center">
-        <div
-          className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-        >
-          {/* Title (back to previous colors: Bierz white, Distribuidora premium gradient) */}
+        <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          
+          {/* Bierz back to premium gold gradient (NOT orange, NOT white) */}
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
-            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] text-white drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] 
+              bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 
+              bg-clip-text text-transparent 
+              drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               Bierz
             </span>
-            <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem] bg-gradient-to-r from-yellow-300 via-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
+            <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem] 
+              text-white 
+              drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               Distribuidora
             </span>
           </h1>
 
-          {/* Tags (keep as you liked - premium orange) */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <div className="group inline-flex items-center gap-2 rounded-lg border border-orange-500/40 bg-black/30 px-4 py-2 text-sm md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-orange-500/70 hover:shadow-[0_12px_30px_rgba(255,120,0,0.25)]">
               <Wine className="h-4 w-4 text-orange-400 transition duration-200 group-hover:scale-110" />
@@ -69,23 +70,23 @@ const Identification = () => {
             As melhores marcas de chopp e cerveja para seu evento. Qualidade, variedade e atendimento diferenciado em Sorocaba e região.
           </p>
 
-          {/* CTA Buttons (both identical, subtle, NO movement) */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button
               type="button"
               onClick={() => scrollToSection('how-it-works')}
-              className="min-w-[200px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25 active:brightness-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70"
+              className="min-w-[200px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
             >
               Como funciona
             </button>
             <button
               type="button"
               onClick={() => scrollToSection('products')}
-              className="min-w-[200px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25 active:brightness-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70"
+              className="min-w-[200px] rounded-lg bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 px-7 py-3 font-semibold text-black shadow-md shadow-black/20 transition duration-200 hover:brightness-105 hover:shadow-lg hover:shadow-black/25"
             >
               Ver Produtos
             </button>
           </div>
+
         </div>
       </div>
     </section>
