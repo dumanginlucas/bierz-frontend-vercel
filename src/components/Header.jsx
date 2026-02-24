@@ -11,8 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { scrollToSection as scrollToSectionHelper } from '../lib/scrollToSection';
-
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -76,7 +74,11 @@ const Header = () => {
 
   const scrollToTop = () => {
     setIsMobileMenuOpen(false);
-    scrollToSectionHelper('top', { navigate, location });
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: 'top' } });
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Efeito para scroll após navegação

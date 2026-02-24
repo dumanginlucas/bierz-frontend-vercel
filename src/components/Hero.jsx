@@ -2,22 +2,31 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Phone, ArrowDown, Beer, Zap, Star, ShoppingCart } from 'lucide-react';
-import { scrollToSection } from '../lib/scrollToSection';
-
 const Hero = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const go = (id) => scrollToSection(id, { navigate, location });
-
-  return (
-    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-[var(--header-h)]">
+  const go = (id) => {
+    // Works both on Home and other routes
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: id } });
+      return;
+    }
+    if (id === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+return (
+    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-28 md:pt-32">
       {/* Background Image (mobile + desktop) */}
       {/*
         IMPORTANT: Header is fixed. To avoid the banner looking "cut" at the top,
         we start the background right under the header height.
       */}
-      <div className="absolute left-0 right-0 bottom-0 top-[var(--header-h)] bg-black">
+      <div className="absolute left-0 right-0 bottom-0 top-28 md:top-32 bg-black">
         {/* Mobile banner */}
         <picture className="block sm:hidden w-full h-full">
           <source srcSet="/banner.webp" type="image/webp" />
