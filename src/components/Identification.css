@@ -241,3 +241,14 @@
 .delay-500 {
   animation-delay: 0.5s !important;
 }
+/* --- Overrides (fix CTA wobble + keep clicks) --- */
+#identification button:hover { transform: none; }
+#identification button:active { transform: none; }
+
+/* The "Ver Produtos" button was wobbling because of this animation on last-of-type.
+   Disable it to keep CTAs steady. */
+#identification button:last-of-type { animation: none !important; }
+
+/* Ensure no overlay/pseudo-element captures clicks */
+#identification::before,
+#identification::after { pointer-events: none; }

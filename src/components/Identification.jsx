@@ -24,7 +24,7 @@ const Identification = () => {
       id="identification"
       className="relative pt-32 pb-20 md:pt-40 md:pb-28 flex items-center justify-center overflow-hidden bg-black"
     >
-      <div className="pointer-events-none absolute inset-0 bg-black">
+      <div className="absolute inset-0 bg-black" style={{ pointerEvents: 'none' }}>
         <img
           src="/banner.jpg"
           alt="Bierz Banner"
