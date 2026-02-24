@@ -29,12 +29,7 @@ const Identification = () => {
         <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {/* Bierz: premium gold (pre-orange), Distribuidora: white */}
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
-            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem]
-              bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500
-              bg-clip-text text-transparent
-              drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
-              Bierz
-            </span>
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">Bierz</span>
             <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem]
               text-white
               drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
