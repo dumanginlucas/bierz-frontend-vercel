@@ -87,7 +87,7 @@ const BeerCalculator = () => {
               <span className="text-[#F59E0B] text-sm font-medium">Ferramenta Interativa</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <span className="text-[#F59E0B]">Calculadora</span> de Chopp
+              <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Calculadora</span> de Chopp
             </h2>
             <p className="text-gray-400 text-lg max-w-xl mx-auto">
               Descubra a quantidade perfeita de chopp para seu evento

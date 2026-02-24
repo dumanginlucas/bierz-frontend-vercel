@@ -272,7 +272,6 @@ export default function AboutBierz() {
             Chopp e cervejas especiais para{" "}
             <span className="ab-typing">
               {typedText}
-              <span className="ab-cursor" aria-hidden="true">|</span>
             </span>
             !
           </p>

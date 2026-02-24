@@ -74,7 +74,7 @@ const Contact = () => {
         {/* Header */}
         <div className={`text-center mb-12 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Entre em <span className="text-[#F59E0B]">Contato</span>
+            Entre em <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Contato</span>
           </h2>
           <p className="text-gray-400 text-lg">
             Estamos prontos para atender você

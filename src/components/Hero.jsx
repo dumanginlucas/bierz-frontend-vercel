@@ -9,12 +9,12 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
       />
 
-      <div className="absolute inset-0 bg-black/25" />
+      <div className="absolute inset-0 bg-black/10" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
-          <span className="bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Bierz
+          <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+            BIERZ
           </span>
           <br />
           <span className="text-white">
