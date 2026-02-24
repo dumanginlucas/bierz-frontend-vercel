@@ -13,6 +13,17 @@ export function scrollToSection(id, opts = {}) {
 
   if (typeof onBeforeScroll === 'function') onBeforeScroll();
 
+  // Special-case: scroll to the top of the page.
+  // Useful for logo clicks and for "Home" behavior.
+  if (!id || id === 'top') {
+    if (location?.pathname && location.pathname !== '/' && typeof navigate === 'function') {
+      navigate('/', { state: { scrollTo: 'top' } });
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
   if (location?.pathname && location.pathname !== '/' && typeof navigate === 'function') {
     navigate('/', { state: { scrollTo: id } });
     return;

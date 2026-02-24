@@ -11,9 +11,13 @@ const Hero = () => {
   const go = (id) => scrollToSection(id, { navigate, location });
 
   return (
-    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-[92svh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-[var(--header-h)]">
       {/* Background Image (mobile + desktop) */}
-      <div className="absolute inset-0 bg-black">
+      {/*
+        IMPORTANT: Header is fixed. To avoid the banner looking "cut" at the top,
+        we start the background right under the header height.
+      */}
+      <div className="absolute left-0 right-0 bottom-0 top-[var(--header-h)] bg-black">
         {/* Mobile banner */}
         <picture className="block sm:hidden w-full h-full">
           <source srcSet="/banner.webp" type="image/webp" />
@@ -22,7 +26,7 @@ const Hero = () => {
             alt="Bierz Background"
             loading="eager"
             decoding="async"
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-contain object-top"
           />
         </picture>
 
@@ -30,7 +34,7 @@ const Hero = () => {
         <img
           src="/banner.jpg"
           alt="Bierz Background"
-          className="hidden sm:block w-full h-full object-cover object-top"
+          className="hidden sm:block w-full h-full object-contain object-top"
         />
 
         {/* Overlay: mais forte no mobile, original no desktop */}

@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { scrollToSection as scrollToSectionHelper } from '../lib/scrollToSection';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -73,12 +74,21 @@ const Header = () => {
     }
   };
 
+  const scrollToTop = () => {
+    setIsMobileMenuOpen(false);
+    scrollToSectionHelper('top', { navigate, location });
+  };
+
   // Efeito para scroll após navegação
   useEffect(() => {
     if (location.state?.scrollTo) {
       // Wait a tick for the HomePage sections to mount, then scroll.
       const id = location.state.scrollTo;
       const t = setTimeout(() => {
+        if (id === 'top') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
         const element = document.getElementById(id);
         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 120);
@@ -106,7 +116,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link 
               to="/"
-              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={(e) => { e.preventDefault(); scrollToTop(); }}
             >
               <img
                 src="/logo.png"
