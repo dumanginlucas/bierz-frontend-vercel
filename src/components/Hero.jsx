@@ -9,11 +9,11 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
       />
 
-      <div className="absolute inset-0 bg-black/25" />
+      <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
-          <span className="bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 bg-clip-text text-transparent">
             Bierz
           </span>
           <br />
@@ -28,12 +28,12 @@ export default function Hero() {
         </p>
 
         <div className="mt-8 flex gap-4 flex-wrap justify-center">
-          <a href="#how-it-works" className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition inline-block">
+          <button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition">
             Como funciona
-          </a>
-          <a href="#products" className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition inline-block">
+          </button>
+          <button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition">
             Ver Produtos
-          </a>
+          </button>
         </div>
       </div>
     </section>
