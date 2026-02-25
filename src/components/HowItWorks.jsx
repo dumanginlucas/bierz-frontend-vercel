@@ -286,7 +286,9 @@ const HowItWorks = () => {
           </div>
           <h2 className="hiw-header__title">
             Seu evento perfeito em{" "}
-            <span className="hiw-header__titleAccent bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">4 passos</span>
+            <span className="hiw-header__titleAccent hiw-gradient-text">
+  4 passos
+</span>
           </h2>
           <p className="hiw-header__sub">
             Da calculadora à entrega — tudo simples, rápido e sem complicação.
