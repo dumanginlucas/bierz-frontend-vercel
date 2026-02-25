@@ -111,7 +111,7 @@ export default function Identification() {
                 showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               }`}
             >
-              As melhores marcas de chopp e cerveja para seu evento. Qualidade, variedade e atendimento diferenciado em Sorocaba e região.
+              As melhores marcas de Chopp e Cervejas Especiais para seu evento. Qualidade, variedade e atendimento diferenciado em Sorocaba e região.
             </p>
 
             {/* Botões - Aparece junto com badges e texto */}
