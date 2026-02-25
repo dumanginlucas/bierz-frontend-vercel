@@ -1,18 +1,38 @@
-/* ─────────────────────────────────────────────
-   Identification Component Styles
-───────────────────────────────────────────── */
+/* Identification Component Styles - Layout 3 Colunas com Animações Lentas */
 
 #identification {
   position: relative;
-  background: #000;
   overflow: hidden;
+  background: #000;
 }
 
-/* Animações de entrada suave */
-@keyframes slideInUp {
+/* Animações de entrada ULTRA-LENTAS vindo das bordas */
+@keyframes slideInFromRightUltraSlow {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateX(800px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeftUltraSlow {
+  from {
+    opacity: 0;
+    transform: translateX(-800px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -20,234 +40,156 @@
   }
 }
 
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Aplicar animações aos elementos - ULTRA-LENTAS */
+.id-element-left {
+  animation: slideInFromRightUltraSlow 5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.id-element-right {
+  animation: slideInFromLeftUltraSlow 5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes floatUp {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+/* Imagens responsivas */
+.id-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(245, 158, 11, 0.5);
+/* Efeito de sombra para profundidade */
+.id-shadow {
+  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.15));
+}
+
+/* Proteção contra overflow nas laterais */
+.id-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 1024px) {
+  .id-element-left,
+  .id-element-right {
+    animation: fadeInUp 1.5s ease-out;
   }
 }
 
-/* Animação de pulsação suave */
-@keyframes softPulse {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-/* Efeito de shimmer no hover */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
+/* Responsividade geral */
+@media (max-width: 640px) {
+  #identification {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    min-height: auto;
   }
 }
 
-/* Aplicar animações aos elementos */
-#identification h1 {
-  animation: slideInUp 1s ease-out forwards;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#identification img {
-  animation: slideInDown 0.8s ease-out forwards;
-  opacity: 0;
-}
-
-#identification p {
-  animation: slideInUp 1s ease-out 0.4s forwards;
-  opacity: 0;
-}
-
-/* Buttons com efeitos */
-#identification button {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-#identification button:hover {
-  transform: translateY(-2px);
-}
-
-#identification button:active {
-  transform: translateY(0);
-}
-
-/* Efeito de glow no botão primário */
-#identification button:first-of-type {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-}
-
-#identification button:first-of-type:hover {
-  box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
-}
-
-/* Efeito de glow no botão secundário */
-#identification button:nth-of-type(2) {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
-}
-
-#identification button:nth-of-type(2):hover {
-  box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
-}
-
-/* Animação de bounce suave no scroll indicator */
-#identification button:last-of-type {
-  animation: floatUp 3s ease-in-out infinite;
-}
-
-/* Highlight boxes com efeito hover */
-#identification .flex.gap-4 > div {
-  animation: slideInUp 0.8s ease-out 0.3s forwards;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-#identification .flex.gap-4 > div:nth-child(2) {
-  animation-delay: 0.4s;
-}
-
-#identification .flex.gap-4 > div:hover {
-  transform: translateY(-4px);
-}
-
-/* Efeito de background motion */
-#identification .absolute {
-  animation: softPulse 4s ease-in-out infinite;
-}
-
-#identification .absolute:nth-of-type(2) {
-  animation-delay: 1s;
-}
-
-#identification .absolute:nth-of-type(3) {
-  animation-delay: 2s;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  #identification h1 {
-    font-size: 2.5rem;
-  }
-
-  #identification p {
-    font-size: 1rem;
-  }
-
-  #identification button {
-    width: 100%;
-  }
-}
-
-/* Efeito de ripple ao clicar (usando CSS puro) */
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-#identification button::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-#identification button:active::after {
-  animation: ripple 0.6s ease-out;
-}
-
-/* Efeito de gradient shift no hover */
-#identification button.group {
-  background: linear-gradient(135deg, #F59E0B, #F97316);
-  background-size: 200% 200%;
-  background-position: 0% 0%;
-}
-
-#identification button.group:hover {
-  background-position: 100% 100%;
-  transition: background-position 0.5s ease;
-}
-
-/* Efeito de text glow em destaque */
-#identification span.bg-clip-text {
+/* Efeito de texto com gradiente */
+.id-gradient-text {
+  background: linear-gradient(to right, #f59e0b, #f97316);
   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Delay classes para animações em cascata */
-.delay-200 {
-  animation-delay: 0.2s !important;
+/* Proteção para não deixar elementos saírem das margens */
+#identification > * {
+  overflow: hidden;
 }
 
-.delay-300 {
-  animation-delay: 0.3s !important;
+/* Ajuste de altura mínima para seção */
+#identification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.delay-400 {
-  animation-delay: 0.4s !important;
+/* Badges com animação suave */
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.delay-500 {
-  animation-delay: 0.5s !important;
+.id-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-/* --- Overrides (fix CTA wobble + keep clicks) --- */
-#identification button:hover { transform: none; }
-#identification button:active { transform: none; }
 
-/* The "Ver Produtos" button was wobbling because of this animation on last-of-type.
-   Disable it to keep CTAs steady. */
-#identification button:last-of-type { animation: none !important; }
+/* Botões com efeito de hover */
+.id-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
 
-/* Ensure no overlay/pseudo-element captures clicks */
-#identification::before,
-#identification::after { pointer-events: none; }
+.id-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.id-button:active {
+  transform: scale(0.95);
+}
+
+/* Efeito de cursor de digitação */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: currentColor;
+  margin-left: 2px;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Margens e padding para conteúdo */
+.id-content-wrapper {
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .id-content-wrapper {
+    padding: 0 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .id-content-wrapper {
+    padding: 0 4rem;
+  }
+}
+
+/* Espaçamento vertical */
+.id-section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .id-section {
+    padding-top: 8rem;
+    padding-bottom: 7rem;
+  }
+}
