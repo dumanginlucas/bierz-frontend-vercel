@@ -55,7 +55,7 @@ export default function Identification() {
           {/* COLUNA 1: Homebar (Esquerda) - VEM DE MUITO LONGE DA DIREITA */}
           <div className="col-span-12 lg:col-span-3 flex justify-center lg:justify-end pr-2 overflow-visible">
             <div
-              className={`id-element-left transition-all duration-[5000ms] ease-out ${
+              className={`id-element-left transition-transform transition-opacity duration-[5000ms] ease-out ${
                 showElements ? 'opacity-100 lg:translate-x-[60px] translate-x-0' : 'opacity-0 translate-x-[800px]'
               }`}
             >
@@ -140,8 +140,8 @@ export default function Identification() {
           {/* COLUNA 3: Barris e Chopeira (Direita) - VEM DE MUITO LONGE DA ESQUERDA - DOBRADO */}
           <div className="col-span-12 lg:col-span-3 flex justify-center lg:justify-start pl-2 overflow-visible">
             <div
-              className={`id-element-right transition-all duration-[5000ms] ease-out ${
-                showElements ? 'opacity-100 lg:-translate-x-[30px] translate-x-0'
+              className={`id-element-right transition-transform transition-opacity duration-[5000ms] ease-out ${
+                showElements ? 'opacity-100 lg:-translate-x-[30px] translate-x-0' : 'opacity-0 -translate-x-[800px]'
               }`}
             >
               <img
