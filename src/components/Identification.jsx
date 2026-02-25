@@ -73,13 +73,15 @@ export default function Identification() {
             
             {/* Título com Typing Effect - Bierz e Distribuidora separados */}
             <h1 className="font-extrabold leading-[0.95] tracking-tight">
-              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem]
-                bg-gradient-to-r from-amber-500 to-orange-500
-                bg-clip-text text-transparent
-                drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]
-                font-black">
-                {bierzPart}
-              </span>
+             <span
+  className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem]
+  bg-gradient-to-r from-amber-500 to-orange-600
+  bg-clip-text text-transparent
+  drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]
+  font-black"
+>
+  {bierzPart}
+</span>
               <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-[4.6rem]
                 text-white
                 drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
