@@ -625,3 +625,17 @@
 @media (min-width: 640px) and (max-width: 1023px) {
   .hiw-grid { gap: 18px; }
 }
+
+/* Gradiente igual ao "Contato" */
+.hiw-gradient-text{
+  background-image: linear-gradient(to right, #f59e0b, #ea580c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Garante que nada da classe antiga sobrescreva o gradiente */
+.hiw-header__titleAccent.hiw-gradient-text{
+  color: transparent !important;
+  -webkit-text-fill-color: transparent; /* importante no Chrome/Safari */
+}
