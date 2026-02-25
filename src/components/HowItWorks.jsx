@@ -284,10 +284,12 @@ const HowItWorks = () => {
             <span className="hiw-header__badgeDot" />
             Como funciona
           </div>
-          <h2 className="hiw-header__title">
-            Seu evento perfeito em{" "}
-            <span className="hiw-header__titleAccent">4 passos</span>
-          </h2>
+          <h2 className="...">
+  Seu evento perfeito em{' '}
+  <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+    4 passos
+  </span>
+</h2>
           <p className="hiw-header__sub">
             Da calculadora à entrega — tudo simples, rápido e sem complicação.
           </p>
