@@ -56,7 +56,7 @@ export default function Identification() {
           <div className="col-span-12 lg:col-span-3 flex justify-center lg:justify-end pr-2 overflow-visible">
             <div
               className={`id-element-left transition-all duration-[5000ms] ease-out ${
-                showElements ? 'opacity-100 lg:translate-x-[110px] translate-x-0' : 'opacity-0 translate-x-[800px]'
+                showElements ? 'opacity-100 lg:translate-x-[60px] translate-x-0' : 'opacity-0 translate-x-[800px]'
               }`}
             >
               <img
@@ -141,7 +141,7 @@ export default function Identification() {
           <div className="col-span-12 lg:col-span-3 flex justify-center lg:justify-start pl-2 overflow-visible">
             <div
               className={`id-element-right transition-all duration-[5000ms] ease-out ${
-                showElements ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-[800px]'
+                showElements ? 'opacity-100 lg:-translate-x-[30px] translate-x-0'
               }`}
             >
               <img
