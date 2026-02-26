@@ -498,144 +498,15 @@
   border-radius: 14px;
   border: 1px solid rgba(var(--accent-rgb, 245, 158, 11), 0.25);
   background: rgba(var(--accent-rgb, 245, 158, 11), 0.08);
-  color: var(--accent, #f59e0b);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.hiw-card__cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(var(--accent-rgb, 245, 158, 11), 0), rgba(var(--accent-rgb, 245, 158, 11), 0.12), rgba(var(--accent-rgb, 245, 158, 11), 0));
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
-}
-
-.hiw-card__cta:hover::before {
-  transform: translateX(100%);
 }
 
 .hiw-card__cta:hover {
-  background: rgba(var(--accent-rgb, 245, 158, 11), 0.16);
-  border-color: rgba(var(--accent-rgb, 245, 158, 11), 0.5);
-  box-shadow: 0 4px 20px rgba(var(--accent-rgb, 245, 158, 11), 0.2);
-  transform: translateY(-1px);
-}
-
-.hiw-card__cta:active {
-  transform: translateY(0) scale(0.98);
-}
-
-/* Passo 4 tem CTA diferente (verde) */
-.hiw-card:last-child .hiw-card__cta {
-  background: rgba(34, 197, 94, 0.12);
-  border-color: rgba(34, 197, 94, 0.3);
-  color: #22c55e;
-}
-
-.hiw-card:last-child .hiw-card__cta:hover {
-  background: rgba(34, 197, 94, 0.2);
-  border-color: rgba(34, 197, 94, 0.55);
-  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
-}
-
-.hiw-card__ctaArrow {
-  display: flex;
-  align-items: center;
-  transition: transform 0.25s ease;
-  flex-shrink: 0;
-}
-
-.hiw-card__cta:hover .hiw-card__ctaArrow {
-  transform: translateX(4px);
-}
-
-/* ── Rodapé da seção ── */
-.hiw-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 52px;
-  flex-wrap: wrap;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease 0.6s, transform 0.7s ease 0.6s;
-}
-
-.hiw-section--visible .hiw-footer {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hiw-footer__text {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 14px;
-  margin: 0;
-}
-
-.hiw-footer__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 22px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #f59e0b, #f97316);
-  color: rgba(0, 0, 0, 0.9);
-  font-size: 13px;
-  font-weight: 800;
-  border: 0;
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 6px 24px rgba(245, 158, 11, 0.3);
-}
-
-.hiw-footer__cta:hover {
-  filter: brightness(1.06);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(245, 158, 11, 0.4);
-}
-
-.hiw-footer__cta:active {
-  transform: translateY(0) scale(0.97);
-}
-
-/* ── Scroll margin para header fixo ── */
-#how-it-works {
-  scroll-margin-top: 110px;
-}
-
-/* ── Responsividade ── */
-@media (max-width: 639px) {
-  .hiw-section { padding: 72px 0 60px; }
-  .hiw-header { margin-bottom: 40px; }
-  .hiw-card__inner { padding: 20px 18px 18px; }
-  .hiw-card__title { font-size: 16px; }
-}
-
-@media (min-width: 640px) and (max-width: 1023px) {
-  .hiw-grid { gap: 18px; }
-}
-
-/* Gradiente igual ao "Contato" */
-.hiw-gradient-text{
-  background-image: linear-gradient(to right, #f59e0b, #ea580c);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Garante que nada da classe antiga sobrescreva o gradiente */
-.hiw-header__titleAccent.hiw-gradient-text{
-  color: transparent !important;
-  -webkit-text-fill-color: transparent; /* importante no Chrome/Safari */
+  background: rgba(var(--accent-rgb, 245, 158, 11), 0.15);
+  border-color: rgba(var(--accent-rgb, 245, 158, 11), 0.45);
 }

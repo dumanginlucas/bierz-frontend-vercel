@@ -40,13 +40,30 @@
   }
 }
 
-/* Aplicar animações aos elementos - ULTRA-LENTAS */
-.id-element-left {
-  animation: slideInFromRightUltraSlow 5s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Aplicar animações aos elementos - ULTRA-LENTAS e ESTÁVEIS */
+.id-element-left, .id-element-right {
+  transition: transform 8s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 8s ease-out !important;
+  will-change: transform, opacity;
+  overflow: visible !important;
 }
 
-.id-element-right {
-  animation: slideInFromLeftUltraSlow 5s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Margem de segurança para o conteúdo central não ser tocado pelos elementos */
+.id-content-column {
+  padding-left: 60px;
+  padding-right: 60px;
+  z-index: 20;
+  position: relative;
+}
+
+/* Garantir que elementos laterais não sobreponham */
+.id-element-left, .id-element-right {
+  position: relative;
+  z-index: 10;
+}
+
+/* Ajuste de profundidade e escala */
+.id-element-left img, .id-element-right img {
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.8));
 }
 
 /* Imagens responsivas */
@@ -63,7 +80,7 @@
 
 /* Proteção contra overflow nas laterais */
 .id-container {
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
 }
 
@@ -71,16 +88,58 @@
 @media (max-width: 1024px) {
   .id-element-left,
   .id-element-right {
-    animation: fadeInUp 1.5s ease-out;
+    /* Animação via Tailwind no componente JSX */
   }
 }
 
-/* Responsividade geral */
+/* Responsividade geral - Mobile */
 @media (max-width: 640px) {
   #identification {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
     min-height: auto;
+  }
+  
+  .id-content-column {
+    padding-left: 16px;
+    padding-right: 16px;
+    space-y: 1.5rem;
+  }
+  
+  .id-content-column h1 {
+    margin-bottom: 1rem;
+  }
+  
+  .id-content-column p {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Melhorar espaçamento dos botões em mobile */
+  .id-content-column > div:last-child {
+    width: 100%;
+  }
+  
+  .id-content-column > div:last-child > div {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .id-content-column > div:last-child a {
+    width: 100%;
+    min-height: 44px;
+  }
+}
+
+/* Responsividade para tablets */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .id-content-column {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  .id-content-column > div:last-child a {
+    min-height: 48px;
   }
 }
 
@@ -94,8 +153,18 @@
 
 /* Proteção para não deixar elementos saírem das margens */
 #identification > * {
-  overflow: hidden;
+  overflow: visible;
 }
+
+/* Responsividade para telas médias */
+@media (max-width: 1280px) {
+  .id-content-column {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+
 
 /* Ajuste de altura mínima para seção */
 #identification {
