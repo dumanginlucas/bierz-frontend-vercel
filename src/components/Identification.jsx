@@ -2,23 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Wine, Sparkles } from 'lucide-react';
 import './Identification.css';
 
-const handleSmoothScroll = (targetId, e) => {
-  if (e && typeof e.preventDefault === 'function') e.preventDefault();
-
-  const doScroll = () => {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-
-    // Usa cálculo manual + scrollTo (mais confiável em alguns Androids do que scrollIntoView).
-    const headerHRaw = getComputedStyle(document.documentElement).getPropertyValue('--header-h') || '0';
-    const headerH = parseInt(headerHRaw, 10) || 0;
-    const y = el.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
-
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-  };
-
-  // Android/Chrome: defere a rolagem para fora do ciclo de toque/click.
-  requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(doScroll, 0)));
+const handleSmoothScroll = (e, targetId) => {
+  e.preventDefault();
+  const element = document.getElementById(targetId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 };
 
 export default function Identification() {
@@ -113,12 +102,12 @@ export default function Identification() {
 
             <div className={`transition-all duration-1000 w-full ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <button type="button" onClick={(e) => handleSmoothScroll('how-it-works', e)} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer">
+                <a href="#how-it-works" onClick={(e) => handleSmoothScroll(e, 'how-it-works')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer touch-none">
                   Como funciona
-                </button>
-                <button type="button" onClick={(e) => handleSmoothScroll('products', e)} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer">
+                </a>
+                <a href="#products" onClick={(e) => handleSmoothScroll(e, 'products')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer touch-none">
                   Ver Produtos
-                </button>
+                </a>
               </div>
             </div>
           </div>

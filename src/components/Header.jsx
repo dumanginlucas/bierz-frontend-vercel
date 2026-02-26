@@ -57,7 +57,7 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id) => {
-    // Fecha o menu mobile antes de rolar
+    // Fecha o menu mobile antes de rolar (em mobile o scroll pode falhar se o header ainda está expandido).
     setIsMobileMenuOpen(false);
 
     // Se não estiver na home, navega para home primeiro
@@ -67,20 +67,15 @@ const Header = () => {
     }
 
     const doScroll = () => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      const headerHRaw = getComputedStyle(document.documentElement).getPropertyValue('--header-h') || '0';
-      const headerH = parseInt(headerHRaw, 10) || 0;
-      const y = el.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
-
-      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     };
 
-    // Defer para fora do ciclo de clique/toque (melhora Android)
-    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(doScroll, 0)));
+    // Defer para o próximo frame (e mais um) para o header recalcular altura e liberar o scroll no mobile.
+    requestAnimationFrame(() => requestAnimationFrame(doScroll));
   };
-
 
   const scrollToTop = () => {
     setIsMobileMenuOpen(false);
@@ -138,7 +133,11 @@ const Header = () => {
                 e.preventDefault();
                 scrollToTop();
               }}
-              onPointerUp={() => scrollToTop()}
+              onPointerDown={(e) => {
+                // makes mobile feel more responsive
+                e.preventDefault();
+                scrollToTop();
+              }}
               className="inline-flex"
               aria-label="Ir para o topo"
             >
@@ -154,36 +153,42 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-6">
             
             <button
+              onTouchStart={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Como funciona
             </button>
 <button
+              onTouchStart={() => scrollToSection('products')}
               onClick={() => scrollToSection('products')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Produtos
             </button>
             <button
+              onTouchStart={() => scrollToSection('services')}
               onClick={() => scrollToSection('services')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Equipamentos
             </button>
             <button
+              onTouchStart={() => scrollToSection('calculator')}
               onClick={() => scrollToSection('calculator')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Calculadora
             </button>
             <button
+              onTouchStart={() => scrollToSection('about')}
               onClick={() => scrollToSection('about')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Sobre
             </button>
             <button
+              onTouchStart={() => scrollToSection('contact')}
               onClick={() => scrollToSection('contact')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
@@ -307,37 +312,43 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 py-4">
               
             <button
+              onTouchStart={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left"
             >
               Como funciona
             </button>
 <button
-                onClick={() => scrollToSection('products')}
+                onTouchStart={() => scrollToSection('products')}
+              onClick={() => scrollToSection('products')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Produtos
               </button>
               <button
-                onClick={() => scrollToSection('services')}
+                onTouchStart={() => scrollToSection('services')}
+              onClick={() => scrollToSection('services')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Equipamentos
               </button>
               <button
-                onClick={() => scrollToSection('calculator')}
+                onTouchStart={() => scrollToSection('calculator')}
+              onClick={() => scrollToSection('calculator')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Calculadora
               </button>
               <button
-                onClick={() => scrollToSection('about')}
+                onTouchStart={() => scrollToSection('about')}
+              onClick={() => scrollToSection('about')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Sobre
               </button>
               <button
-                onClick={() => scrollToSection('contact')}
+                onTouchStart={() => scrollToSection('contact')}
+              onClick={() => scrollToSection('contact')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Contato
