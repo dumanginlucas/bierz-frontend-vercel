@@ -57,19 +57,24 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id) => {
+    // Fecha o menu mobile antes de rolar (em mobile o scroll pode falhar se o header ainda está expandido).
     setIsMobileMenuOpen(false);
-    
+
     // Se não estiver na home, navega para home primeiro
     if (location.pathname !== '/') {
       navigate('/', { state: { scrollTo: id } });
       return;
     }
-    
-    const element = document.getElementById(id);
-    if (element) {
-      // Prefer scrollIntoView + scroll-margin-top (set in CSS) for reliability.
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+
+    const doScroll = () => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    // Defer para o próximo frame (e mais um) para o header recalcular altura e liberar o scroll no mobile.
+    requestAnimationFrame(() => requestAnimationFrame(doScroll));
   };
 
   const scrollToTop = () => {
@@ -148,42 +153,42 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-6">
             
             <button
-              onPointerDown={() => scrollToSection('how-it-works')}
+              onTouchStart={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Como funciona
             </button>
 <button
-              onPointerDown={() => scrollToSection('products')}
+              onTouchStart={() => scrollToSection('products')}
               onClick={() => scrollToSection('products')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Produtos
             </button>
             <button
-              onPointerDown={() => scrollToSection('services')}
+              onTouchStart={() => scrollToSection('services')}
               onClick={() => scrollToSection('services')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Equipamentos
             </button>
             <button
-              onPointerDown={() => scrollToSection('calculator')}
+              onTouchStart={() => scrollToSection('calculator')}
               onClick={() => scrollToSection('calculator')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Calculadora
             </button>
             <button
-              onPointerDown={() => scrollToSection('about')}
+              onTouchStart={() => scrollToSection('about')}
               onClick={() => scrollToSection('about')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Sobre
             </button>
             <button
-              onPointerDown={() => scrollToSection('contact')}
+              onTouchStart={() => scrollToSection('contact')}
               onClick={() => scrollToSection('contact')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
@@ -307,42 +312,42 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 py-4">
               
             <button
-              onPointerDown={() => scrollToSection('how-it-works')}
+              onTouchStart={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left"
             >
               Como funciona
             </button>
 <button
-                onPointerDown={() => scrollToSection('products')}
+                onTouchStart={() => scrollToSection('products')}
               onClick={() => scrollToSection('products')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Produtos
               </button>
               <button
-                onPointerDown={() => scrollToSection('services')}
+                onTouchStart={() => scrollToSection('services')}
               onClick={() => scrollToSection('services')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Equipamentos
               </button>
               <button
-                onPointerDown={() => scrollToSection('calculator')}
+                onTouchStart={() => scrollToSection('calculator')}
               onClick={() => scrollToSection('calculator')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Calculadora
               </button>
               <button
-                onPointerDown={() => scrollToSection('about')}
+                onTouchStart={() => scrollToSection('about')}
               onClick={() => scrollToSection('about')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
                 Sobre
               </button>
               <button
-                onPointerDown={() => scrollToSection('contact')}
+                onTouchStart={() => scrollToSection('contact')}
               onClick={() => scrollToSection('contact')}
                 className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
               >
