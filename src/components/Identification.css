@@ -92,10 +92,10 @@
   }
 }
 
-/* Responsividade geral - Mobile */
+/* Responsividade para mobile */
 @media (max-width: 640px) {
   #identification {
-    padding-top: 1.5rem;
+    padding-top: 10rem;
     padding-bottom: 1.5rem;
     min-height: auto;
   }
