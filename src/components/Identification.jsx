@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Wine, Sparkles } from 'lucide-react';
 import './Identification.css';
 
-const handleSmoothScroll = (e, targetId) => {
-  e.preventDefault();
+const handleSmoothScroll = (targetId) => {
   const element = document.getElementById(targetId);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -102,12 +101,12 @@ export default function Identification() {
 
             <div className={`transition-all duration-1000 w-full ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <a href="#how-it-works" onClick={(e) => handleSmoothScroll(e, 'how-it-works')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer touch-none">
+                <button type="button" onClick={() => handleSmoothScroll('how-it-works')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer">
                   Como funciona
-                </a>
-                <a href="#products" onClick={(e) => handleSmoothScroll(e, 'products')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer touch-none">
+                </button>
+                <button type="button" onClick={() => handleSmoothScroll('products')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer">
                   Ver Produtos
-                </a>
+                </button>
               </div>
             </div>
           </div>
