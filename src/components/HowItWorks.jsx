@@ -173,15 +173,16 @@ function StepCard({ step, index, isActive, onHover, onLeave, onAction }) {
             </span>
           </button>
         ) : (
-          <a
-            href={`#${step.targetId}`}
+          <button
+            type="button"
             className="hiw-card__cta"
+            onClick={() => onAction(step)}
           >
             <span>{step.cta}</span>
             <span className="hiw-card__ctaArrow">
               <ArrowRight size={15} strokeWidth={2.5} />
             </span>
-          </a>
+          </button>
         )}
       </div>
     </div>
