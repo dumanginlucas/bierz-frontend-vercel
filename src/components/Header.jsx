@@ -81,13 +81,6 @@ const Header = () => {
     requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(doScroll, 0)));
   };
 
-    // Defer para o próximo frame (e mais um) para o header recalcular altura e liberar o scroll no mobile.
-    requestAnimationFrame(() => requestAnimationFrame(doScroll));
-  };
-
-    // Defer para o próximo frame (e mais um) para o header recalcular altura e liberar o scroll no mobile.
-    requestAnimationFrame(() => requestAnimationFrame(doScroll));
-  };
 
   const scrollToTop = () => {
     setIsMobileMenuOpen(false);

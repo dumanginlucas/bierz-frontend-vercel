@@ -21,10 +21,6 @@ const handleSmoothScroll = (targetId, e) => {
   requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(doScroll, 0)));
 };
 
-  // Android/Chrome às vezes ignora scroll durante touchstart; deferir garante consistência.
-  requestAnimationFrame(() => requestAnimationFrame(doScroll));
-};
-
 export default function Identification() {
   const [showElements, setShowElements] = useState(false);
   const [displayedTitle, setDisplayedTitle] = useState('');
