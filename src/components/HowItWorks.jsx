@@ -259,7 +259,7 @@ const HowItWorks = () => {
 
   return (
     <section
-      id="how-it-works"
+      id="section-how-it-works"
       ref={sectionRef}
       className={`hiw-section ${visible ? "hiw-section--visible" : ""}`}
     >

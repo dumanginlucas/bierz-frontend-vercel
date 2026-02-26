@@ -88,7 +88,7 @@
 @media (max-width: 1024px) {
   .id-element-left,
   .id-element-right {
-    /* Animação via Tailwind no componente JSX */
+    pointer-events: none !important;
   }
 }
 

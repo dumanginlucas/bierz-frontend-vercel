@@ -3,7 +3,7 @@ import { Wine, Sparkles } from 'lucide-react';
 import './Identification.css';
 
 const handleSmoothScroll = (e, targetId) => {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const element = document.getElementById(targetId);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -55,7 +55,6 @@ export default function Identification() {
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4">
         <div className="grid grid-cols-12 gap-0 items-center">
           
-          {/* COLUNA 1: Homebar (Esquerda) - Oculto em mobile */}
           <div className="hidden lg:flex col-span-12 lg:col-span-3 justify-center lg:justify-end overflow-visible">
             <div
               className={`id-element-left ${
@@ -72,7 +71,6 @@ export default function Identification() {
             </div>
           </div>
 
-          {/* COLUNA 2: Conteúdo Centralizado */}
           <div className="col-span-12 lg:col-span-6 id-content-column flex flex-col justify-center items-center text-center space-y-6">
             <h1 className="font-extrabold leading-[0.95] tracking-tight">
               <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.6rem] bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)] font-black">
@@ -102,17 +100,23 @@ export default function Identification() {
 
             <div className={`transition-all duration-1000 w-full ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <a href="#how-it-works" onClick={(e) => handleSmoothScroll(e, 'how-it-works')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer">
+                {/* Solução Definitiva: Mudança de link para botão real com evento de clique puro e z-index forçado */}
+                <button 
+                  onClick={(e) => handleSmoothScroll(e, 'section-how-it-works')}
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer relative z-[100]"
+                >
                   Como funciona
-                </a>
-                <a href="#products" onClick={(e) => handleSmoothScroll(e, 'products')} className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer">
+                </button>
+                <button 
+                  onClick={(e) => handleSmoothScroll(e, 'products')}
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 sm:px-8 py-3 text-sm sm:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer relative z-[100]"
+                >
                   Ver Produtos
-                </a>
+                </button>
               </div>
             </div>
           </div>
 
-          {/* COLUNA 3: Barris (Direita) - Oculto em mobile */}
           <div className="hidden lg:flex col-span-12 lg:col-span-3 justify-center lg:justify-start overflow-visible">
             <div
               className={`id-element-right ${

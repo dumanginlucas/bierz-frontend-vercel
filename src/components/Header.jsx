@@ -153,7 +153,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-6">
             
             <button
-              onClick={() => scrollToSection('how-it-works')}
+              onClick={() => scrollToSection('section-how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Como funciona
@@ -306,7 +306,7 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 py-4">
               
             <button
-              onClick={() => scrollToSection('how-it-works')}
+              onClick={() => scrollToSection('section-how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
             >
               Como funciona
