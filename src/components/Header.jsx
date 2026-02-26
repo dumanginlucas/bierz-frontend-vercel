@@ -153,42 +153,36 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-6">
             
             <button
-              onTouchStart={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Como funciona
             </button>
-<button
-              onTouchStart={() => scrollToSection('products')}
+            <button
               onClick={() => scrollToSection('products')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Produtos
             </button>
             <button
-              onTouchStart={() => scrollToSection('services')}
               onClick={() => scrollToSection('services')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Equipamentos
             </button>
             <button
-              onTouchStart={() => scrollToSection('calculator')}
               onClick={() => scrollToSection('calculator')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Calculadora
             </button>
             <button
-              onTouchStart={() => scrollToSection('about')}
               onClick={() => scrollToSection('about')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
               Sobre
             </button>
             <button
-              onTouchStart={() => scrollToSection('contact')}
               onClick={() => scrollToSection('contact')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
             >
@@ -312,47 +306,41 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 py-4">
               
             <button
-              onTouchStart={() => scrollToSection('how-it-works')}
               onClick={() => scrollToSection('how-it-works')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left"
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
             >
               Como funciona
             </button>
-<button
-                onTouchStart={() => scrollToSection('products')}
+            <button
               onClick={() => scrollToSection('products')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-              >
-                Produtos
-              </button>
-              <button
-                onTouchStart={() => scrollToSection('services')}
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
+            >
+              Produtos
+            </button>
+            <button
               onClick={() => scrollToSection('services')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-              >
-                Equipamentos
-              </button>
-              <button
-                onTouchStart={() => scrollToSection('calculator')}
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
+            >
+              Equipamentos
+            </button>
+            <button
               onClick={() => scrollToSection('calculator')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-              >
-                Calculadora
-              </button>
-              <button
-                onTouchStart={() => scrollToSection('about')}
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
+            >
+              Calculadora
+            </button>
+            <button
               onClick={() => scrollToSection('about')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-              >
-                Sobre
-              </button>
-              <button
-                onTouchStart={() => scrollToSection('contact')}
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
+            >
+              Sobre
+            </button>
+            <button
               onClick={() => scrollToSection('contact')}
-                className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-              >
-                Contato
-              </button>
+              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
+            >
+              Contato
+            </button>
               
               <div className="px-4 pt-2 border-t border-[#F59E0B]/20 space-y-3">
                 {isAuthenticated ? (
