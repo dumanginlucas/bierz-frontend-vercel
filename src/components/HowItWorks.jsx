@@ -243,23 +243,16 @@ const HowItWorks = () => {
   }, []);
 
   const scrollTo = useCallback((id) => {
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) {
-        const headerH = document.querySelector("header")?.offsetHeight ?? 80;
-        const targetY = el.offsetTop - headerH - 20;
-        window.scrollTo({ top: targetY, behavior: "smooth" });
-      }
-    }, 100);
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, []);
 
   const handleAction = useCallback((step) => {
-    console.log('handleAction called with:', step.targetId);
     if (step.targetId === "cart") {
-      console.log('Navigating to cart');
       navigate("/carrinho");
     } else {
-      console.log('Scrolling to:', step.targetId);
       scrollTo(step.targetId);
     }
   }, [navigate, scrollTo]);
