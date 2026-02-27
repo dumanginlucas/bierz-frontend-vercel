@@ -263,13 +263,7 @@ const HowItWorks = () => {
       ref={sectionRef}
       className={`hiw-section ${visible ? "hiw-section--visible" : ""}`}
     >
-      {/* Background decorativo */}
-      <div className="hiw-bg" aria-hidden="true">
-        <div className="hiw-bg__orb hiw-bg__orb--1" />
-        <div className="hiw-bg__orb hiw-bg__orb--2" />
-        <div className="hiw-bg__orb hiw-bg__orb--3" />
-        <div className="hiw-bg__grid" />
-      </div>
+      {/* Background global é aplicado via <GlobalBackground /> */}
 
       <div className="hiw-container">
         {/* Header da seção */}

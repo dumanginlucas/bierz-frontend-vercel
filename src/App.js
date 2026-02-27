@@ -5,6 +5,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { Toaster } from "./components/ui/sonner";
 import AgeVerificationModal from "./components/AgeVerificationModal";
+import GlobalBackground from "./components/GlobalBackground";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -69,6 +70,7 @@ function App() {
       <CartProvider>
         <Router>
           <div className="App">
+            <GlobalBackground />
             <AgeVerificationModal />
             <Routes>
               <Route path="/" element={<HomePage />} />

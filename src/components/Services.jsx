@@ -118,8 +118,7 @@ const Services = () => {
   );
 
   return (
-    <section id="services" className="py-16 bg-black relative overflow-visible">
-      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.22)_0%,rgba(0,0,0,0)_60%)]" />
+    <section id="services" className="py-16 bg-transparent relative overflow-visible">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">

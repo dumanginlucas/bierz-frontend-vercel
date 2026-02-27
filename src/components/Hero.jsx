@@ -2,14 +2,15 @@ import React from "react";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
+    <section className="relative h-screen w-full overflow-hidden bg-transparent">
       <img
         src="/banner.jpg"
         alt="Bierz Banner"
         className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
       />
 
-      <div className="absolute inset-0 bg-black/10" />
+      {/* camada sutil para legibilidade (sem criar "blocos" entre seções) */}
+      <div className="absolute inset-0 bg-black/15" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
