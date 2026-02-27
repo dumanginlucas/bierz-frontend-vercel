@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -41,6 +41,15 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('chopp');
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const categoryButtonRefs = useRef({});
+
+  const scrollCategoryIntoView = useCallback((catId) => {
+    const btn = categoryButtonRefs.current?.[catId];
+    if (btn && typeof btn.scrollIntoView === 'function') {
+      btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, []);
+
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState({});
   const [selectedSizes, setSelectedSizes] = useState({});
@@ -194,10 +203,10 @@ const Products = () => {
             NOVA BARRA DE CATEGORIAS — design base44
             ════════════════════════════════════════════════ */}
         <div className="flex justify-center mb-8">
-          <div className="w-full overflow-x-auto scrollbar-hide">
-            <div className="flex justify-center px-4">
+          <div className="w-full overflow-x-auto scrollbar-hide touch-pan-x">
+            <div className="flex justify-start sm:justify-center px-4">
               <nav
-                className="inline-flex items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 gap-1 shadow-2xl shadow-black/60"
+                className="inline-flex min-w-max items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 gap-1 shadow-2xl shadow-black/60"
                 role="tablist"
                 aria-label="Categorias de produtos"
               >
@@ -206,9 +215,10 @@ const Products = () => {
                   return (
                     <button
                       key={cat.id}
+                      ref={(el) => { if (el) categoryButtonRefs.current[cat.id] = el; }}
                       role="tab"
                       aria-selected={isActive}
-                      onClick={() => setSelectedCategory(cat.id)}
+                      onClick={() => { setSelectedCategory(cat.id); requestAnimationFrame(() => scrollCategoryIntoView(cat.id)); }}
                       className={[
                         'relative flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm',
                         'transition-all duration-200 whitespace-nowrap shrink-0 outline-none',
@@ -425,7 +435,7 @@ const Products = () => {
                     .map((cat) => (
                       <button
                         key={cat.id}
-                        onClick={() => setSelectedCategory(cat.id)}
+                        onClick={() => { setSelectedCategory(cat.id); requestAnimationFrame(() => scrollCategoryIntoView(cat.id)); }}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-white/5 border border-amber-500/30 text-gray-300 hover:border-amber-500 hover:text-amber-500 hover:-translate-y-0.5 transition-all duration-150 active:scale-[0.95]"
                       >
                         {renderIcon(cat.icon)}

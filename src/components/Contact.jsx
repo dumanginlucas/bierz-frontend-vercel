@@ -6,6 +6,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import { companyInfo } from '../mock';
+import './ContactBackground.css';
 
 const Contact = () => {
   const [visible, setVisible] = useState(false);
@@ -25,6 +26,23 @@ const Contact = () => {
     );
     obs.observe(el);
     return () => obs.disconnect();
+  }, []);
+
+  // Mouse glow (igual ao Sobre a Bierz)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const handleMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--mx', `${x}%`);
+      el.style.setProperty('--my', `${y}%`);
+    };
+
+    el.addEventListener('mousemove', handleMove);
+    return () => el.removeEventListener('mousemove', handleMove);
   }, []);
 
   const [formData, setFormData] = useState({
@@ -66,7 +84,7 @@ const Contact = () => {
     <section
       id="contact"
       ref={sectionRef}
-      className={`py-20 bg-gradient-to-b from-gray-900 to-black transition-all duration-700 ${
+      className={`ct-root py-20 bg-transparent relative overflow-hidden transition-all duration-700 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
@@ -105,6 +123,14 @@ const Contact = () => {
                       rel="noopener noreferrer"
                       className="text-[#F59E0B] hover:text-[#F97316] transition-colors"
                     >
+      {/* Background (igual ao Sobre a Bierz) */}
+      <div className="ct-bg" aria-hidden="true">
+        <div className="ct-bg__orb ct-bg__orb--1" />
+        <div className="ct-bg__orb ct-bg__orb--2" />
+        <div className="ct-bg__orb ct-bg__orb--3" />
+        <div className="ct-bg__grid" />
+        <div className="ct-bg__mouse-glow" />
+      </div>
                       {companyInfo.phone}
                     </a>
                   </div>
