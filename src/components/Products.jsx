@@ -194,10 +194,10 @@ const Products = () => {
             NOVA BARRA DE CATEGORIAS — design base44
             ════════════════════════════════════════════════ */}
         <div className="flex justify-center mb-8">
-          <div className="w-full overflow-x-auto scrollbar-hide">
-            <div className="flex justify-center px-4">
+          <div className="w-full overflow-x-auto scrollbar-hide touch-pan-x">
+            <div className="flex w-max px-4">
               <nav
-                className="inline-flex items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 gap-1 shadow-2xl shadow-black/60"
+                className="flex items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 gap-1 shadow-2xl shadow-black/60 min-w-max"
                 role="tablist"
                 aria-label="Categorias de produtos"
               >
