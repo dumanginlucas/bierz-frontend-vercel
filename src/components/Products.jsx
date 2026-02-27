@@ -149,7 +149,7 @@ const Products = () => {
   /* ── Loading skeleton ── */
   if (loading) {
     return (
-      <section id="products" className="py-12 sm:py-16 lg:py-20">
+      <section id="products" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-black to-gray-900">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">
@@ -174,7 +174,7 @@ const Products = () => {
 
   /* ── Main render ── */
   return (
-    <section id="products" className="py-20">
+    <section id="products" className="py-20 bg-gradient-to-b from-black to-gray-900">
       <div className="container mx-auto px-4">
 
         {/* Título */}

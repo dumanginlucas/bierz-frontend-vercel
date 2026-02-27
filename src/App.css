@@ -1,27 +1,10 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-/* ===== Global background unificado e clean ===== */
+/* Mantém o layout leve; o background global fica em src/index.css */
 html, body {
   height: 100%;
-  /* Background unificado - gradiente suave de cima a baixo */
-  background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
-  background-attachment: fixed;
-}
-
-body {
-  position: relative;
-}
-
-/* Sem layer adicional - background unificado */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background: transparent;
 }
 
 .App {
