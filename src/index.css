@@ -28,6 +28,9 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Background unificado para todas as seções */
+    background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
+    background-attachment: fixed;
 }
 
 code {
@@ -96,7 +99,11 @@ code {
         @apply border-border;
     }
     body {
-        @apply bg-background text-foreground;
+        /*
+         * Não aplicar bg-background aqui, senão sobrescreve o gradiente acima.
+         * Mantém apenas a cor do texto baseada no tema.
+         */
+        @apply text-foreground;
     }
 }
 
@@ -177,4 +184,17 @@ html{
 /* Qualquer elemento com id (âncora) respeita o header */
 [id]{
   scroll-margin-top: calc(var(--header-h) + 12px);
+}
+
+/* =====================================================
+   Unificação visual do fundo
+   (seções principais ficam transparentes para o gradiente do body)
+   ===================================================== */
+#identification,
+#products,
+#services,
+#calculator,
+#about,
+#contact {
+  background: transparent !important;
 }
