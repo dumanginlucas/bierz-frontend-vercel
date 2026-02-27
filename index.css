@@ -28,6 +28,9 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Background unificado e clean - não muito escuro */
+    background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
+    background-attachment: fixed;
 }
 
 code {
@@ -92,11 +95,8 @@ code {
 }
 
 @layer base {
-    * {
-        @apply border-border;
-    }
     body {
-        @apply bg-background text-foreground;
+        color: var(--foreground);
     }
 }
 
@@ -141,4 +141,40 @@ code {
         border-top-color: inherit;
         border-bottom-color: inherit;
     }
+}
+
+/* Modal scrollbar (desktop): refined + consistent with Bierz theme */
+.modal-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(245, 158, 11, 0.55) rgba(255, 255, 255, 0.06);
+}
+.modal-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.55);
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+}
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.75);
+}
+
+
+/* Offset global para âncoras/scroll com header fixo */
+:root{
+  --header-h: 96px; /* será atualizado via ResizeObserver no Header */
+}
+
+html{
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+/* Qualquer elemento com id (âncora) respeita o header */
+[id]{
+  scroll-margin-top: calc(var(--header-h) + 12px);
 }
