@@ -11,7 +11,7 @@ const Footer = () => {
   const go = (id) => scrollToSection(id, { navigate, location });
 
   return (
-    <footer className="bg-black/40 backdrop-blur-md border-t border-[#F59E0B]/20">
+    <footer className="bg-black border-t border-[#F59E0B]/20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}

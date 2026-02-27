@@ -50,7 +50,7 @@ export default function Identification() {
   return (
     <section
       id="identification"
-      className="relative pt-40 md:pt-32 pb-20 md:pb-28 flex items-center justify-center overflow-hidden min-h-screen bg-transparent"
+      className="relative pt-40 md:pt-32 pb-20 md:pb-28 flex items-center justify-center overflow-hidden min-h-screen bg-black"
     >
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4">
         <div className="grid grid-cols-12 gap-0 items-center">
