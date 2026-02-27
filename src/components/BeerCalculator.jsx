@@ -68,7 +68,7 @@ const BeerCalculator = () => {
     <section
       id="calculator"
       ref={sectionRef}
-      className={`py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden transition-all duration-700 ${
+      className={`py-20 relative overflow-hidden transition-all duration-700 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >

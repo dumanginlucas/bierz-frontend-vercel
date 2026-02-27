@@ -28,6 +28,9 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Background unificado e clean - não muito escuro */
+    background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
+    background-attachment: fixed;
 }
 
 code {
@@ -92,11 +95,8 @@ code {
 }
 
 @layer base {
-    * {
-        @apply border-border;
-    }
     body {
-        @apply bg-background text-foreground;
+        color: var(--foreground);
     }
 }
 

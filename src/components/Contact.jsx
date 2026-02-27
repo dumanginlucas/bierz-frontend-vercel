@@ -66,7 +66,7 @@ const Contact = () => {
     <section
       id="contact"
       ref={sectionRef}
-      className={`py-20 bg-gradient-to-b from-gray-900 to-black transition-all duration-700 ${
+      className={`py-20 transition-all duration-700 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
