@@ -193,9 +193,9 @@ const Products = () => {
         {/* ════════════════════════════════════════════════
             NOVA BARRA DE CATEGORIAS — design base44
             ════════════════════════════════════════════════ */}
-        <div className="flex mb-8 md:justify-center"
-          <div className="w-full overflow-x-auto scrollbar-hide touch-pan-x md:overflow-visible"
-            <div className="flex w-max px-4 md:w-full md:justify-center"
+        <div className="flex mb-8 md:justify-center">
+          <div className="w-full overflow-x-auto scrollbar-hide touch-pan-x md:overflow-visible">
+            <div className="flex w-max px-4 md:w-full md:justify-center">
               <nav
                 className="flex items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 gap-1 shadow-2xl shadow-black/60 min-w-max md:min-w-0"
                 role="tablist"
