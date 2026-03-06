@@ -1,4 +1,4 @@
-/* Identification Component Styles - Layout 3 Colunas com Animações Lentas */
+/* Identification Component Styles - Hero Carousel Estilo Delicious */
 
 #identification {
   position: relative;
@@ -6,140 +6,71 @@
   background: #000;
 }
 
-/* Animações de entrada ULTRA-LENTAS vindo das bordas */
-@keyframes slideInFromRightUltraSlow {
-  from {
-    opacity: 0;
-    transform: translateX(800px);
+/* Efeito Ken Burns (Zoom suave) */
+@keyframes kenburns {
+  0% {
+    transform: scale(1);
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+  100% {
+    transform: scale(1.1);
   }
 }
 
-@keyframes slideInFromLeftUltraSlow {
-  from {
-    opacity: 0;
-    transform: translateX(-800px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.bg-cover {
+  background-size: cover;
+  background-position: center;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Aplicar animações aos elementos - ULTRA-LENTAS e ESTÁVEIS */
-.id-element-left, .id-element-right {
-  transition: transform 8s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 8s ease-out !important;
-  will-change: transform, opacity;
-  overflow: visible !important;
-}
-
-/* Margem de segurança para o conteúdo central não ser tocado pelos elementos */
+/* Garantir que o conteúdo central tenha z-index alto */
 .id-content-column {
-  padding-left: 60px;
-  padding-right: 60px;
   z-index: 40;
   position: relative;
 }
 
-/* Garantir que elementos laterais não sobreponham */
-.id-element-left, .id-element-right {
-  position: relative;
-  z-index: 10;
+/* Transição suave entre slides */
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
 }
 
-/* Ajuste de profundidade e escala */
-.id-element-left img, .id-element-right img {
-  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.8));
+/* Botões e controles do carrossel */
+button {
+  outline: none;
 }
 
-/* Imagens responsivas */
-.id-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* Shape Divider no fundo do Hero */
+#identification svg {
+  fill: #000; /* Cor da próxima seção */
 }
 
-/* Efeito de sombra para profundidade */
-.id-shadow {
-  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.15));
-}
-
-/* Proteção contra overflow nas laterais */
-.id-container {
-  overflow: visible;
-  width: 100%;
-}
-
-/* Responsividade para mobile */
-@media (max-width: 1024px) {
-  .id-element-left,
-  .id-element-right {
-    pointer-events: none !important;
-  }
-}
-
-/* Responsividade para mobile */
+/* Responsividade para mobile (até 640px) */
 @media (max-width: 640px) {
   #identification {
-    padding-top: 10rem;
-    padding-bottom: 1.5rem;
-    min-height: auto;
-  }
-  
-  .id-content-column {
-    padding-left: 16px;
-    padding-right: 16px;
-    space-y: 1.5rem;
+    min-height: 100vh;
   }
   
   .id-content-column h1 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   
   .id-content-column p {
     font-size: 0.875rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Melhorar espaçamento dos botões em mobile */
-  .id-content-column > div:last-child {
-    width: 100%;
-  }
-  
-  .id-content-column > div:last-child > div {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .id-content-column > div:last-child a {
-    width: 100%;
-    min-height: 44px;
+    margin-bottom: 1rem;
   }
 }
 
-/* Responsividade para tablets */
-@media (min-width: 641px) and (max-width: 1023px) {
-  .id-content-column {
-    padding-left: 30px;
-    padding-right: 30px;
+/* Responsividade para tablet (641px a 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  #identification {
+    min-height: 100vh;
   }
-  
-  .id-content-column > div:last-child a {
-    min-height: 48px;
+}
+
+/* Responsividade para desktop (1025px+) */
+@media (min-width: 1025px) {
+  #identification {
+    min-height: 100vh;
   }
 }
 
@@ -149,67 +80,6 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-/* Proteção para não deixar elementos saírem das margens */
-#identification > * {
-  overflow: visible;
-}
-
-/* Responsividade para telas médias */
-@media (max-width: 1280px) {
-  .id-content-column {
-    padding-left: 50px;
-    padding-right: 50px;
-  }
-}
-
-
-
-/* Ajuste de altura mínima para seção */
-#identification {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Badges com animação suave */
-.id-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.id-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Botões com efeito de hover */
-.id-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-}
-
-.id-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.id-button:active {
-  transform: scale(0.95);
 }
 
 /* Efeito de cursor de digitação */
@@ -231,34 +101,11 @@
   }
 }
 
-/* Margens e padding para conteúdo */
-.id-content-wrapper {
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  max-width: 100%;
-}
-
-@media (min-width: 768px) {
-  .id-content-wrapper {
-    padding: 0 3rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .id-content-wrapper {
-    padding: 0 4rem;
-  }
-}
-
-/* Espaçamento vertical */
-.id-section {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
-
-@media (min-width: 768px) {
-  .id-section {
-    padding-top: 8rem;
-    padding-bottom: 7rem;
+/* Melhorias de acessibilidade e animação */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

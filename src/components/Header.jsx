@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -57,23 +58,17 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id) => {
-    // Fecha o menu mobile antes de rolar (em mobile o scroll pode falhar se o header ainda está expandido).
     setIsMobileMenuOpen(false);
-
-    // Se não estiver na home, navega para home primeiro
     if (location.pathname !== '/') {
       navigate('/', { state: { scrollTo: id } });
       return;
     }
-
     const doScroll = () => {
       const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     };
-
-    // Defer para o próximo frame (e mais um) para o header recalcular altura e liberar o scroll no mobile.
     requestAnimationFrame(() => requestAnimationFrame(doScroll));
   };
 
@@ -83,7 +78,6 @@ const Header = () => {
       navigate('/', { state: { scrollTo: 'top' } });
       return;
     }
-    // Se já está na home, scroll para o topo
     const element = document.getElementById('identification');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -92,10 +86,8 @@ const Header = () => {
     }
   };
 
-  // Efeito para scroll após navegação
   useEffect(() => {
     if (location.state?.scrollTo) {
-      // Wait a tick for the HomePage sections to mount, then scroll.
       const id = location.state.scrollTo;
       const t = setTimeout(() => {
         if (id === 'top') {
@@ -105,7 +97,6 @@ const Header = () => {
         const element = document.getElementById(id);
         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 120);
-      // Limpa o state
       window.history.replaceState({}, document.title);
       return () => clearTimeout(t);
     }
@@ -118,23 +109,20 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/80 backdrop-blur-md shadow-lg' : 'bg-black/70 backdrop-blur-md'
+      className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
+        isScrolled 
+          ? 'bg-black/90 backdrop-blur-md shadow-lg py-2' 
+          : 'bg-transparent py-4'
       }`}
-    style={{ right: 'var(--sbw, 0px)' }}
+      style={{ right: 'var(--sbw, 0px)' }}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-28 md:h-32">
+        <div className={`flex items-center justify-between transition-all duration-500 ${isScrolled ? 'h-16 md:h-20' : 'h-24 md:h-28'}`}>
           {/* Logo */}
           <div className="flex items-center">
             <a
               href="/"
               onClick={(e) => {
-                e.preventDefault();
-                scrollToTop();
-              }}
-              onPointerDown={(e) => {
-                // makes mobile feel more responsive
                 e.preventDefault();
                 scrollToTop();
               }}
@@ -144,59 +132,23 @@ const Header = () => {
               <img
                 src="/logo.png"
                 alt="Bierz Logo"
-                className="h-20 md:h-24 w-auto cursor-pointer transition-transform hover:scale-105"
+                className={`w-auto cursor-pointer transition-all duration-500 hover:scale-105 ${isScrolled ? 'h-12 md:h-16' : 'h-16 md:h-20'}`}
               />
             </a>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            
-            <button
-              onClick={() => scrollToSection('section-how-it-works')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
-            >
-              Como funciona
-            </button>
-            <button
-              onClick={() => scrollToSection('products')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
-            >
-              Produtos
-            </button>
-            <button
-              onClick={() => scrollToSection('services')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
-            >
-              Equipamentos
-            </button>
-            <button
-              onClick={() => scrollToSection('calculator')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
-            >
-              Calculadora
-            </button>
-            <button
-              onClick={() => scrollToSection('about')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
-            >
-              Sobre
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium"
-            >
-              Contato
-            </button>
+            <button onClick={() => scrollToSection('section-how-it-works')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium">Como funciona</button>
+            <button onClick={() => scrollToSection('products')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium">Produtos</button>
+            <button onClick={() => scrollToSection('services')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium">Equipamentos</button>
+            <button onClick={() => scrollToSection('calculator')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium">Calculadora</button>
+            <button onClick={() => scrollToSection('about')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium">Sobre</button>
+            <button onClick={() => scrollToSection('contact')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium">Contato</button>
 
             {/* Cart Button */}
             <Link to="/carrinho" className="relative">
-              <Button
-                variant="outline"
-                size="icon"
-                className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
-                data-testid="cart-button"
-              >
+              <Button variant="outline" size="icon" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
                 <ShoppingCart className="w-5 h-5" />
               </Button>
               {itemCount > 0 && (
@@ -210,66 +162,34 @@ const Header = () => {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
-                    data-testid="user-menu"
-                  >
+                  <Button variant="outline" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
                     <User className="w-4 h-4 mr-2" />
                     {user?.name?.split(' ')[0]}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-gray-900 border-[#F59E0B]/30">
-                  <DropdownMenuItem asChild>
-                    <Link to="/perfil" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer">
-                      <User className="w-4 h-4 mr-2" />
-                      Meu Perfil
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/pedidos" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      Meus Pedidos
-                    </Link>
-                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to="/perfil" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer"><User className="w-4 h-4 mr-2" />Meu Perfil</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to="/pedidos" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer"><ShoppingCart className="w-4 h-4 mr-2" />Meus Pedidos</Link></DropdownMenuItem>
                   {isAdmin && (
                     <>
                       <DropdownMenuSeparator className="bg-[#F59E0B]/30" />
-                      <DropdownMenuItem asChild>
-                        <Link to="/admin" className="text-[#F59E0B] cursor-pointer">
-                          <Settings className="w-4 h-4 mr-2" />
-                          Painel Admin
-                        </Link>
-                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild><Link to="/admin" className="text-[#F59E0B] cursor-pointer"><Settings className="w-4 h-4 mr-2" />Painel Admin</Link></DropdownMenuItem>
                     </>
                   )}
                   <DropdownMenuSeparator className="bg-[#F59E0B]/30" />
-                  <DropdownMenuItem 
-                    onClick={handleLogout}
-                    className="text-red-500 cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sair
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-500 cursor-pointer"><LogOut className="w-4 h-4 mr-2" />Sair</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <Link to="/login">
-                <Button
-                  variant="outline"
-                  className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black"
-                  data-testid="login-button"
-                >
+                <Button variant="outline" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
                   <User className="w-4 h-4 mr-2" />
                   Entrar
                 </Button>
               </Link>
             )}
 
-            <Button
-              onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
-              className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
+            <Button onClick={() => window.open('https://wa.me/5515988015195', '_blank')} className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold transition-all duration-200 shadow-lg hover:shadow-xl">
               <Phone className="w-4 h-4 mr-2" />
               WhatsApp
             </Button>
@@ -278,11 +198,7 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-3 md:hidden">
             <Link to="/carrinho" className="relative">
-              <Button
-                variant="outline"
-                size="icon"
-                className="border-[#F59E0B]/50 text-[#F59E0B]"
-              >
+              <Button variant="outline" size="icon" className="border-[#F59E0B]/50 text-[#F59E0B]">
                 <ShoppingCart className="w-5 h-5" />
               </Button>
               {itemCount > 0 && (
@@ -291,109 +207,34 @@ const Header = () => {
                 </span>
               )}
             </Link>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white hover:text-[#F59E0B] transition-colors"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white hover:text-[#F59E0B] transition-colors">
+              {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-black/98 backdrop-blur-md border-t border-[#F59E0B]/20 pb-4">
-            <nav className="flex flex-col space-y-4 py-4">
-              
-            <button
-              onClick={() => scrollToSection('section-how-it-works')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4"
-            >
-              Como funciona
-            </button>
-            <button
-              onClick={() => scrollToSection('products')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-            >
-              Produtos
-            </button>
-            <button
-              onClick={() => scrollToSection('services')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-            >
-              Equipamentos
-            </button>
-            <button
-              onClick={() => scrollToSection('calculator')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-            >
-              Calculadora
-            </button>
-            <button
-              onClick={() => scrollToSection('about')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-            >
-              Sobre
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium text-left px-4 whitespace-nowrap text-base"
-            >
-              Contato
-            </button>
-              
-              <div className="px-4 pt-2 border-t border-[#F59E0B]/20 space-y-3">
-                {isAuthenticated ? (
-                  <>
-                    <Link to="/perfil" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Button variant="outline" className="w-full border-[#F59E0B]/50 text-[#F59E0B]">
-                        <User className="w-4 h-4 mr-2" />
-                        Meu Perfil
-                      </Button>
-                    </Link>
-                    <Link to="/pedidos" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Button variant="outline" className="w-full border-[#F59E0B]/50 text-[#F59E0B]">
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        Meus Pedidos
-                      </Button>
-                    </Link>
-                    {isAdmin && (
-                      <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
-                        <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                          <Settings className="w-4 h-4 mr-2" />
-                          Painel Admin
-                        </Button>
-                      </Link>
-                    )}
-                    <Button 
-                      onClick={handleLogout}
-                      variant="outline" 
-                      className="w-full border-red-500/50 text-red-500"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sair
-                    </Button>
-                  </>
-                ) : (
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button variant="outline" className="w-full border-[#F59E0B]/50 text-[#F59E0B]">
-                      <User className="w-4 h-4 mr-2" />
-                      Entrar / Cadastrar
-                    </Button>
-                  </Link>
-                )}
-                <Button
-                  onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
-                  className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold"
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  WhatsApp
-                </Button>
-              </div>
-            </nav>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/10 animate-in slide-in-from-top duration-300">
+          <nav className="flex flex-col p-6 space-y-4">
+            <button onClick={() => scrollToSection('section-how-it-works')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Como funciona</button>
+            <button onClick={() => scrollToSection('products')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Produtos</button>
+            <button onClick={() => scrollToSection('services')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Equipamentos</button>
+            <button onClick={() => scrollToSection('calculator')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Calculadora</button>
+            <button onClick={() => scrollToSection('about')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Sobre</button>
+            <button onClick={() => scrollToSection('contact')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Contato</button>
+            <div className="pt-4 border-t border-white/10 flex flex-col gap-4">
+              {!isAuthenticated && (
+                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full border-[#F59E0B]/50 text-[#F59E0B]">Entrar</Button>
+                </Link>
+              )}
+              <Button onClick={() => window.open('https://wa.me/5515988015195', '_blank')} className="w-full bg-[#F59E0B] text-black font-bold">WhatsApp</Button>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

@@ -8,7 +8,7 @@
   position: relative;
   padding: 100px 0 80px;
   overflow: hidden;
-  background: transparent;
+  background: #000;
 }
 
 /* ── Background decorativo ── */
@@ -25,6 +25,7 @@
   filter: blur(80px);
   opacity: 0;
   transition: opacity 1.2s ease;
+  display: none; /* Removido para evitar cortes visuais na transição com o hero */
 }
 
 .hiw-section--visible .hiw-bg__orb {
