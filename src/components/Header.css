@@ -1,0 +1,56 @@
+/* ============================================================
+   Header — efeito scroll: transparente → translúcido + blur
+   Inspirado no padrão BootstrapMade (Delicious template)
+   ============================================================ */
+
+/* ── Variáveis de estado ── */
+header.site-header {
+  --hdr-bg: transparent;
+  --hdr-blur: 0px;
+  --hdr-shadow: none;
+  --hdr-border: transparent;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+
+  background-color: var(--hdr-bg);
+  backdrop-filter: blur(var(--hdr-blur));
+  -webkit-backdrop-filter: blur(var(--hdr-blur));
+  box-shadow: var(--hdr-shadow);
+  border-bottom: 1px solid var(--hdr-border);
+
+  /* Transição suave em todas as propriedades relevantes */
+  transition:
+    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter  0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    -webkit-backdrop-filter 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow       0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color     0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Estado: topo da página (transparente) ── */
+header.site-header.header-top {
+  --hdr-bg: transparent;
+  --hdr-blur: 0px;
+  --hdr-shadow: none;
+  --hdr-border: transparent;
+}
+
+/* ── Estado: após rolar (translúcido + blur) ── */
+header.site-header.header-scrolled {
+  --hdr-bg: rgba(7, 12, 24, 0.82);
+  --hdr-blur: 18px;
+  --hdr-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --hdr-border: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Estado: menu mobile aberto (sempre com fundo) ── */
+header.site-header.header-menu-open {
+  --hdr-bg: rgba(7, 12, 24, 0.96);
+  --hdr-blur: 18px;
+  --hdr-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+  --hdr-border: rgba(255, 255, 255, 0.08);
+}
