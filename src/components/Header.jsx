@@ -109,23 +109,39 @@ const Header = () => {
     navigate('/');
   };
 
-  const scrolled = isScrolled || isMobileMenuOpen || location.pathname !== '/';
+  const isHome = location.pathname === '/';
+  const isTransparentAtTop = isHome && !isScrolled && !isMobileMenuOpen;
 
-  const headerClassName = [
-    'fixed top-0 left-0 z-50 w-full',
-    'transition-all duration-300 ease-out',
-    scrolled
-      ? 'bg-[#070c18]/80 backdrop-blur-lg border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
-      : 'bg-transparent'
-  ].join(' ');
+  const headerClassName = useMemo(() => {
+    return [
+      'fixed top-0 left-0 z-50 w-full',
+      'transition-all duration-300 ease-out',
+      isTransparentAtTop
+        ? 'bg-transparent border-transparent shadow-none backdrop-blur-0'
+        : 'border-b border-white/10 shadow-[0_18px_45px_rgba(0,0,0,0.42)] backdrop-blur-2xl',
+    ].join(' ');
+  }, [isTransparentAtTop]);
 
-  const headerStyle = { right: 'var(--sbw, 0px)' };
-
+  const headerStyle = isTransparentAtTop
+    ? { right: 'var(--sbw, 0px)', background: 'transparent' }
+    : {
+        right: 'var(--sbw, 0px)',
+        background: 'linear-gradient(180deg, rgba(5, 10, 22, 0.96) 0%, rgba(7, 12, 24, 0.88) 100%)',
+        boxShadow: '0 18px 45px rgba(0,0,0,0.42)',
+        borderBottom: '1px solid rgba(255,255,255,0.10)',
+        backdropFilter: 'blur(22px)',
+        WebkitBackdropFilter: 'blur(22px)',
+      };
 
   return (
     <header className={headerClassName} style={headerStyle}>
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-5 lg:px-8">
-        <div className="flex h-[84px] items-center justify-between gap-4 lg:h-[92px]">
+        <div
+          className="flex h-[84px] items-center justify-between gap-4 lg:h-[92px] transition-all duration-300"
+          style={isTransparentAtTop ? undefined : {
+            background: 'rgba(255,255,255,0.02)',
+          }}
+        >
           {/* Logo */}
           <div className="flex shrink-0 items-center">
             <a
