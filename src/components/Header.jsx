@@ -110,14 +110,22 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
-        isScrolled 
-          ? 'bg-black/90 backdrop-blur-md shadow-lg py-2' 
-          : 'bg-transparent py-4'
+        isScrolled ? 'py-2' : 'py-4'
       }`}
       style={{ right: 'var(--sbw, 0px)' }}
     >
-      <div className="container mx-auto px-4">
-        <div className={`flex items-center justify-between transition-all duration-500 ${isScrolled ? 'h-16 md:h-20' : 'h-24 md:h-28'}`}>
+      <div
+        className={`container mx-auto px-4 transition-all duration-500 ${
+          isScrolled ? 'max-w-[1440px]' : 'max-w-none'
+        }`}
+      >
+        <div
+          className={`flex items-center justify-between rounded-2xl border transition-all duration-500 ${
+            isScrolled
+              ? 'h-16 md:h-20 border-white/10 bg-black/55 backdrop-blur-xl shadow-[0_14px_45px_rgba(0,0,0,0.35)] supports-[backdrop-filter]:bg-black/45 px-4 md:px-6'
+              : 'h-24 md:h-28 border-transparent bg-transparent px-0'
+          }`}
+        >
           {/* Logo */}
           <div className="flex items-center">
             <a
@@ -216,7 +224,7 @@ const Header = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/10 animate-in slide-in-from-top duration-300">
+        <div className="md:hidden mt-2 rounded-2xl border border-white/10 bg-black/85 backdrop-blur-xl shadow-[0_14px_45px_rgba(0,0,0,0.35)] animate-in slide-in-from-top duration-300">
           <nav className="flex flex-col p-6 space-y-4">
             <button onClick={() => scrollToSection('section-how-it-works')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Como funciona</button>
             <button onClick={() => scrollToSection('products')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Produtos</button>
