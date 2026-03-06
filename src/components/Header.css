@@ -54,3 +54,85 @@ header.site-header.header-menu-open {
   --hdr-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
   --hdr-border: rgba(255, 255, 255, 0.08);
 }
+
+/* ============================================================
+   Refinamentos de UI/UX: Logo Aumentado e Altura Dinâmica
+   ============================================================ */
+
+/* ── Logo: AUMENTADO SIGNIFICATIVAMENTE para destaque máximo da marca ── */
+header.site-header img[alt="Bierz Logo"] {
+  /* Tamanho padrão (desktop) - AUMENTADO para 88px */
+  height: 88px;
+  width: auto;
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Logo em tablets */
+@media (max-width: 1024px) {
+  header.site-header img[alt="Bierz Logo"] {
+    height: 76px;
+  }
+}
+
+/* Logo em mobile */
+@media (max-width: 640px) {
+  header.site-header img[alt="Bierz Logo"] {
+    height: 64px;
+  }
+}
+
+/* Logo ao rolar (AINDA GRANDE para manter visibilidade) */
+header.site-header.header-scrolled img[alt="Bierz Logo"],
+header.site-header.header-menu-open img[alt="Bierz Logo"] {
+  height: 68px;
+}
+
+/* Logo em mobile ao rolar */
+@media (max-width: 640px) {
+  header.site-header.header-scrolled img[alt="Bierz Logo"],
+  header.site-header.header-menu-open img[alt="Bierz Logo"] {
+    height: 56px;
+  }
+}
+
+/* ── Altura dinâmica do header para melhor proporção ── */
+header.site-header .mx-auto > div {
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Desktop: altura padrão */
+header.site-header.header-top .mx-auto > div {
+  height: 104px;
+}
+
+/* Desktop: altura compacta ao rolar */
+header.site-header.header-scrolled .mx-auto > div,
+header.site-header.header-menu-open .mx-auto > div {
+  height: 84px;
+}
+
+/* Tablets: altura padrão */
+@media (max-width: 1024px) {
+  header.site-header.header-top .mx-auto > div {
+    height: 96px;
+  }
+
+  /* Tablets: altura compacta ao rolar */
+  header.site-header.header-scrolled .mx-auto > div,
+  header.site-header.header-menu-open .mx-auto > div {
+    height: 80px;
+  }
+}
+
+/* Mobile: altura padrão */
+@media (max-width: 640px) {
+  header.site-header.header-top .mx-auto > div {
+    height: 84px;
+  }
+
+  /* Mobile: altura compacta ao rolar */
+  header.site-header.header-scrolled .mx-auto > div,
+  header.site-header.header-menu-open .mx-auto > div {
+    height: 72px;
+  }
+}
