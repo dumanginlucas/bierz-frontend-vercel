@@ -174,7 +174,7 @@ export default function Identification() {
       </div>
 
       {/* Bottom Connector (Shape Divider) */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
+      <div className="identification-shape-divider absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
         <svg
           className="relative block w-full h-[40px] md:h-[60px]"
           data-name="Layer 1"

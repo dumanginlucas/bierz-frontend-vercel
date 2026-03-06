@@ -40,7 +40,7 @@ button {
 }
 
 /* Shape Divider no fundo do Hero */
-#identification svg {
+.identification-shape-divider svg {
   fill: #000; /* Cor da próxima seção */
 }
 
