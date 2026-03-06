@@ -109,27 +109,18 @@ const Header = () => {
     navigate('/');
   };
 
-  const isTransparentAtTop = location.pathname === '/' && !isScrolled && !isMobileMenuOpen;
+  const scrolled = isScrolled || isMobileMenuOpen || location.pathname !== '/';
 
-  const headerClassName = useMemo(() => {
-    return [
-      'fixed top-0 left-0 z-50 w-full',
-      'transition-all duration-300 ease-out',
-      isTransparentAtTop
-        ? 'bg-transparent border-transparent shadow-none backdrop-blur-0'
-        : 'backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.28)]',
-    ].join(' ');
-  }, [isTransparentAtTop]);
+  const headerClassName = [
+    'fixed top-0 left-0 z-50 w-full',
+    'transition-all duration-300 ease-out',
+    scrolled
+      ? 'bg-[#070c18]/80 backdrop-blur-lg border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
+      : 'bg-transparent'
+  ].join(' ');
 
-  const headerStyle = isTransparentAtTop
-    ? { right: 'var(--sbw, 0px)' }
-    : {
-        right: 'var(--sbw, 0px)',
-        background: 'rgba(7, 12, 24, 0.78)',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.28)',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
-        WebkitBackdropFilter: 'blur(18px)',
-      };
+  const headerStyle = { right: 'var(--sbw, 0px)' };
+
 
   return (
     <header className={headerClassName} style={headerStyle}>
