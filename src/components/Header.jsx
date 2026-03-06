@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
 import { Button } from './ui/button';
@@ -23,7 +23,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 24);
     };
 
     handleScroll();
@@ -31,6 +31,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Ajusta variáveis CSS para compensar header fixo (offset de scroll) e a largura da scrollbar
   useEffect(() => {
     const headerEl = document.querySelector('header');
     if (!headerEl || typeof ResizeObserver === 'undefined') return;
@@ -108,25 +109,34 @@ const Header = () => {
     navigate('/');
   };
 
-  const desktopNavLinkClass =
-    'text-[15px] lg:text-base text-gray-100/95 hover:text-[#F59E0B] transition-colors duration-200 font-semibold whitespace-nowrap';
+  const isTransparentAtTop = location.pathname === '/' && !isScrolled && !isMobileMenuOpen;
 
-  const mobileMenuPanelClass = isScrolled
-    ? 'bg-black/85 backdrop-blur-xl border-white/10 shadow-2xl'
-    : 'bg-black/70 backdrop-blur-lg border-white/10';
+  const headerClassName = useMemo(() => {
+    return [
+      'fixed top-0 left-0 z-50 w-full',
+      'transition-all duration-300 ease-out',
+      isTransparentAtTop
+        ? 'bg-transparent border-transparent shadow-none backdrop-blur-0'
+        : 'backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.28)]',
+    ].join(' ');
+  }, [isTransparentAtTop]);
+
+  const headerStyle = isTransparentAtTop
+    ? { right: 'var(--sbw, 0px)' }
+    : {
+        right: 'var(--sbw, 0px)',
+        background: 'rgba(7, 12, 24, 0.78)',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.28)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        WebkitBackdropFilter: 'blur(18px)',
+      };
 
   return (
-    <header
-      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
-          ? 'bg-black/45 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.25)]'
-          : 'bg-transparent border-b border-transparent'
-      }`}
-      style={{ right: 'var(--sbw, 0px)' }}
-    >
-      <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
-        <div className="flex min-h-[86px] items-center gap-4 lg:min-h-[92px]">
-          <div className="shrink-0">
+    <header className={headerClassName} style={headerStyle}>
+      <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-5 lg:px-8">
+        <div className="flex h-[84px] items-center justify-between gap-4 lg:h-[92px]">
+          {/* Logo */}
+          <div className="flex shrink-0 items-center">
             <a
               href="/"
               onClick={(e) => {
@@ -139,70 +149,70 @@ const Header = () => {
               <img
                 src="/logo.png"
                 alt="Bierz Logo"
-                className="h-[64px] w-auto cursor-pointer object-contain transition-transform duration-300 hover:scale-105 sm:h-[72px] lg:h-[78px]"
+                className="h-[56px] w-auto cursor-pointer transition-transform duration-300 hover:scale-105 sm:h-[62px] lg:h-[72px]"
               />
             </a>
           </div>
 
-          <div className="hidden min-w-0 flex-1 items-center justify-end gap-4 md:flex lg:gap-6 xl:gap-8">
-            <nav className="flex min-w-0 items-center justify-end gap-4 lg:gap-5 xl:gap-6">
-              <button onClick={() => scrollToSection('section-how-it-works')} className={desktopNavLinkClass}>Como funciona</button>
-              <button onClick={() => scrollToSection('products')} className={desktopNavLinkClass}>Produtos</button>
-              <button onClick={() => scrollToSection('services')} className={desktopNavLinkClass}>Equipamentos</button>
-              <button onClick={() => scrollToSection('calculator')} className={desktopNavLinkClass}>Calculadora</button>
-              <button onClick={() => scrollToSection('about')} className={desktopNavLinkClass}>Sobre</button>
-              <button onClick={() => scrollToSection('contact')} className={desktopNavLinkClass}>Contato</button>
-            </nav>
+          {/* Desktop Navigation */}
+          <nav className="ml-auto hidden items-center gap-4 lg:gap-6 md:flex">
+            <button onClick={() => scrollToSection('section-how-it-works')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap">Como funciona</button>
+            <button onClick={() => scrollToSection('products')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap">Produtos</button>
+            <button onClick={() => scrollToSection('services')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap">Equipamentos</button>
+            <button onClick={() => scrollToSection('calculator')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap">Calculadora</button>
+            <button onClick={() => scrollToSection('about')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap">Sobre</button>
+            <button onClick={() => scrollToSection('contact')} className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap">Contato</button>
 
-            <div className="flex shrink-0 items-center gap-3 lg:gap-4">
-              <Link to="/carrinho" className="relative">
-                <Button variant="outline" size="icon" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
-                  <ShoppingCart className="w-5 h-5" />
-                </Button>
-                {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {itemCount > 9 ? '9+' : itemCount}
-                  </span>
-                )}
-              </Link>
-
-              {isAuthenticated ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
-                      <User className="w-4 h-4 mr-2" />
-                      {user?.name?.split(' ')[0]}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-gray-900 border-[#F59E0B]/30">
-                    <DropdownMenuItem asChild><Link to="/perfil" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer"><User className="w-4 h-4 mr-2" />Meu Perfil</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link to="/pedidos" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer"><ShoppingCart className="w-4 h-4 mr-2" />Meus Pedidos</Link></DropdownMenuItem>
-                    {isAdmin && (
-                      <>
-                        <DropdownMenuSeparator className="bg-[#F59E0B]/30" />
-                        <DropdownMenuItem asChild><Link to="/admin" className="text-[#F59E0B] cursor-pointer"><Settings className="w-4 h-4 mr-2" />Painel Admin</Link></DropdownMenuItem>
-                      </>
-                    )}
-                    <DropdownMenuSeparator className="bg-[#F59E0B]/30" />
-                    <DropdownMenuItem onClick={handleLogout} className="text-red-500 cursor-pointer"><LogOut className="w-4 h-4 mr-2" />Sair</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link to="/login">
-                  <Button variant="outline" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
-                    <User className="w-4 h-4 mr-2" />
-                    Entrar
-                  </Button>
-                </Link>
-              )}
-
-              <Button onClick={() => window.open('https://wa.me/5515988015195', '_blank')} className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold transition-all duration-200 shadow-lg hover:shadow-xl">
-                <Phone className="w-4 h-4 mr-2" />
-                WhatsApp
+            {/* Cart Button */}
+            <Link to="/carrinho" className="relative ml-2">
+              <Button variant="outline" size="icon" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black">
+                <ShoppingCart className="w-5 h-5" />
               </Button>
-            </div>
-          </div>
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {itemCount > 9 ? '9+' : itemCount}
+                </span>
+              )}
+            </Link>
 
+            {/* Auth */}
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black whitespace-nowrap">
+                    <User className="w-4 h-4 mr-2" />
+                    {user?.name?.split(' ')[0]}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-gray-900 border-[#F59E0B]/30">
+                  <DropdownMenuItem asChild><Link to="/perfil" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer"><User className="w-4 h-4 mr-2" />Meu Perfil</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to="/pedidos" className="text-gray-200 hover:text-[#F59E0B] cursor-pointer"><ShoppingCart className="w-4 h-4 mr-2" />Meus Pedidos</Link></DropdownMenuItem>
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator className="bg-[#F59E0B]/30" />
+                      <DropdownMenuItem asChild><Link to="/admin" className="text-[#F59E0B] cursor-pointer"><Settings className="w-4 h-4 mr-2" />Painel Admin</Link></DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator className="bg-[#F59E0B]/30" />
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-500 cursor-pointer"><LogOut className="w-4 h-4 mr-2" />Sair</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/login">
+                <Button variant="outline" className="border-[#F59E0B]/50 text-[#F59E0B] hover:bg-[#F59E0B] hover:text-black whitespace-nowrap">
+                  <User className="w-4 h-4 mr-2" />
+                  Entrar
+                </Button>
+              </Link>
+            )}
+
+            <Button onClick={() => window.open('https://wa.me/5515988015195', '_blank')} className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap">
+              <Phone className="w-4 h-4 mr-2" />
+              WhatsApp
+            </Button>
+          </nav>
+
+          {/* Mobile Menu Button */}
           <div className="ml-auto flex items-center gap-3 md:hidden">
             <Link to="/carrinho" className="relative">
               <Button variant="outline" size="icon" className="border-[#F59E0B]/50 text-[#F59E0B]">
@@ -221,8 +231,16 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className={`md:hidden border-t animate-in slide-in-from-top duration-300 ${mobileMenuPanelClass}`}>
+        <div
+          className="md:hidden border-t border-white/10 animate-in slide-in-from-top duration-300"
+          style={{
+            background: 'rgba(7, 12, 24, 0.94)',
+            backdropFilter: 'blur(18px)',
+            WebkitBackdropFilter: 'blur(18px)',
+          }}
+        >
           <nav className="flex flex-col p-6 space-y-4">
             <button onClick={() => scrollToSection('section-how-it-works')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Como funciona</button>
             <button onClick={() => scrollToSection('products')} className="text-left text-lg text-gray-200 hover:text-[#F59E0B]">Produtos</button>
