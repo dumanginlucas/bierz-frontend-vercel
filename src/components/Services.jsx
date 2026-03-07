@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Zap, Refrigerator, GitCompare, Thermometer, Snowflake, CheckCircle2 } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
-import "./Services.css";
 
 const Services = () => {
   const [active, setActive] = useState(null);
@@ -84,10 +83,7 @@ const Services = () => {
     []
   );
 
-  const handleToggle = (id) => {
-    console.log("Toggling card:", id);
-    setActive((prev) => (prev === id ? null : id));
-  };
+  const handleToggle = (id) => setActive((prev) => (prev === id ? null : id));
 
   const renderCompare = (data) => (
     <div className="equip-compare2">

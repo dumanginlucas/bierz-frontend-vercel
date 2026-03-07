@@ -289,14 +289,12 @@ export default function AboutBierz() {
         </div>
 
         {/* ── MARQUEE ── */}
-        <Marquee speed={60}>
-          <div className="ab-marquee">
-            {MARQUEE_ITEMS.map((item, i) => (
-              <span key={i} className="ab-marquee__item">
-                {item} <span className="ab-marquee__sep">·</span>
-              </span>
-            ))}
-          </div>
+        <Marquee speed={28}>
+          {MARQUEE_ITEMS.map((item, i) => (
+            <span key={i} className="ab-marquee__item">
+              {item} <span className="ab-marquee__sep">·</span>
+            </span>
+          ))}
         </Marquee>
 
         {/* ── STORY + VISUAL ── */}
