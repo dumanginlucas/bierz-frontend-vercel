@@ -18,24 +18,29 @@ const HomePage = () => {
     const target = location.state?.scrollTo;
     if (target === undefined) return;
 
+    const clearState = () => navigate(location.pathname, { replace: true, state: {} });
+
     const tryScroll = (attempt = 0) => {
       if (target === 'top') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        navigate(location.pathname, { replace: true, state: {} });
+        const doScrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        doScrollTop();
+        window.requestAnimationFrame(doScrollTop);
+        window.setTimeout(doScrollTop, 120);
+        clearState();
         return;
       }
 
       const element = document.getElementById(target);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        navigate(location.pathname, { replace: true, state: {} });
+        clearState();
         return;
       }
 
-      if (attempt < 8) {
+      if (attempt < 10) {
         window.setTimeout(() => tryScroll(attempt + 1), 120);
       } else {
-        navigate(location.pathname, { replace: true, state: {} });
+        clearState();
       }
     };
 
