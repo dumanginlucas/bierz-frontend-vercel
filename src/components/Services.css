@@ -1,5 +1,5 @@
 
-/* Flip card border/glow fixed to rotate with the faces */
+/* Subtle premium glow for flip cards */
 
 .equip-card{
   position: relative;
@@ -8,12 +8,11 @@
   border: none;
   overflow: visible;
   border-radius: 20px;
+  transition: transform .35s ease;
 }
 
-/* hover lift stays on the wrapper */
 .equip-card:hover{
-  transform: translateY(-4px);
-  transition: transform .35s ease;
+  transform: translateY(-2px);
 }
 
 .equip-card__inner{
@@ -38,34 +37,35 @@
   overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  background: linear-gradient(
-    145deg,
-    rgba(35,35,35,0.92),
-    rgba(10,10,10,0.96)
-  );
-  border: 1px solid rgba(245,158,11,.28);
+  background:
+    radial-gradient(circle at 50% 52%, rgba(245,158,11,.055), transparent 42%),
+    linear-gradient(145deg, rgba(28,28,30,.94), rgba(8,8,10,.98));
+  border: 1px solid rgba(245,158,11,.24);
   box-shadow:
-    0 10px 30px rgba(0,0,0,.55),
-    0 0 12px rgba(245,158,11,.08);
+    0 10px 26px rgba(0,0,0,.44),
+    0 0 8px rgba(245,158,11,.05);
 }
 
-/* premium light effect now lives on the rotating face, not on the outer wrapper */
+/* Much subtler internal glow */
 .equip-card__face::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: radial-gradient(
-    circle at var(--x,50%) var(--y,50%),
-    rgba(245,158,11,.16),
-    transparent 40%
-  );
-  opacity:0;
-  transition: opacity .25s ease;
+  content: "";
+  position: absolute;
+  inset: -12%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(245,158,11,.07) 0%,
+      rgba(245,158,11,.035) 18%,
+      rgba(245,158,11,.015) 30%,
+      transparent 52%);
+  opacity: .55;
+  filter: blur(18px);
+  transition: opacity .25s ease, filter .25s ease;
 }
 
 .equip-card:hover .equip-card__face::before{
-  opacity:1;
+  opacity: .7;
+  filter: blur(20px);
 }
 
 .equip-card__back{
@@ -86,5 +86,5 @@
   border-radius:50%;
   background:#f59e0b;
   flex-shrink:0;
-  box-shadow:0 0 6px rgba(245,158,11,.5);
+  box-shadow:0 0 5px rgba(245,158,11,.32);
 }
