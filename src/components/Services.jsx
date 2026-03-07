@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Zap, Refrigerator, GitCompare, Thermometer, Snowflake, CheckCircle2 } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
+import "./Services.css";
 
 const Services = () => {
   const [active, setActive] = useState(null);
@@ -146,6 +147,9 @@ const Services = () => {
                 key={c.id}
                 className={"equip-card " + (flipped ? "is-flipped" : "")}
                 onMouseEnter={() => setActive(c.id)}
+                onMouseLeave={() => setActive((prev) => (prev === c.id ? null : prev))}
+                onPointerEnter={(e) => { if (e.pointerType !== "touch") setActive(c.id); }}
+                onPointerLeave={(e) => { if (e.pointerType !== "touch") setActive((prev) => (prev === c.id ? null : prev)); }}
                 onClick={() => handleToggle(c.id)}
                 role="button"
                 tabIndex={0}

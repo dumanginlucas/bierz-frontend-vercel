@@ -696,7 +696,6 @@
 /* ── Reduced motion ──────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .ab-bg__orb,
-  .ab-marquee,
   .ab-float,
   .ab-visual__card--back,
   .ab-visual__card--mid,
