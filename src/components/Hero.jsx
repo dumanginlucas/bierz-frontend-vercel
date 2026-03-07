@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 export default function Hero() {
+  const videos = [
+    "/hero-videos/hero-1.mp4",
+    "/hero-videos/hero-2.mp4",
+    "/hero-videos/hero-3.mp4",
+    "/hero-videos/hero-4.mp4"
+  ];
+
+  const [currentVideo, setCurrentVideo] = useState(0);
+  const videoRef = useRef(null);
+
+  const handleVideoEnd = () => {
+    setCurrentVideo((prev) => (prev + 1) % videos.length);
+  };
+
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
-      <img
-        src="/banner.jpg"
-        alt="Bierz Banner"
-        className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
+
+      <video
+        key={currentVideo}
+        ref={videoRef}
+        src={videos[currentVideo]}
+        autoPlay
+        muted
+        playsInline
+        onEnded={handleVideoEnd}
+        className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
-      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0 bg-black/30" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
