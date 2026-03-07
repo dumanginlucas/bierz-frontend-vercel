@@ -1,60 +1,23 @@
-/* Cards de Equipamentos — regras locais e mais robustas */
 
-.equip-card {
-  position: relative;
-  width: 100%;
-  height: 460px;
-  perspective: 1400px;
-  -webkit-perspective: 1400px;
-  cursor: pointer;
-  transform: translateZ(0);
+/* Fix bullet alignment in equipment cards */
+
+.equip-feature{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.equip-card__inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+.equip-feature-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#f59e0b;
+  flex-shrink:0;
+  box-shadow:0 0 6px rgba(245,158,11,.5);
 }
 
-.equip-card.is-flipped .equip-card__inner,
-.equip-card:hover .equip-card__inner {
-  transform: rotateY(180deg);
-  -webkit-transform: rotateY(180deg);
-}
-
-.equip-card__face {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-.equip-card__front {
-  z-index: 2;
-}
-
-.equip-card__back {
-  transform: rotateY(180deg) translateZ(0);
-  -webkit-transform: rotateY(180deg) translateZ(0);
-}
-
-.equip-card__body {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  padding-right: 0;
-}
-
-@media (max-width: 1023px) {
-  .equip-card {
-    height: 460px;
-  }
+/* if bullets were previously created using ::before remove offsets */
+.equip-feature::before{
+  margin-top:0 !important;
+  top:auto !important;
 }
