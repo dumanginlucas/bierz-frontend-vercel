@@ -335,17 +335,17 @@ export default function Identification() {
 
       <button
         onClick={prevSlide}
-        className="absolute left-2 md:left-4 lg:left-8 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/15 hover:bg-white/25 p-1.5 md:p-2 text-white backdrop-blur-sm transition-all active:scale-95"
+        className="absolute left-2 md:left-4 lg:left-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-1 md:p-1.5 text-white/60 hover:text-white/80 backdrop-blur-sm transition-all active:scale-95 opacity-60 hover:opacity-100"
         aria-label="Slide anterior"
       >
-        <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <ChevronLeft className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-2 md:right-4 lg:right-8 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/15 hover:bg-white/25 p-1.5 md:p-2 text-white backdrop-blur-sm transition-all active:scale-95"
+        className="absolute right-2 md:right-4 lg:right-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-1 md:p-1.5 text-white/60 hover:text-white/80 backdrop-blur-sm transition-all active:scale-95 opacity-60 hover:opacity-100"
         aria-label="Próximo slide"
       >
-        <ChevronRight className="h-5 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
+        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
       </button>
 
       <div className="absolute bottom-20 md:bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2 md:gap-3">

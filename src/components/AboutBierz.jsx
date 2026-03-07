@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./AboutBierz.css";
+import Marquee from "./Marquee.jsx";
 
 /* ─────────────────────────────────────────────
    Dados da seção
@@ -288,15 +289,15 @@ export default function AboutBierz() {
         </div>
 
         {/* ── MARQUEE ── */}
-        <div className="ab-marquee-wrap" aria-hidden="true">
+        <Marquee speed={60}>
           <div className="ab-marquee">
-            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+            {MARQUEE_ITEMS.map((item, i) => (
               <span key={i} className="ab-marquee__item">
                 {item} <span className="ab-marquee__sep">·</span>
               </span>
             ))}
           </div>
-        </div>
+        </Marquee>
 
         {/* ── STORY + VISUAL ── */}
         <div

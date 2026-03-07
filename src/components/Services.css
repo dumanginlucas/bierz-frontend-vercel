@@ -1,0 +1,306 @@
+/* ========================================================================
+   Cards de Equipamentos (Services.jsx) - Efeito 3D Flip
+   ======================================================================== */
+
+.equip-card {
+  perspective: 1500px;
+  position: relative;
+  min-height: 450px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.equip-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Aplicar rotação quando a classe is-flipped está presente OU no hover */
+.equip-card.is-flipped .equip-card__inner,
+.equip-card:hover .equip-card__inner {
+  transform: rotateY(180deg) !important;
+}
+
+.equip-card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.equip-card__front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.equip-card__back {
+  transform: rotateY(180deg);
+  z-index: 1;
+  background: #0a0a0a;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.equip-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.equip-card__kicker {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(245, 158, 11, 0.8);
+}
+
+.equip-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: 0.5rem;
+  color: rgba(245, 158, 11, 0.8);
+}
+
+.equip-card__imgWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.equip-card__img {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+.equip-card:hover .equip-card__img {
+  transform: scale(1.05);
+}
+
+.equip-card__frontFooter {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.equip-card__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.equip-card__hoverHint {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.equip-card__body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.equip-card__desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.equip-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.equip-card__list li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.equip-card__list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: rgba(245, 158, 11, 0.8);
+  font-weight: bold;
+}
+
+.equip-card__actions {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.equip-card__cta {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.8), rgba(245, 158, 11, 0.6));
+  border: none;
+  border-radius: 0.5rem;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.equip-card__cta:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 1), rgba(245, 158, 11, 0.8));
+  transform: translateY(-2px);
+}
+
+.equip-card__ctaNote {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.equip-card__shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  border-radius: 1rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.equip-card:hover .equip-card__shine {
+  opacity: 1;
+}
+
+/* Comparativo */
+.equip-compare2 {
+  width: 100%;
+}
+
+.equip-compare2__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.equip-compare2__hcol {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.equip-compare2__hcol--electric {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.equip-compare2__hcol--homebar {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.equip-compare2__hicon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.equip-compare2__htitle {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.equip-compare2__badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(59, 130, 246, 0.3);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  color: rgba(59, 130, 246, 1);
+}
+
+.equip-compare2__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.equip-compare2__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.equip-compare2__cell {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.equip-compare2__cell--right {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.equip-compare2__ok {
+  color: rgba(34, 197, 94, 0.8);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .equip-card {
+    min-height: 400px;
+  }
+
+  .equip-card__face {
+    padding: 1rem;
+  }
+
+  .equip-card__icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .equip-card__list li {
+    font-size: 0.85rem;
+  }
+}
