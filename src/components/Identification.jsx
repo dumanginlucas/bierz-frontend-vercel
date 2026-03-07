@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Wine, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Identification.css';
 
@@ -10,71 +10,19 @@ const handleSmoothScroll = (e, targetId) => {
   }
 };
 
-const banners = [
-  { id: 1, type: 'motion' },
-  { id: 2, image: '/banner2.jpg' },
-  { id: 3, image: '/banner3.jpg' },
-  { id: 4, image: '/banner-novo.png' },
+const heroSlides = [
+  { id: 1, video: '/hero-videos/hero-1.mp4' },
+  { id: 2, video: '/hero-videos/hero-2.mp4' },
+  { id: 3, video: '/hero-videos/hero-3.mp4' },
+  { id: 4, video: '/hero-videos/hero-4.mp4' },
 ];
-
-function HeroMotionScene() {
-  return (
-    <div className="hero-motion-scene absolute inset-0">
-      <div className="hero-motion-scene__backdrop" />
-      <div className="hero-motion-scene__glow hero-motion-scene__glow--left" />
-      <div className="hero-motion-scene__glow hero-motion-scene__glow--right" />
-      <div className="hero-motion-scene__bokeh hero-motion-scene__bokeh--1" />
-      <div className="hero-motion-scene__bokeh hero-motion-scene__bokeh--2" />
-      <div className="hero-motion-scene__bokeh hero-motion-scene__bokeh--3" />
-
-      <div className="hero-motion-scene__floor" />
-
-      <div className="hero-motion-scene__kegs-wrap">
-        <img src="/barris.png" alt="Barris de chopp" className="hero-motion-scene__kegs" />
-      </div>
-
-      <div className="hero-motion-scene__homebar-wrap">
-        <img src="/homebar.png" alt="Homebar" className="hero-motion-scene__homebar" />
-      </div>
-
-      <div className="hero-motion-scene__counter">
-        <div className="hero-motion-scene__counter-top" />
-        <div className="hero-motion-scene__counter-front" />
-
-        <div className="hero-motion-scene__tap-area">
-          <img
-            src="/chopeira-eletrica.png"
-            alt="Chopeira elétrica"
-            className="hero-motion-scene__dispenser"
-          />
-
-          <div className="hero-motion-scene__pour-zone" aria-hidden="true">
-            <div className="beer-stream" />
-            <div className="beer-splash" />
-
-            <div className="beer-mug">
-              <div className="beer-mug__handle" />
-              <div className="beer-mug__glass" />
-              <div className="beer-mug__beer" />
-              <div className="beer-mug__foam" />
-              <div className="beer-mug__foam beer-mug__foam--top" />
-              <div className="beer-mug__shine beer-mug__shine--1" />
-              <div className="beer-mug__shine beer-mug__shine--2" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="hero-motion-scene__vignette" />
-    </div>
-  );
-}
 
 export default function Identification() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showElements, setShowElements] = useState(false);
   const [displayedTitle, setDisplayedTitle] = useState('');
   const [showContent, setShowContent] = useState(false);
+  const videoRefs = useRef([]);
 
   const fullTitleText = 'Bierz Distribuidora';
 
@@ -106,47 +54,61 @@ export default function Identification() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 6500);
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (!video) return;
+
+      if (index === currentSlide) {
+        video.currentTime = 0;
+        const playPromise = video.play();
+        if (playPromise?.catch) playPromise.catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, [currentSlide]);
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % banners.length);
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
   };
 
-  const parts = displayedTitle.split(' ');
+  const parts = useMemo(() => displayedTitle.split(' '), [displayedTitle]);
   const bierzPart = parts[0] || '';
   const distribuidoraPart = displayedTitle.slice(bierzPart.length + 1);
 
   return (
     <section id="identification" className="relative min-h-screen w-full overflow-hidden bg-black">
       <div className="absolute inset-0 z-0">
-        {banners.map((banner, index) => (
+        {heroSlides.map((slide, index) => (
           <div
-            key={banner.id}
+            key={slide.id}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            {banner.type === 'motion' ? (
-              <HeroMotionScene />
-            ) : (
-              <>
-                <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[6500ms] ease-linear"
-                  style={{
-                    backgroundImage: `url(${banner.image})`,
-                    transform: index === currentSlide ? 'scale(1.1)' : 'scale(1)'
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/60" />
-              </>
-            )}
+            <video
+              ref={(element) => {
+                videoRefs.current[index] = element;
+              }}
+              className="absolute inset-0 h-full w-full object-cover"
+              src={slide.video}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              autoPlay={index === 0}
+            />
+            <div className="absolute inset-0 bg-black/55" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/20 to-black/70" />
           </div>
         ))}
       </div>
@@ -214,7 +176,7 @@ export default function Identification() {
       </button>
 
       <div className="absolute bottom-20 md:bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2 md:gap-3">
-        {banners.map((_, index) => (
+        {heroSlides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
