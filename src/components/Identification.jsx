@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Wine, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Wine, Sparkles } from 'lucide-react';
 import './Identification.css';
 
 const FADE_DURATION = 650;
@@ -280,14 +280,14 @@ export default function Identification() {
                 }
               }}
             />
-            <div className="absolute inset-0 bg-black/55" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/20 to-black/70" />
+            <div className="hero-cinematic-overlay absolute inset-0" />
+            <div className="hero-cinematic-vignette absolute inset-0" />
           </div>
         ))}
       </div>
 
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-16 md:pt-20 pb-24 md:pb-32">
-        <div className="w-full max-w-4xl text-center space-y-6 md:space-y-8">
+        <div className={`hero-content-shell w-full max-w-4xl text-center space-y-6 md:space-y-8 ${showElements ? 'hero-content-shell--visible' : ''}`}>
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
             <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.6rem] bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)] font-black">
               {bierzPart}
@@ -318,49 +318,19 @@ export default function Identification() {
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 px-2">
               <button
                 onClick={(e) => handleSmoothScroll(e, 'section-how-it-works')}
-                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer relative z-[100]"
+                className="hero-cta-button inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black cursor-pointer relative z-[100]"
               >
                 Como funciona
               </button>
               <button
                 onClick={(e) => handleSmoothScroll(e, 'products')}
-                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer relative z-[100]"
+                className="hero-cta-button inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black cursor-pointer relative z-[100]"
               >
                 Ver Produtos
               </button>
             </div>
           </div>
         </div>
-      </div>
-
-      <button
-        onClick={prevSlide}
-        className="absolute left-2 md:left-4 lg:left-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-1 md:p-1.5 text-white/60 hover:text-white/80 backdrop-blur-sm transition-all active:scale-95 opacity-60 hover:opacity-100"
-        aria-label="Slide anterior"
-      >
-        <ChevronLeft className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="absolute right-2 md:right-4 lg:right-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-1 md:p-1.5 text-white/60 hover:text-white/80 backdrop-blur-sm transition-all active:scale-95 opacity-60 hover:opacity-100"
-        aria-label="Próximo slide"
-      >
-        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
-      </button>
-
-      <div className="absolute bottom-20 md:bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2 md:gap-3">
-        {heroSlides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => transitionToSlide(index)}
-            className={`transition-all duration-300 rounded-full ${
-              index === currentSlide
-                ? 'bg-orange-500 w-6 md:w-8 h-2.5 md:h-3'
-                : 'bg-white/40 hover:bg-white/60 w-2.5 md:h-3 h-2.5 md:w-3'
-            }`}
-            aria-label={`Ir para slide ${index + 1}`}
-          />
-        ))}
       </div>
 
       <div className="identification-shape-divider absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
