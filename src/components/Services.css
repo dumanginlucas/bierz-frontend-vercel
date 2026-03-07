@@ -1,6 +1,58 @@
 
-/* Fix bullet alignment in equipment cards */
+/* Premium visual improvements for equipment cards while keeping flip effect */
 
+/* Base card */
+.equip-card{
+  position:relative;
+  border:1px solid rgba(245,158,11,.25);
+  border-radius:16px;
+  overflow:hidden;
+  transition: transform .35s ease, box-shadow .35s ease;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.6),
+    0 0 12px rgba(245,158,11,.08);
+}
+
+/* Subtle lift on hover */
+.equip-card:hover{
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,.7),
+    0 0 20px rgba(245,158,11,.15);
+}
+
+/* Card faces (front/back) with gradient */
+.equip-card__face{
+  background: linear-gradient(
+    145deg,
+    rgba(35,35,35,0.92),
+    rgba(10,10,10,0.96)
+  );
+}
+
+/* Maintain 3D flip */
+.equip-card__inner{
+  transform-style: preserve-3d;
+  transition: transform .9s cubic-bezier(0.22,1,0.36,1);
+}
+
+.equip-card:hover .equip-card__inner,
+.equip-card.is-flipped .equip-card__inner{
+  transform: rotateY(180deg);
+}
+
+.equip-card__face{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.equip-card__back{
+  transform: rotateY(180deg);
+}
+
+/* Bullet alignment fix */
 .equip-feature{
   display:flex;
   align-items:center;
@@ -14,10 +66,4 @@
   background:#f59e0b;
   flex-shrink:0;
   box-shadow:0 0 6px rgba(245,158,11,.5);
-}
-
-/* if bullets were previously created using ::before remove offsets */
-.equip-feature::before{
-  margin-top:0 !important;
-  top:auto !important;
 }
