@@ -85,16 +85,18 @@ const Header = () => {
 
   const scrollToTop = () => {
     setIsMobileMenuOpen(false);
-
     if (location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: 'top' } });
+      navigate('/', { state: { scrollTo: 'identification' } });
       return;
     }
 
-    const doScrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-    doScrollTop();
-    window.requestAnimationFrame(doScrollTop);
-    window.setTimeout(doScrollTop, 120);
+    const heroSection = document.getElementById('identification');
+    if (heroSection) {
+      heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLogout = () => {
@@ -120,17 +122,17 @@ const Header = () => {
         <div className="flex h-[84px] items-center justify-between gap-4 lg:h-[92px]">
 
           {/* ── Logo ── */}
-          <div className="relative z-[80] flex shrink-0 items-center">
+          <div className="flex shrink-0 items-center">
             <button
               type="button"
               onClick={scrollToTop}
-              className="relative z-[80] inline-flex cursor-pointer border-0 bg-transparent p-0 pointer-events-auto"
-              aria-label="Ir para o topo"
+              className="inline-flex"
+              aria-label="Ir para o início"
             >
               <img
                 src="/logo.png"
                 alt="Bierz Logo"
-                className="pointer-events-none h-[56px] w-auto transition-transform duration-300 hover:scale-105 sm:h-[62px] lg:h-[72px]"
+                className="h-[56px] w-auto cursor-pointer transition-transform duration-300 hover:scale-105 sm:h-[62px] lg:h-[72px]"
               />
             </button>
           </div>

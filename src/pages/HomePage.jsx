@@ -15,36 +15,33 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const target = location.state?.scrollTo;
-    if (target === undefined) return;
+    const targetId = location.state?.scrollTo;
+    if (!targetId) return;
 
-    const clearState = () => navigate(location.pathname, { replace: true, state: {} });
-
-    const tryScroll = (attempt = 0) => {
-      if (target === 'top') {
-        const doScrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-        doScrollTop();
-        window.requestAnimationFrame(doScrollTop);
-        window.setTimeout(doScrollTop, 120);
-        clearState();
-        return;
+    const scrollToTarget = () => {
+      if (targetId === 'top') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return true;
       }
 
-      const element = document.getElementById(target);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        clearState();
-        return;
-      }
+      const target = document.getElementById(targetId);
+      if (!target) return false;
 
-      if (attempt < 10) {
-        window.setTimeout(() => tryScroll(attempt + 1), 120);
-      } else {
-        clearState();
-      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return true;
     };
 
-    tryScroll();
+    const attemptNow = scrollToTarget();
+    if (!attemptNow) {
+      const t1 = window.setTimeout(scrollToTarget, 120);
+      const t2 = window.setTimeout(scrollToTarget, 320);
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+      };
+    }
+
+    navigate(location.pathname, { replace: true, state: {} });
   }, [location, navigate]);
 
   return (
