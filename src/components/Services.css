@@ -1,7 +1,6 @@
 
-/* Premium visual improvements for equipment cards while keeping flip effect */
+/* Premium card + mouse light effect */
 
-/* Base card */
 .equip-card{
   position:relative;
   border:1px solid rgba(245,158,11,.25);
@@ -13,7 +12,7 @@
     0 0 12px rgba(245,158,11,.08);
 }
 
-/* Subtle lift on hover */
+/* Lift */
 .equip-card:hover{
   transform: translateY(-4px);
   box-shadow:
@@ -21,7 +20,7 @@
     0 0 20px rgba(245,158,11,.15);
 }
 
-/* Card faces (front/back) with gradient */
+/* Gradient base */
 .equip-card__face{
   background: linear-gradient(
     145deg,
@@ -30,7 +29,26 @@
   );
 }
 
-/* Maintain 3D flip */
+/* Mouse light layer */
+.equip-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: radial-gradient(
+    circle at var(--x,50%) var(--y,50%),
+    rgba(245,158,11,.18),
+    transparent 40%
+  );
+  opacity:0;
+  transition:opacity .25s;
+}
+
+.equip-card:hover::before{
+  opacity:1;
+}
+
+/* Flip */
 .equip-card__inner{
   transform-style: preserve-3d;
   transition: transform .9s cubic-bezier(0.22,1,0.36,1);
@@ -52,7 +70,7 @@
   transform: rotateY(180deg);
 }
 
-/* Bullet alignment fix */
+/* bullet alignment */
 .equip-feature{
   display:flex;
   align-items:center;
