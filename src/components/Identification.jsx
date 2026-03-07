@@ -11,11 +11,64 @@ const handleSmoothScroll = (e, targetId) => {
 };
 
 const banners = [
-  { id: 1, image: '/banner1.jpg' },
+  { id: 1, type: 'motion' },
   { id: 2, image: '/banner2.jpg' },
   { id: 3, image: '/banner3.jpg' },
-  { id: 4, image: '/banner-novo.png' }, // Novo banner - Bar/Choperia premium
+  { id: 4, image: '/banner-novo.png' },
 ];
+
+function HeroMotionScene() {
+  return (
+    <div className="hero-motion-scene absolute inset-0">
+      <div className="hero-motion-scene__backdrop" />
+      <div className="hero-motion-scene__glow hero-motion-scene__glow--left" />
+      <div className="hero-motion-scene__glow hero-motion-scene__glow--right" />
+      <div className="hero-motion-scene__bokeh hero-motion-scene__bokeh--1" />
+      <div className="hero-motion-scene__bokeh hero-motion-scene__bokeh--2" />
+      <div className="hero-motion-scene__bokeh hero-motion-scene__bokeh--3" />
+
+      <div className="hero-motion-scene__floor" />
+
+      <div className="hero-motion-scene__kegs-wrap">
+        <img src="/barris.png" alt="Barris de chopp" className="hero-motion-scene__kegs" />
+      </div>
+
+      <div className="hero-motion-scene__homebar-wrap">
+        <img src="/homebar.png" alt="Homebar" className="hero-motion-scene__homebar" />
+      </div>
+
+      <div className="hero-motion-scene__counter">
+        <div className="hero-motion-scene__counter-top" />
+        <div className="hero-motion-scene__counter-front" />
+
+        <div className="hero-motion-scene__tap-area">
+          <img
+            src="/chopeira-eletrica.png"
+            alt="Chopeira elétrica"
+            className="hero-motion-scene__dispenser"
+          />
+
+          <div className="hero-motion-scene__pour-zone" aria-hidden="true">
+            <div className="beer-stream" />
+            <div className="beer-splash" />
+
+            <div className="beer-mug">
+              <div className="beer-mug__handle" />
+              <div className="beer-mug__glass" />
+              <div className="beer-mug__beer" />
+              <div className="beer-mug__foam" />
+              <div className="beer-mug__foam beer-mug__foam--top" />
+              <div className="beer-mug__shine beer-mug__shine--1" />
+              <div className="beer-mug__shine beer-mug__shine--2" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="hero-motion-scene__vignette" />
+    </div>
+  );
+}
 
 export default function Identification() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -54,7 +107,7 @@ export default function Identification() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
+    }, 6500);
     return () => clearInterval(timer);
   }, []);
 
@@ -72,7 +125,6 @@ export default function Identification() {
 
   return (
     <section id="identification" className="relative min-h-screen w-full overflow-hidden bg-black">
-      {/* Carousel Background */}
       <div className="absolute inset-0 z-0">
         {banners.map((banner, index) => (
           <div
@@ -81,20 +133,24 @@ export default function Identification() {
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[5000ms] ease-linear"
-              style={{ 
-                backgroundImage: `url(${banner.image})`,
-                transform: index === currentSlide ? 'scale(1.1)' : 'scale(1)'
-              }}
-            />
-            {/* Overlay escuro para legibilidade */}
-            <div className="absolute inset-0 bg-black/60" />
+            {banner.type === 'motion' ? (
+              <HeroMotionScene />
+            ) : (
+              <>
+                <div
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[6500ms] ease-linear"
+                  style={{
+                    backgroundImage: `url(${banner.image})`,
+                    transform: index === currentSlide ? 'scale(1.1)' : 'scale(1)'
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/60" />
+              </>
+            )}
           </div>
         ))}
       </div>
 
-      {/* Content */}
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-16 md:pt-20 pb-24 md:pb-32">
         <div className="w-full max-w-4xl text-center space-y-6 md:space-y-8">
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
@@ -125,13 +181,13 @@ export default function Identification() {
 
           <div className={`transition-all duration-1000 w-full ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 px-2">
-              <button 
+              <button
                 onClick={(e) => handleSmoothScroll(e, 'section-how-it-works')}
                 className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer relative z-[100]"
               >
                 Como funciona
               </button>
-              <button 
+              <button
                 onClick={(e) => handleSmoothScroll(e, 'products')}
                 className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all duration-300 hover:brightness-110 active:scale-95 cursor-pointer relative z-[100]"
               >
@@ -142,7 +198,6 @@ export default function Identification() {
         </div>
       </div>
 
-      {/* Carousel Controls - Setas */}
       <button
         onClick={prevSlide}
         className="absolute left-2 md:left-4 lg:left-8 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/15 hover:bg-white/25 p-1.5 md:p-2 text-white backdrop-blur-sm transition-all active:scale-95"
@@ -158,15 +213,14 @@ export default function Identification() {
         <ChevronRight className="h-5 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" />
       </button>
 
-      {/* Carousel Indicators - Bolinhas */}
       <div className="absolute bottom-20 md:bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2 md:gap-3">
         {banners.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`transition-all duration-300 rounded-full ${
-              index === currentSlide 
-                ? 'bg-orange-500 w-6 md:w-8 h-2.5 md:h-3' 
+              index === currentSlide
+                ? 'bg-orange-500 w-6 md:w-8 h-2.5 md:h-3'
                 : 'bg-white/40 hover:bg-white/60 w-2.5 md:h-3 h-2.5 md:w-3'
             }`}
             aria-label={`Ir para slide ${index + 1}`}
@@ -174,7 +228,6 @@ export default function Identification() {
         ))}
       </div>
 
-      {/* Bottom Connector (Shape Divider) */}
       <div className="identification-shape-divider absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-20">
         <svg
           className="relative block w-full h-[40px] md:h-[60px]"
