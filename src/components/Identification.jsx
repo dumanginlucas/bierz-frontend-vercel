@@ -310,9 +310,11 @@ export default function Identification() {
             </div>
           </div>
 
-          <p className={`transition-all duration-1000 text-sm md:text-base lg:text-lg text-gray-200 leading-relaxed max-w-2xl mx-auto px-2 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            As melhores marcas de Chopp e Cervejas Especiais para seu evento. Qualidade, variedade e atendimento diferenciado em Sorocaba e região.
-          </p>
+         <p className={`transition-all duration-1000 text-sm md:text-base lg:text-lg text-gray-100 leading-relaxed max-w-[520px] mx-auto px-2 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+  Chopp das melhores marcas
+  <br />
+  Sorocaba e região.
+</p>
 
           <div className={`transition-all duration-1000 w-full ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 px-2">
