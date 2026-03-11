@@ -289,7 +289,7 @@ export default function Identification() {
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-16 md:pt-20 pb-24 md:pb-32">
         <div className={`hero-content-shell w-full max-w-4xl text-center space-y-6 md:space-y-8 ${showElements ? 'hero-content-shell--visible' : ''}`}>
           <h1 className="font-extrabold leading-[0.95] tracking-tight">
-            <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.6rem] bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)] font-black">
+            <span className="hero-brand-playfair block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.6rem] bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               {bierzPart}
             </span>
             <span className="block mt-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.6rem] text-white drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
