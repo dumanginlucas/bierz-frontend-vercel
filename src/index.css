@@ -163,7 +163,29 @@ code {
 .modal-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(245, 158, 11, 0.75);
 }
+/* Scrollbar global do site */
+html {
+  scrollbar-color: #2a2a2a #0a0a0a; /* Firefox */
+  scrollbar-width: thin;
+}
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 999px;
+  border: 2px solid #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
 
 /* Offset global para âncoras/scroll com header fixo */
 :root{
