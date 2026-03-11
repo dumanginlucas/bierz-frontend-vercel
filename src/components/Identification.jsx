@@ -286,7 +286,7 @@ export default function Identification() {
         ))}
       </div>
 
-      <div className="relative z-10 flex min-h-screen justify-start px-4 pt-[14vh] pb-24 md:items-center md:justify-center md:pt-20 md:pb-32">
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-16 md:pt-20 pb-24 md:pb-32">
   <div className={`hero-content-shell w-full max-w-4xl text-center space-y-6 md:space-y-8 ${showElements ? 'hero-content-shell--visible' : ''}`}>
     <h1 className="hero-brand-heading leading-[0.95] tracking-tight">
       <span className="hero-brand-bierz block bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
