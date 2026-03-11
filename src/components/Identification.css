@@ -1,5 +1,19 @@
 /* Identification Component Styles - Hero Carousel Estilo Delicious */
 
+.hero-title-bierz {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+.hero-title-distribuidora {
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
 #identification {
   position: relative;
   overflow: hidden;
@@ -27,15 +41,6 @@
   opacity: 1;
   transform: translateY(0) scale(1);
 }
-
-.hero-brand-playfair {
-  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-  font-weight: 700;
-  font-style: normal;
-  letter-spacing: -0.03em;
-  text-transform: none;
-}
-
 
 .hero-cta-button {
   box-shadow: 0 16px 40px rgba(245, 158, 11, 0.22), inset 0 1px 0 rgba(255,255,255,0.18);
