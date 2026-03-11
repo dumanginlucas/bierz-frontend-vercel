@@ -286,7 +286,7 @@ export default function Identification() {
         ))}
       </div>
 
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-16 md:pt-20 pb-24 md:pb-32">
+      <div className="relative z-10 flex min-h-screen items-start justify-center px-4 pt-[14vh] md:items-center md:pt-20 pb-24 md:pb-32">
         <div className={`hero-content-shell w-full max-w-4xl text-center space-y-6 md:space-y-8 ${showElements ? 'hero-content-shell--visible' : ''}`}>
           <h1 className="hero-brand-heading leading-[0.95] tracking-tight">
             <span className="hero-brand-bierz block bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
@@ -297,7 +297,7 @@ export default function Identification() {
             </span>
           </h1>
 
-          <div className={`transition-all duration-1000 mt-5 md:mt-7 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className={`transition-all duration-1000 mt-4 md:mt-6 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
               <div className="group inline-flex items-center gap-2 rounded-lg border border-orange-500/40 bg-black/30 px-3 md:px-4 py-2 text-xs md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-orange-500/70">
                 <Wine className="h-3 w-3 md:h-4 md:w-4 text-orange-400 flex-shrink-0" />
@@ -310,7 +310,7 @@ export default function Identification() {
             </div>
           </div>
 
-         <p className={`transition-all duration-1000 text-sm md:text-base lg:text-lg text-gray-100 leading-relaxed max-w-[520px] mx-auto px-2 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+         <p className={`transition-all duration-1000 text-sm md:text-lg lg:text-xl text-gray-100 leading-relaxed max-w-[520px] mx-auto px-2 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
   Chopp das melhores marcas
   <br />
   Sorocaba e região.
@@ -320,13 +320,13 @@ export default function Identification() {
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 px-2">
               <button
                 onClick={(e) => handleSmoothScroll(e, 'section-how-it-works')}
-                className="hero-cta-button inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black cursor-pointer relative z-[100]"
+                className="hero-cta-button inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base lg:text-lg font-bold text-black cursor-pointer relative z-[100]"
               >
                 Como funciona
               </button>
               <button
                 onClick={(e) => handleSmoothScroll(e, 'products')}
-                className="hero-cta-button inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base md:text-lg font-bold text-black cursor-pointer relative z-[100]"
+                className="hero-cta-button inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 px-4 md:px-8 py-2 md:py-3 text-xs md:text-base lg:text-lg font-bold text-black cursor-pointer relative z-[100]"
               >
                 Ver Produtos
               </button>
