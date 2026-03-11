@@ -29,9 +29,9 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.35)_55%,rgba(0,0,0,0.6)_100%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.25)_0%,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.75)_100%)]" />
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+      <div className="relative z-10 flex flex-col items-center justify-start pt-[18vh] md:justify-center md:pt-0 h-full text-center">
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
           <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 bg-clip-text text-transparent">
             BIERZ
@@ -42,12 +42,13 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="mt-6 text-gray-300 max-w-2xl text-lg">
-          As melhores marcas de chopp e cerveja para seu evento.
-          Qualidade, variedade e atendimento diferenciado.
-        </p>
+       <p className="max-w-[520px] text-lg text-white/90">
+  Chopp das melhores marcas
+  <br />
+  Sorocaba e região.
+</p>
 
-        <div className="mt-8 flex gap-4 flex-wrap justify-center">
+        <div className="mt-8 flex gap-4 flex-wrap justify-center items-center">
           <a href="#how-it-works" className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 hover:opacity-90 text-black font-semibold px-6 py-3 rounded-lg transition inline-block">
             Como funciona
           </a>
