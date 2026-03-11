@@ -633,23 +633,38 @@ button {
   font-family: 'Playfair Display', serif;
   font-weight: 900;
   font-style: normal;
+
   line-height: 0.82;
   letter-spacing: -0.02em;
+
   font-size: clamp(6.45rem, 12vw, 11.85rem);
   margin-bottom: 0.08em;
-  background-image: linear-gradient(90deg, #ff7a00 0%, #ff8c1a 40%, #ffb347 100%);
+
+  background-image: linear-gradient(
+    90deg,
+    #ffb347 0%,
+    #ff8c1a 40%,
+    #ff7a00 100%
+  );
+
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  text-rendering: geometricPrecision;
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   text-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+
   transform: scale(1.02);
   transform-origin: center center;
 }
 
 .hero-brand-distribuidora {
-  font-size: clamp(2.75rem, 6.1vw, 5rem);
+  font-size: clamp(2.48rem, 5.49vw, 4.5rem);
   font-weight: 800;
   line-height: 0.92;
 }
