@@ -297,7 +297,7 @@ export default function Identification() {
             </span>
           </h1>
 
-          <div className={`transition-all duration-1000 mt-4 md:mt-6 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className={`transition-all duration-1000 mt-5 md:mt-7 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
               <div className="group inline-flex items-center gap-2 rounded-lg border border-orange-500/40 bg-black/30 px-3 md:px-4 py-2 text-xs md:text-base text-white/90 backdrop-blur transition duration-200 hover:bg-black/40 hover:border-orange-500/70">
                 <Wine className="h-3 w-3 md:h-4 md:w-4 text-orange-400 flex-shrink-0" />
