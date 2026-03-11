@@ -1,19 +1,5 @@
 /* Identification Component Styles - Hero Carousel Estilo Delicious */
 
-.hero-title-bierz {
-  font-family: "Playfair Display", serif;
-  font-weight: 700;
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-}
-
-.hero-title-distribuidora {
-  font-family: "Inter", sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-}
-
 #identification {
   position: relative;
   overflow: hidden;
@@ -633,5 +619,54 @@ button {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+
+.hero-brand-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-brand-bierz {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  font-size: clamp(4.75rem, 9vw, 8.2rem);
+  margin-bottom: 0.18em;
+  background-image: linear-gradient(90deg, #f59e0b 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: geometricPrecision;
+}
+
+.hero-brand-distribuidora {
+  font-size: clamp(3.05rem, 6.8vw, 5.55rem);
+  font-weight: 800;
+  line-height: 0.92;
+}
+
+@media (max-width: 768px) {
+  .hero-brand-bierz {
+    font-size: clamp(4rem, 12vw, 6.4rem);
+    margin-bottom: 0.14em;
+  }
+
+  .hero-brand-distribuidora {
+    font-size: clamp(2.9rem, 10.2vw, 4.8rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-brand-bierz {
+    font-size: clamp(3.6rem, 13.5vw, 5.2rem);
+  }
+
+  .hero-brand-distribuidora {
+    font-size: clamp(2.45rem, 10.6vw, 3.9rem);
   }
 }

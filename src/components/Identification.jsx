@@ -288,11 +288,11 @@ export default function Identification() {
 
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-16 md:pt-20 pb-24 md:pb-32">
         <div className={`hero-content-shell w-full max-w-4xl text-center space-y-6 md:space-y-8 ${showElements ? 'hero-content-shell--visible' : ''}`}>
-          <h1 className="leading-[0.9] tracking-tight">
-            <span className="hero-title-bierz block text-5xl sm:text-6xl md:text-[5.3rem] lg:text-[6rem] xl:text-[6.6rem] bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
+          <h1 className="hero-brand-heading leading-[0.95] tracking-tight">
+            <span className="hero-brand-bierz block bg-clip-text text-transparent drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               {bierzPart}
             </span>
-            <span className="hero-title-distribuidora block mt-1 md:mt-2 text-4xl sm:text-5xl md:text-[3.9rem] lg:text-[4.6rem] xl:text-[5.1rem] text-white drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
+            <span className="hero-brand-distribuidora block text-white drop-shadow-[0_12px_30px_rgba(0,0,0,0.65)]">
               {distribuidoraPart}
             </span>
           </h1>
