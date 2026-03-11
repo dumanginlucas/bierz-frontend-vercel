@@ -29,11 +29,11 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.35)_55%,rgba(0,0,0,0.6)_100%)]" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
-          <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 bg-clip-text text-transparent">
             BIERZ
           </span>
           <br />
