@@ -1,9 +1,10 @@
-/* HeroCarousel - Luxury Brewery Premium Style */
+/* HeroCarousel - v8 closer to RT166, larger desktop cards and fixed mobile */
 
 .hero-carousel-v8 {
   position: relative;
   width: 100%;
   height: 100vh;
+  min-height: 720px;
   overflow: hidden;
   background: #000;
 }
@@ -22,19 +23,13 @@
   position: relative;
 }
 
-/* Banner Container */
-.hero-banner-v8-container {
+.hero-banner-v8-container,
+.hero-banner-v8-inner {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
   z-index: 10;
-}
-
-.hero-banner-v8-inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
 }
 
 .hero-banner-v8-inner img {
@@ -45,153 +40,287 @@
   display: block;
 }
 
-/* Cards Wrapper */
 .hero-cards-v8-wrapper {
   position: absolute;
-  bottom: 8%;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  bottom: clamp(18px, min(2.2vw, 2.8vh), 34px);
+  transform: translateX(-50%);
   z-index: 20;
   display: flex;
   justify-content: center;
-  padding: 0 20px;
+  align-items: flex-end;
+  pointer-events: none;
 }
 
 .hero-cards-v8-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 1200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, min(0.72vw, 0.9vh), 13px);
+  width: max-content;
+  max-width: calc(100vw - 42px);
 }
 
-@media (min-width: 768px) {
-  .hero-cards-v8-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero-cards-v8-grid {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 22px;
-  }
-}
-
-/* Mobile: Horizontal Scroll */
-@media (max-width: 640px) {
-  .hero-cards-v8-wrapper {
-    padding: 0 16px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .hero-cards-v8-grid {
-    display: flex;
-    grid-template-columns: unset;
-    gap: 16px;
-    width: max-content;
-    flex-wrap: nowrap;
-  }
-
-  .hero-card-v8 {
-    flex: 0 0 160px;
-  }
-}
-
-/* Luxury Card Style */
 .hero-card-v8 {
-  width: 100%;
+  width: clamp(140px, min(9.6vw, 15vh), 188px);
+  flex: 0 0 auto;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .hero-card-v8-inner {
-  background: #f9f9f9;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  width: 100%;
+  height: clamp(232px, min(16.9vw, 27.8vh), 298px);
   display: flex;
   flex-direction: column;
-  height: 220px;
-  width: 100%;
-  transition: 
-    transform 0.30s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.30s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.25s ease,
-    border-color 0.25s ease;
-}
-
-@media (min-width: 768px) {
-  .hero-card-v8-inner {
-    height: 235px;
-  }
-}
-
-/* Hover State: Subtle Lift + Progressive Shadow + Brightness */
-.hero-card-v8:hover .hero-card-v8-inner {
-  transform: translateY(-6px) scale(1.015);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  background: #fafafa;
-  border-color: rgba(0, 0, 0, 0.06);
-}
-
-/* Image Area (70% height) */
-.hero-card-v8-image {
-  width: 100%;
-  height: 70%;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+  border: none;
+  outline: none;
+  border-radius: clamp(12px, 0.9vw, 16px);
+  background: #f2efea;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.11);
+  transition:
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
-.hero-card-v8-image div {
+.hero-card-v8:hover .hero-card-v8-inner {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+}
+
+.hero-card-v8-image {
+  position: relative;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 16px;
-  box-sizing: border-box;
+  height: 69.2%;
+  overflow: hidden;
+  background: #ece7de;
 }
 
-/* Text Area (30% height) */
+.hero-card-v8-image::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background-image: var(--card-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: scale(1.035);
+  transform-origin: center center;
+}
+
 .hero-card-v8-content {
   width: 100%;
-  height: 30%;
+  min-height: 30.8%;
+  background: #f2efea;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px 14px;
-  background: #f9f9f9;
+  gap: clamp(5px, min(0.38vw, 0.5vh), 7px);
+  padding: clamp(10px, min(0.75vw, 0.95vh), 13px)
+    clamp(10px, min(0.8vw, 1vh), 13px)
+    clamp(12px, min(0.9vw, 1.15vh), 15px);
 }
 
-.hero-card-v8-content span {
+.hero-card-v8-title {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #1a1a1a;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: -0.01em;
+  color: #111;
+  font-weight: 800;
+  font-size: clamp(11px, min(0.78vw, 1.05vh), 14px);
+  letter-spacing: -0.015em;
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.08;
   text-align: center;
   word-break: break-word;
 }
 
-@media (min-width: 768px) {
-  .hero-card-v8-content span {
-    font-size: 12px;
+.hero-card-v8-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(62px, min(4.6vw, 7.2vh), 88px);
+  min-height: clamp(18px, min(1.55vw, 2.35vh), 25px);
+  padding: 0 clamp(10px, min(0.8vw, 1vh), 14px);
+  background: #0d0d0d;
+  color: #d59f61;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: clamp(8px, min(0.65vw, 0.9vh), 11px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+@media (max-height: 860px) {
+  .hero-cards-v8-wrapper {
+    bottom: 14px;
+  }
+
+  .hero-card-v8 {
+    width: clamp(132px, min(8.8vw, 14vh), 176px);
+  }
+
+  .hero-card-v8-inner {
+    height: clamp(216px, min(15.6vw, 25.8vh), 280px);
   }
 }
 
-/* Minimalist Navigation Arrows */
+@media (max-height: 760px) {
+  .hero-card-v8 {
+    width: clamp(122px, min(8.2vw, 12.8vh), 164px);
+  }
+
+  .hero-card-v8-inner {
+    height: clamp(202px, min(14.2vw, 23vh), 258px);
+  }
+
+  .hero-card-v8-title {
+    font-size: clamp(10px, min(0.72vw, 0.95vh), 12px);
+  }
+}
+
+@media (max-width: 1366px) {
+  .hero-cards-v8-grid {
+    max-width: calc(100vw - 34px);
+  }
+
+  .hero-card-v8 {
+    width: clamp(126px, min(8.8vw, 13.6vh), 172px);
+  }
+
+  .hero-card-v8-inner {
+    height: clamp(214px, min(15.4vw, 24.8vh), 280px);
+  }
+}
+
+@media (max-width: 1199px) {
+  .hero-cards-v8-grid {
+    gap: 9px;
+    max-width: calc(100vw - 28px);
+  }
+
+  .hero-card-v8 {
+    width: clamp(116px, min(8.4vw, 12.6vh), 152px);
+  }
+
+  .hero-card-v8-inner {
+    height: clamp(194px, min(14vw, 22.5vh), 250px);
+  }
+
+  .hero-card-v8-title {
+    font-size: clamp(10px, min(0.72vw, 0.95vh), 12px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-carousel-v8 {
+    height: 100svh;
+    min-height: 100svh;
+  }
+
+  .hero-cards-v8-wrapper {
+    left: 0;
+    right: 0;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    transform: none;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 14px 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .hero-cards-v8-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-cards-v8-grid {
+    gap: 10px;
+    max-width: none;
+    padding-right: 12px;
+  }
+
+  .hero-card-v8 {
+    width: 118px;
+  }
+
+  .hero-card-v8-inner {
+    height: 180px;
+    border-radius: 14px;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-card-v8-image {
+    height: 66.5%;
+  }
+
+  .hero-card-v8-content {
+    min-height: 33.5%;
+    gap: 4px;
+    padding: 8px 8px 10px;
+  }
+
+  .hero-card-v8-title {
+    font-size: 9px;
+    line-height: 1.05;
+  }
+
+  .hero-card-v8-cta {
+    min-width: 54px;
+    min-height: 18px;
+    padding: 0 8px;
+    font-size: 8px;
+  }
+
+  .hero-carousel-v8 .nav-arrow {
+    opacity: 0.45;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-cards-v8-wrapper {
+    bottom: max(10px, env(safe-area-inset-bottom));
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .hero-cards-v8-grid {
+    gap: 9px;
+    padding-right: 10px;
+  }
+
+  .hero-card-v8 {
+    width: 108px;
+  }
+
+  .hero-card-v8-inner {
+    height: 166px;
+    border-radius: 13px;
+  }
+
+  .hero-card-v8-image {
+    height: 65.5%;
+  }
+
+  .hero-card-v8-content {
+    min-height: 34.5%;
+    padding: 7px 7px 9px;
+  }
+
+  .hero-card-v8-title {
+    font-size: 8px;
+  }
+
+  .hero-card-v8-cta {
+    min-width: 50px;
+    min-height: 17px;
+    font-size: 7px;
+  }
+}
+
 .hero-carousel-v8 .nav-arrow {
   position: absolute;
   top: 50%;
@@ -204,11 +333,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fbbf24; /* Dourado/Amarelo conforme referência */
-  transition: 
-    color 0.25s ease,
-    transform 0.25s ease,
-    opacity 0.25s ease;
+  color: #fbbf24;
+  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
   outline: none;
   opacity: 0.6;
 }
@@ -245,7 +371,6 @@
   }
 }
 
-/* Indicators */
 .hero-carousel-v8 .indicators-container {
   position: absolute;
   bottom: 20px;
@@ -277,7 +402,6 @@
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Smooth scroll behavior for mobile slider */
 @supports (scroll-behavior: smooth) {
   .hero-cards-v8-wrapper {
     scroll-behavior: smooth;
