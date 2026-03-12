@@ -27,7 +27,7 @@ const HeroCarousel = () => {
       id: 1,
       label: 'Chopp para Eventos',
       description: 'Ideal para churrascos e encontros.',
-      theme: 'hero-card-theme-gold',
+      theme: 'hero-card-theme-events',
       image: '/card-placeholders/chopp-eventos.png',
       imageClass: 'hero-card-v8-image-events'
     },
@@ -35,7 +35,7 @@ const HeroCarousel = () => {
       id: 2,
       label: 'Home Bar',
       description: 'Chopeira premium para sua casa.',
-      theme: 'hero-card-theme-beige',
+      theme: 'hero-card-theme-homebar',
       image: '/card-placeholders/homebar.png',
       imageClass: 'hero-card-v8-image-homebar'
     },
@@ -43,7 +43,7 @@ const HeroCarousel = () => {
       id: 3,
       label: 'Barril de Chopp',
       description: 'Escolha o barril certo para servir.',
-      theme: 'hero-card-theme-orange',
+      theme: 'hero-card-theme-barril',
       image: '/card-placeholders/barril-itaipava.png',
       imageClass: 'hero-card-v8-image-barril'
     },
@@ -51,7 +51,7 @@ const HeroCarousel = () => {
       id: 4,
       label: 'Tipos de Evento',
       description: 'Atendemos festas e eventos corporativos.',
-      theme: 'hero-card-theme-dark',
+      theme: 'hero-card-theme-tipos',
       image: '/card-placeholders/tipos-evento.png',
       imageClass: 'hero-card-v8-image-tipos'
     }
