@@ -47,40 +47,41 @@
 .hero-cards-v8-wrapper {
   position: absolute;
   left: 50%;
-  bottom: clamp(22px, 4vw, 64px);
+  bottom: clamp(20px, 3.2vw, 58px);
   transform: translateX(-50%);
-  width: min(92vw, 1280px);
   z-index: 20;
   display: flex;
   justify-content: center;
+  align-items: flex-end;
   pointer-events: none;
 }
 
 .hero-cards-v8-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  align-items: end;
-  gap: clamp(10px, 1vw, 22px);
-  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 0.7vw, 14px);
+  width: max-content;
+  max-width: calc(100vw - 72px);
 }
 
 .hero-card-v8 {
-  width: min(100%, clamp(120px, 10vw, 164px));
-  justify-self: center;
+  width: clamp(102px, 8vw, 128px);
+  flex: 0 0 auto;
   cursor: pointer;
   pointer-events: auto;
 }
 
 .hero-card-v8-inner {
-  background: #f4f2ee;
-  border-radius: clamp(14px, 1vw, 18px);
+  background: #f3f0ea;
+  border-radius: clamp(13px, 0.9vw, 16px);
   overflow: hidden;
   border: none;
   outline: none;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: clamp(178px, 15vw, 264px);
+  height: clamp(184px, 16vw, 280px);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
   transition:
     transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
@@ -94,7 +95,7 @@
 
 .hero-card-v8-image {
   width: 100%;
-  height: 72%;
+  height: 70%;
   background: #ece7de;
   overflow: hidden;
 }
@@ -105,91 +106,124 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  transform: scale(1.001);
 }
 
 .hero-card-v8-content {
   width: 100%;
-  height: 28%;
+  min-height: 30%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(10px, 0.9vw, 14px) clamp(10px, 1vw, 14px);
-  background: #f4f2ee;
+  gap: clamp(6px, 0.45vw, 8px);
+  padding: clamp(10px, 0.8vw, 14px) clamp(8px, 0.9vw, 12px) clamp(12px, 0.95vw, 14px);
+  background: #f3f0ea;
 }
 
-.hero-card-v8-content span {
+.hero-card-v8-title {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #191919;
+  color: #171717;
   font-weight: 800;
-  font-size: clamp(10px, 0.74vw, 12px);
-  letter-spacing: -0.02em;
+  font-size: clamp(10px, 0.7vw, 12px);
+  letter-spacing: -0.015em;
   text-transform: uppercase;
-  line-height: 1.15;
+  line-height: 1.08;
   text-align: center;
   word-break: break-word;
 }
 
-@media (max-width: 1399px) {
-  .hero-cards-v8-wrapper {
-    width: min(90vw, 1120px);
-    bottom: clamp(18px, 3vw, 44px);
+.hero-card-v8-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(54px, 4.4vw, 78px);
+  min-height: clamp(18px, 1.4vw, 24px);
+  padding: 0 clamp(10px, 0.9vw, 14px);
+  background: #0f0f0f;
+  color: #d29b59;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: clamp(8px, 0.66vw, 11px);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@media (max-width: 1599px) {
+  .hero-cards-v8-grid {
+    gap: clamp(7px, 0.55vw, 12px);
+    max-width: calc(100vw - 56px);
   }
 
   .hero-card-v8 {
-    width: min(100%, clamp(106px, 9vw, 146px));
+    width: clamp(96px, 7.3vw, 120px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(164px, 14vw, 228px);
+    height: clamp(172px, 15vw, 250px);
+  }
+}
+
+@media (max-width: 1399px) {
+  .hero-cards-v8-wrapper {
+    bottom: clamp(16px, 2.5vw, 36px);
+  }
+
+  .hero-cards-v8-grid {
+    gap: 8px;
+    max-width: calc(100vw - 44px);
+  }
+
+  .hero-card-v8 {
+    width: clamp(88px, 7vw, 108px);
+  }
+
+  .hero-card-v8-inner {
+    height: clamp(160px, 14vw, 224px);
+  }
+
+  .hero-card-v8-title {
+    font-size: clamp(9px, 0.66vw, 11px);
   }
 }
 
 @media (max-width: 1199px) {
   .hero-cards-v8-wrapper {
-    width: min(86vw, 920px);
-    bottom: clamp(14px, 2.2vw, 30px);
+    bottom: 12px;
   }
 
   .hero-cards-v8-grid {
-    gap: clamp(8px, 0.8vw, 14px);
+    gap: 7px;
+    max-width: calc(100vw - 36px);
   }
 
   .hero-card-v8 {
-    width: min(100%, clamp(94px, 8.1vw, 126px));
+    width: clamp(78px, 6.3vw, 94px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(150px, 12.2vw, 198px);
-    border-radius: 16px;
+    height: clamp(146px, 12vw, 196px);
+    border-radius: 14px;
   }
 
-  .hero-card-v8-content span {
-    font-size: clamp(9px, 0.72vw, 11px);
+  .hero-card-v8-content {
+    gap: 5px;
+    padding: 9px 7px 11px;
+  }
+
+  .hero-card-v8-title {
+    font-size: clamp(8px, 0.62vw, 10px);
+  }
+
+  .hero-card-v8-cta {
+    min-width: 48px;
+    min-height: 18px;
+    padding: 0 9px;
+    font-size: 8px;
   }
 }
 
 @media (max-width: 991px) {
-  .hero-cards-v8-wrapper {
-    width: min(82vw, 760px);
-    bottom: 18px;
-  }
-
-  .hero-cards-v8-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    row-gap: 14px;
-  }
-
-  .hero-card-v8 {
-    width: min(100%, 118px);
-  }
-
-  .hero-card-v8-inner {
-    height: 180px;
-  }
-}
-
-@media (max-width: 640px) {
   .hero-cards-v8-wrapper {
     width: calc(100% - 28px);
     left: 14px;
@@ -209,22 +243,46 @@
   .hero-cards-v8-grid {
     display: flex;
     width: max-content;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: nowrap;
+    max-width: none;
   }
 
   .hero-card-v8 {
-    flex: 0 0 112px;
-    width: 112px;
+    width: 90px;
   }
 
   .hero-card-v8-inner {
-    height: 170px;
-    border-radius: 15px;
+    height: 156px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-cards-v8-wrapper {
+    bottom: 12px;
   }
 
-  .hero-card-v8-content span {
-    font-size: 10px;
+  .hero-cards-v8-grid {
+    gap: 9px;
+  }
+
+  .hero-card-v8 {
+    width: 84px;
+  }
+
+  .hero-card-v8-inner {
+    height: 148px;
+    border-radius: 13px;
+  }
+
+  .hero-card-v8-title {
+    font-size: 8px;
+  }
+
+  .hero-card-v8-cta {
+    min-width: 44px;
+    font-size: 7px;
   }
 }
 

@@ -26,50 +26,52 @@ const HeroCarousel = () => {
     {
       id: 1,
       label: 'CHOPP PARA EVENTOS',
+      cta: 'EVENTOS',
       image: '/card-placeholders/delivery.png'
     },
     {
       id: 2,
       label: 'HOME BAR',
+      cta: 'HOME BAR',
       image: '/card-placeholders/homebar.png'
     },
     {
       id: 3,
       label: 'BARRIL DE CHOPP',
+      cta: 'BARRIS',
       image: '/card-placeholders/barrel.png'
     },
     {
       id: 4,
       label: 'CALCULADORA',
+      cta: 'CALCULAR',
       image: '/card-placeholders/calc.png'
     },
     {
       id: 5,
       label: 'TIPOS DE EVENTO',
+      cta: 'VER TIPOS',
       image: '/card-placeholders/events.png'
     },
     {
       id: 6,
       label: 'REGIÃO ATENDIDA',
+      cta: 'ATENDIMENTO',
       image: '/card-placeholders/region.png'
     }
   ];
 
   return (
     <section className="hero-carousel-v8 relative w-full overflow-hidden bg-black">
-      {/* Slides Wrapper */}
       <div
         className="hero-slides-wrapper flex h-full transition-transform duration-1000 cubic-bezier(0.65, 0, 0.35, 1)"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {/* Slide 1: Video Hero */}
         <div className="hero-slide w-full h-full flex-shrink-0">
           <Identification />
         </div>
 
-        {/* Slide 2: Luxury Cards */}
         <div className="hero-slide w-full h-full flex-shrink-0 relative flex flex-col items-center">
-          {/* Banner Container */}
           <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
             <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
               <img
@@ -77,18 +79,15 @@ const HeroCarousel = () => {
                 alt="Bierz Experience"
                 className="w-full h-full object-cover object-center"
               />
-              {/* Overlay Escuro no topo */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none h-48" />
             </div>
           </div>
 
-          {/* Luxury Cards Grid */}
           <div className="hero-cards-v8-wrapper">
             <div className="hero-cards-v8-grid">
               {cards.map((card) => (
                 <div key={card.id} className="hero-card-v8">
                   <div className="hero-card-v8-inner">
-                    {/* Image Area */}
                     <div className="hero-card-v8-image">
                       <div
                         style={{
@@ -97,9 +96,9 @@ const HeroCarousel = () => {
                       />
                     </div>
 
-                    {/* Text Area */}
                     <div className="hero-card-v8-content">
-                      <span>{card.label}</span>
+                      <span className="hero-card-v8-title">{card.label}</span>
+                      <span className="hero-card-v8-cta">{card.cta}</span>
                     </div>
                   </div>
                 </div>
@@ -109,7 +108,6 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      {/* Minimalist Navigation Arrows */}
       <button
         onClick={prevSlide}
         className="nav-arrow left"
@@ -125,7 +123,6 @@ const HeroCarousel = () => {
         <ChevronRight size={48} strokeWidth={1} />
       </button>
 
-      {/* Indicators */}
       <div className="indicators-container">
         {[...Array(totalSlides)].map((_, i) => (
           <button
