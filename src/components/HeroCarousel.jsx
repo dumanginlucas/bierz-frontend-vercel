@@ -25,39 +25,31 @@ const HeroCarousel = () => {
   const cards = [
     {
       id: 1,
-      label: 'CHOPP PARA EVENTOS',
-      cta: 'EVENTOS',
-      theme: 'hero-card-theme-orange'
+      label: 'Chopp para Eventos',
+      cta: 'Eventos',
+      description: 'Solução prática e premium para churrascos, aniversários e confraternizações.',
+      theme: 'hero-card-theme-gold'
     },
     {
       id: 2,
-      label: 'HOME BAR',
-      cta: 'HOME BAR',
+      label: 'Home Bar',
+      cta: 'Home Bar',
+      description: 'A chopeira perfeita para transformar seu evento em uma experiência memorável.',
       theme: 'hero-card-theme-beige'
     },
     {
       id: 3,
-      label: 'BARRIL DE CHOPP',
-      cta: 'BARRIS',
-      theme: 'hero-card-theme-orange-strong'
+      label: 'Barril de Chopp',
+      cta: 'Barris',
+      description: 'Escolha entre 20L, 30L e 50L com as melhores marcas de chopp.',
+      theme: 'hero-card-theme-orange'
     },
     {
       id: 4,
-      label: 'CALCULADORA',
-      cta: 'CALCULAR',
-      theme: 'hero-card-theme-black'
-    },
-    {
-      id: 5,
-      label: 'TIPOS DE EVENTO',
-      cta: 'VER TIPOS',
-      theme: 'hero-card-theme-beige-light'
-    },
-    {
-      id: 6,
-      label: 'REGIÃO ATENDIDA',
-      cta: 'ATENDIMENTO',
-      theme: 'hero-card-theme-blue'
+      label: 'Tipos de Evento',
+      cta: 'Ver tipos',
+      description: 'Atendemos eventos corporativos, aniversários, casamentos e muito mais.',
+      theme: 'hero-card-theme-dark'
     }
   ];
 
@@ -71,7 +63,7 @@ const HeroCarousel = () => {
           <Identification />
         </div>
 
-        <div className="hero-slide w-full h-full flex-shrink-0 relative flex flex-col items-center">
+        <div className="hero-slide hero-slide-bierz w-full h-full flex-shrink-0 relative flex flex-col items-center">
           <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
             <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
               <img
@@ -93,6 +85,7 @@ const HeroCarousel = () => {
                     <div className="hero-card-v8-content">
                       <span className="hero-card-v8-title">{card.label}</span>
                       <span className="hero-card-v8-cta">{card.cta}</span>
+                      <p className="hero-card-v8-description">{card.description}</p>
                     </div>
                   </div>
                 </div>
