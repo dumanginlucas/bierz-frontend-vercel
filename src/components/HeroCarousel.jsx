@@ -88,10 +88,12 @@ const HeroCarousel = () => {
               {cards.map((card) => (
                 <div key={card.id} className="hero-card-v8">
                   <div className="hero-card-v8-inner">
+                    {/* Image Area */}
                     <div className="hero-card-v8-image">
                       <div
-                        aria-hidden="true"
-                        style={{ backgroundImage: `url(${card.image})` }}
+                        style={{
+                          backgroundImage: `url(${card.image})`
+                        }}
                       />
                     </div>
 
