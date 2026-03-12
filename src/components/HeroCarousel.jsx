@@ -88,6 +88,12 @@ const HeroCarousel = () => {
                       <span className="hero-card-v8-texture" />
                       <span className="hero-card-v8-glow" />
                       <img
+                        src="/card-placeholders/ice-overlay.png"
+                        alt=""
+                        className="hero-card-v8-ice"
+                        loading="lazy"
+                      />
+                      <img
                         src={card.image}
                         alt=""
                         className={`hero-card-v8-image ${card.imageClass}`}
