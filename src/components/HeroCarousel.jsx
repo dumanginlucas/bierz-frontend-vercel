@@ -29,7 +29,9 @@ const HeroCarousel = () => {
       description: 'Escolha aqui o chopp do seu evento.',
       theme: 'hero-card-theme-events',
       image: '/card-placeholders/chopp-eventos.png',
-      imageClass: 'hero-card-v8-image-events'
+      imageClass: 'hero-card-v8-image-events',
+      splash: 'https://bebabangbang.com.br/wp-content/uploads/2025/12/caipi-fundo.webp',
+      hasSplash: true
     },
     {
       id: 2,
@@ -37,7 +39,9 @@ const HeroCarousel = () => {
       description: 'Receba essa Home Bar em casa para agradar os amigos.',
       theme: 'hero-card-theme-homebar',
       image: '/card-placeholders/homebar.png',
-      imageClass: 'hero-card-v8-image-homebar'
+      imageClass: 'hero-card-v8-image-homebar-hero', // Classe específica para destaque
+      splash: 'https://bebabangbang.com.br/wp-content/uploads/2025/12/whisky-fundo.webp',
+      hasSplash: true
     },
     {
       id: 3,
@@ -45,7 +49,9 @@ const HeroCarousel = () => {
       description: 'Siga a Bierz no Instagram para acompanhar as promoções.',
       theme: 'hero-card-theme-barril',
       image: '/card-placeholders/barril-itaipava.png',
-      imageClass: 'hero-card-v8-image-barril'
+      imageClass: 'hero-card-v8-image-barril',
+      splash: '', // Sem splash de água para redes
+      hasSplash: false
     },
     {
       id: 4,
@@ -53,7 +59,9 @@ const HeroCarousel = () => {
       description: 'Com a Bierz você fica livre da taxa de entrega e do equipamento!',
       theme: 'hero-card-theme-tipos',
       image: '/card-placeholders/tipos-evento.png',
-      imageClass: 'hero-card-v8-image-tipos'
+      imageClass: 'hero-card-v8-image-tipos',
+      splash: '', // Sem splash de água para entrega
+      hasSplash: false
     }
   ];
 
@@ -82,17 +90,20 @@ const HeroCarousel = () => {
           <div className="hero-cards-v8-wrapper">
             <div className="hero-cards-v8-grid">
               {cards.map((card) => (
-                <div key={card.id} className={`hero-card-v8 ${card.theme}`}>
+                <div key={card.id} className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'}`}>
                   <div className="hero-card-v8-inner">
                     <div className="hero-card-v8-art" aria-hidden="true">
-                      <span className="hero-card-v8-texture" />
-                      <span className="hero-card-v8-glow" />
-                      <img
-                        src="/card-placeholders/ice-cubes-overlay.svg"
-                        alt=""
-                        className="hero-card-v8-ice"
-                        loading="lazy"
-                      />
+                      {/* Background Splash apenas se necessário */}
+                      {card.hasSplash && (
+                        <div 
+                          className="hero-card-splash-bg" 
+                          style={{ backgroundImage: `url(${card.splash})` }}
+                        ></div>
+                      )}
+                      
+                      {/* Overlay de iluminação para profundidade */}
+                      <div className="hero-card-lighting-overlay"></div>
+                      
                       <img
                         src={card.image}
                         alt=""
