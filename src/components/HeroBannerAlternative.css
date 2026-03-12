@@ -1,0 +1,277 @@
+/* HeroBannerAlternative Component Styles */
+
+.hero-banner-alternative {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f3f4f6 100%);
+}
+
+/* Animated blob background elements */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Hero Card Styles */
+.hero-card {
+  perspective: 1000px;
+}
+
+.hero-card > div {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Card hover effects */
+.hero-card:hover > div {
+  box-shadow: 
+    0 20px 40px rgba(245, 158, 11, 0.15),
+    0 0 60px rgba(249, 115, 22, 0.08);
+}
+
+/* Texture pattern for cards */
+.hero-card svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
+
+/* Icon container animations */
+.hero-card:hover .hero-card > div {
+  transform: translateY(-8px);
+}
+
+/* Button animations */
+.hero-card button {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s ease;
+}
+
+.hero-card button:hover::before {
+  left: 100%;
+}
+
+/* Primary card (Orçamento Rápido) - Larger on desktop */
+.hero-card:has(button:contains("Pedir Orçamento")) {
+  grid-column: span 1;
+}
+
+@media (min-width: 1024px) {
+  .hero-card:has(button:contains("Pedir Orçamento")) {
+    grid-row: span 2;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-card {
+    min-height: 280px;
+  }
+
+  .hero-card > div {
+    padding: 1.5rem;
+  }
+}
+
+/* Glassmorphism effect */
+.hero-card > div {
+  background-attachment: fixed;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Smooth transitions for all interactive elements */
+.hero-card * {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Animation for card entrance */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-card {
+  animation: cardEntrance 0.6s ease-out forwards;
+}
+
+.hero-card:nth-child(1) { animation-delay: 0.1s; }
+.hero-card:nth-child(2) { animation-delay: 0.2s; }
+.hero-card:nth-child(3) { animation-delay: 0.3s; }
+.hero-card:nth-child(4) { animation-delay: 0.4s; }
+.hero-card:nth-child(5) { animation-delay: 0.5s; }
+.hero-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Gradient text animations */
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.hero-banner-alternative h1 span {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* Border animations for cards */
+@keyframes borderGlow {
+  0%, 100% {
+    box-shadow: 
+      inset 0 0 0 1px rgba(245, 158, 11, 0.1),
+      0 0 20px rgba(245, 158, 11, 0.05);
+  }
+  50% {
+    box-shadow: 
+      inset 0 0 0 1px rgba(245, 158, 11, 0.3),
+      0 0 40px rgba(245, 158, 11, 0.15);
+  }
+}
+
+/* Subtle pulse effect on hover */
+@keyframes subtlePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.hero-card:hover > div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  animation: subtlePulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1024px) {
+  .hero-banner-alternative .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-banner-alternative .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-banner-alternative h1 {
+    font-size: 2rem;
+  }
+
+  .hero-banner-alternative p {
+    font-size: 1rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .hero-card,
+  .hero-card > div,
+  .animate-blob {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Dark mode support (if needed in future) */
+@media (prefers-color-scheme: dark) {
+  .hero-banner-alternative {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 50%, #1f1f1f 100%);
+  }
+
+  .hero-banner-alternative h1 {
+    color: #f5f5f5;
+  }
+
+  .hero-banner-alternative p {
+    color: #d1d5db;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading state for cards */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.hero-card.loading {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Focus states for accessibility */
+.hero-card button:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .animate-blob,
+  .hero-card:hover > div {
+    animation: none !important;
+    transform: none !important;
+  }
+}

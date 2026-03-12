@@ -111,7 +111,7 @@ const Header = () => {
     'site-header',
     isMobileMenuOpen
       ? 'header-menu-open'
-      : isHome && !isScrolled
+      : !isScrolled
         ? 'header-top'
         : 'header-scrolled',
   ].join(' ');

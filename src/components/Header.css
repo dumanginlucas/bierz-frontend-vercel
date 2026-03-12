@@ -37,12 +37,16 @@ header.site-header.header-top {
   --hdr-blur: 0px;
   --hdr-shadow: none;
   --hdr-border: transparent;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom-color: transparent !important;
 }
 
 /* ── Estado: após rolar (translúcido + blur) ── */
 header.site-header.header-scrolled {
-  --hdr-bg: rgba(7, 12, 24, 0.82);
-  --hdr-blur: 18px;
+  --hdr-bg: rgba(17, 17, 17, 0.95); /* Escuro original */
+  --hdr-blur: 12px;
   --hdr-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
   --hdr-border: rgba(255, 255, 255, 0.08);
 }
