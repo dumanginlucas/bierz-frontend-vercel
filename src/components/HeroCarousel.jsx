@@ -4,7 +4,7 @@ import Identification from './Identification';
 import './HeroCarousel.css';
 
 const HeroCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const totalSlides = 2;
 
@@ -25,35 +25,27 @@ const HeroCarousel = () => {
   const cards = [
     {
       id: 1,
-      title: 'Chopp para Eventos',
-      text: 'Ideal para churrascos, aniversários e encontros com chope gelado.',
-      theme: 'hero-card-theme-gold',
-      accent: 'hero-card-accent-gold',
-      art: 'hero-card-art-events'
+      label: 'Chopp para Eventos',
+      description: 'Para churrascos, aniversários e encontros com chopp gelado.',
+      theme: 'hero-card-theme-gold'
     },
     {
       id: 2,
-      title: 'Home Bar',
-      text: 'Uma solução premium para servir em casa com presença e praticidade.',
-      theme: 'hero-card-theme-sand',
-      accent: 'hero-card-accent-brown',
-      art: 'hero-card-art-homebar'
+      label: 'Home Bar',
+      description: 'Chopeira premium para elevar seu evento em casa.',
+      theme: 'hero-card-theme-beige'
     },
     {
       id: 3,
-      title: 'Barril de Chopp',
-      text: 'Escolha o tamanho ideal e receba o barril certo para o seu evento.',
-      theme: 'hero-card-theme-orange',
-      accent: 'hero-card-accent-orange',
-      art: 'hero-card-art-keg'
+      label: 'Barril de Chopp',
+      description: 'Escolha o tamanho ideal para servir sem erro.',
+      theme: 'hero-card-theme-orange'
     },
     {
       id: 4,
-      title: 'Tipos de Evento',
-      text: 'Opções pensadas para eventos sociais, corporativos e comemorações.',
-      theme: 'hero-card-theme-night',
-      accent: 'hero-card-accent-bronze',
-      art: 'hero-card-art-types'
+      label: 'Tipos de Evento',
+      description: 'Soluções para eventos sociais e corporativos.',
+      theme: 'hero-card-theme-dark'
     }
   ];
 
@@ -67,7 +59,7 @@ const HeroCarousel = () => {
           <Identification />
         </div>
 
-        <div className="hero-slide w-full h-full flex-shrink-0 relative flex flex-col items-center">
+        <div className="hero-slide hero-slide-bierz w-full h-full flex-shrink-0 relative flex flex-col items-center">
           <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
             <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
               <img
@@ -82,13 +74,18 @@ const HeroCarousel = () => {
           <div className="hero-cards-v8-wrapper">
             <div className="hero-cards-v8-grid">
               {cards.map((card) => (
-                <div key={card.id} className="hero-card-v8">
-                  <div className={`hero-card-v8-inner ${card.theme}`}>
-                    <div className={`hero-card-v8-art ${card.art}`} aria-hidden="true" />
+                <div key={card.id} className={`hero-card-v8 ${card.theme}`}>
+                  <div className="hero-card-v8-inner">
+                    <div className="hero-card-v8-art" aria-hidden="true">
+                      <span className="hero-card-v8-splash hero-card-v8-splash-a" />
+                      <span className="hero-card-v8-splash hero-card-v8-splash-b" />
+                      <span className="hero-card-v8-fruit hero-card-v8-fruit-a" />
+                      <span className="hero-card-v8-fruit hero-card-v8-fruit-b" />
+                    </div>
 
                     <div className="hero-card-v8-content">
-                      <span className={`hero-card-v8-pill ${card.accent}`}>{card.title}</span>
-                      <p className="hero-card-v8-text">{card.text}</p>
+                      <span className="hero-card-v8-title">{card.label}</span>
+                      <p className="hero-card-v8-description">{card.description}</p>
                     </div>
                   </div>
                 </div>
@@ -98,10 +95,18 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      <button onClick={prevSlide} className="nav-arrow left" aria-label="Previous slide">
+      <button
+        onClick={prevSlide}
+        className="nav-arrow left"
+        aria-label="Previous slide"
+      >
         <ChevronLeft size={48} strokeWidth={1} />
       </button>
-      <button onClick={nextSlide} className="nav-arrow right" aria-label="Next slide">
+      <button
+        onClick={nextSlide}
+        className="nav-arrow right"
+        aria-label="Next slide"
+      >
         <ChevronRight size={48} strokeWidth={1} />
       </button>
 

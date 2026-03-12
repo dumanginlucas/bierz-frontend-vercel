@@ -1,10 +1,10 @@
-/* HeroCarousel - v16 refined toward BangBang while keeping Bierz structure */
+/* HeroCarousel - v17 refined to match BangBang more closely */
 
 .hero-carousel-v8 {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 720px;
+  min-height: 860px;
   overflow: hidden;
   background: #000;
 }
@@ -22,6 +22,16 @@
   flex-shrink: 0;
   position: relative;
   overflow: visible;
+}
+
+.hero-slide-bierz::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 24%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 28%, rgba(0,0,0,0.85) 100%);
+  z-index: 15;
+  pointer-events: none;
 }
 
 .hero-banner-v8-container,
@@ -44,27 +54,27 @@
 .hero-cards-v8-wrapper {
   position: absolute;
   left: 50%;
-  bottom: clamp(26px, 3vh, 38px);
+  bottom: clamp(34px, 5vw, 56px);
   transform: translateX(-50%);
-  z-index: 20;
+  z-index: 25;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  width: 100%;
   pointer-events: none;
-  overflow: visible;
 }
 
 .hero-cards-v8-grid {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: clamp(18px, 1.3vw, 28px);
+  gap: clamp(18px, 1.7vw, 30px);
   width: max-content;
-  max-width: calc(100vw - 84px);
+  max-width: calc(100vw - 72px);
 }
 
 .hero-card-v8 {
-  width: clamp(190px, 12.9vw, 248px);
+  width: clamp(248px, 14.6vw, 292px);
   flex: 0 0 auto;
   cursor: pointer;
   pointer-events: auto;
@@ -73,106 +83,121 @@
 .hero-card-v8-inner {
   position: relative;
   width: 100%;
-  height: clamp(298px, 22.2vw, 396px);
+  height: clamp(392px, 26vw, 474px);
   overflow: hidden;
   border: none;
   outline: none;
-  border-radius: clamp(24px, 1.5vw, 30px);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: clamp(24px, 1.7vw, 30px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.34s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
+  isolation: isolate;
 }
 
 .hero-card-v8:hover .hero-card-v8-inner {
-  transform: translateY(-12px);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
+  transform: translateY(-12px) scale(1.012);
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.34);
 }
 
-.hero-card-v8-inner::before,
+.hero-card-theme-gold .hero-card-v8-inner {
+  background: linear-gradient(180deg, #8ac157 0%, #7db44e 100%);
+}
+.hero-card-theme-beige .hero-card-v8-inner {
+  background: linear-gradient(180deg, #d97a24 0%, #cf6d1c 100%);
+}
+.hero-card-theme-orange .hero-card-v8-inner {
+  background: linear-gradient(180deg, #8f4614 0%, #7a3b0f 100%);
+}
+.hero-card-theme-dark .hero-card-v8-inner {
+  background: linear-gradient(180deg, #d6a977 0%, #cca16e 100%);
+}
+
+.hero-card-v8-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 78% 10%, rgba(255,255,255,0.17), transparent 13%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
+  pointer-events: none;
+  z-index: 1;
+}
+
 .hero-card-v8-inner::after {
   content: '';
   position: absolute;
   inset: 0;
+  background-image: repeating-linear-gradient(100deg, rgba(255,255,255,0.1) 0 1px, transparent 1px 10px);
+  opacity: 0.22;
   pointer-events: none;
-}
-
-.hero-card-v8-inner::before {
-  background:
-    radial-gradient(circle at 82% 15%, rgba(255, 255, 255, 0.2), transparent 13%),
-    radial-gradient(circle at 22% 72%, rgba(255, 255, 255, 0.08), transparent 18%),
-    repeating-linear-gradient(101deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 11px);
-  opacity: 0.9;
-}
-
-.hero-card-v8-inner::after {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.1) 100%);
-}
-
-.hero-card-theme-gold {
-  background:
-    radial-gradient(circle at 20% 78%, rgba(255, 255, 255, 0.08), transparent 18%),
-    linear-gradient(160deg, #f3d65a 0%, #e7bc34 55%, #d7a31c 100%);
-}
-
-.hero-card-theme-sand {
-  background:
-    radial-gradient(circle at 18% 80%, rgba(255, 255, 255, 0.07), transparent 18%),
-    linear-gradient(160deg, #efe5d3 0%, #e6dbc9 58%, #d6c7b3 100%);
-}
-
-.hero-card-theme-orange {
-  background:
-    radial-gradient(circle at 18% 80%, rgba(255, 255, 255, 0.08), transparent 18%),
-    linear-gradient(160deg, #ffbf47 0%, #ffa223 52%, #ff8f00 100%);
-}
-
-.hero-card-theme-night {
-  background:
-    radial-gradient(circle at 18% 80%, rgba(255, 255, 255, 0.05), transparent 18%),
-    linear-gradient(160deg, #1f2634 0%, #121826 58%, #0a101b 100%);
+  z-index: 1;
 }
 
 .hero-card-v8-art {
   position: absolute;
   inset: 0;
-  opacity: 0.55;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-card-v8-splash,
+.hero-card-v8-fruit {
+  position: absolute;
+  display: block;
   pointer-events: none;
 }
 
-.hero-card-art-events {
-  background:
-    radial-gradient(circle at 20% 62%, rgba(255, 255, 255, 0.18), transparent 6%),
-    radial-gradient(circle at 78% 28%, rgba(255, 255, 255, 0.16), transparent 7%),
-    radial-gradient(circle at 15% 30%, rgba(255, 243, 168, 0.85), transparent 10%),
-    radial-gradient(circle at 80% 82%, rgba(255, 236, 160, 0.8), transparent 10%),
-    radial-gradient(circle at 28% 82%, rgba(116, 182, 59, 0.9), transparent 7%),
-    radial-gradient(circle at 16% 86%, rgba(78, 137, 40, 0.95), transparent 7%),
-    radial-gradient(circle at 84% 22%, rgba(255,255,255,0.12), transparent 12%),
-    radial-gradient(circle at 42% 18%, rgba(255,255,255,0.1), transparent 12%);
+.hero-card-v8-splash {
+  filter: blur(0.2px);
+  opacity: 0.82;
 }
 
-.hero-card-art-homebar {
-  background:
-    radial-gradient(circle at 24% 74%, rgba(255,255,255,0.15), transparent 8%),
-    radial-gradient(circle at 80% 16%, rgba(255,255,255,0.12), transparent 7%),
-    linear-gradient(120deg, transparent 0 43%, rgba(255,255,255,0.08) 43% 44%, transparent 44% 100%),
-    linear-gradient(60deg, transparent 0 57%, rgba(255,255,255,0.06) 57% 58%, transparent 58% 100%);
+.hero-card-v8-splash-a {
+  inset: 18% auto auto -8%;
+  width: 82%;
+  height: 44%;
+  background: radial-gradient(circle at 35% 50%, rgba(255,255,255,0.92) 0 6%, rgba(255,255,255,0.52) 7%, transparent 24%), radial-gradient(circle at 62% 38%, rgba(255,255,255,0.9) 0 5%, transparent 18%), radial-gradient(circle at 74% 60%, rgba(255,255,255,0.72) 0 4%, transparent 18%);
+  transform: rotate(-16deg);
 }
 
-.hero-card-art-keg {
-  background:
-    radial-gradient(circle at 25% 78%, rgba(255, 255, 255, 0.18), transparent 8%),
-    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.12), transparent 7%),
-    radial-gradient(circle at 22% 70%, rgba(255, 225, 120, 0.65), transparent 12%),
-    radial-gradient(circle at 76% 30%, rgba(255, 214, 102, 0.65), transparent 12%);
+.hero-card-v8-splash-b {
+  inset: auto -10% 20% auto;
+  width: 80%;
+  height: 42%;
+  background: radial-gradient(circle at 30% 44%, rgba(255,255,255,0.92) 0 5%, transparent 20%), radial-gradient(circle at 54% 52%, rgba(255,255,255,0.74) 0 4%, transparent 18%), radial-gradient(circle at 72% 28%, rgba(255,255,255,0.82) 0 4%, transparent 16%);
+  transform: rotate(14deg);
 }
 
-.hero-card-art-types {
-  background:
-    radial-gradient(circle at 22% 82%, rgba(255,255,255,0.08), transparent 8%),
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.16), transparent 8%),
-    linear-gradient(135deg, transparent 0 52%, rgba(217, 144, 53, 0.18) 52% 53%, transparent 53% 100%),
-    linear-gradient(65deg, transparent 0 70%, rgba(217, 144, 53, 0.16) 70% 71%, transparent 71% 100%);
+.hero-card-v8-fruit-a,
+.hero-card-v8-fruit-b {
+  border-radius: 999px;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.12));
+}
+
+.hero-card-v8-fruit-a {
+  left: 10%;
+  bottom: 26%;
+  width: 58px;
+  height: 58px;
+  background: radial-gradient(circle at 36% 36%, rgba(255,255,255,0.62) 0 12%, transparent 13%), linear-gradient(135deg, #ffd868 0%, #ffc527 100%);
+}
+
+.hero-card-v8-fruit-b {
+  right: 8%;
+  top: 16%;
+  width: 42px;
+  height: 42px;
+  background: radial-gradient(circle at 36% 36%, rgba(255,255,255,0.62) 0 12%, transparent 13%), linear-gradient(135deg, #b8e778 0%, #75bf3e 100%);
+}
+
+.hero-card-theme-beige .hero-card-v8-fruit-a,
+.hero-card-theme-dark .hero-card-v8-fruit-a {
+  background: radial-gradient(circle at 36% 36%, rgba(255,255,255,0.58) 0 12%, transparent 13%), linear-gradient(135deg, #fff1cf 0%, #f1d39a 100%);
+}
+
+.hero-card-theme-beige .hero-card-v8-fruit-b,
+.hero-card-theme-orange .hero-card-v8-fruit-b {
+  background: radial-gradient(circle at 36% 36%, rgba(255,255,255,0.58) 0 12%, transparent 13%), linear-gradient(135deg, #ffb367 0%, #ff8f2f 100%);
 }
 
 .hero-card-v8-content {
@@ -180,153 +205,144 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: clamp(18px, 1.3vw, 24px) clamp(18px, 1.3vw, 24px) clamp(20px, 1.45vw, 28px);
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   gap: 14px;
+  padding: 0 22px 22px;
+  text-align: center;
 }
 
-.hero-card-v8-pill {
+.hero-card-v8-title {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 20px;
-  border-radius: 999px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-size: clamp(13px, 0.98vw, 19px);
-  font-weight: 700;
-  line-height: 1.15;
-  text-align: center;
-  letter-spacing: -0.02em;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 14px;
+  background: rgba(242, 133, 44, 0.96);
   color: #fff;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 1.05vw, 20px);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  text-align: center;
+  text-wrap: balance;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
 }
 
-.hero-card-accent-gold { background: #f08a2a; }
-.hero-card-accent-brown { background: #946025; }
-.hero-card-accent-orange { background: #ef8b2f; }
-.hero-card-accent-bronze { background: #99601d; }
+.hero-card-theme-orange .hero-card-v8-title {
+  background: rgba(236, 218, 198, 0.98);
+  color: #fff;
+}
+.hero-card-theme-dark .hero-card-v8-title {
+  background: rgba(240, 135, 47, 0.96);
+}
+.hero-card-theme-beige .hero-card-v8-title {
+  background: rgba(122, 58, 16, 0.92);
+}
+.hero-card-theme-orange .hero-card-v8-title {
+  color: #fff;
+  background: rgba(233, 204, 179, 0.92);
+  color: #fff;
+}
 
-.hero-card-v8-text {
+.hero-card-v8-description {
   margin: 0;
-  max-width: 84%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-size: clamp(12px, 0.86vw, 15px);
-  font-weight: 500;
-  line-height: 1.45;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.96);
-  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-}
-
-.hero-card-theme-sand .hero-card-v8-text {
-  color: rgba(77, 59, 37, 0.88);
-}
-
-.hero-card-theme-sand .hero-card-v8-pill {
+  max-width: 86%;
+  min-height: 72px;
   color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: clamp(12px, 0.76vw, 14px);
+  font-weight: 600;
+  line-height: 1.38;
+  text-wrap: balance;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.12);
 }
 
-@media (max-width: 1480px) {
-  .hero-card-v8 { width: clamp(178px, 12.2vw, 230px); }
-  .hero-card-v8-inner { height: clamp(284px, 21vw, 372px); }
-  .hero-cards-v8-grid { gap: clamp(16px, 1.1vw, 24px); }
+.hero-card-theme-dark .hero-card-v8-description,
+.hero-card-theme-beige .hero-card-v8-description {
+  color: rgba(255,255,255,0.94);
 }
 
-@media (max-width: 1280px) {
-  .hero-cards-v8-grid {
-    gap: 14px;
-    max-width: calc(100vw - 48px);
-  }
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  background: transparent;
+  border: none;
+  color: rgba(255, 184, 52, 0.85);
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.nav-arrow:hover { opacity: 1; transform: translateY(-50%) scale(1.04); }
+.nav-arrow.left { left: 24px; }
+.nav-arrow.right { right: 24px; }
 
-  .hero-card-v8 { width: clamp(160px, 12.2vw, 208px); }
-  .hero-card-v8-inner { height: clamp(262px, 20vw, 340px); }
-  .hero-card-v8-pill { min-height: 40px; padding: 0 16px; }
-  .hero-card-v8-text { max-width: 88%; font-size: clamp(11px, 0.82vw, 14px); }
+.indicators-container {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 35;
+  display: flex;
+  gap: 10px;
+}
+.indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255,255,255,0.35);
+}
+.indicator-dot.active { width: 28px; background: #f29c29; }
+
+@media (max-width: 1400px) {
+  .hero-carousel-v8 { min-height: 800px; }
+  .hero-cards-v8-wrapper { bottom: 26px; }
+  .hero-card-v8 { width: clamp(218px, 16vw, 258px); }
+  .hero-card-v8-inner { height: clamp(360px, 28vw, 430px); }
 }
 
-@media (max-width: 1024px) {
-  .hero-cards-v8-wrapper {
-    left: 0;
-    right: 0;
-    bottom: 22px;
-    transform: none;
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: visible;
-    padding: 0 18px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .hero-cards-v8-wrapper::-webkit-scrollbar { display: none; }
-
-  .hero-cards-v8-grid {
-    gap: 14px;
-    max-width: none;
-    padding-right: 18px;
-  }
-
-  .hero-card-v8 {
-    width: 178px;
-  }
-
-  .hero-card-v8-inner {
-    height: 300px;
-    border-radius: 24px;
-  }
+@media (max-width: 1100px) {
+  .hero-carousel-v8 { min-height: 760px; }
+  .hero-cards-v8-grid { gap: 14px; max-width: calc(100vw - 30px); }
+  .hero-card-v8 { width: clamp(180px, 21vw, 220px); }
+  .hero-card-v8-inner { height: 330px; }
+  .hero-card-v8-title { min-height: 44px; font-size: 16px; padding: 0 16px; }
+  .hero-card-v8-description { font-size: 11px; min-height: 58px; max-width: 88%; }
 }
 
 @media (max-width: 768px) {
   .hero-carousel-v8 {
-    height: 100svh;
-    min-height: 100svh;
+    min-height: 760px;
+    height: auto;
   }
-
+  .hero-slide-bierz::after { height: 34%; }
+  .hero-banner-v8-inner img { object-position: center; }
   .hero-cards-v8-wrapper {
-    bottom: max(20px, calc(env(safe-area-inset-bottom) + 8px));
-    padding: 0 14px;
+    bottom: 24px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0 16px;
+    transform: none;
+    left: 0;
+    width: 100%;
   }
-
   .hero-cards-v8-grid {
-    gap: 12px;
-    padding-right: 14px;
+    gap: 14px;
+    justify-content: flex-start;
+    padding-right: 16px;
+    max-width: none;
   }
-
-  .hero-card-v8 {
-    width: 154px;
-  }
-
-  .hero-card-v8-inner {
-    height: 254px;
-    border-radius: 22px;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
-  }
-
-  .hero-card-v8:hover .hero-card-v8-inner,
-  .hero-card-v8:active .hero-card-v8-inner,
-  .hero-card-v8:focus-within .hero-card-v8-inner {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 34px rgba(0,0,0,0.22);
-  }
-
-  .hero-card-v8-content {
-    padding: 14px 14px 16px;
-    gap: 10px;
-  }
-
-  .hero-card-v8-pill {
-    min-height: 34px;
-    padding: 0 12px;
-    font-size: 12px;
-  }
-
-  .hero-card-v8-text {
-    max-width: 92%;
-    font-size: 11px;
-    line-height: 1.35;
-  }
+  .hero-card-v8 { width: 190px; }
+  .hero-card-v8-inner { height: 320px; }
+  .hero-card-v8-title { font-size: 15px; min-height: 42px; }
+  .hero-card-v8-description { font-size: 11px; min-height: 54px; }
+  .nav-arrow { display: none; }
+  .indicators-container { bottom: 8px; }
 }
