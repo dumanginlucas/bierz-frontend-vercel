@@ -198,6 +198,100 @@
   opacity: .34;
 }
 
+
+.hero-card-v8-art::before,
+.hero-card-v8-art::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .58;
+  filter: blur(0.2px);
+}
+
+.hero-card-theme-events .hero-card-v8-art::before {
+  width: 210px;
+  height: 170px;
+  left: -28px;
+  top: 64px;
+  background:
+    radial-gradient(circle at 22% 58%, rgba(255,255,255,0.82) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 42%, rgba(255,255,255,0.78) 0 2px, transparent 3px),
+    radial-gradient(circle at 48% 72%, rgba(255,255,255,0.7) 0 3px, transparent 4px),
+    radial-gradient(circle at 56% 54%, rgba(255,255,255,0.46) 0 34%, transparent 36%),
+    radial-gradient(circle at 34% 48%, rgba(255,255,255,0.28) 0 48%, transparent 50%);
+}
+.hero-card-theme-events .hero-card-v8-art::after {
+  width: 130px;
+  height: 94px;
+  right: -8px;
+  bottom: 104px;
+  background:
+    radial-gradient(circle at 16% 24%, rgba(255,255,255,0.68) 0 2px, transparent 3px),
+    radial-gradient(circle at 42% 66%, rgba(255,255,255,0.6) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 46%, rgba(255,255,255,0.42) 0 26%, transparent 28%),
+    radial-gradient(circle at 52% 54%, rgba(255,255,255,0.22) 0 46%, transparent 48%);
+}
+
+.hero-card-theme-homebar .hero-card-v8-art::before {
+  width: 190px;
+  height: 150px;
+  left: -22px;
+  top: 92px;
+  background:
+    radial-gradient(circle at 22% 56%, rgba(255,255,255,0.7) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 38%, rgba(255,255,255,0.52) 0 2px, transparent 3px),
+    radial-gradient(circle at 58% 58%, rgba(255,255,255,0.28) 0 42%, transparent 44%);
+}
+.hero-card-theme-homebar .hero-card-v8-art::after {
+  width: 110px;
+  height: 86px;
+  right: 0;
+  bottom: 118px;
+  background:
+    radial-gradient(circle at 38% 48%, rgba(255,255,255,0.56) 0 2px, transparent 3px),
+    radial-gradient(circle at 62% 62%, rgba(255,255,255,0.22) 0 38%, transparent 40%);
+}
+
+.hero-card-theme-barril .hero-card-v8-art::before {
+  width: 148px;
+  height: 124px;
+  left: 12px;
+  top: 112px;
+  background:
+    radial-gradient(circle at 24% 54%, rgba(255,255,255,0.48) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 40%, rgba(255,255,255,0.36) 0 2px, transparent 3px),
+    radial-gradient(circle at 54% 54%, rgba(255,255,255,0.18) 0 42%, transparent 44%);
+}
+.hero-card-theme-barril .hero-card-v8-art::after {
+  width: 114px;
+  height: 94px;
+  right: -8px;
+  top: 92px;
+  background:
+    radial-gradient(circle at 24% 44%, rgba(255,255,255,0.52) 0 2px, transparent 3px),
+    radial-gradient(circle at 58% 58%, rgba(255,255,255,0.2) 0 40%, transparent 42%);
+}
+
+.hero-card-theme-tipos .hero-card-v8-art::before {
+  width: 132px;
+  height: 106px;
+  left: 12px;
+  top: 124px;
+  background:
+    radial-gradient(circle at 26% 48%, rgba(255,255,255,0.48) 0 2px, transparent 3px),
+    radial-gradient(circle at 58% 56%, rgba(255,255,255,0.22) 0 42%, transparent 44%);
+}
+.hero-card-theme-tipos .hero-card-v8-art::after {
+  width: 136px;
+  height: 106px;
+  right: -12px;
+  top: 98px;
+  background:
+    radial-gradient(circle at 26% 46%, rgba(255,255,255,0.54) 0 2px, transparent 3px),
+    radial-gradient(circle at 58% 58%, rgba(255,255,255,0.2) 0 42%, transparent 44%);
+}
+
 .hero-card-v8-art {
   position: absolute;
   inset: 0;
@@ -214,15 +308,18 @@
 
 .hero-card-v8-texture {
   background:
-    radial-gradient(circle at 80% 18%, rgba(255,255,255,0.16), transparent 15%),
-    radial-gradient(circle at 18% 72%, rgba(255,255,255,0.09), transparent 20%),
-    repeating-linear-gradient(100deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 10px);
-  opacity: 0.52;
+    radial-gradient(circle at 82% 14%, rgba(255,255,255,0.18), transparent 12%),
+    radial-gradient(circle at 18% 68%, rgba(255,255,255,0.10), transparent 18%),
+    radial-gradient(circle at 86% 56%, rgba(255,255,255,0.08), transparent 16%),
+    radial-gradient(circle at 12% 36%, rgba(255,255,255,0.07), transparent 14%),
+    repeating-linear-gradient(100deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 10px);
+  opacity: 0.56;
 }
 
 .hero-card-v8-glow {
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.04));
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.08), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.05));
 }
 
 .hero-card-v8-image {
@@ -237,26 +334,27 @@
 }
 
 .hero-card-v8-image-events {
-  width: 74%;
-  left: 42%;
-  bottom: 102px;
+  width: 92%;
+  left: 49%;
+  bottom: 122px;
 }
 
 .hero-card-v8-image-homebar {
-  width: 90%;
-  bottom: 94px;
+  width: 100%;
+  left: 50%;
+  bottom: 108px;
 }
 
 .hero-card-v8-image-barril {
-  width: 82%;
-  left: 49%;
-  bottom: 110px;
+  width: 68%;
+  left: 50%;
+  bottom: 126px;
 }
 
 .hero-card-v8-image-tipos {
-  width: 78%;
+  width: 84%;
   left: 50%;
-  bottom: 110px;
+  bottom: 124px;
 }
 
 .hero-card-v8-content {
@@ -269,8 +367,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  padding: 0 18px 18px;
+  gap: 12px;
+  padding: 0 18px 22px;
   text-align: center;
 }
 
@@ -278,45 +376,43 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  max-width: 86%;
-  padding: 0 22px;
-  border-radius: 14px;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 800;
-  font-size: clamp(15px, 0.92vw, 18px);
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  min-height: 38px;
+  max-width: 82%;
+  padding: 0 16px;
+  border-radius: 2px;
+  background: #0d0d0d;
+  color: #d99157;
+  font-family: Impact, 'Arial Narrow Bold', 'Franklin Gothic Medium', Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(13px, 0.88vw, 16px);
+  letter-spacing: 0.02em;
+  line-height: 1;
   text-align: center;
+  text-transform: uppercase;
   text-wrap: balance;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.16);
 }
 
-.hero-card-theme-events .hero-card-v8-title { background: rgba(242, 133, 44, 0.96); }
-.hero-card-theme-homebar .hero-card-v8-title { background: rgba(122, 58, 16, 0.92); }
-.hero-card-theme-barril .hero-card-v8-title { background: rgba(237, 208, 185, 0.96); color: #fff; }
-.hero-card-theme-tipos .hero-card-v8-title { background: rgba(240, 135, 47, 0.96); }
+.hero-card-theme-events .hero-card-v8-title,
+.hero-card-theme-homebar .hero-card-v8-title,
+.hero-card-theme-barril .hero-card-v8-title,
+.hero-card-theme-tipos .hero-card-v8-title { background: #0d0d0d; color: #d99157; }
 
 .hero-card-v8-description {
   margin: 0;
-  max-width: 80%;
+  max-width: 82%;
   min-height: 38px;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-size: clamp(11px, 0.72vw, 12px);
-  font-weight: 650;
-  line-height: 1.36;
+  font-size: clamp(10px, 0.7vw, 12px);
+  font-weight: 700;
+  line-height: 1.38;
   text-wrap: balance;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.12);
+  text-shadow: 0 1px 10px rgba(0,0,0,0.18);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.hero-card-theme-tipos .hero-card-v8-description {
-  color: rgba(255,255,255,0.95);
 }
 
 .nav-arrow {
@@ -364,12 +460,12 @@
   .hero-cards-v8-grid { gap: 14px; max-width: calc(100vw - 30px); }
   .hero-card-v8 { width: clamp(168px, 19.5vw, 206px); }
   .hero-card-v8-inner { height: 304px; }
-  .hero-card-v8-title { min-height: 40px; font-size: 14px; padding: 0 14px; }
-  .hero-card-v8-description { font-size: 10px; min-height: 34px; }
-  .hero-card-v8-image-events { width: 72%; bottom: 90px; }
-  .hero-card-v8-image-homebar { width: 84%; bottom: 80px; }
-  .hero-card-v8-image-barril { width: 76%; bottom: 92px; }
-  .hero-card-v8-image-tipos { width: 72%; bottom: 90px; }
+  .hero-card-v8-title { min-height: 36px; font-size: 12px; padding: 0 12px; }
+  .hero-card-v8-description { font-size: 10px; min-height: 34px; max-width: 82%; }
+  .hero-card-v8-image-events { width: 90%; left: 49%; bottom: 112px; }
+  .hero-card-v8-image-homebar { width: 98%; left: 50%; bottom: 100px; }
+  .hero-card-v8-image-barril { width: 66%; left: 50%; bottom: 118px; }
+  .hero-card-v8-image-tipos { width: 82%; left: 50%; bottom: 116px; }
 }
 
 @media (max-width: 768px) {
@@ -396,12 +492,12 @@
   }
   .hero-card-v8 { width: 176px; }
   .hero-card-v8-inner { height: 286px; }
-  .hero-card-v8-title { font-size: 13px; min-height: 36px; }
-  .hero-card-v8-description { font-size: 10px; min-height: 32px; max-width: 82%; }
-  .hero-card-v8-image-events { width: 72%; bottom: 86px; }
-  .hero-card-v8-image-homebar { width: 84%; bottom: 76px; }
-  .hero-card-v8-image-barril { width: 76%; bottom: 88px; }
-  .hero-card-v8-image-tipos { width: 72%; bottom: 84px; }
+  .hero-card-v8-title { font-size: 12px; min-height: 34px; padding: 0 10px; }
+  .hero-card-v8-description { font-size: 10px; min-height: 32px; max-width: 84%; }
+  .hero-card-v8-image-events { width: 88%; left: 49%; bottom: 104px; }
+  .hero-card-v8-image-homebar { width: 96%; left: 50%; bottom: 92px; }
+  .hero-card-v8-image-barril { width: 64%; left: 50%; bottom: 108px; }
+  .hero-card-v8-image-tipos { width: 80%; left: 50%; bottom: 106px; }
   .nav-arrow { display: none; }
   .indicators-container { bottom: 8px; }
 }

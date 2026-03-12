@@ -25,8 +25,8 @@ const HeroCarousel = () => {
   const cards = [
     {
       id: 1,
-      label: 'Chopp para Eventos',
-      description: 'Ideal para churrascos e encontros.',
+      label: 'Catálogo de Chopps',
+      description: 'Escolha aqui o chopp do seu evento.',
       theme: 'hero-card-theme-events',
       image: '/card-placeholders/chopp-eventos.png',
       imageClass: 'hero-card-v8-image-events'
@@ -34,23 +34,23 @@ const HeroCarousel = () => {
     {
       id: 2,
       label: 'Home Bar',
-      description: 'Chopeira premium para sua casa.',
+      description: 'Receba essa Home Bar em casa para agradar os amigos.',
       theme: 'hero-card-theme-homebar',
       image: '/card-placeholders/homebar.png',
       imageClass: 'hero-card-v8-image-homebar'
     },
     {
       id: 3,
-      label: 'Barril de Chopp',
-      description: 'Escolha o barril certo para servir.',
+      label: 'Nossas Redes',
+      description: 'Siga a Bierz no Instagram para acompanhar as promoções.',
       theme: 'hero-card-theme-barril',
       image: '/card-placeholders/barril-itaipava.png',
       imageClass: 'hero-card-v8-image-barril'
     },
     {
       id: 4,
-      label: 'Tipos de Evento',
-      description: 'Atendemos festas e eventos corporativos.',
+      label: 'Entrega Free',
+      description: 'Com a Bierz você fica livre da taxa de entrega e do equipamento.',
       theme: 'hero-card-theme-tipos',
       image: '/card-placeholders/tipos-evento.png',
       imageClass: 'hero-card-v8-image-tipos'
