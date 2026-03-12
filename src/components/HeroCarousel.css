@@ -21,6 +21,7 @@
   height: 100%;
   flex-shrink: 0;
   position: relative;
+  overflow: visible;
 }
 
 .hero-banner-v8-container,
@@ -43,26 +44,28 @@
 .hero-cards-v8-wrapper {
   position: absolute;
   left: 50%;
-  bottom: clamp(18px, min(2.2vw, 2.8vh), 34px);
+  bottom: clamp(30px, min(3vw, 3.6vh), 52px);
   transform: translateX(-50%);
   z-index: 20;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   pointer-events: none;
+  padding-top: 16px;
+  overflow: visible;
 }
 
 .hero-cards-v8-grid {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: clamp(8px, min(0.72vw, 0.9vh), 13px);
+  gap: clamp(12px, min(1vw, 1.2vh), 18px);
   width: max-content;
-  max-width: calc(100vw - 42px);
+  max-width: calc(100vw - 56px);
 }
 
 .hero-card-v8 {
-  width: clamp(140px, min(9.6vw, 15vh), 188px);
+  width: clamp(132px, min(8.9vw, 13.6vh), 168px);
   flex: 0 0 auto;
   cursor: pointer;
   pointer-events: auto;
@@ -70,7 +73,7 @@
 
 .hero-card-v8-inner {
   width: 100%;
-  height: clamp(232px, min(16.9vw, 27.8vh), 298px);
+  height: clamp(224px, min(15.8vw, 24.6vh), 272px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -86,8 +89,8 @@
 }
 
 .hero-card-v8:hover .hero-card-v8-inner {
-  transform: translateY(-5px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+  transform: translateY(-11px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
 }
 
 .hero-card-v8-image {
@@ -154,25 +157,29 @@
 
 @media (max-height: 860px) {
   .hero-cards-v8-wrapper {
-    bottom: 14px;
+    bottom: 22px;
   }
 
   .hero-card-v8 {
-    width: clamp(132px, min(8.8vw, 14vh), 176px);
+    width: clamp(126px, min(8.4vw, 12.8vh), 160px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(216px, min(15.6vw, 25.8vh), 280px);
+    height: clamp(210px, min(14.9vw, 23.6vh), 258px);
   }
 }
 
 @media (max-height: 760px) {
+  .hero-cards-v8-wrapper {
+    bottom: 18px;
+  }
+
   .hero-card-v8 {
-    width: clamp(122px, min(8.2vw, 12.8vh), 164px);
+    width: clamp(118px, min(7.8vw, 11.8vh), 150px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(202px, min(14.2vw, 23vh), 258px);
+    height: clamp(196px, min(13.8vw, 21.8vh), 244px);
   }
 
   .hero-card-v8-title {
@@ -182,30 +189,35 @@
 
 @media (max-width: 1366px) {
   .hero-cards-v8-grid {
-    max-width: calc(100vw - 34px);
+    gap: clamp(11px, min(0.95vw, 1.15vh), 16px);
+    max-width: calc(100vw - 42px);
   }
 
   .hero-card-v8 {
-    width: clamp(126px, min(8.8vw, 13.6vh), 172px);
+    width: clamp(122px, min(8.3vw, 12.6vh), 158px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(214px, min(15.4vw, 24.8vh), 280px);
+    height: clamp(208px, min(14.7vw, 23.4vh), 254px);
   }
 }
 
 @media (max-width: 1199px) {
+  .hero-cards-v8-wrapper {
+    bottom: 22px;
+  }
+
   .hero-cards-v8-grid {
-    gap: 9px;
+    gap: 10px;
     max-width: calc(100vw - 28px);
   }
 
   .hero-card-v8 {
-    width: clamp(116px, min(8.4vw, 12.6vh), 152px);
+    width: clamp(110px, min(8vw, 11.4vh), 144px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(194px, min(14vw, 22.5vh), 250px);
+    height: clamp(188px, min(13.4vw, 21.2vh), 236px);
   }
 
   .hero-card-v8-title {
@@ -222,13 +234,13 @@
   .hero-cards-v8-wrapper {
     left: 0;
     right: 0;
-    bottom: max(12px, env(safe-area-inset-bottom));
+    bottom: max(28px, calc(env(safe-area-inset-bottom) + 10px));
     transform: none;
     width: 100%;
     justify-content: flex-start;
     overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0 14px 2px;
+    overflow-y: visible;
+    padding: 12px 16px 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -238,19 +250,25 @@
   }
 
   .hero-cards-v8-grid {
-    gap: 10px;
+    gap: 12px;
     max-width: none;
-    padding-right: 12px;
+    padding-right: 16px;
   }
 
   .hero-card-v8 {
-    width: 118px;
+    width: 116px;
   }
 
   .hero-card-v8-inner {
-    height: 180px;
+    height: 178px;
     border-radius: 14px;
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-card-v8:active .hero-card-v8-inner,
+  .hero-card-v8:focus-within .hero-card-v8-inner {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.16);
   }
 
   .hero-card-v8-image {
@@ -282,22 +300,22 @@
 
 @media (max-width: 480px) {
   .hero-cards-v8-wrapper {
-    bottom: max(10px, env(safe-area-inset-bottom));
+    bottom: max(24px, calc(env(safe-area-inset-bottom) + 8px));
     padding-left: 12px;
     padding-right: 12px;
   }
 
   .hero-cards-v8-grid {
-    gap: 9px;
-    padding-right: 10px;
+    gap: 11px;
+    padding-right: 12px;
   }
 
   .hero-card-v8 {
-    width: 108px;
+    width: 106px;
   }
 
   .hero-card-v8-inner {
-    height: 166px;
+    height: 164px;
     border-radius: 13px;
   }
 
