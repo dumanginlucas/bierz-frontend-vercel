@@ -26,50 +26,52 @@ const HeroCarousel = () => {
     {
       id: 1,
       label: 'CHOPP PARA EVENTOS',
-      image: '/card-placeholders/delivery.png'
+      image: '/card-placeholders/delivery.png',
+      surfaceClass: 'surface-delivery'
     },
     {
       id: 2,
       label: 'HOME BAR',
-      image: '/card-placeholders/homebar.png'
+      image: '/card-placeholders/homebar.png',
+      surfaceClass: 'surface-homebar'
     },
     {
       id: 3,
       label: 'BARRIL DE CHOPP',
-      image: '/card-placeholders/barrel.png'
+      image: '/card-placeholders/barrel.png',
+      surfaceClass: 'surface-barrel'
     },
     {
       id: 4,
       label: 'CALCULADORA',
-      image: '/card-placeholders/calc.png'
+      image: '/card-placeholders/calc.png',
+      surfaceClass: 'surface-calc'
     },
     {
       id: 5,
       label: 'TIPOS DE EVENTO',
-      image: '/card-placeholders/events.png'
+      image: '/card-placeholders/events.png',
+      surfaceClass: 'surface-events'
     },
     {
       id: 6,
       label: 'REGIÃO ATENDIDA',
-      image: '/card-placeholders/region.png'
+      image: '/card-placeholders/region.png',
+      surfaceClass: 'surface-region'
     }
   ];
 
   return (
     <section className="hero-carousel-v8 relative w-full overflow-hidden bg-black">
-      {/* Slides Wrapper */}
       <div
         className="hero-slides-wrapper flex h-full transition-transform duration-1000 cubic-bezier(0.65, 0, 0.35, 1)"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {/* Slide 1: Video Hero */}
         <div className="hero-slide w-full h-full flex-shrink-0">
           <Identification />
         </div>
 
-        {/* Slide 2: Luxury Cards */}
-        <div className="hero-slide w-full h-full flex-shrink-0 relative flex flex-col items-center">
-          {/* Banner Container */}
+        <div className="hero-slide hero-slide--cards w-full h-full flex-shrink-0 relative flex flex-col items-center">
           <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
             <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
               <img
@@ -77,39 +79,35 @@ const HeroCarousel = () => {
                 alt="Bierz Experience"
                 className="w-full h-full object-cover object-center"
               />
-              {/* Overlay Escuro no topo */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none h-48" />
+              <div className="hero-banner-v8-overlay" />
             </div>
           </div>
 
-          {/* Luxury Cards Grid */}
           <div className="hero-cards-v8-wrapper">
             <div className="hero-cards-v8-grid">
               {cards.map((card) => (
-                <div key={card.id} className="hero-card-v8">
+                <button key={card.id} className="hero-card-v8" type="button" aria-label={card.label}>
                   <div className="hero-card-v8-inner">
-                    {/* Image Area */}
-                    <div className="hero-card-v8-image">
+                    <div className={`hero-card-v8-image ${card.surfaceClass}`}>
                       <div
+                        className="hero-card-v8-art"
                         style={{
                           backgroundImage: `url(${card.image})`
                         }}
                       />
                     </div>
 
-                    {/* Text Area */}
                     <div className="hero-card-v8-content">
                       <span>{card.label}</span>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Minimalist Navigation Arrows */}
       <button
         onClick={prevSlide}
         className="nav-arrow left"
@@ -125,7 +123,6 @@ const HeroCarousel = () => {
         <ChevronRight size={48} strokeWidth={1} />
       </button>
 
-      {/* Indicators */}
       <div className="indicators-container">
         {[...Array(totalSlides)].map((_, i) => (
           <button
