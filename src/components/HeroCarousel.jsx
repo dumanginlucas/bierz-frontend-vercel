@@ -25,31 +25,31 @@ const HeroCarousel = () => {
   const cards = [
     {
       id: 1,
-      label: 'Chopp para Eventos',
-      cta: 'Eventos',
-      description: 'Solução prática e premium para churrascos, aniversários e confraternizações.',
-      theme: 'hero-card-theme-gold'
+      label: 'CHOPP PARA EVENTOS',
+      cta: 'EVENTOS',
+      theme: 'hero-card-theme-gold',
+      accent: 'hero-card-accent-gold'
     },
     {
       id: 2,
-      label: 'Home Bar',
-      cta: 'Home Bar',
-      description: 'A chopeira perfeita para transformar seu evento em uma experiência memorável.',
-      theme: 'hero-card-theme-beige'
+      label: 'HOME BAR',
+      cta: 'HOME BAR',
+      theme: 'hero-card-theme-sand',
+      accent: 'hero-card-accent-brown'
     },
     {
       id: 3,
-      label: 'Barril de Chopp',
-      cta: 'Barris',
-      description: 'Escolha entre 20L, 30L e 50L com as melhores marcas de chopp.',
-      theme: 'hero-card-theme-orange'
+      label: 'BARRIL DE CHOPP',
+      cta: 'BARRIS',
+      theme: 'hero-card-theme-orange',
+      accent: 'hero-card-accent-orange'
     },
     {
       id: 4,
-      label: 'Tipos de Evento',
-      cta: 'Ver tipos',
-      description: 'Atendemos eventos corporativos, aniversários, casamentos e muito mais.',
-      theme: 'hero-card-theme-dark'
+      label: 'TIPOS DE EVENTO',
+      cta: 'VER TIPOS',
+      theme: 'hero-card-theme-noir',
+      accent: 'hero-card-accent-brown'
     }
   ];
 
@@ -63,7 +63,7 @@ const HeroCarousel = () => {
           <Identification />
         </div>
 
-        <div className="hero-slide hero-slide-bierz w-full h-full flex-shrink-0 relative flex flex-col items-center">
+        <div className="hero-slide w-full h-full flex-shrink-0 relative flex flex-col items-center">
           <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
             <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
               <img
@@ -80,12 +80,15 @@ const HeroCarousel = () => {
               {cards.map((card) => (
                 <div key={card.id} className="hero-card-v8">
                   <div className="hero-card-v8-inner">
-                    <div className={`hero-card-v8-image ${card.theme}`} />
+                    <div className={`hero-card-v8-image ${card.theme}`}>
+                      <span className="hero-card-v8-art hero-card-v8-art-circle" />
+                      <span className="hero-card-v8-art hero-card-v8-art-wave" />
+                      <span className="hero-card-v8-art hero-card-v8-art-splash" />
+                    </div>
 
                     <div className="hero-card-v8-content">
                       <span className="hero-card-v8-title">{card.label}</span>
-                      <span className="hero-card-v8-cta">{card.cta}</span>
-                      <p className="hero-card-v8-description">{card.description}</p>
+                      <span className={`hero-card-v8-cta ${card.accent}`}>{card.cta}</span>
                     </div>
                   </div>
                 </div>
