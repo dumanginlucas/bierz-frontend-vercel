@@ -27,37 +27,37 @@ const HeroCarousel = () => {
       id: 1,
       label: 'CHOPP PARA EVENTOS',
       cta: 'EVENTOS',
-      image: '/card-placeholders/delivery.png'
+      theme: 'hero-card-theme-orange'
     },
     {
       id: 2,
       label: 'HOME BAR',
       cta: 'HOME BAR',
-      image: '/card-placeholders/homebar.png'
+      theme: 'hero-card-theme-beige'
     },
     {
       id: 3,
       label: 'BARRIL DE CHOPP',
       cta: 'BARRIS',
-      image: '/card-placeholders/barrel.png'
+      theme: 'hero-card-theme-orange-strong'
     },
     {
       id: 4,
       label: 'CALCULADORA',
       cta: 'CALCULAR',
-      image: '/card-placeholders/calc.png'
+      theme: 'hero-card-theme-black'
     },
     {
       id: 5,
       label: 'TIPOS DE EVENTO',
       cta: 'VER TIPOS',
-      image: '/card-placeholders/events.png'
+      theme: 'hero-card-theme-beige-light'
     },
     {
       id: 6,
       label: 'REGIÃO ATENDIDA',
       cta: 'ATENDIMENTO',
-      image: '/card-placeholders/region.png'
+      theme: 'hero-card-theme-blue'
     }
   ];
 
@@ -88,10 +88,7 @@ const HeroCarousel = () => {
               {cards.map((card) => (
                 <div key={card.id} className="hero-card-v8">
                   <div className="hero-card-v8-inner">
-                    <div
-                      className="hero-card-v8-image"
-                      style={{ '--card-image': `url(${card.image})` }}
-                    />
+                    <div className={`hero-card-v8-image ${card.theme}`} />
 
                     <div className="hero-card-v8-content">
                       <span className="hero-card-v8-title">{card.label}</span>
