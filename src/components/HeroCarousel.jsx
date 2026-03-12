@@ -25,29 +25,33 @@ const HeroCarousel = () => {
   const cards = [
     {
       id: 1,
-      label: 'CHOPP PARA EVENTOS',
+      label: 'Chopp para Eventos',
       cta: 'EVENTOS',
+      description: 'Para churrascos, aniversários e encontros com chope gelado e montagem prática.',
       theme: 'hero-card-theme-gold',
       accent: 'hero-card-accent-gold'
     },
     {
       id: 2,
-      label: 'HOME BAR',
+      label: 'Home Bar',
       cta: 'HOME BAR',
+      description: 'Chopeira elegante para transformar seu evento em uma experiência mais premium.',
       theme: 'hero-card-theme-sand',
       accent: 'hero-card-accent-brown'
     },
     {
       id: 3,
-      label: 'BARRIL DE CHOPP',
+      label: 'Barril de Chopp',
       cta: 'BARRIS',
+      description: 'Escolha o tamanho ideal e receba o barril certo para servir bem cada ocasião.',
       theme: 'hero-card-theme-orange',
       accent: 'hero-card-accent-orange'
     },
     {
       id: 4,
-      label: 'TIPOS DE EVENTO',
+      label: 'Tipos de Evento',
       cta: 'VER TIPOS',
+      description: 'Soluções pensadas para eventos sociais, corporativos e comemorações em geral.',
       theme: 'hero-card-theme-noir',
       accent: 'hero-card-accent-brown'
     }
@@ -79,15 +83,15 @@ const HeroCarousel = () => {
             <div className="hero-cards-v8-grid">
               {cards.map((card) => (
                 <div key={card.id} className="hero-card-v8">
-                  <div className="hero-card-v8-inner">
-                    <div className={`hero-card-v8-image ${card.theme}`}>
-                      <span className="hero-card-v8-art hero-card-v8-art-circle" />
-                      <span className="hero-card-v8-art hero-card-v8-art-wave" />
-                      <span className="hero-card-v8-art hero-card-v8-art-splash" />
-                    </div>
-
+                  <div className={`hero-card-v8-inner ${card.theme}`}>
+                    <div className="hero-card-v8-texture" />
+                    <div className="hero-card-v8-glow hero-card-v8-glow-top" />
+                    <div className="hero-card-v8-glow hero-card-v8-glow-bottom" />
+                    <div className="hero-card-v8-spark hero-card-v8-spark-a" />
+                    <div className="hero-card-v8-spark hero-card-v8-spark-b" />
                     <div className="hero-card-v8-content">
-                      <span className="hero-card-v8-title">{card.label}</span>
+                      <span className={`hero-card-v8-title-pill ${card.accent}`}>{card.label}</span>
+                      <p className="hero-card-v8-description">{card.description}</p>
                       <span className={`hero-card-v8-cta ${card.accent}`}>{card.cta}</span>
                     </div>
                   </div>
