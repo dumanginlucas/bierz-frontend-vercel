@@ -27,37 +27,43 @@ const HeroCarousel = () => {
       id: 1,
       label: 'CHOPP PARA EVENTOS',
       image: '/card-placeholders/delivery.png',
-      surfaceClass: 'surface-delivery'
+      surfaceClass: 'surface-delivery',
+      artClass: 'art-delivery'
     },
     {
       id: 2,
       label: 'HOME BAR',
       image: '/card-placeholders/homebar.png',
-      surfaceClass: 'surface-homebar'
+      surfaceClass: 'surface-homebar',
+      artClass: 'art-homebar'
     },
     {
       id: 3,
       label: 'BARRIL DE CHOPP',
       image: '/card-placeholders/barrel.png',
-      surfaceClass: 'surface-barrel'
+      surfaceClass: 'surface-barrel',
+      artClass: 'art-barrel'
     },
     {
       id: 4,
       label: 'CALCULADORA',
       image: '/card-placeholders/calc.png',
-      surfaceClass: 'surface-calc'
+      surfaceClass: 'surface-calc',
+      artClass: 'art-calc'
     },
     {
       id: 5,
       label: 'TIPOS DE EVENTO',
       image: '/card-placeholders/events.png',
-      surfaceClass: 'surface-events'
+      surfaceClass: 'surface-events',
+      artClass: 'art-events'
     },
     {
       id: 6,
       label: 'REGIÃO ATENDIDA',
       image: '/card-placeholders/region.png',
-      surfaceClass: 'surface-region'
+      surfaceClass: 'surface-region',
+      artClass: 'art-region'
     }
   ];
 
@@ -80,6 +86,7 @@ const HeroCarousel = () => {
                 className="w-full h-full object-cover object-center"
               />
               <div className="hero-banner-v8-overlay" />
+              <div className="hero-cards-v8-fade" />
             </div>
           </div>
 
@@ -90,7 +97,7 @@ const HeroCarousel = () => {
                   <div className="hero-card-v8-inner">
                     <div className={`hero-card-v8-image ${card.surfaceClass}`}>
                       <div
-                        className="hero-card-v8-art"
+                        className={`hero-card-v8-art ${card.artClass}`}
                         style={{
                           backgroundImage: `url(${card.image})`
                         }}
