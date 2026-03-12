@@ -1,0 +1,285 @@
+/* HeroCarousel - Luxury Brewery Premium Style */
+
+.hero-carousel-v8 {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-slides-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.hero-slide {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Banner Container */
+.hero-banner-v8-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.hero-banner-v8-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hero-banner-v8-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Cards Wrapper */
+.hero-cards-v8-wrapper {
+  position: absolute;
+  bottom: 8%;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.hero-cards-v8-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+@media (min-width: 768px) {
+  .hero-cards-v8-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-cards-v8-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 22px;
+  }
+}
+
+/* Mobile: Horizontal Scroll */
+@media (max-width: 640px) {
+  .hero-cards-v8-wrapper {
+    padding: 0 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero-cards-v8-grid {
+    display: flex;
+    grid-template-columns: unset;
+    gap: 16px;
+    width: max-content;
+    flex-wrap: nowrap;
+  }
+
+  .hero-card-v8 {
+    flex: 0 0 160px;
+  }
+}
+
+/* Luxury Card Style */
+.hero-card-v8 {
+  width: 100%;
+  cursor: pointer;
+}
+
+.hero-card-v8-inner {
+  background: #f9f9f9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+  width: 100%;
+  transition: 
+    transform 0.30s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.30s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+@media (min-width: 768px) {
+  .hero-card-v8-inner {
+    height: 235px;
+  }
+}
+
+/* Hover State: Subtle Lift + Progressive Shadow + Brightness */
+.hero-card-v8:hover .hero-card-v8-inner {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Image Area (70% height) */
+.hero-card-v8-image {
+  width: 100%;
+  height: 70%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.hero-card-v8-image div {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Text Area (30% height) */
+.hero-card-v8-content {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  background: #f9f9f9;
+}
+
+.hero-card-v8-content span {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .hero-card-v8-content span {
+    font-size: 12px;
+  }
+}
+
+/* Minimalist Navigation Arrows */
+.hero-carousel-v8 .nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fbbf24; /* Dourado/Amarelo conforme referência */
+  transition: 
+    color 0.25s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
+  outline: none;
+  opacity: 0.6;
+}
+
+.hero-carousel-v8 .nav-arrow:hover {
+  color: #fbbf24;
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hero-carousel-v8 .nav-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.hero-carousel-v8 .nav-arrow.left {
+  left: 16px;
+}
+
+.hero-carousel-v8 .nav-arrow.right {
+  right: 16px;
+}
+
+@media (min-width: 768px) {
+  .hero-carousel-v8 .nav-arrow {
+    padding: 12px;
+  }
+
+  .hero-carousel-v8 .nav-arrow.left {
+    left: 10px;
+  }
+
+  .hero-carousel-v8 .nav-arrow.right {
+    right: 10px;
+  }
+}
+
+/* Indicators */
+.hero-carousel-v8 .indicators-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 12px;
+}
+
+.hero-carousel-v8 .indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border: none;
+  padding: 0;
+}
+
+.hero-carousel-v8 .indicator-dot.active {
+  background: #f97316;
+  width: 28px;
+  border-radius: 4px;
+}
+
+.hero-carousel-v8 .indicator-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Smooth scroll behavior for mobile slider */
+@supports (scroll-behavior: smooth) {
+  .hero-cards-v8-wrapper {
+    scroll-behavior: smooth;
+  }
+}
