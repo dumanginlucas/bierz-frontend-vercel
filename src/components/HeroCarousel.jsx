@@ -50,7 +50,7 @@ const HeroCarousel = () => {
     {
       id: 4,
       label: 'Entrega Free',
-      description: 'Com a Bierz você fica livre da taxa de entrega e do equipamento.',
+      description: 'Com a Bierz você fica livre da taxa de entrega e do equipamento!',
       theme: 'hero-card-theme-tipos',
       image: '/card-placeholders/tipos-evento.png',
       imageClass: 'hero-card-v8-image-tipos'
@@ -88,7 +88,7 @@ const HeroCarousel = () => {
                       <span className="hero-card-v8-texture" />
                       <span className="hero-card-v8-glow" />
                       <img
-                        src="/card-placeholders/ice-overlay.png"
+                        src="/card-placeholders/ice-cubes-overlay.svg"
                         alt=""
                         className="hero-card-v8-ice"
                         loading="lazy"
