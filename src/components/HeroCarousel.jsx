@@ -26,26 +26,34 @@ const HeroCarousel = () => {
     {
       id: 1,
       label: 'Chopp para Eventos',
-      description: 'Para churrascos, aniversários e encontros com chopp gelado.',
-      theme: 'hero-card-theme-gold'
+      description: 'Ideal para churrascos e encontros.',
+      theme: 'hero-card-theme-gold',
+      image: '/card-placeholders/chopp-eventos.png',
+      imageClass: 'hero-card-v8-image-events'
     },
     {
       id: 2,
       label: 'Home Bar',
-      description: 'Chopeira premium para elevar seu evento em casa.',
-      theme: 'hero-card-theme-beige'
+      description: 'Chopeira premium para sua casa.',
+      theme: 'hero-card-theme-beige',
+      image: '/card-placeholders/homebar.png',
+      imageClass: 'hero-card-v8-image-homebar'
     },
     {
       id: 3,
       label: 'Barril de Chopp',
-      description: 'Escolha o tamanho ideal para servir sem erro.',
-      theme: 'hero-card-theme-orange'
+      description: 'Escolha o barril certo para servir.',
+      theme: 'hero-card-theme-orange',
+      image: '/card-placeholders/barril-itaipava.png',
+      imageClass: 'hero-card-v8-image-barril'
     },
     {
       id: 4,
       label: 'Tipos de Evento',
-      description: 'Soluções para eventos sociais e corporativos.',
-      theme: 'hero-card-theme-dark'
+      description: 'Atendemos festas e eventos corporativos.',
+      theme: 'hero-card-theme-dark',
+      image: '/card-placeholders/tipos-evento.png',
+      imageClass: 'hero-card-v8-image-tipos'
     }
   ];
 
@@ -77,10 +85,14 @@ const HeroCarousel = () => {
                 <div key={card.id} className={`hero-card-v8 ${card.theme}`}>
                   <div className="hero-card-v8-inner">
                     <div className="hero-card-v8-art" aria-hidden="true">
-                      <span className="hero-card-v8-splash hero-card-v8-splash-a" />
-                      <span className="hero-card-v8-splash hero-card-v8-splash-b" />
-                      <span className="hero-card-v8-fruit hero-card-v8-fruit-a" />
-                      <span className="hero-card-v8-fruit hero-card-v8-fruit-b" />
+                      <span className="hero-card-v8-texture" />
+                      <span className="hero-card-v8-glow" />
+                      <img
+                        src={card.image}
+                        alt=""
+                        className={`hero-card-v8-image ${card.imageClass}`}
+                        loading="lazy"
+                      />
                     </div>
 
                     <div className="hero-card-v8-content">
@@ -95,18 +107,10 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      <button
-        onClick={prevSlide}
-        className="nav-arrow left"
-        aria-label="Previous slide"
-      >
+      <button onClick={prevSlide} className="nav-arrow left" aria-label="Previous slide">
         <ChevronLeft size={48} strokeWidth={1} />
       </button>
-      <button
-        onClick={nextSlide}
-        className="nav-arrow right"
-        aria-label="Next slide"
-      >
+      <button onClick={nextSlide} className="nav-arrow right" aria-label="Next slide">
         <ChevronRight size={48} strokeWidth={1} />
       </button>
 
