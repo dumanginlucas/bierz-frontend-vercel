@@ -1,4 +1,4 @@
-/* HeroCarousel - v8 closer to RT166, larger desktop cards and fixed mobile */
+/* HeroCarousel - v10 refined spacing, elevation and card composition */
 
 .hero-carousel-v8 {
   position: relative;
@@ -44,14 +44,14 @@
 .hero-cards-v8-wrapper {
   position: absolute;
   left: 50%;
-  bottom: clamp(30px, min(3vw, 3.6vh), 52px);
+  bottom: clamp(54px, min(4.8vw, 6.2vh), 86px);
   transform: translateX(-50%);
   z-index: 20;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   pointer-events: none;
-  padding-top: 16px;
+  padding-top: 20px;
   overflow: visible;
 }
 
@@ -59,13 +59,13 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: clamp(12px, min(1vw, 1.2vh), 18px);
+  gap: clamp(18px, min(1.4vw, 1.8vh), 24px);
   width: max-content;
-  max-width: calc(100vw - 56px);
+  max-width: calc(100vw - 96px);
 }
 
 .hero-card-v8 {
-  width: clamp(132px, min(8.9vw, 13.6vh), 168px);
+  width: clamp(140px, min(9.5vw, 14.2vh), 178px);
   flex: 0 0 auto;
   cursor: pointer;
   pointer-events: auto;
@@ -73,30 +73,32 @@
 
 .hero-card-v8-inner {
   width: 100%;
-  height: clamp(224px, min(15.8vw, 24.6vh), 272px);
+  height: clamp(236px, min(16.8vw, 26vh), 286px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.58);
   outline: none;
-  border-radius: clamp(12px, 0.9vw, 16px);
-  background: #f2efea;
-  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.11);
+  border-radius: clamp(14px, 1vw, 18px);
+  background: #f3efe9;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
   transition:
-    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.38s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
 .hero-card-v8:hover .hero-card-v8-inner {
-  transform: translateY(-11px);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
+  transform: translateY(-10px) scale(1.018);
+  box-shadow: 0 24px 46px rgba(0, 0, 0, 0.2);
+  filter: saturate(1.02);
 }
 
 .hero-card-v8-image {
   position: relative;
   width: 100%;
-  height: 69.2%;
+  height: 68.5%;
   overflow: hidden;
   background: #ece7de;
 }
@@ -115,26 +117,26 @@
 
 .hero-card-v8-content {
   width: 100%;
-  min-height: 30.8%;
-  background: #f2efea;
+  min-height: 31.5%;
+  background: #f3efe9;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(5px, min(0.38vw, 0.5vh), 7px);
-  padding: clamp(10px, min(0.75vw, 0.95vh), 13px)
-    clamp(10px, min(0.8vw, 1vh), 13px)
-    clamp(12px, min(0.9vw, 1.15vh), 15px);
+  gap: clamp(7px, min(0.48vw, 0.62vh), 10px);
+  padding: clamp(12px, min(0.9vw, 1.15vh), 16px)
+    clamp(12px, min(0.92vw, 1.18vh), 15px)
+    clamp(14px, min(1vw, 1.3vh), 18px);
 }
 
 .hero-card-v8-title {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: #111;
   font-weight: 800;
-  font-size: clamp(11px, min(0.78vw, 1.05vh), 14px);
-  letter-spacing: -0.015em;
+  font-size: clamp(11px, min(0.8vw, 1.08vh), 14px);
+  letter-spacing: -0.014em;
   text-transform: uppercase;
-  line-height: 1.08;
+  line-height: 1.14;
   text-align: center;
   word-break: break-word;
 }
@@ -143,43 +145,47 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: clamp(62px, min(4.6vw, 7.2vh), 88px);
-  min-height: clamp(18px, min(1.55vw, 2.35vh), 25px);
-  padding: 0 clamp(10px, min(0.8vw, 1vh), 14px);
+  min-width: clamp(66px, min(4.9vw, 7.6vh), 92px);
+  min-height: clamp(20px, min(1.65vw, 2.5vh), 27px);
+  padding: 0 clamp(10px, min(0.82vw, 1.04vh), 15px);
   background: #0d0d0d;
   color: #d59f61;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: clamp(8px, min(0.65vw, 0.9vh), 11px);
-  letter-spacing: 0.02em;
+  font-size: clamp(8px, min(0.66vw, 0.92vh), 11px);
+  letter-spacing: 0.03em;
   line-height: 1;
   text-transform: uppercase;
 }
 
 @media (max-height: 860px) {
   .hero-cards-v8-wrapper {
-    bottom: 22px;
+    bottom: 42px;
   }
 
   .hero-card-v8 {
-    width: clamp(126px, min(8.4vw, 12.8vh), 160px);
+    width: clamp(132px, min(8.8vw, 13.2vh), 166px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(210px, min(14.9vw, 23.6vh), 258px);
+    height: clamp(220px, min(15.4vw, 24.2vh), 266px);
   }
 }
 
 @media (max-height: 760px) {
   .hero-cards-v8-wrapper {
-    bottom: 18px;
+    bottom: 30px;
+  }
+
+  .hero-cards-v8-grid {
+    gap: clamp(14px, min(1.1vw, 1.35vh), 18px);
   }
 
   .hero-card-v8 {
-    width: clamp(118px, min(7.8vw, 11.8vh), 150px);
+    width: clamp(122px, min(8.1vw, 12.3vh), 154px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(196px, min(13.8vw, 21.8vh), 244px);
+    height: clamp(204px, min(14.2vw, 22.4vh), 248px);
   }
 
   .hero-card-v8-title {
@@ -188,36 +194,40 @@
 }
 
 @media (max-width: 1366px) {
+  .hero-cards-v8-wrapper {
+    bottom: clamp(42px, min(4.2vw, 5.2vh), 66px);
+  }
+
   .hero-cards-v8-grid {
-    gap: clamp(11px, min(0.95vw, 1.15vh), 16px);
-    max-width: calc(100vw - 42px);
+    gap: clamp(14px, min(1.15vw, 1.35vh), 20px);
+    max-width: calc(100vw - 72px);
   }
 
   .hero-card-v8 {
-    width: clamp(122px, min(8.3vw, 12.6vh), 158px);
+    width: clamp(130px, min(8.8vw, 13.2vh), 164px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(208px, min(14.7vw, 23.4vh), 254px);
+    height: clamp(220px, min(15.3vw, 23.9vh), 264px);
   }
 }
 
 @media (max-width: 1199px) {
   .hero-cards-v8-wrapper {
-    bottom: 22px;
+    bottom: 30px;
   }
 
   .hero-cards-v8-grid {
-    gap: 10px;
-    max-width: calc(100vw - 28px);
+    gap: 13px;
+    max-width: calc(100vw - 36px);
   }
 
   .hero-card-v8 {
-    width: clamp(110px, min(8vw, 11.4vh), 144px);
+    width: clamp(114px, min(8.2vw, 11.8vh), 148px);
   }
 
   .hero-card-v8-inner {
-    height: clamp(188px, min(13.4vw, 21.2vh), 236px);
+    height: clamp(196px, min(13.8vw, 21.8vh), 242px);
   }
 
   .hero-card-v8-title {
@@ -240,7 +250,7 @@
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: visible;
-    padding: 12px 16px 4px;
+    padding: 16px 16px 6px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -250,44 +260,45 @@
   }
 
   .hero-cards-v8-grid {
-    gap: 12px;
+    gap: 14px;
     max-width: none;
-    padding-right: 16px;
+    padding-right: 18px;
   }
 
   .hero-card-v8 {
-    width: 116px;
+    width: 118px;
   }
 
   .hero-card-v8-inner {
-    height: 178px;
-    border-radius: 14px;
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+    height: 182px;
+    border-radius: 15px;
+    border-color: rgba(255, 255, 255, 0.65);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
   }
 
   .hero-card-v8:active .hero-card-v8-inner,
   .hero-card-v8:focus-within .hero-card-v8-inner {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.16);
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
   }
 
   .hero-card-v8-image {
-    height: 66.5%;
+    height: 66.2%;
   }
 
   .hero-card-v8-content {
-    min-height: 33.5%;
-    gap: 4px;
-    padding: 8px 8px 10px;
+    min-height: 33.8%;
+    gap: 5px;
+    padding: 9px 8px 11px;
   }
 
   .hero-card-v8-title {
     font-size: 9px;
-    line-height: 1.05;
+    line-height: 1.08;
   }
 
   .hero-card-v8-cta {
-    min-width: 54px;
+    min-width: 56px;
     min-height: 18px;
     padding: 0 8px;
     font-size: 8px;
@@ -306,26 +317,27 @@
   }
 
   .hero-cards-v8-grid {
-    gap: 11px;
+    gap: 12px;
     padding-right: 12px;
   }
 
   .hero-card-v8 {
-    width: 106px;
+    width: 108px;
   }
 
   .hero-card-v8-inner {
-    height: 164px;
-    border-radius: 13px;
+    height: 168px;
+    border-radius: 14px;
   }
 
   .hero-card-v8-image {
-    height: 65.5%;
+    height: 65.8%;
   }
 
   .hero-card-v8-content {
-    min-height: 34.5%;
-    padding: 7px 7px 9px;
+    min-height: 34.2%;
+    gap: 4px;
+    padding: 8px 7px 10px;
   }
 
   .hero-card-v8-title {
