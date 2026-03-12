@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import Identification from "../components/Identification";
+import HeroCarousel from "../components/HeroCarousel";
 import HowItWorks from "../components/HowItWorks";
 import Products from "../components/Products";
 import Services from "../components/Services";
@@ -48,7 +48,7 @@ const HomePage = () => {
     <>
       <Header />
       <main>
-        <Identification />
+        <HeroCarousel />
         <HowItWorks />
         <Products />
         <Services />
