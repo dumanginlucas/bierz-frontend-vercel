@@ -26,34 +26,26 @@ const HeroCarousel = () => {
     {
       id: 1,
       label: 'Chopp para Eventos',
-      cta: 'EVENTOS',
-      description: 'Para churrascos, aniversários e encontros com chope gelado e montagem prática.',
-      theme: 'hero-card-theme-gold',
-      accent: 'hero-card-accent-gold'
+      description: 'Para churrascos e encontros com chope gelado.',
+      theme: 'hero-card-theme-gold'
     },
     {
       id: 2,
       label: 'Home Bar',
-      cta: 'HOME BAR',
-      description: 'Chopeira elegante para transformar seu evento em uma experiência mais premium.',
-      theme: 'hero-card-theme-sand',
-      accent: 'hero-card-accent-brown'
+      description: 'Chopeira premium para elevar seu evento em casa.',
+      theme: 'hero-card-theme-cream'
     },
     {
       id: 3,
       label: 'Barril de Chopp',
-      cta: 'BARRIS',
-      description: 'Escolha o tamanho ideal e receba o barril certo para servir bem cada ocasião.',
-      theme: 'hero-card-theme-orange',
-      accent: 'hero-card-accent-orange'
+      description: 'Escolha o tamanho ideal para servir sem erro.',
+      theme: 'hero-card-theme-amber'
     },
     {
       id: 4,
       label: 'Tipos de Evento',
-      cta: 'VER TIPOS',
-      description: 'Soluções pensadas para eventos sociais, corporativos e comemorações em geral.',
-      theme: 'hero-card-theme-noir',
-      accent: 'hero-card-accent-brown'
+      description: 'Soluções para eventos sociais e corporativos.',
+      theme: 'hero-card-theme-noir'
     }
   ];
 
@@ -82,20 +74,14 @@ const HeroCarousel = () => {
           <div className="hero-cards-v8-wrapper">
             <div className="hero-cards-v8-grid">
               {cards.map((card) => (
-                <div key={card.id} className="hero-card-v8">
+                <article key={card.id} className="hero-card-v8">
                   <div className={`hero-card-v8-inner ${card.theme}`}>
-                    <div className="hero-card-v8-texture" />
-                    <div className="hero-card-v8-glow hero-card-v8-glow-top" />
-                    <div className="hero-card-v8-glow hero-card-v8-glow-bottom" />
-                    <div className="hero-card-v8-spark hero-card-v8-spark-a" />
-                    <div className="hero-card-v8-spark hero-card-v8-spark-b" />
-                    <div className="hero-card-v8-content">
-                      <span className={`hero-card-v8-title-pill ${card.accent}`}>{card.label}</span>
+                    <div className="hero-card-v8-copy">
+                      <span className="hero-card-v8-pill">{card.label}</span>
                       <p className="hero-card-v8-description">{card.description}</p>
-                      <span className={`hero-card-v8-cta ${card.accent}`}>{card.cta}</span>
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           </div>
