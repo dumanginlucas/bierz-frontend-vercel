@@ -122,7 +122,8 @@
   background-size: cover;
   background-position: center center;
   z-index: 1;
-}
+
+  background-color: #111;}
 
 .hero-card-v8-image-catalogo { background-position: center center; }
 .hero-card-v8-image-homebar { background-position: center 40%; }
@@ -146,7 +147,7 @@
 
 .hero-card-v8-title {
   position: absolute;
-  top: -21px;
+  top: -32px;
   left: 50%;
   transform: translateX(-50%);
   display: inline-flex;
@@ -167,6 +168,10 @@
   box-shadow: 0 8px 15px rgba(0,0,0,0.2);
   line-height: 1;
   text-align: center;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
 }
 
 .hero-card-v8-description {
