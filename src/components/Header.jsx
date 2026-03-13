@@ -27,7 +27,6 @@ const Header = () => {
   useEffect(() => {
     const SCROLL_THRESHOLD = 80;
 
-    // Obtém a posição de scroll independente de onde o scroll acontece
     const getScrollPosition = () =>
       window.scrollY ||
       document.documentElement.scrollTop ||
@@ -38,10 +37,7 @@ const Header = () => {
       setIsScrolled(getScrollPosition() > SCROLL_THRESHOLD);
     };
 
-    // Verifica posição inicial (caso a página já esteja rolada ao montar)
     handleScroll();
-
-    // Ouve scroll no window, document e body para cobrir todos os casos
     window.addEventListener('scroll', handleScroll, { passive: true });
     document.addEventListener('scroll', handleScroll, { passive: true });
     document.body.addEventListener('scroll', handleScroll, { passive: true });
@@ -83,19 +79,28 @@ const Header = () => {
     }
   };
 
+  // Função de scroll para o topo robusta
   const scrollToTop = (e) => {
-    if (e) e.preventDefault();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     setIsMobileMenuOpen(false);
 
     if (location.pathname !== '/') {
       navigate('/');
-      // Após navegar, o scroll para o topo costuma ser automático, 
-      // mas garantimos com um pequeno delay se necessário ou confiamos no comportamento padrão do Router
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Timeout para garantir que a navegação ocorreu antes de forçar o scroll
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      }, 100);
       return;
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Tenta scrollar o window e o documentElement para cobrir todos os navegadores
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    document.body.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
   const handleLogout = () => {
@@ -103,9 +108,6 @@ const Header = () => {
     navigate('/');
   };
 
-  const isHome = location.pathname === '/';
-
-  /* ── Classe do header baseada no estado ── */
   const headerClass = [
     'site-header',
     isMobileMenuOpen
@@ -121,17 +123,20 @@ const Header = () => {
         <div className="flex h-[84px] items-center justify-between gap-4 lg:h-[92px]">
 
           {/* ── Logo ── */}
-          <div className="flex shrink-0 items-center">
+          <div className="flex shrink-0 items-center" style={{ position: 'relative', zIndex: 100 }}>
             <button
               type="button"
               onClick={scrollToTop}
-              className="inline-flex"
+              onMouseDown={(e) => e.stopPropagation()} // Evita conflitos com drag surfaces
+              className="inline-flex cursor-pointer focus:outline-none"
               aria-label="Ir para o início"
+              style={{ background: 'none', border: 'none', padding: 0 }}
             >
               <img
                 src="/logo.png"
                 alt="Bierz Logo"
-                className="h-[56px] w-auto cursor-pointer transition-transform duration-300 hover:scale-105 sm:h-[62px] lg:h-[72px]"
+                className="h-[56px] w-auto transition-transform duration-300 hover:scale-105 sm:h-[62px] lg:h-[72px]"
+                style={{ pointerEvents: 'none' }} // Faz a imagem não interceptar o clique do botão
               />
             </button>
           </div>
