@@ -98,10 +98,10 @@
 }
 
 /* Temas com cores sólidas e gradientes sutis para os cards 3 e 4 */
-.hero-card-theme-events .hero-card-v8-inner { background: #98d163; }
-.hero-card-theme-homebar .hero-card-v8-inner { background: #e4913d; }
-.hero-card-theme-barril .hero-card-v8-inner { background: #9a571f; }
-.hero-card-theme-tipos .hero-card-v8-inner { background: #e2c392; }
+.hero-card-theme-events .hero-card-v8-inner { background: linear-gradient(180deg, #9fc85d 0%, #7aa73b 100%); }
+.hero-card-theme-homebar .hero-card-v8-inner { background: linear-gradient(180deg, #d79242 0%, #b96a1e 100%); }
+.hero-card-theme-barril .hero-card-v8-inner { background: linear-gradient(180deg, #9a5f2f 0%, #704019 100%); }
+.hero-card-theme-tipos .hero-card-v8-inner { background: linear-gradient(180deg, #ead8b0 0%, #cdb07d 100%); }
 
 .hero-card-theme-barril .hero-card-v8-inner::before {
   content: "";
@@ -151,7 +151,7 @@
 
 /* Destaque HomeBar (Elemento Maior e Centralizado) */
 .hero-card-v8-image-homebar-hero {
-  width: 162%;
+  width: 181%;
   left: 49.2%;
   bottom: 176px;
   filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
@@ -160,13 +160,13 @@
 .hero-card-v8-image-events { width: 96%; left: 48%; bottom: 126px; }
 .hero-card-v8-image-barril { width: 88%; left: 50%; bottom: 128px; }
 .hero-card-v8-image-redes {
-  width: 100%;
-  height: calc(100% - 108px);
-  left: 50%;
-  bottom: 108px;
+  width: calc(100% + 2px);
+  height: calc(100% - 96px);
+  left: calc(50% - 1px);
+  bottom: 96px;
   object-fit: cover;
   object-position: center center;
-  border-radius: 0;
+  border-radius: 28px 28px 0 0;
   filter: none;
 }
 
@@ -200,7 +200,7 @@
   padding: 0 18px;
   border-radius: 4px;
   background: #0d0d0d;
-  color: #f29c29; /* Cor mais próxima do ouro da referência */
+  color: #f0a431;
   font-family: Impact, sans-serif;
   font-weight: 700;
   font-size: clamp(14px, 1vw, 17px);
@@ -214,9 +214,9 @@
   margin: 0;
   max-width: 85%;
   color: #fff;
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(11px, 0.8vw, 13px);
-  font-weight: 700;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-size: clamp(11px, 0.82vw, 13.5px);
+  font-weight: 600;
   line-height: 1.4;
   opacity: 0.95;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -276,7 +276,7 @@
   }
   .hero-card-v8 { width: 180px; }
   .hero-card-v8-inner { height: 300px; }
-  .hero-card-v8-image-homebar-hero { width: 130%; bottom: 130px; }
-  .hero-card-v8-image-redes { width: 134%; height: 56%; bottom: 110px; border-radius: 24px 24px 18px 18px; }
+  .hero-card-v8-image-homebar-hero { width: 146%; bottom: 130px; }
+  .hero-card-v8-image-redes { width: calc(100% + 2px); height: calc(100% - 96px); left: calc(50% - 1px); bottom: 96px; border-radius: 24px 24px 0 0; }
   .nav-arrow { display: none; }
 }
