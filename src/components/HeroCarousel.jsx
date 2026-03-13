@@ -3,8 +3,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
 const MOBILE_BREAKPOINT = 768;
-const DRAG_THRESHOLD = 60;
 const AUTO_PLAY_MS = 12000;
+const DRAG_THRESHOLD_RATIO = 0.18;
+const MAX_DRAG_RATIO = 0.4;
 
 const HeroCarousel = () => {
   const [isMobileView, setIsMobileView] = useState(() => {
@@ -89,10 +90,23 @@ const HeroCarousel = () => {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
+  const heroRef = useRef(null);
   const autoplayRef = useRef(null);
   const dragStartXRef = useRef(0);
   const dragDeltaRef = useRef(0);
   const isDraggingRef = useRef(false);
+  const heroWidthRef = useRef(1);
+
+  const updateHeroWidth = useCallback(() => {
+    const width = heroRef.current?.offsetWidth || window.innerWidth || 1;
+    heroWidthRef.current = Math.max(width, 1);
+  }, []);
+
+  useEffect(() => {
+    updateHeroWidth();
+    window.addEventListener('resize', updateHeroWidth);
+    return () => window.removeEventListener('resize', updateHeroWidth);
+  }, [updateHeroWidth]);
 
   useEffect(() => {
     setCurrentSlide(1);
@@ -173,21 +187,28 @@ const HeroCarousel = () => {
     return event.clientX;
   };
 
+  const clampDrag = useCallback((value) => {
+    const maxDrag = heroWidthRef.current * MAX_DRAG_RATIO;
+    return Math.max(Math.min(value, maxDrag), -maxDrag);
+  }, []);
+
   const endDrag = useCallback(() => {
     if (!isDraggingRef.current) return;
 
     const delta = dragDeltaRef.current;
+    const threshold = heroWidthRef.current * DRAG_THRESHOLD_RATIO;
+
     isDraggingRef.current = false;
     setIsDragging(false);
     setIsTransitionEnabled(true);
     setDragOffset(0);
 
-    if (delta <= -DRAG_THRESHOLD) {
+    if (delta <= -threshold) {
       nextSlide();
       return;
     }
 
-    if (delta >= DRAG_THRESHOLD) {
+    if (delta >= threshold) {
       prevSlide();
       return;
     }
@@ -199,16 +220,19 @@ const HeroCarousel = () => {
     if (!isDraggingRef.current) return;
 
     const clientX = getClientX(event);
-    const delta = clientX - dragStartXRef.current;
+    const rawDelta = clientX - dragStartXRef.current;
+    const delta = clampDrag(rawDelta);
+
     dragDeltaRef.current = delta;
     setDragOffset(delta);
 
     if ('touches' in event && Math.abs(delta) > 4) {
       event.preventDefault();
     }
-  }, []);
+  }, [clampDrag]);
 
   const startDrag = useCallback((clientX) => {
+    updateHeroWidth();
     isDraggingRef.current = true;
     setIsDragging(true);
     setIsTransitionEnabled(false);
@@ -216,7 +240,7 @@ const HeroCarousel = () => {
     dragDeltaRef.current = 0;
     setDragOffset(0);
     clearAutoplay();
-  }, [clearAutoplay]);
+  }, [clearAutoplay, updateHeroWidth]);
 
   useEffect(() => {
     if (!isDragging) return undefined;
@@ -271,6 +295,7 @@ const HeroCarousel = () => {
 
   return (
     <section
+      ref={heroRef}
       className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}${isDragging ? ' is-dragging' : ''}`}
       style={{ backgroundImage: `url(${currentBanner?.image || ''})` }}
     >
