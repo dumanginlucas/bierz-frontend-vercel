@@ -48,8 +48,8 @@ const HeroCarousel = () => {
       label: 'Nossas Redes',
       description: 'Siga a Bierz no Instagram para acompanhar as promoções.',
       theme: 'hero-card-theme-barril',
-      image: '/card-placeholders/barril-itaipava.png',
-      imageClass: 'hero-card-v8-image-barril',
+      image: '/card-placeholders/redes-social.png',
+      imageClass: 'hero-card-v8-image-redes',
       splash: '', // Sem splash de água para redes
       hasSplash: false
     },

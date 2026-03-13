@@ -103,6 +103,15 @@
 .hero-card-theme-barril .hero-card-v8-inner { background: #9a571f; }
 .hero-card-theme-tipos .hero-card-v8-inner { background: #e2c392; }
 
+.hero-card-theme-barril .hero-card-v8-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.0) 28%, rgba(0,0,0,0.08) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
 /* Efeito Splash de Água (Apenas cards 1 e 2) */
 .hero-card-splash-bg {
   position: absolute;
@@ -150,6 +159,17 @@
 
 .hero-card-v8-image-events { width: 96%; left: 48%; bottom: 126px; }
 .hero-card-v8-image-barril { width: 88%; left: 50%; bottom: 128px; }
+.hero-card-v8-image-redes {
+  width: 126%;
+  height: 62%;
+  left: 50%;
+  bottom: 122px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 28px 28px 20px 20px;
+  filter: drop-shadow(0 14px 24px rgba(0,0,0,0.22));
+}
+
 .hero-card-v8-image-tipos { width: 92%; left: 50%; bottom: 128px; }
 
 .hero-card-v8:hover .hero-card-v8-image {
@@ -257,5 +277,6 @@
   .hero-card-v8 { width: 180px; }
   .hero-card-v8-inner { height: 300px; }
   .hero-card-v8-image-homebar-hero { width: 130%; bottom: 130px; }
+  .hero-card-v8-image-redes { width: 134%; height: 56%; bottom: 110px; border-radius: 24px 24px 18px 18px; }
   .nav-arrow { display: none; }
 }
