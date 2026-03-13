@@ -62,7 +62,7 @@ const HeroCarousel = () => {
   ];
 
   return (
-    <section className="hero-carousel-v8 relative w-full overflow-hidden bg-black">
+    <section className="hero-carousel-v8 relative w-full overflow-hidden">
       <div
         className="hero-slides-wrapper flex h-full transition-transform duration-1000 cubic-bezier(0.65, 0, 0.35, 1)"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -89,13 +89,7 @@ const HeroCarousel = () => {
                 <div key={card.id} className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'}`}>
                   <div className="hero-card-v8-inner">
                     <div className="hero-card-v8-art" aria-hidden="true">
-                      <div className="hero-card-lighting-overlay"></div>
-                      <img
-                        src={card.image}
-                        alt=""
-                        className={`hero-card-v8-image ${card.imageClass}`}
-                        loading="lazy"
-                      />
+                      <div className={`hero-card-v8-image ${card.imageClass}`} style={{ backgroundImage: `url(${card.image})` }} />
                     </div>
 
                     <div className="hero-card-v8-content">
