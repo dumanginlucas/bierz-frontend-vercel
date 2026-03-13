@@ -4,8 +4,7 @@ import './HeroCarousel.css';
 
 const MOBILE_BREAKPOINT = 768;
 const AUTO_PLAY_MS = 12000;
-const DRAG_THRESHOLD_RATIO = 0.18;
-const MAX_DRAG_RATIO = 0.4;
+const DRAG_THRESHOLD_RATIO = 0.15; // Reduzido para ser mais responsivo
 
 const HeroCarousel = () => {
   const [isMobileView, setIsMobileView] = useState(() => {
@@ -187,11 +186,6 @@ const HeroCarousel = () => {
     return event.clientX;
   };
 
-  const clampDrag = useCallback((value) => {
-    const maxDrag = heroWidthRef.current * MAX_DRAG_RATIO;
-    return Math.max(Math.min(value, maxDrag), -maxDrag);
-  }, []);
-
   const endDrag = useCallback(() => {
     if (!isDraggingRef.current) return;
 
@@ -205,31 +199,29 @@ const HeroCarousel = () => {
 
     if (delta <= -threshold) {
       nextSlide();
-      return;
-    }
-
-    if (delta >= threshold) {
+    } else if (delta >= threshold) {
       prevSlide();
-      return;
+    } else {
+      restartAutoplay();
     }
-
-    restartAutoplay();
+    
+    dragDeltaRef.current = 0;
   }, [nextSlide, prevSlide, restartAutoplay]);
 
   const moveDrag = useCallback((event) => {
     if (!isDraggingRef.current) return;
 
     const clientX = getClientX(event);
-    const rawDelta = clientX - dragStartXRef.current;
-    const delta = clampDrag(rawDelta);
+    const delta = clientX - dragStartXRef.current;
 
+    // Removemos o clampDrag para permitir movimento livre como na Louvada
     dragDeltaRef.current = delta;
     setDragOffset(delta);
 
-    if ('touches' in event && Math.abs(delta) > 4) {
-      event.preventDefault();
+    if ('touches' in event && Math.abs(delta) > 5) {
+      if (event.cancelable) event.preventDefault();
     }
-  }, [clampDrag]);
+  }, []);
 
   const startDrag = useCallback((clientX) => {
     updateHeroWidth();
@@ -269,10 +261,7 @@ const HeroCarousel = () => {
     if (currentSlide === totalSlides + 1) {
       setIsTransitionEnabled(false);
       setCurrentSlide(1);
-      return;
-    }
-
-    if (currentSlide === 0) {
+    } else if (currentSlide === 0) {
       setIsTransitionEnabled(false);
       setCurrentSlide(totalSlides);
     }
@@ -296,6 +285,7 @@ const HeroCarousel = () => {
   return (
     <section
       ref={heroRef}
+      id="identification"
       className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}${isDragging ? ' is-dragging' : ''}`}
       style={{ backgroundImage: `url(${currentBanner?.image || ''})` }}
     >
@@ -307,11 +297,11 @@ const HeroCarousel = () => {
       />
 
       <div
-        className="hero-slides-wrapper flex h-full cubic-bezier(0.65, 0, 0.35, 1)"
+        className="hero-slides-wrapper flex h-full"
         style={{
           width: `${loopedBanners.length * 100}%`,
           transform: `translate3d(calc(-${(100 / loopedBanners.length) * currentSlide}% + ${dragOffset}px), 0, 0)`,
-          transition: isTransitionEnabled ? 'transform 1s cubic-bezier(0.65, 0, 0.35, 1)' : 'none'
+          transition: isTransitionEnabled ? 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)' : 'none'
         }}
         onTransitionEnd={handleTransitionEnd}
       >

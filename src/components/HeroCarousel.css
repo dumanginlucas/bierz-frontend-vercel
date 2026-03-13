@@ -14,7 +14,7 @@
   display: flex;
   width: 100%;
   height: 100%;
-  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
 }
 
 .hero-slide {
@@ -41,6 +41,13 @@
   cursor: grabbing;
 }
 
+/* Garante que imagens não sejam arrastadas pelo navegador */
+.hero-carousel-v8 img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .hero-banner-v8-container,
 .hero-banner-v8-inner {
   position: relative;
@@ -56,8 +63,6 @@
   object-fit: cover;
   object-position: center center;
   display: block;
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 
@@ -265,34 +270,6 @@
     height: 88px;
     padding: 32px 14px 14px;
   }
-  .hero-card-v8-title {
-  position: absolute;
-  top: -21px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 174px;
-  max-width: calc(100% - 32px);
-  height: 42px;
-  padding: 0 18px;
-  border-radius: 4px;
-  background: #0d0d0d;
-  color: #f0a431;
-  font-family: 'Arial Black', Impact, Haettenschweiler, sans-serif;
-  font-weight: 900;
-  font-size: clamp(14px, 1vw, 17px);
-  text-transform: uppercase;
-  letter-spacing: 0.9px;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-  line-height: 1;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
   .hero-card-v8-description {
     font-size: 10px;
     max-width: 90%;

@@ -83,26 +83,19 @@ const Header = () => {
     }
   };
 
-  const scrollToTop = () => {
+  const scrollToTop = (e) => {
+    if (e) e.preventDefault();
     setIsMobileMenuOpen(false);
-
-    const performScrollToTop = () => {
-      const heroSection = document.getElementById('identification');
-      if (heroSection) {
-        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
 
     if (location.pathname !== '/') {
       navigate('/');
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(performScrollToTop);
-      });
+      // Após navegar, o scroll para o topo costuma ser automático, 
+      // mas garantimos com um pequeno delay se necessário ou confiamos no comportamento padrão do Router
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    performScrollToTop();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLogout = () => {
