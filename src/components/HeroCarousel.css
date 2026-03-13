@@ -122,7 +122,6 @@
   background-size: cover;
   background-position: center center;
   z-index: 1;
-  background-color: #111;
 }
 
 .hero-card-v8-image-catalogo { background-position: center center; }
@@ -160,18 +159,14 @@
   border-radius: 4px;
   background: #0d0d0d;
   color: #f0a431;
-  font-family: 'Arial Black', Impact, Haettenschweiler, sans-serif;
-  font-weight: 900;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 700;
   font-size: clamp(14px, 1vw, 17px);
   text-transform: uppercase;
-  letter-spacing: 0.9px;
+  letter-spacing: 0.5px;
   box-shadow: 0 8px 15px rgba(0,0,0,0.2);
   line-height: 1;
   text-align: center;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
 }
 
 .hero-card-v8-description {
@@ -220,68 +215,118 @@
 }
 .indicator-dot.active { width: 28px; background: #f29c29; }
 
+
+@media (max-width: 1024px) {
+  .hero-cards-v8-wrapper {
+    bottom: 28px;
+    left: 0;
+    transform: none;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 0 22px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .hero-cards-v8-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-cards-v8-grid {
+    gap: 16px;
+    justify-content: flex-start;
+    width: max-content;
+    max-width: none;
+    padding-right: 22px;
+  }
+
+  .hero-card-v8 {
+    width: 210px;
+    scroll-snap-align: start;
+  }
+
+  .hero-card-v8-inner {
+    height: 320px;
+    border-radius: 26px;
+  }
+
+  .hero-card-v8-image {
+    height: calc(100% - 90px);
+  }
+
+  .hero-card-v8-image-homebar {
+    background-position: center 37%;
+  }
+
+  .hero-card-v8-image-entrega {
+    background-position: 60% 35%;
+  }
+
+  .hero-card-v8-content {
+    height: 90px;
+    padding: 34px 14px 14px;
+  }
+
+  .hero-card-v8-title {
+    top: -18px;
+    min-width: 148px;
+    max-width: calc(100% - 24px);
+    height: 38px;
+    font-size: 13px;
+    padding: 0 14px;
+  }
+
+  .hero-card-v8-description {
+    max-width: 90%;
+    font-size: 10.5px;
+    line-height: 1.24;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-cards-v8-wrapper {
-    bottom: 24px;
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding: 0 16px;
-    transform: none;
-    left: 0;
-    width: 100%;
+    bottom: 18px;
+    padding: 0 14px;
   }
+
   .hero-cards-v8-grid {
-    gap: 14px;
-    justify-content: flex-start;
-    padding-right: 16px;
-    max-width: none;
+    gap: 12px;
+    padding-right: 14px;
   }
-  .hero-card-v8 { width: 180px; }
-  .hero-card-v8-inner { height: 300px; }
+
+  .hero-card-v8 {
+    width: min(44vw, 176px);
+  }
+
+  .hero-card-v8-inner {
+    height: 270px;
+    border-radius: 24px;
+  }
+
   .hero-card-v8-image {
-    height: calc(100% - 88px);
+    height: calc(100% - 82px);
   }
-  .hero-card-v8-image-homebar { background-position: center 37%; }
-  .hero-card-v8-image-entrega { background-position: 60% 35%; }
+
   .hero-card-v8-content {
-    height: 88px;
-    padding: 32px 14px 14px;
+    height: 82px;
+    padding: 30px 12px 12px;
   }
+
   .hero-card-v8-title {
-  position: absolute;
-  top: -21px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 174px;
-  max-width: calc(100% - 32px);
-  height: 42px;
-  padding: 0 18px;
-  border-radius: 4px;
-  background: #0d0d0d;
-  color: #f0a431;
-  font-family: 'Arial Black', Impact, Haettenschweiler, sans-serif;
-  font-weight: 900;
-  font-size: clamp(14px, 1vw, 17px);
-  text-transform: uppercase;
-  letter-spacing: 0.9px;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-  line-height: 1;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-  .hero-card-v8-description {
-    font-size: 10px;
-    max-width: 90%;
+    top: -17px;
+    min-width: 134px;
+    max-width: calc(100% - 22px);
+    height: 36px;
+    font-size: 12px;
+    padding: 0 12px;
   }
-}
 
-
-.hero-card-theme-events .hero-card-v8-description {
-  transform: translateY(-16px);
+  .hero-card-v8-description {
+    max-width: 90%;
+    font-size: 9.8px;
+    line-height: 1.2;
+  }
 }
