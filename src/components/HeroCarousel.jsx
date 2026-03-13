@@ -4,7 +4,7 @@ import './HeroCarousel.css';
 
 const MOBILE_BREAKPOINT = 768;
 const AUTO_PLAY_MS = 12000;
-const DRAG_THRESHOLD_RATIO = 0.15; // Reduzido para ser mais responsivo
+const DRAG_THRESHOLD_RATIO = 0.15;
 
 const HeroCarousel = () => {
   const [isMobileView, setIsMobileView] = useState(() => {
@@ -16,8 +16,6 @@ const HeroCarousel = () => {
     const handleResize = () => {
       setIsMobileView(window.innerWidth <= MOBILE_BREAKPOINT);
     };
-
-    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -78,6 +76,7 @@ const HeroCarousel = () => {
   ];
 
   const totalSlides = banners.length;
+  // Criamos o array para o loop infinito: [Ultimo, Slide1, Slide2, ..., SlideN, Primeiro]
   const loopedBanners = useMemo(() => {
     if (!banners.length) return [];
     return [banners[banners.length - 1], ...banners, banners[0]];
@@ -95,6 +94,7 @@ const HeroCarousel = () => {
   const dragDeltaRef = useRef(0);
   const isDraggingRef = useRef(false);
   const heroWidthRef = useRef(1);
+  const isResettingRef = useRef(false);
 
   const updateHeroWidth = useCallback(() => {
     const width = heroRef.current?.offsetWidth || window.innerWidth || 1;
@@ -107,16 +107,12 @@ const HeroCarousel = () => {
     return () => window.removeEventListener('resize', updateHeroWidth);
   }, [updateHeroWidth]);
 
+  // Reinicia o carousel quando os banners mudam
   useEffect(() => {
     setCurrentSlide(1);
     setDragOffset(0);
     setIsTransitionEnabled(false);
-
-    const resetFrame = window.requestAnimationFrame(() => {
-      setIsTransitionEnabled(true);
-    });
-
-    return () => window.cancelAnimationFrame(resetFrame);
+    isResettingRef.current = false;
   }, [banners]);
 
   const logicalIndex = totalSlides
@@ -133,18 +129,20 @@ const HeroCarousel = () => {
   }, []);
 
   const nextSlide = useCallback(() => {
+    if (isResettingRef.current) return;
     setIsTransitionEnabled(true);
     setCurrentSlide((prev) => prev + 1);
   }, []);
 
   const prevSlide = useCallback(() => {
+    if (isResettingRef.current) return;
     setIsTransitionEnabled(true);
     setCurrentSlide((prev) => prev - 1);
   }, []);
 
   const restartAutoplay = useCallback(() => {
     clearAutoplay();
-    if (!isHeroReady || isDraggingRef.current) return;
+    if (!isHeroReady || isDraggingRef.current || isResettingRef.current) return;
 
     autoplayRef.current = window.setInterval(() => {
       nextSlide();
@@ -154,7 +152,6 @@ const HeroCarousel = () => {
   useEffect(() => {
     let isMounted = true;
     setIsHeroReady(false);
-
     const preload = banners.map((banner) => {
       return new Promise((resolve) => {
         const img = new Image();
@@ -163,22 +160,16 @@ const HeroCarousel = () => {
         img.onerror = resolve;
       });
     });
-
     Promise.all(preload).then(() => {
-      if (isMounted) {
-        setIsHeroReady(true);
-      }
+      if (isMounted) setIsHeroReady(true);
     });
-
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, [banners]);
 
   useEffect(() => {
     restartAutoplay();
     return clearAutoplay;
-  }, [restartAutoplay, clearAutoplay, logicalIndex]);
+  }, [restartAutoplay, clearAutoplay, currentSlide]);
 
   const getClientX = (event) => {
     if ('touches' in event && event.touches.length) return event.touches[0].clientX;
@@ -214,7 +205,6 @@ const HeroCarousel = () => {
     const clientX = getClientX(event);
     const delta = clientX - dragStartXRef.current;
 
-    // Removemos o clampDrag para permitir movimento livre como na Louvada
     dragDeltaRef.current = delta;
     setDragOffset(delta);
 
@@ -224,6 +214,7 @@ const HeroCarousel = () => {
   }, []);
 
   const startDrag = useCallback((clientX) => {
+    if (isResettingRef.current) return;
     updateHeroWidth();
     isDraggingRef.current = true;
     setIsDragging(true);
@@ -257,30 +248,27 @@ const HeroCarousel = () => {
     };
   }, [isDragging, moveDrag, endDrag]);
 
+  // Função vital para o loop infinito sem travamentos
   const handleTransitionEnd = () => {
-    if (currentSlide === totalSlides + 1) {
+    if (currentSlide >= totalSlides + 1) {
+      // Chegou no clone do primeiro (final do array)
       setIsTransitionEnabled(false);
+      isResettingRef.current = true;
       setCurrentSlide(1);
-    } else if (currentSlide === 0) {
+      // Pequeno timeout para garantir que o estado do React atualizou antes de reativar transições
+      setTimeout(() => {
+        isResettingRef.current = false;
+      }, 50);
+    } else if (currentSlide <= 0) {
+      // Chegou no clone do último (início do array)
       setIsTransitionEnabled(false);
+      isResettingRef.current = true;
       setCurrentSlide(totalSlides);
+      setTimeout(() => {
+        isResettingRef.current = false;
+      }, 50);
     }
   };
-
-  useEffect(() => {
-    if (!isTransitionEnabled) {
-      const frame = window.requestAnimationFrame(() => {
-        const nextFrame = window.requestAnimationFrame(() => {
-          setIsTransitionEnabled(true);
-          window.cancelAnimationFrame(nextFrame);
-        });
-      });
-
-      return () => window.cancelAnimationFrame(frame);
-    }
-
-    return undefined;
-  }, [isTransitionEnabled]);
 
   return (
     <section
@@ -359,6 +347,7 @@ const HeroCarousel = () => {
           <button
             key={i}
             onClick={() => {
+              if (isResettingRef.current) return;
               setIsTransitionEnabled(true);
               setCurrentSlide(i + 1);
             }}
