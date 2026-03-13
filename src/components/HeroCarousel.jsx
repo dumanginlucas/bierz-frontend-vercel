@@ -29,7 +29,7 @@ const HeroCarousel = () => {
       },
       {
         id: 2,
-        image: '/bannerhero2.png',
+        image: isMobileView ? '/bannermobile2.png' : '/bannerhero2.png',
         alt: 'Banner Hero 2'
       }
     ],
