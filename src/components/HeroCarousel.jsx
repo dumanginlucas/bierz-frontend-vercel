@@ -28,8 +28,8 @@ const HeroCarousel = () => {
       label: 'Catálogo de Chopps',
       description: 'Escolha aqui o chopp do seu evento.',
       theme: 'hero-card-theme-events',
-      image: '/card-placeholders/chopp-eventos.png',
-      imageClass: 'hero-card-v8-image-events',
+      image: '/card-placeholders/catalogo-chopps.jpg',
+      imageClass: 'hero-card-v8-image-catalogo',
       hasSplash: false
     },
     {
@@ -38,7 +38,7 @@ const HeroCarousel = () => {
       description: 'Receba essa Home Bar em casa para agradar os amigos.',
       theme: 'hero-card-theme-homebar',
       image: '/card-placeholders/homebar-piscina.jpg',
-      imageClass: 'hero-card-v8-image-homebar-full',
+      imageClass: 'hero-card-v8-image-homebar',
       hasSplash: false
     },
     {
@@ -55,8 +55,8 @@ const HeroCarousel = () => {
       label: 'Entrega Free',
       description: 'Com a Bierz você fica livre da taxa de entrega e do equipamento!',
       theme: 'hero-card-theme-tipos',
-      image: '/card-placeholders/tipos-evento.png',
-      imageClass: 'hero-card-v8-image-tipos',
+      image: '/card-placeholders/entrega-montana.png',
+      imageClass: 'hero-card-v8-image-entrega',
       hasSplash: false
     }
   ];
