@@ -84,6 +84,8 @@
   width: 100%;
   height: clamp(364px, 24.2vw, 440px);
   overflow: hidden;
+  border: none;
+  outline: none;
   border-radius: clamp(24px, 1.7vw, 30px);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
   transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
@@ -102,6 +104,8 @@
 .hero-card-v8-art {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
 }
 
 .hero-card-lighting-overlay {
@@ -114,14 +118,12 @@
 
 .hero-card-v8-image {
   position: absolute;
-  top: 0;
-  left: -2px;
-  width: calc(100% + 4px);
-  height: calc(100% - 92px);
+  top: -2px;
+  left: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% - 68px);
   object-fit: cover;
-  border-radius: inherit;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-radius: 0;
   z-index: 3;
   transition: none;
   transform: none;
@@ -154,9 +156,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 18px 20px;
+  padding: 0 18px 18px;
   text-align: center;
-  background: linear-gradient(to top, rgba(0,0,0,0.76) 0%, rgba(0,0,0,0.56) 34%, rgba(0,0,0,0.18) 68%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.84) 0%, rgba(0,0,0,0.64) 42%, rgba(0,0,0,0.10) 74%, transparent 100%);
 }
 
 .hero-card-v8-title {
@@ -174,13 +176,13 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-  margin-top: -20px;
+  margin-top: -22px;
   margin-bottom: 10px;
 }
 
 .hero-card-v8-description {
   margin: 0;
-  max-width: 87%;
+  max-width: 88%;
   color: #fff;
   font-family: 'Montserrat', 'Inter', sans-serif;
   font-size: clamp(11px, 0.82vw, 13.5px);
@@ -243,10 +245,11 @@
   .hero-card-v8 { width: 180px; }
   .hero-card-v8-inner { height: 300px; }
   .hero-card-v8-image {
-    left: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% - 82px);
-    border-radius: 24px 24px 0 0;
+    top: -2px;
+    left: -4px;
+    width: calc(100% + 8px);
+    height: calc(100% - 62px);
+    border-radius: 0;
   }
   .hero-card-v8-image-homebar {
     object-position: center 42%;
