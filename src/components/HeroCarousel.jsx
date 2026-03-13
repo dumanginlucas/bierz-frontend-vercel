@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
@@ -78,9 +78,12 @@ const HeroCarousel = () => {
   ];
 
   const totalSlides = banners.length;
-  const loopedBanners = useMemo(() => [...banners, banners[0]], [banners]);
+  const loopedBanners = useMemo(() => {
+    if (!banners.length) return [];
+    return [banners[banners.length - 1], ...banners, banners[0]];
+  }, [banners]);
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
   const [isHeroReady, setIsHeroReady] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -89,39 +92,51 @@ const HeroCarousel = () => {
   const autoplayRef = useRef(null);
   const dragStartXRef = useRef(0);
   const dragDeltaRef = useRef(0);
+  const isDraggingRef = useRef(false);
 
-  const currentBanner = banners[currentSlide % totalSlides] || banners[0];
+  useEffect(() => {
+    setCurrentSlide(1);
+    setDragOffset(0);
+    setIsTransitionEnabled(false);
 
-  const clearAutoplay = () => {
+    const resetFrame = window.requestAnimationFrame(() => {
+      setIsTransitionEnabled(true);
+    });
+
+    return () => window.cancelAnimationFrame(resetFrame);
+  }, [banners]);
+
+  const logicalIndex = totalSlides
+    ? ((currentSlide - 1 + totalSlides) % totalSlides)
+    : 0;
+
+  const currentBanner = banners[logicalIndex] || banners[0];
+
+  const clearAutoplay = useCallback(() => {
     if (autoplayRef.current) {
       window.clearInterval(autoplayRef.current);
       autoplayRef.current = null;
     }
-  };
+  }, []);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setIsTransitionEnabled(true);
     setCurrentSlide((prev) => prev + 1);
-  };
+  }, []);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setIsTransitionEnabled(true);
-    setCurrentSlide((prev) => {
-      if (prev === 0) {
-        return totalSlides - 1;
-      }
-      return prev - 1;
-    });
-  };
+    setCurrentSlide((prev) => prev - 1);
+  }, []);
 
-  const restartAutoplay = () => {
+  const restartAutoplay = useCallback(() => {
     clearAutoplay();
-    if (!isHeroReady || isDragging) return;
+    if (!isHeroReady || isDraggingRef.current) return;
 
     autoplayRef.current = window.setInterval(() => {
       nextSlide();
     }, AUTO_PLAY_MS);
-  };
+  }, [clearAutoplay, isHeroReady, nextSlide]);
 
   useEffect(() => {
     let isMounted = true;
@@ -150,12 +165,92 @@ const HeroCarousel = () => {
   useEffect(() => {
     restartAutoplay();
     return clearAutoplay;
-  }, [isHeroReady, isDragging, currentSlide]);
+  }, [restartAutoplay, clearAutoplay, logicalIndex]);
+
+  const getClientX = (event) => {
+    if ('touches' in event && event.touches.length) return event.touches[0].clientX;
+    if ('changedTouches' in event && event.changedTouches.length) return event.changedTouches[0].clientX;
+    return event.clientX;
+  };
+
+  const endDrag = useCallback(() => {
+    if (!isDraggingRef.current) return;
+
+    const delta = dragDeltaRef.current;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+    setIsTransitionEnabled(true);
+    setDragOffset(0);
+
+    if (delta <= -DRAG_THRESHOLD) {
+      nextSlide();
+      return;
+    }
+
+    if (delta >= DRAG_THRESHOLD) {
+      prevSlide();
+      return;
+    }
+
+    restartAutoplay();
+  }, [nextSlide, prevSlide, restartAutoplay]);
+
+  const moveDrag = useCallback((event) => {
+    if (!isDraggingRef.current) return;
+
+    const clientX = getClientX(event);
+    const delta = clientX - dragStartXRef.current;
+    dragDeltaRef.current = delta;
+    setDragOffset(delta);
+
+    if ('touches' in event && Math.abs(delta) > 4) {
+      event.preventDefault();
+    }
+  }, []);
+
+  const startDrag = useCallback((clientX) => {
+    isDraggingRef.current = true;
+    setIsDragging(true);
+    setIsTransitionEnabled(false);
+    dragStartXRef.current = clientX;
+    dragDeltaRef.current = 0;
+    setDragOffset(0);
+    clearAutoplay();
+  }, [clearAutoplay]);
+
+  useEffect(() => {
+    if (!isDragging) return undefined;
+
+    const handleMouseMove = (event) => moveDrag(event);
+    const handleMouseUp = () => endDrag();
+    const handleTouchMove = (event) => moveDrag(event);
+    const handleTouchEnd = () => endDrag();
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd);
+    window.addEventListener('touchcancel', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, [isDragging, moveDrag, endDrag]);
 
   const handleTransitionEnd = () => {
-    if (currentSlide === totalSlides) {
+    if (currentSlide === totalSlides + 1) {
       setIsTransitionEnabled(false);
-      setCurrentSlide(0);
+      setCurrentSlide(1);
+      return;
+    }
+
+    if (currentSlide === 0) {
+      setIsTransitionEnabled(false);
+      setCurrentSlide(totalSlides);
     }
   };
 
@@ -174,58 +269,15 @@ const HeroCarousel = () => {
     return undefined;
   }, [isTransitionEnabled]);
 
-  const startDrag = (clientX) => {
-    setIsDragging(true);
-    setIsTransitionEnabled(false);
-    dragStartXRef.current = clientX;
-    dragDeltaRef.current = 0;
-    setDragOffset(0);
-    clearAutoplay();
-  };
-
-  const moveDrag = (clientX) => {
-    if (!isDragging) return;
-    const delta = clientX - dragStartXRef.current;
-    dragDeltaRef.current = delta;
-    setDragOffset(delta);
-  };
-
-  const endDrag = () => {
-    if (!isDragging) return;
-
-    const delta = dragDeltaRef.current;
-    setIsDragging(false);
-    setIsTransitionEnabled(true);
-    setDragOffset(0);
-
-    if (delta <= -DRAG_THRESHOLD) {
-      nextSlide();
-      return;
-    }
-
-    if (delta >= DRAG_THRESHOLD) {
-      prevSlide();
-      return;
-    }
-
-    restartAutoplay();
-  };
-
   return (
     <section
       className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}${isDragging ? ' is-dragging' : ''}`}
-      style={{ backgroundImage: `url(${currentBanner.image})` }}
+      style={{ backgroundImage: `url(${currentBanner?.image || ''})` }}
     >
       <div
         className="hero-drag-surface"
         onMouseDown={(event) => startDrag(event.clientX)}
-        onMouseMove={(event) => moveDrag(event.clientX)}
-        onMouseUp={endDrag}
-        onMouseLeave={endDrag}
         onTouchStart={(event) => startDrag(event.touches[0].clientX)}
-        onTouchMove={(event) => moveDrag(event.touches[0].clientX)}
-        onTouchEnd={endDrag}
-        onTouchCancel={endDrag}
         aria-hidden="true"
       />
 
@@ -250,7 +302,7 @@ const HeroCarousel = () => {
                   src={banner.image}
                   alt={banner.alt}
                   className="h-full w-full object-cover object-center"
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading={index <= 1 ? 'eager' : 'lazy'}
                   decoding="async"
                   draggable="false"
                 />
@@ -293,9 +345,9 @@ const HeroCarousel = () => {
             key={i}
             onClick={() => {
               setIsTransitionEnabled(true);
-              setCurrentSlide(i);
+              setCurrentSlide(i + 1);
             }}
-            className={`indicator-dot ${currentSlide % totalSlides === i ? 'active' : ''}`}
+            className={`indicator-dot ${logicalIndex === i ? 'active' : ''}`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}
