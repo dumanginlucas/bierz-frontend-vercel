@@ -1,38 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
 const HeroCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const totalSlides = 2;
-
-  const nextSlide = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
-    setTimeout(() => setIsTransitioning(false), 600);
-  };
-
-  const prevSlide = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-    setTimeout(() => setIsTransitioning(false), 600);
-  };
-
-  const banners = [
-    {
-      id: 1,
-      image: '/bannerhero1.png',
-      alt: 'Banner Hero 1'
-    },
-    {
-      id: 2,
-      image: '/bannerhero2.png',
-      alt: 'Banner Hero 2'
-    }
-  ];
+  const banners = useMemo(
+    () => [
+      {
+        id: 1,
+        image: '/bannerhero1.png',
+        alt: 'Banner Hero 1'
+      },
+      {
+        id: 2,
+        image: '/bannerhero2.png',
+        alt: 'Banner Hero 2'
+      }
+    ],
+    []
+  );
 
   const cards = [
     {
@@ -73,22 +58,75 @@ const HeroCarousel = () => {
     }
   ];
 
+  const totalSlides = banners.length;
+  const loopedBanners = useMemo(() => [...banners, banners[0]], [banners]);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
+
+  const nextSlide = () => {
+    setIsTransitionEnabled(true);
+    setCurrentSlide((prev) => prev + 1);
+  };
+
+  const prevSlide = () => {
+    setIsTransitionEnabled(true);
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      nextSlide();
+    }, 12000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const handleTransitionEnd = () => {
+    if (currentSlide === totalSlides) {
+      setIsTransitionEnabled(false);
+      setCurrentSlide(0);
+    }
+  };
+
+  useEffect(() => {
+    if (!isTransitionEnabled) {
+      const frame = window.requestAnimationFrame(() => {
+        const nextFrame = window.requestAnimationFrame(() => {
+          setIsTransitionEnabled(true);
+          window.cancelAnimationFrame(nextFrame);
+        });
+      });
+
+      return () => window.cancelAnimationFrame(frame);
+    }
+  }, [isTransitionEnabled]);
+
   return (
     <section className="hero-carousel-v8 relative w-full overflow-hidden">
       <div
-        className="hero-slides-wrapper flex h-full transition-transform duration-1000 cubic-bezier(0.65, 0, 0.35, 1)"
-        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        className="hero-slides-wrapper flex h-full cubic-bezier(0.65, 0, 0.35, 1)"
+        style={{
+          width: `${loopedBanners.length * 100}%`,
+          transform: `translateX(-${100 / loopedBanners.length * currentSlide}%)`,
+          transition: isTransitionEnabled ? 'transform 1s cubic-bezier(0.65, 0, 0.35, 1)' : 'none'
+        }}
+        onTransitionEnd={handleTransitionEnd}
       >
-        {banners.map((banner) => (
-          <div key={banner.id} className="hero-slide hero-slide-bierz w-full h-full flex-shrink-0 relative flex flex-col items-center">
-            <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
-              <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
+        {loopedBanners.map((banner, index) => (
+          <div
+            key={`${banner.id}-${index}`}
+            className="hero-slide hero-slide-bierz relative flex h-full w-full flex-shrink-0 flex-col items-center"
+            style={{ width: `${100 / loopedBanners.length}%` }}
+          >
+            <div className="hero-banner-v8-container relative h-full w-full overflow-hidden">
+              <div className="hero-banner-v8-inner relative h-full w-full overflow-hidden">
                 <img
                   src={banner.image}
                   alt={banner.alt}
-                  className="w-full h-full object-cover object-center"
+                  className="h-full w-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/12 to-transparent pointer-events-none h-48" />
+                <div className="pointer-events-none absolute inset-0 h-48 bg-gradient-to-b from-black/55 via-black/12 to-transparent" />
               </div>
             </div>
           </div>
@@ -125,8 +163,11 @@ const HeroCarousel = () => {
         {[...Array(totalSlides)].map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrentSlide(i)}
-            className={`indicator-dot ${currentSlide === i ? 'active' : ''}`}
+            onClick={() => {
+              setIsTransitionEnabled(true);
+              setCurrentSlide(i);
+            }}
+            className={`indicator-dot ${currentSlide % totalSlides === i ? 'active' : ''}`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}
