@@ -1,13 +1,32 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
+const MOBILE_BREAKPOINT = 768;
+const DRAG_THRESHOLD = 60;
+const AUTO_PLAY_MS = 12000;
+
 const HeroCarousel = () => {
+  const [isMobileView, setIsMobileView] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= MOBILE_BREAKPOINT;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= MOBILE_BREAKPOINT);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const banners = useMemo(
     () => [
       {
         id: 1,
-        image: '/bannerhero1.png',
+        image: isMobileView ? '/bannermobile1.png' : '/bannerhero1.png',
         alt: 'Banner Hero 1'
       },
       {
@@ -16,7 +35,7 @@ const HeroCarousel = () => {
         alt: 'Banner Hero 2'
       }
     ],
-    []
+    [isMobileView]
   );
 
   const cards = [
@@ -64,8 +83,21 @@ const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
   const [isHeroReady, setIsHeroReady] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const autoplayRef = useRef(null);
+  const dragStartXRef = useRef(0);
+  const dragDeltaRef = useRef(0);
 
   const currentBanner = banners[currentSlide % totalSlides] || banners[0];
+
+  const clearAutoplay = () => {
+    if (autoplayRef.current) {
+      window.clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+    }
+  };
 
   const nextSlide = () => {
     setIsTransitionEnabled(true);
@@ -82,8 +114,18 @@ const HeroCarousel = () => {
     });
   };
 
+  const restartAutoplay = () => {
+    clearAutoplay();
+    if (!isHeroReady || isDragging) return;
+
+    autoplayRef.current = window.setInterval(() => {
+      nextSlide();
+    }, AUTO_PLAY_MS);
+  };
+
   useEffect(() => {
     let isMounted = true;
+    setIsHeroReady(false);
 
     const preload = banners.map((banner) => {
       return new Promise((resolve) => {
@@ -106,14 +148,9 @@ const HeroCarousel = () => {
   }, [banners]);
 
   useEffect(() => {
-    if (!isHeroReady) return undefined;
-
-    const interval = window.setInterval(() => {
-      nextSlide();
-    }, 12000);
-
-    return () => window.clearInterval(interval);
-  }, [isHeroReady]);
+    restartAutoplay();
+    return clearAutoplay;
+  }, [isHeroReady, isDragging, currentSlide]);
 
   const handleTransitionEnd = () => {
     if (currentSlide === totalSlides) {
@@ -137,16 +174,66 @@ const HeroCarousel = () => {
     return undefined;
   }, [isTransitionEnabled]);
 
+  const startDrag = (clientX) => {
+    setIsDragging(true);
+    setIsTransitionEnabled(false);
+    dragStartXRef.current = clientX;
+    dragDeltaRef.current = 0;
+    setDragOffset(0);
+    clearAutoplay();
+  };
+
+  const moveDrag = (clientX) => {
+    if (!isDragging) return;
+    const delta = clientX - dragStartXRef.current;
+    dragDeltaRef.current = delta;
+    setDragOffset(delta);
+  };
+
+  const endDrag = () => {
+    if (!isDragging) return;
+
+    const delta = dragDeltaRef.current;
+    setIsDragging(false);
+    setIsTransitionEnabled(true);
+    setDragOffset(0);
+
+    if (delta <= -DRAG_THRESHOLD) {
+      nextSlide();
+      return;
+    }
+
+    if (delta >= DRAG_THRESHOLD) {
+      prevSlide();
+      return;
+    }
+
+    restartAutoplay();
+  };
+
   return (
     <section
-      className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}`}
+      className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}${isDragging ? ' is-dragging' : ''}`}
       style={{ backgroundImage: `url(${currentBanner.image})` }}
     >
+      <div
+        className="hero-drag-surface"
+        onMouseDown={(event) => startDrag(event.clientX)}
+        onMouseMove={(event) => moveDrag(event.clientX)}
+        onMouseUp={endDrag}
+        onMouseLeave={endDrag}
+        onTouchStart={(event) => startDrag(event.touches[0].clientX)}
+        onTouchMove={(event) => moveDrag(event.touches[0].clientX)}
+        onTouchEnd={endDrag}
+        onTouchCancel={endDrag}
+        aria-hidden="true"
+      />
+
       <div
         className="hero-slides-wrapper flex h-full cubic-bezier(0.65, 0, 0.35, 1)"
         style={{
           width: `${loopedBanners.length * 100}%`,
-          transform: `translateX(-${(100 / loopedBanners.length) * currentSlide}%)`,
+          transform: `translate3d(calc(-${(100 / loopedBanners.length) * currentSlide}% + ${dragOffset}px), 0, 0)`,
           transition: isTransitionEnabled ? 'transform 1s cubic-bezier(0.65, 0, 0.35, 1)' : 'none'
         }}
         onTransitionEnd={handleTransitionEnd}

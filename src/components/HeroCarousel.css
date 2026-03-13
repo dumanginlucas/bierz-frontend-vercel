@@ -29,6 +29,18 @@
   display: none;
 }
 
+.hero-drag-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.hero-carousel-v8.is-dragging .hero-drag-surface {
+  cursor: grabbing;
+}
+
 .hero-banner-v8-container,
 .hero-banner-v8-inner {
   position: relative;
@@ -44,7 +56,10 @@
   object-fit: cover;
   object-position: center center;
   display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
+
 
 .hero-cards-v8-wrapper {
   position: absolute;
