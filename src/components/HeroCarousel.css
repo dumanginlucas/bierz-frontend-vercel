@@ -97,17 +97,22 @@
   transform: translateY(-12px);
 }
 
-/* Temas com cores sólidas e gradientes sutis para os cards 3 e 4 */
-.hero-card-theme-events .hero-card-v8-inner { background: #98d163; }
-.hero-card-theme-homebar .hero-card-v8-inner { background: #e4913d; }
-.hero-card-theme-barril .hero-card-v8-inner { background: #9a571f; }
-.hero-card-theme-tipos .hero-card-v8-inner { background: #e2c392; }
+/* Temas refinados com paleta mais elegante da Bierz */
+.hero-card-theme-events .hero-card-v8-inner { background: linear-gradient(180deg, #a8c85d 0%, #86b543 100%); }
+.hero-card-theme-homebar .hero-card-v8-inner { background: linear-gradient(180deg, #de9138 0%, #c9751e 100%); }
+.hero-card-theme-barril .hero-card-v8-inner { background: linear-gradient(180deg, #ae6b33 0%, #8a4e1d 100%); }
+.hero-card-theme-tipos .hero-card-v8-inner { background: linear-gradient(180deg, #e1cb9d 0%, #cfb07a 100%); }
 
-.hero-card-theme-barril .hero-card-v8-inner::before {
+.hero-card-theme-barril .hero-card-v8-inner::before,
+.hero-card-theme-events .hero-card-v8-inner::before,
+.hero-card-theme-homebar .hero-card-v8-inner::before,
+.hero-card-theme-tipos .hero-card-v8-inner::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.0) 28%, rgba(0,0,0,0.08) 100%);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.0) 30%, rgba(0,0,0,0.10) 100%),
+    repeating-linear-gradient(96deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 10px);
   z-index: 1;
   pointer-events: none;
 }
@@ -151,29 +156,35 @@
 
 /* Destaque HomeBar (Elemento Maior e Centralizado) */
 .hero-card-v8-image-homebar-hero {
-  width: 145%; /* Aumentado conforme solicitado */
-  left: 49.2%;
-  bottom: 168px;
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+  width: 154%;
+  left: 49%;
+  bottom: 156px;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.30));
 }
 
 .hero-card-v8-image-events { width: 96%; left: 48%; bottom: 126px; }
 .hero-card-v8-image-barril { width: 88%; left: 50%; bottom: 128px; }
 .hero-card-v8-image-redes {
-  width: 126%;
+  width: calc(100% - 28px);
   height: 62%;
-  left: 50%;
-  bottom: 122px;
+  left: 14px;
+  top: 14px;
+  bottom: auto;
+  transform: none;
   object-fit: cover;
-  object-position: center center;
-  border-radius: 28px 28px 20px 20px;
-  filter: drop-shadow(0 14px 24px rgba(0,0,0,0.22));
+  object-position: center 34%;
+  border-radius: 26px 26px 18px 18px;
+  filter: none;
+  z-index: 4;
 }
 
 .hero-card-v8-image-tipos { width: 92%; left: 50%; bottom: 128px; }
 
 .hero-card-v8:hover .hero-card-v8-image {
   transform: translateX(-50%) scale(1.04);
+}
+.hero-card-v8:hover .hero-card-v8-image-redes {
+  transform: scale(1.02);
 }
 
 /* --- CONTEÚDO E TIPOGRAFIA (Melhoria Premium) --- */
@@ -189,7 +200,7 @@
   justify-content: flex-end;
   padding: 0 18px 24px;
   text-align: center;
-  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.64) 0%, rgba(0,0,0,0.22) 42%, transparent 100%);
 }
 
 .hero-card-v8-title {
@@ -200,26 +211,26 @@
   padding: 0 18px;
   border-radius: 4px;
   background: #0d0d0d;
-  color: #f29c29; /* Cor mais próxima do ouro da referência */
+  color: #f0a02f;
   font-family: Impact, sans-serif;
   font-weight: 700;
   font-size: clamp(14px, 1vw, 17px);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.45px;
   box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .hero-card-v8-description {
   margin: 0;
-  max-width: 85%;
+  max-width: 86%;
   color: #fff;
   font-family: 'Inter', sans-serif;
-  font-size: clamp(11px, 0.8vw, 13px);
+  font-size: clamp(11px, 0.82vw, 13px);
   font-weight: 700;
-  line-height: 1.4;
-  opacity: 0.95;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  line-height: 1.35;
+  opacity: 0.96;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.28);
 }
 
 /* --- RESTAURANDO ELEMENTOS DO CARROSSEL --- */
@@ -276,7 +287,24 @@
   }
   .hero-card-v8 { width: 180px; }
   .hero-card-v8-inner { height: 300px; }
-  .hero-card-v8-image-homebar-hero { width: 130%; bottom: 130px; }
-  .hero-card-v8-image-redes { width: 134%; height: 56%; bottom: 110px; border-radius: 24px 24px 18px 18px; }
+  .hero-card-v8-image-homebar-hero {
+  width: 154%;
+  left: 49%;
+  bottom: 156px;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.30));
+}
+  .hero-card-v8-image-redes {
+  width: calc(100% - 28px);
+  height: 62%;
+  left: 14px;
+  top: 14px;
+  bottom: auto;
+  transform: none;
+  object-fit: cover;
+  object-position: center 34%;
+  border-radius: 26px 26px 18px 18px;
+  filter: none;
+  z-index: 4;
+}
   .nav-arrow { display: none; }
 }
