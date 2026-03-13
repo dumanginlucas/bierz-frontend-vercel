@@ -4,7 +4,10 @@
   height: 100vh;
   min-height: 860px;
   overflow: hidden;
-  background: transparent;
+  background: #000;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .hero-slides-wrapper {
@@ -284,4 +287,33 @@
 
 .hero-card-theme-events .hero-card-v8-description {
   transform: translateY(-16px);
+}
+
+
+.hero-carousel-v8-loading .hero-slides-wrapper {
+  opacity: 0;
+}
+
+.hero-carousel-v8-ready .hero-slides-wrapper {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .hero-carousel-v8 {
+    height: 88svh;
+    min-height: 760px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-carousel-v8 {
+    height: 84svh;
+    min-height: 680px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-carousel-v8 {
+    min-height: 620px;
+  }
 }

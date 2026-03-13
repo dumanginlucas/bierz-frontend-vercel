@@ -85,18 +85,24 @@ const Header = () => {
 
   const scrollToTop = () => {
     setIsMobileMenuOpen(false);
+
+    const performScrollToTop = () => {
+      const heroSection = document.getElementById('identification');
+      if (heroSection) {
+        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     if (location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: 'identification' } });
+      navigate('/');
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(performScrollToTop);
+      });
       return;
     }
 
-    const heroSection = document.getElementById('identification');
-    if (heroSection) {
-      heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    performScrollToTop();
   };
 
   const handleLogout = () => {

@@ -63,6 +63,9 @@ const HeroCarousel = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
+  const [isHeroReady, setIsHeroReady] = useState(false);
+
+  const currentBanner = banners[currentSlide % totalSlides] || banners[0];
 
   const nextSlide = () => {
     setIsTransitionEnabled(true);
@@ -71,16 +74,46 @@ const HeroCarousel = () => {
 
   const prevSlide = () => {
     setIsTransitionEnabled(true);
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setCurrentSlide((prev) => {
+      if (prev === 0) {
+        return totalSlides - 1;
+      }
+      return prev - 1;
+    });
   };
 
   useEffect(() => {
+    let isMounted = true;
+
+    const preload = banners.map((banner) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = banner.image;
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    });
+
+    Promise.all(preload).then(() => {
+      if (isMounted) {
+        setIsHeroReady(true);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [banners]);
+
+  useEffect(() => {
+    if (!isHeroReady) return undefined;
+
     const interval = window.setInterval(() => {
       nextSlide();
     }, 12000);
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [isHeroReady]);
 
   const handleTransitionEnd = () => {
     if (currentSlide === totalSlides) {
@@ -100,15 +133,20 @@ const HeroCarousel = () => {
 
       return () => window.cancelAnimationFrame(frame);
     }
+
+    return undefined;
   }, [isTransitionEnabled]);
 
   return (
-    <section className="hero-carousel-v8 relative w-full overflow-hidden">
+    <section
+      className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}`}
+      style={{ backgroundImage: `url(${currentBanner.image})` }}
+    >
       <div
         className="hero-slides-wrapper flex h-full cubic-bezier(0.65, 0, 0.35, 1)"
         style={{
           width: `${loopedBanners.length * 100}%`,
-          transform: `translateX(-${100 / loopedBanners.length * currentSlide}%)`,
+          transform: `translateX(-${(100 / loopedBanners.length) * currentSlide}%)`,
           transition: isTransitionEnabled ? 'transform 1s cubic-bezier(0.65, 0, 0.35, 1)' : 'none'
         }}
         onTransitionEnd={handleTransitionEnd}
@@ -125,6 +163,9 @@ const HeroCarousel = () => {
                   src={banner.image}
                   alt={banner.alt}
                   className="h-full w-full object-cover object-center"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  draggable="false"
                 />
                 <div className="pointer-events-none absolute inset-0 h-48 bg-gradient-to-b from-black/55 via-black/12 to-transparent" />
               </div>
