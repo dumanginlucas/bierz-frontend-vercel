@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Identification from './Identification';
 import './HeroCarousel.css';
 
 const HeroCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(1);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const totalSlides = 2;
 
@@ -21,6 +20,19 @@ const HeroCarousel = () => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
     setTimeout(() => setIsTransitioning(false), 600);
   };
+
+  const banners = [
+    {
+      id: 1,
+      image: '/bannerhero1.png',
+      alt: 'Banner Hero 1'
+    },
+    {
+      id: 2,
+      image: '/bannerhero2.png',
+      alt: 'Banner Hero 2'
+    }
+  ];
 
   const cards = [
     {
@@ -67,40 +79,38 @@ const HeroCarousel = () => {
         className="hero-slides-wrapper flex h-full transition-transform duration-1000 cubic-bezier(0.65, 0, 0.35, 1)"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        <div className="hero-slide w-full h-full flex-shrink-0">
-          <Identification />
-        </div>
-
-        <div className="hero-slide hero-slide-bierz w-full h-full flex-shrink-0 relative flex flex-col items-center">
-          <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
-            <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
-              <img
-                src="/Bierzbannerhomebarchurrasco.png"
-                alt="Bierz Experience"
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none h-48" />
+        {banners.map((banner) => (
+          <div key={banner.id} className="hero-slide hero-slide-bierz w-full h-full flex-shrink-0 relative flex flex-col items-center">
+            <div className="hero-banner-v8-container relative w-full h-full overflow-hidden">
+              <div className="hero-banner-v8-inner relative w-full h-full overflow-hidden">
+                <img
+                  src={banner.image}
+                  alt={banner.alt}
+                  className="w-full h-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/12 to-transparent pointer-events-none h-48" />
+              </div>
             </div>
           </div>
+        ))}
+      </div>
 
-          <div className="hero-cards-v8-wrapper">
-            <div className="hero-cards-v8-grid">
-              {cards.map((card) => (
-                <div key={card.id} className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'}`}>
-                  <div className="hero-card-v8-inner">
-                    <div className="hero-card-v8-art" aria-hidden="true">
-                      <div className={`hero-card-v8-image ${card.imageClass}`} style={{ backgroundImage: `url(${card.image})` }} />
-                    </div>
-
-                    <div className="hero-card-v8-content">
-                      <span className="hero-card-v8-title">{card.label}</span>
-                      <p className="hero-card-v8-description">{card.description}</p>
-                    </div>
-                  </div>
+      <div className="hero-cards-v8-wrapper">
+        <div className="hero-cards-v8-grid">
+          {cards.map((card) => (
+            <div key={card.id} className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'}`}>
+              <div className="hero-card-v8-inner">
+                <div className="hero-card-v8-art" aria-hidden="true">
+                  <div className={`hero-card-v8-image ${card.imageClass}`} style={{ backgroundImage: `url(${card.image})` }} />
                 </div>
-              ))}
+
+                <div className="hero-card-v8-content">
+                  <span className="hero-card-v8-title">{card.label}</span>
+                  <p className="hero-card-v8-description">{card.description}</p>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
