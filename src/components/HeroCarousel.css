@@ -243,24 +243,62 @@
 }
 .indicator-dot.active { width: 28px; background: #f29c29; }
 
+/* TABLET ADJUSTMENTS */
+@media (max-width: 1024px) {
+  .hero-carousel-v8 {
+    height: 115svh;
+    min-height: 900px;
+  }
+  .hero-cards-v8-grid {
+    gap: 18px;
+    max-width: calc(100vw - 40px);
+  }
+  .hero-card-v8 {
+    width: 210px;
+  }
+  .hero-card-v8-inner {
+    height: 340px;
+  }
+  .nav-arrow.left { left: 12px; }
+  .nav-arrow.right { right: 12px; }
+  .nav-arrow svg { width: 40px; height: 40px; }
+}
+
+/* MOBILE ADJUSTMENTS */
 @media (max-width: 768px) {
+  .hero-carousel-v8 {
+    height: 100svh;
+    min-height: 780px;
+  }
   .hero-cards-v8-wrapper {
-    bottom: -10px;
+    bottom: 20px;
     overflow-x: auto;
     justify-content: flex-start;
-    padding: 0 16px;
+    padding: 0 20px;
     transform: none;
     left: 0;
     width: 100%;
+    /* Esconde scrollbar mas permite scroll */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hero-cards-v8-wrapper::-webkit-scrollbar {
+    display: none;
   }
   .hero-cards-v8-grid {
     gap: 14px;
     justify-content: flex-start;
-    padding-right: 16px;
+    padding-right: 40px; /* Espaço extra no final do scroll */
     max-width: none;
+    width: max-content;
   }
-  .hero-card-v8 { width: 180px; }
-  .hero-card-v8-inner { height: 300px; }
+  .hero-card-v8 { 
+    width: 190px; 
+  }
+  .hero-card-v8-inner { 
+    height: 310px; 
+    border-radius: 20px;
+  }
   .hero-card-v8-image {
     height: calc(100% - 88px);
   }
@@ -270,12 +308,34 @@
     height: 88px;
     padding: 32px 14px 14px;
   }
+  .hero-card-v8-title {
+    min-width: 140px;
+    height: 36px;
+    font-size: 14px;
+  }
   .hero-card-v8-description {
-    font-size: 10px;
-    max-width: 90%;
+    font-size: 11px;
+    max-width: 95%;
+  }
+  .nav-arrow {
+    display: none; /* Setas costumam atrapalhar no mobile, o drag é suficiente */
+  }
+  .indicators-container {
+    bottom: 5px;
   }
 }
 
+@media (max-width: 480px) {
+  .hero-carousel-v8 {
+    min-height: 700px;
+  }
+  .hero-card-v8 { 
+    width: 170px; 
+  }
+  .hero-card-v8-inner { 
+    height: 280px; 
+  }
+}
 
 .hero-card-theme-events .hero-card-v8-description {
   transform: translateY(-16px);
@@ -288,24 +348,4 @@
 
 .hero-carousel-v8-ready .hero-slides-wrapper {
   opacity: 1;
-}
-
-@media (max-width: 1024px) {
-  .hero-carousel-v8 {
-    height: 115svh;
-    min-height: 980px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-carousel-v8 {
-    height: 100svh;
-    min-height: 820px;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-carousel-v8 {
-    min-height: 760px;
-  }
 }

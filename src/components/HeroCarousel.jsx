@@ -3,27 +3,32 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
 const MOBILE_BREAKPOINT = 768;
+const TABLET_BREAKPOINT = 1024;
 const AUTO_PLAY_MS = 12000;
 const DRAG_THRESHOLD_RATIO = 0.15;
 
 const HeroCarousel = () => {
-  const [isMobileView, setIsMobileView] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth <= MOBILE_BREAKPOINT;
+  const [windowWidth, setWindowWidth] = useState(() => {
+    if (typeof window === 'undefined') return 1200;
+    return window.innerWidth;
   });
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= MOBILE_BREAKPOINT);
+      setWindowWidth(window.innerWidth);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const isMobileView = windowWidth <= MOBILE_BREAKPOINT;
+  const isTabletView = windowWidth > MOBILE_BREAKPOINT && windowWidth <= TABLET_BREAKPOINT;
+
   const banners = useMemo(
     () => [
       {
         id: 1,
+        // Usando banner mobile se for mobile, senão web (por enquanto tablet usa web até o usuário fornecer o específico)
         image: isMobileView ? '/bannermobile1.png' : '/bannerhero1.png',
         alt: 'Banner Hero 1'
       },
@@ -76,7 +81,7 @@ const HeroCarousel = () => {
   ];
 
   const totalSlides = banners.length;
-  // Criamos o array para o loop infinito: [Ultimo, Slide1, Slide2, ..., SlideN, Primeiro]
+  // Array para loop infinito: [Ultimo, Slide1, Slide2, ..., SlideN, Primeiro]
   const loopedBanners = useMemo(() => {
     if (!banners.length) return [];
     return [banners[banners.length - 1], ...banners, banners[0]];
@@ -107,13 +112,13 @@ const HeroCarousel = () => {
     return () => window.removeEventListener('resize', updateHeroWidth);
   }, [updateHeroWidth]);
 
-  // Reinicia o carousel quando os banners mudam
+  // Reinicia o carousel quando os banners mudam (ex: resize entre mobile/web)
   useEffect(() => {
+    setIsTransitionEnabled(false);
     setCurrentSlide(1);
     setDragOffset(0);
-    setIsTransitionEnabled(false);
     isResettingRef.current = false;
-  }, [banners]);
+  }, [banners.length, isMobileView]);
 
   const logicalIndex = totalSlides
     ? ((currentSlide - 1 + totalSlides) % totalSlides)
@@ -193,6 +198,7 @@ const HeroCarousel = () => {
     } else if (delta >= threshold) {
       prevSlide();
     } else {
+      // Se não passou do threshold, volta pro slide atual mas precisa garantir que o autoplay volte
       restartAutoplay();
     }
     
@@ -248,19 +254,15 @@ const HeroCarousel = () => {
     };
   }, [isDragging, moveDrag, endDrag]);
 
-  // Função vital para o loop infinito sem travamentos
   const handleTransitionEnd = () => {
     if (currentSlide >= totalSlides + 1) {
-      // Chegou no clone do primeiro (final do array)
       setIsTransitionEnabled(false);
       isResettingRef.current = true;
       setCurrentSlide(1);
-      // Pequeno timeout para garantir que o estado do React atualizou antes de reativar transições
       setTimeout(() => {
         isResettingRef.current = false;
       }, 50);
     } else if (currentSlide <= 0) {
-      // Chegou no clone do último (início do array)
       setIsTransitionEnabled(false);
       isResettingRef.current = true;
       setCurrentSlide(totalSlides);
