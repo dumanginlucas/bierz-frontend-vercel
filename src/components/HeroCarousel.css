@@ -300,6 +300,7 @@
     height: 100svh;
     min-height: 780px;
     overflow: visible; /* CRUCIAL: Resolve o corte do hover no topo */
+    margin-bottom: 120px; /* Adiciona respiro para a seção seguinte (Como Funciona) */
   }
   
   .hero-cards-v8-wrapper {
