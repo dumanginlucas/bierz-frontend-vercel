@@ -3,7 +3,7 @@
   width: 100%;
   height: 120vh;
   min-height: 1032px;
-  overflow: hidden;
+  overflow: visible; /* MUDANÇA CRUCIAL: Permite que o efeito de hover suba além do limite da seção */
   background: #000;
   background-position: center center;
   background-repeat: no-repeat;
@@ -22,7 +22,7 @@
   height: 100%;
   flex-shrink: 0;
   position: relative;
-  overflow: visible; /* Crucial para o efeito de hover não ser cortado */
+  overflow: visible;
 }
 
 .hero-slide-bierz::after {
@@ -71,14 +71,14 @@
   left: 50%;
   bottom: clamp(18px, 3.2vw, 34px);
   transform: translateX(-50%);
-  z-index: 25;
+  z-index: 100; /* Aumentado para garantir que fique acima de tudo */
   display: flex;
   justify-content: center;
   align-items: flex-end;
   width: 100%;
   pointer-events: none;
   background: transparent;
-  overflow: visible; /* Permite que o hover saia do container */
+  overflow: visible;
 }
 
 .hero-cards-v8-grid {
@@ -89,7 +89,7 @@
   width: max-content;
   max-width: calc(100vw - 72px);
   background: transparent;
-  overflow: visible; /* Permite que o hover saia do grid */
+  overflow: visible;
 }
 
 .hero-card-v8 {
@@ -115,8 +115,8 @@
 
 .hero-card-v8:hover .hero-card-v8-inner,
 .hero-card-v8:active .hero-card-v8-inner {
-  transform: translateY(-15px); /* Efeito de elevação mais pronunciado */
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.50);
+  transform: translateY(-20px); /* Elevação aumentada para destaque */
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.60);
 }
 
 .hero-card-theme-events .hero-card-v8-content {
@@ -254,21 +254,21 @@
   .hero-carousel-v8 {
     height: 115svh;
     min-height: 900px;
-    overflow: visible; /* Permite que os cards vazem para baixo */
+    overflow: visible; /* Garante que o hover não corte no topo */
   }
   
   .hero-cards-v8-wrapper {
-    bottom: -80px; /* Joga os cards bem mais para baixo */
+    bottom: -100px; /* Desce os cards no tablet */
     overflow-x: auto;
-    overflow-y: visible; /* Crucial para o hover */
+    overflow-y: visible;
     justify-content: flex-start;
-    padding: 0 20px 40px; /* Padding inferior para o hover */
+    padding: 25px 20px 60px; /* Padding superior e inferior para o hover */
     transform: none;
     left: 0;
     width: 100%;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    pointer-events: auto; /* Garante que o container capture eventos */
+    pointer-events: auto;
   }
   
   .hero-cards-v8-wrapper::-webkit-scrollbar {
@@ -292,10 +292,6 @@
   .hero-card-v8-inner {
     height: 340px;
   }
-  
-  .nav-arrow {
-    display: none;
-  }
 }
 
 /* MOBILE ADJUSTMENTS (até 768px) */
@@ -303,20 +299,19 @@
   .hero-carousel-v8 {
     height: 100svh;
     min-height: 780px;
-    overflow: visible; /* Crucial: permite que os cards vazem para fora da seção hero */
+    overflow: visible; /* CRUCIAL: Resolve o corte do hover no topo */
   }
   
   .hero-cards-v8-wrapper {
     /* 
-       A imagem mostra que os cards estão quase no meio da tela.
-       Para descer 15% em relação ao original (que era bottom: 18px),
-       e dar o efeito de "vazar" para a próxima seção:
+       Desce mais 10% em relação ao ajuste anterior.
+       Usando vh para ser proporcional à tela.
     */
-    bottom: -100px; /* Joga os cards para baixo, para fora do banner */
+    bottom: -180px; /* Desce significativamente para dar espaço ao banner */
     overflow-x: auto;
-    overflow-y: visible; /* Garante que o efeito de hover/elevação não seja cortado */
+    overflow-y: visible; /* Garante que o efeito de elevação apareça */
     justify-content: flex-start;
-    padding: 0 20px 50px; /* Padding inferior para não cortar a sombra/hover */
+    padding: 30px 20px 80px; /* Padding extra para hover e sombra */
     transform: none;
     left: 0;
     width: 100%;
@@ -341,13 +336,12 @@
   .hero-card-v8 { 
     width: 190px;
     flex: 0 0 190px;
-    z-index: 100; /* Garante que fiquem por cima do banner */
+    z-index: 100;
   }
   
   .hero-card-v8-inner { 
     height: 310px; 
     border-radius: 20px;
-    /* Removemos o isolation: isolate se necessário, mas aqui o overflow: visible é o segredo */
   }
   
   .hero-card-v8-image {
@@ -372,14 +366,6 @@
   .hero-card-v8-description {
     font-size: 11px;
     max-width: 95%;
-  }
-  
-  .nav-arrow {
-    display: none;
-  }
-  
-  .indicators-container {
-    bottom: 120px; /* Sobe os indicadores para não ficarem atrás dos cards */
   }
 }
 

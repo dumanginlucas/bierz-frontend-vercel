@@ -23,6 +23,7 @@ const HeroCarousel = () => {
 
   const isMobileView = windowWidth <= MOBILE_BREAKPOINT;
   const isTabletView = windowWidth > MOBILE_BREAKPOINT && windowWidth <= TABLET_BREAKPOINT;
+  const isDesktopView = windowWidth > TABLET_BREAKPOINT;
 
   const banners = useMemo(
     () => [
@@ -80,7 +81,6 @@ const HeroCarousel = () => {
   ];
 
   const totalSlides = banners.length;
-  // Array para loop infinito: [Ultimo, Slide1, Slide2, ..., SlideN, Primeiro]
   const loopedBanners = useMemo(() => {
     if (!banners.length) return [];
     return [banners[banners.length - 1], ...banners, banners[0]];
@@ -111,7 +111,6 @@ const HeroCarousel = () => {
     return () => window.removeEventListener('resize', updateHeroWidth);
   }, [updateHeroWidth]);
 
-  // Reinicia o carousel quando os banners mudam (ex: resize entre mobile/web)
   useEffect(() => {
     setIsTransitionEnabled(false);
     setCurrentSlide(1);
@@ -144,7 +143,6 @@ const HeroCarousel = () => {
     setCurrentSlide((prev) => prev - 1);
   }, []);
 
-  // Função para iniciar o autoplay - CRÍTICA PARA O LOOP INFINITO
   const startAutoplay = useCallback(() => {
     clearAutoplay();
     if (!isHeroReady || isDraggingRef.current || isResettingRef.current) return;
@@ -171,7 +169,6 @@ const HeroCarousel = () => {
     return () => { isMounted = false; };
   }, [banners]);
 
-  // Inicia autoplay quando hero está pronto
   useEffect(() => {
     if (isHeroReady && !isDraggingRef.current && !isResettingRef.current) {
       startAutoplay();
@@ -203,7 +200,6 @@ const HeroCarousel = () => {
     }
     
     dragDeltaRef.current = 0;
-    // Reinicia autoplay após drag
     setTimeout(() => {
       if (isHeroReady && !isDraggingRef.current && !isResettingRef.current) {
         startAutoplay();
@@ -267,7 +263,6 @@ const HeroCarousel = () => {
       setCurrentSlide(1);
       setTimeout(() => {
         isResettingRef.current = false;
-        // Reinicia autoplay após reset
         if (isHeroReady && !isDraggingRef.current) {
           startAutoplay();
         }
@@ -278,7 +273,6 @@ const HeroCarousel = () => {
       setCurrentSlide(totalSlides);
       setTimeout(() => {
         isResettingRef.current = false;
-        // Reinicia autoplay após reset
         if (isHeroReady && !isDraggingRef.current) {
           startAutoplay();
         }
@@ -290,7 +284,7 @@ const HeroCarousel = () => {
     <section
       ref={heroRef}
       id="identification"
-      className={`hero-carousel-v8 relative w-full overflow-hidden${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}${isDragging ? ' is-dragging' : ''}`}
+      className={`hero-carousel-v8 relative w-full overflow-visible${isHeroReady ? ' hero-carousel-v8-ready' : ' hero-carousel-v8-loading'}${isDragging ? ' is-dragging' : ''}`}
       style={{ backgroundImage: `url(${currentBanner?.image || ''})` }}
     >
       <div
@@ -351,27 +345,33 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      <button onClick={prevSlide} className="nav-arrow left" aria-label="Previous slide">
-        <ChevronLeft size={48} strokeWidth={1} />
-      </button>
-      <button onClick={nextSlide} className="nav-arrow right" aria-label="Next slide">
-        <ChevronRight size={48} strokeWidth={1} />
-      </button>
+      {isDesktopView && (
+        <>
+          <button onClick={prevSlide} className="nav-arrow left" aria-label="Previous slide">
+            <ChevronLeft size={48} strokeWidth={1} />
+          </button>
+          <button onClick={nextSlide} className="nav-arrow right" aria-label="Next slide">
+            <ChevronRight size={48} strokeWidth={1} />
+          </button>
+        </>
+      )}
 
-      <div className="indicators-container">
-        {[...Array(totalSlides)].map((_, i) => (
-          <button
-            key={i}
-            onClick={() => {
-              if (isResettingRef.current) return;
-              setIsTransitionEnabled(true);
-              setCurrentSlide(i + 1);
-            }}
-            className={`indicator-dot ${logicalIndex === i ? 'active' : ''}`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
-      </div>
+      {isDesktopView && (
+        <div className="indicators-container">
+          {[...Array(totalSlides)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                if (isResettingRef.current) return;
+                setIsTransitionEnabled(true);
+                setCurrentSlide(i + 1);
+              }}
+              className={`indicator-dot ${logicalIndex === i ? 'active' : ''}`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };
