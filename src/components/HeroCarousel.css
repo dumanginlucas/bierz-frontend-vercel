@@ -284,9 +284,10 @@
     height: 340px;
   }
   
-  .nav-arrow.left { left: 12px; }
-  .nav-arrow.right { right: 12px; }
-  .nav-arrow svg { width: 40px; height: 40px; }
+  /* Remove setas no tablet */
+  .nav-arrow {
+    display: none;
+  }
 }
 
 /* MOBILE ADJUSTMENTS (até 768px) */
@@ -297,7 +298,7 @@
   }
   
   .hero-cards-v8-wrapper {
-    bottom: 15vh;
+    bottom: calc(15% + 20px);
     overflow-x: auto;
     overflow-y: hidden;
     justify-content: flex-start;
@@ -356,6 +357,7 @@
     max-width: 95%;
   }
   
+  /* Remove setas no mobile */
   .nav-arrow {
     display: none;
   }
