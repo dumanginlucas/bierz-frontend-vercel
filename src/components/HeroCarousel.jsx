@@ -28,7 +28,6 @@ const HeroCarousel = () => {
     () => [
       {
         id: 1,
-        // Usando banner mobile se for mobile, senão web (por enquanto tablet usa web até o usuário fornecer o específico)
         image: isMobileView ? '/bannermobile1.png' : '/bannerhero1.png',
         alt: 'Banner Hero 1'
       },
@@ -145,14 +144,15 @@ const HeroCarousel = () => {
     setCurrentSlide((prev) => prev - 1);
   }, []);
 
-  const restartAutoplay = useCallback(() => {
+  // Função para iniciar o autoplay - CRÍTICA PARA O LOOP INFINITO
+  const startAutoplay = useCallback(() => {
     clearAutoplay();
     if (!isHeroReady || isDraggingRef.current || isResettingRef.current) return;
 
     autoplayRef.current = window.setInterval(() => {
-      nextSlide();
+      setCurrentSlide((prev) => prev + 1);
     }, AUTO_PLAY_MS);
-  }, [clearAutoplay, isHeroReady, nextSlide]);
+  }, [clearAutoplay, isHeroReady]);
 
   useEffect(() => {
     let isMounted = true;
@@ -171,10 +171,13 @@ const HeroCarousel = () => {
     return () => { isMounted = false; };
   }, [banners]);
 
+  // Inicia autoplay quando hero está pronto
   useEffect(() => {
-    restartAutoplay();
+    if (isHeroReady && !isDraggingRef.current && !isResettingRef.current) {
+      startAutoplay();
+    }
     return clearAutoplay;
-  }, [restartAutoplay, clearAutoplay, currentSlide]);
+  }, [isHeroReady, startAutoplay, clearAutoplay]);
 
   const getClientX = (event) => {
     if ('touches' in event && event.touches.length) return event.touches[0].clientX;
@@ -197,13 +200,16 @@ const HeroCarousel = () => {
       nextSlide();
     } else if (delta >= threshold) {
       prevSlide();
-    } else {
-      // Se não passou do threshold, volta pro slide atual mas precisa garantir que o autoplay volte
-      restartAutoplay();
     }
     
     dragDeltaRef.current = 0;
-  }, [nextSlide, prevSlide, restartAutoplay]);
+    // Reinicia autoplay após drag
+    setTimeout(() => {
+      if (isHeroReady && !isDraggingRef.current && !isResettingRef.current) {
+        startAutoplay();
+      }
+    }, 100);
+  }, [nextSlide, prevSlide, isHeroReady, startAutoplay]);
 
   const moveDrag = useCallback((event) => {
     if (!isDraggingRef.current) return;
@@ -261,6 +267,10 @@ const HeroCarousel = () => {
       setCurrentSlide(1);
       setTimeout(() => {
         isResettingRef.current = false;
+        // Reinicia autoplay após reset
+        if (isHeroReady && !isDraggingRef.current) {
+          startAutoplay();
+        }
       }, 50);
     } else if (currentSlide <= 0) {
       setIsTransitionEnabled(false);
@@ -268,6 +278,10 @@ const HeroCarousel = () => {
       setCurrentSlide(totalSlides);
       setTimeout(() => {
         isResettingRef.current = false;
+        // Reinicia autoplay após reset
+        if (isHeroReady && !isDraggingRef.current) {
+          startAutoplay();
+        }
       }, 50);
     }
   };

@@ -142,7 +142,7 @@ const Header = () => {
           </div>
 
           {/* ── Navegação Desktop ── */}
-          <nav className="ml-auto hidden items-center gap-4 lg:gap-6 md:flex">
+          <nav className="ml-auto hidden items-center gap-4 lg:gap-6 xl:flex">
             <button
               onClick={() => scrollToSection('section-how-it-works')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap"
@@ -256,8 +256,8 @@ const Header = () => {
             </Button>
           </nav>
 
-          {/* ── Botões Mobile ── */}
-          <div className="ml-auto flex items-center gap-3 md:hidden">
+          {/* ── Botões Mobile/Tablet ── */}
+          <div className="ml-auto flex items-center gap-3 xl:hidden">
             <Link to="/carrinho" className="relative">
               <Button
                 variant="outline"
@@ -283,9 +283,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* ── Menu Mobile ── */}
+      {/* ── Menu Mobile/Tablet ── */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-white/10 animate-in slide-in-from-top duration-300">
+        <div className="xl:hidden border-t border-white/10 animate-in slide-in-from-top duration-300">
           <nav className="flex flex-col p-6 space-y-4">
             <button
               onClick={() => scrollToSection('section-how-it-works')}

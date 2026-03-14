@@ -243,35 +243,15 @@
 }
 .indicator-dot.active { width: 28px; background: #f29c29; }
 
-/* TABLET ADJUSTMENTS */
+/* TABLET ADJUSTMENTS (768px - 1024px) */
 @media (max-width: 1024px) {
   .hero-carousel-v8 {
     height: 115svh;
     min-height: 900px;
   }
-  .hero-cards-v8-grid {
-    gap: 18px;
-    max-width: calc(100vw - 40px);
-  }
-  .hero-card-v8 {
-    width: 210px;
-  }
-  .hero-card-v8-inner {
-    height: 340px;
-  }
-  .nav-arrow.left { left: 12px; }
-  .nav-arrow.right { right: 12px; }
-  .nav-arrow svg { width: 40px; height: 40px; }
-}
-
-/* MOBILE ADJUSTMENTS */
-@media (max-width: 768px) {
-  .hero-carousel-v8 {
-    height: 100svh;
-    min-height: 780px;
-  }
+  
   .hero-cards-v8-wrapper {
-    bottom: 20px;
+    bottom: clamp(18px, 3.2vw, 34px);
     overflow-x: auto;
     justify-content: flex-start;
     padding: 0 20px;
@@ -282,44 +262,104 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  
   .hero-cards-v8-wrapper::-webkit-scrollbar {
     display: none;
   }
+  
   .hero-cards-v8-grid {
-    gap: 14px;
+    gap: 18px;
     justify-content: flex-start;
-    padding-right: 40px; /* Espaço extra no final do scroll */
+    padding-right: 40px;
     max-width: none;
     width: max-content;
   }
-  .hero-card-v8 { 
-    width: 190px; 
+  
+  .hero-card-v8 {
+    width: 210px;
+    flex: 0 0 210px;
   }
+  
+  .hero-card-v8-inner {
+    height: 340px;
+  }
+  
+  .nav-arrow.left { left: 12px; }
+  .nav-arrow.right { right: 12px; }
+  .nav-arrow svg { width: 40px; height: 40px; }
+}
+
+/* MOBILE ADJUSTMENTS (até 768px) */
+@media (max-width: 768px) {
+  .hero-carousel-v8 {
+    height: 100svh;
+    min-height: 780px;
+  }
+  
+  .hero-cards-v8-wrapper {
+    bottom: 15vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    padding: 0 20px;
+    transform: none;
+    left: 0;
+    width: 100%;
+    /* Esconde scrollbar mas permite scroll */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .hero-cards-v8-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hero-cards-v8-grid {
+    gap: 14px;
+    justify-content: flex-start;
+    padding-right: 40px;
+    max-width: none;
+    width: max-content;
+  }
+  
+  .hero-card-v8 { 
+    width: 190px;
+    flex: 0 0 190px;
+  }
+  
   .hero-card-v8-inner { 
     height: 310px; 
     border-radius: 20px;
   }
+  
   .hero-card-v8-image {
     height: calc(100% - 88px);
   }
+  
   .hero-card-v8-image-homebar { background-position: center 37%; }
   .hero-card-v8-image-entrega { background-position: 60% 35%; }
+  
   .hero-card-v8-content {
     height: 88px;
     padding: 32px 14px 14px;
   }
+  
   .hero-card-v8-title {
     min-width: 140px;
     height: 36px;
     font-size: 14px;
+    top: -18px;
   }
+  
   .hero-card-v8-description {
     font-size: 11px;
     max-width: 95%;
   }
+  
   .nav-arrow {
-    display: none; /* Setas costumam atrapalhar no mobile, o drag é suficiente */
+    display: none;
   }
+  
   .indicators-container {
     bottom: 5px;
   }
@@ -329,9 +369,12 @@
   .hero-carousel-v8 {
     min-height: 700px;
   }
+  
   .hero-card-v8 { 
-    width: 170px; 
+    width: 170px;
+    flex: 0 0 170px;
   }
+  
   .hero-card-v8-inner { 
     height: 280px; 
   }
@@ -340,7 +383,6 @@
 .hero-card-theme-events .hero-card-v8-description {
   transform: translateY(-16px);
 }
-
 
 .hero-carousel-v8-loading .hero-slides-wrapper {
   opacity: 0;
