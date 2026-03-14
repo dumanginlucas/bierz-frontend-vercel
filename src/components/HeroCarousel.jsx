@@ -25,20 +25,29 @@ const HeroCarousel = () => {
   const isTabletView = windowWidth > MOBILE_BREAKPOINT && windowWidth <= TABLET_BREAKPOINT;
   const isDesktopView = windowWidth > TABLET_BREAKPOINT;
 
+  const getBannerImage = useCallback(
+    (desktopImage, tabletImage, mobileImage) => {
+      if (isMobileView) return mobileImage;
+      if (isTabletView) return tabletImage;
+      return desktopImage;
+    },
+    [isMobileView, isTabletView]
+  );
+
   const banners = useMemo(
     () => [
       {
         id: 1,
-        image: isMobileView ? '/bannermobile1.png' : '/bannerhero1.png',
+        image: getBannerImage('/bannerhero1.png', '/bannertablet1.png', '/bannermobile1.png'),
         alt: 'Banner Hero 1'
       },
       {
         id: 2,
-        image: isMobileView ? '/bannermobile2.png' : '/bannerhero2.png',
+        image: getBannerImage('/bannerhero2.png', '/bannertablet2.png', '/bannermobile2.png'),
         alt: 'Banner Hero 2'
       }
     ],
-    [isMobileView]
+    [getBannerImage]
   );
 
   const cards = [
