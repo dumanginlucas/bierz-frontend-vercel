@@ -245,7 +245,7 @@
 
 @media (max-width: 768px) {
   .hero-cards-v8-wrapper {
-    bottom: 24px;
+    bottom: -10px;
     overflow-x: auto;
     justify-content: flex-start;
     padding: 0 16px;
@@ -292,20 +292,20 @@
 
 @media (max-width: 1024px) {
   .hero-carousel-v8 {
-    height: 108svh;
-    min-height: 860px;
+    height: 115svh;
+    min-height: 980px;
   }
 }
 
 @media (max-width: 768px) {
   .hero-carousel-v8 {
-    height: 90svh;
-    min-height: 720px;
+    height: 100svh;
+    min-height: 820px;
   }
 }
 
 @media (max-width: 480px) {
   .hero-carousel-v8 {
-    min-height: 660px;
+    min-height: 760px;
   }
 }
