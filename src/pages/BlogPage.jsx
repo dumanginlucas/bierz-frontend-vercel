@@ -6,24 +6,12 @@ import { Button } from '../components/ui/button';
 import { Calendar, User, ArrowRight, Search } from 'lucide-react';
 
 const BlogPage = () => {
-  const [visible, setVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('todos');
+  const [visible, setVisible] = useState(true);
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      setVisible(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    setVisible(true);
   }, []);
 
   const blogPosts = [
@@ -276,15 +264,13 @@ const BlogPage = () => {
         </section>
 
         {/* Blog Posts Grid */}
-        <section ref={sectionRef} className={`py-20 bg-gradient-to-b from-black to-gray-900 transition-all duration-700 min-h-screen ${visible ? 'opacity-100' : 'opacity-0'}`}>
+        <section ref={sectionRef} className="py-20 bg-gradient-to-b from-black to-gray-900 transition-all duration-700 min-h-screen opacity-100">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {filteredPosts.map((post, index) => (
                 <Card 
                   key={post.id}
-                  className={`bg-white/5 backdrop-blur-sm border-[#F59E0B]/20 hover:border-[#F59E0B]/50 transition-all duration-300 overflow-hidden group ${
-                    visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
+                  className="bg-white/5 backdrop-blur-sm border-[#F59E0B]/20 hover:border-[#F59E0B]/50 transition-all duration-300 overflow-hidden group opacity-100 translate-y-0"
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   {/* Image */}
