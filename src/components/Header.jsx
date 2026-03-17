@@ -168,12 +168,6 @@ const Header = () => {
               Calculadora
             </button>
             <button
-              onClick={() => scrollToSection('about')}
-              className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap"
-            >
-              Sobre
-            </button>
-            <button
               onClick={() => scrollToSection('contact')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap"
             >
@@ -310,12 +304,6 @@ const Header = () => {
               className="text-left text-lg text-gray-200 hover:text-[#F59E0B]"
             >
               Calculadora
-            </button>
-            <button
-              onClick={() => scrollToSection('about')}
-              className="text-left text-lg text-gray-200 hover:text-[#F59E0B]"
-            >
-              Sobre
             </button>
             <button
               onClick={() => scrollToSection('contact')}

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import "./AboutBierz.css";
 import Marquee from "./Marquee.jsx";
+import { ArrowRight } from "lucide-react";
 
 /* ─────────────────────────────────────────────
    Dados da seção
@@ -297,7 +299,7 @@ export default function AboutBierz() {
           ))}
         </Marquee>
 
-        {/* ── STORY + VISUAL ── */}
+        {/* ── STORY + BLOG CARD ── */}
         <div
           ref={storyRef}
           className={`ab-story ${storyVisible ? "ab-story--visible" : ""}`}
@@ -328,41 +330,52 @@ export default function AboutBierz() {
             </div>
           </div>
 
-          {/* Right: visual card com parallax */}
+          {/* Right: Blog do Chopp Card */}
           <div className="ab-story__right" ref={parallaxRef}>
-            <div className="ab-visual">
-              <div className="ab-visual__card ab-visual__card--back" />
-              <div className="ab-visual__card ab-visual__card--mid" />
-              <div className="ab-visual__card ab-visual__card--front">
-                <div className="ab-visual__inner">
-                  <div className="ab-visual__badge">
-                    <span className="ab-visual__badge-dot" />
-                    Ao vivo em Sorocaba
+            <Link to="/blog" className="ab-blog-card ab-blog-card--interactive">
+              <div className="ab-blog-card__bg" />
+              <div className="ab-blog-card__content">
+                <div className="ab-blog-card__header">
+                  <span className="ab-blog-card__badge">
+                    <span className="ab-blog-card__badge-dot" />
+                    Novo Conteúdo
+                  </span>
+                  <h3 className="ab-blog-card__title">Blog do Chopp</h3>
+                  <p className="ab-blog-card__subtitle">Dicas, guias e informações sobre chopp em Sorocaba</p>
+                </div>
+
+                <div className="ab-blog-card__articles">
+                  <div className="ab-blog-article">
+                    <div className="ab-blog-article__icon">📚</div>
+                    <div className="ab-blog-article__text">
+                      <h4>Guias Completos</h4>
+                      <p>Tudo sobre chopp, tipos e servimento</p>
+                    </div>
                   </div>
-                  <div className="ab-visual__title">HomeBar</div>
-                  <div className="ab-visual__sub">Barril gelado · Sempre refrigerado</div>
-                  <div className="ab-visual__bars">
-                    {[90, 75, 95, 60].map((w, i) => (
-                      <div key={i} className="ab-visual__bar-row">
-                        <div
-                          className="ab-visual__bar"
-                          style={{ "--bar-w": `${w}%`, "--bar-delay": `${i * 0.15}s` }}
-                        />
-                      </div>
-                    ))}
+                  <div className="ab-blog-article">
+                    <div className="ab-blog-article__icon">💡</div>
+                    <div className="ab-blog-article__text">
+                      <h4>Dicas Práticas</h4>
+                      <p>Como escolher e servir o melhor chopp</p>
+                    </div>
                   </div>
-                  <div className="ab-visual__footer">
-                    <span className="ab-visual__stat">500+ eventos</span>
-                    <span className="ab-visual__stat ab-visual__stat--accent">98% satisfação</span>
+                  <div className="ab-blog-article">
+                    <div className="ab-blog-article__icon">🎯</div>
+                    <div className="ab-blog-article__text">
+                      <h4>Para Eventos</h4>
+                      <p>Chopp para churrascos e festas</p>
+                    </div>
                   </div>
                 </div>
-                <div className="ab-visual__glow" aria-hidden="true" />
+
+                <div className="ab-blog-card__cta">
+                  <span className="ab-blog-card__btn">
+                    Explorar Blog <ArrowRight className="w-5 h-5" />
+                  </span>
+                </div>
               </div>
-              {/* Floating badges */}
-              <div className="ab-float ab-float--1">🍺 Chopp gelado</div>
-              <div className="ab-float ab-float--2">⚡ Entrega rápida</div>
-              <div className="ab-float ab-float--3">✨ Premium</div>
-            </div>
+              <div className="ab-blog-card__glow" aria-hidden="true" />
+            </Link>
           </div>
         </div>
 

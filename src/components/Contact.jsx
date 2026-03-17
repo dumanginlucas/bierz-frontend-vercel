@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { companyInfo } from '../mock';
 
 const Contact = () => {
@@ -26,41 +23,6 @@ const Contact = () => {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    message: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!formData.name || !formData.phone) {
-      alert('Por favor, preencha pelo menos seu nome e telefone');
-      return;
-    }
-
-    const message = `Olá! Meu nome é ${formData.name}.\n\nTelefone: ${formData.phone}${formData.email ? `\nEmail: ${formData.email}` : ''}\n\nMensagem: ${formData.message || 'Gostaria de mais informações sobre os produtos.'}`;
-    
-    window.open(`https://wa.me/${companyInfo.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
-    
-    // Reset form
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      message: ''
-    });
-  };
 
   return (
     <section
@@ -167,89 +129,39 @@ const Contact = () => {
             </Card>
           </div>
 
-          {/* Contact Form */}
+          {/* Location Map */}
           <Card className={`bg-white/5 backdrop-blur-sm border-[#F59E0B]/20 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <CardHeader>
-              <CardTitle className="text-white">Solicite um Orçamento</CardTitle>
+              <CardTitle className="text-white">Nossa Localização</CardTitle>
               <CardDescription className="text-gray-400">
-                Preencha o formulário e entraremos em contato via WhatsApp
+                Visite-nos em Sorocaba ou entre em contato para entrega
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-gray-300">
-                    Nome *
-                  </Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="Seu nome completo"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B]"
-                  />
+              <div className="space-y-4">
+                <div className="rounded-lg overflow-hidden border border-[#F59E0B]/20 h-[400px]">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.1234567890!2d-47.4567!3d-23.5505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf5c5c5c5c5c5d%3A0x5c5c5c5c5c5c5c5c!2sRua%20Professor%20Toledo%2C%20665%20-%20Centro%2C%20Sorocaba%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1234567890123"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-gray-300">
-                    Telefone *
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="(00) 00000-0000"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B]"
-                  />
+                <div className="bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-lg p-4">
+                  <h4 className="text-white font-semibold mb-2">Endereço</h4>
+                  <p className="text-gray-300 mb-3">{companyInfo.address}</p>
+                  <Button
+                    onClick={() => window.open(`https://www.google.com/maps/search/${encodeURIComponent(companyInfo.address)}`, '_blank')}
+                    className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold transition-all duration-200"
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Abrir no Google Maps
+                  </Button>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-300">
-                    E-mail (opcional)
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B]"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-gray-300">
-                    Mensagem (opcional)
-                  </Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Conte-nos sobre seu evento ou necessidades..."
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={4}
-                    className="bg-white/10 border-[#F59E0B]/30 text-white placeholder:text-gray-500 focus:border-[#F59E0B] resize-none"
-                  />
-                </div>
-
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                  <p className="text-blue-300 text-sm flex items-start gap-2">
-                    <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    Ao enviar, você será redirecionado para o WhatsApp com sua mensagem pré-preenchida.
-                  </p>
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold text-lg py-6 transition-all duration-200"
-                >
-                  <Send className="w-5 h-5 mr-2" />
-                  Enviar via WhatsApp
-                </Button>
-              </form>
+              </div>
             </CardContent>
           </Card>
         </div>
