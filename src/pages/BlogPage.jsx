@@ -224,9 +224,9 @@ const BlogPage = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className="min-h-screen bg-black">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
+        <section className="py-20 bg-gradient-to-b from-gray-900 to-black min-h-screen">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
@@ -276,7 +276,7 @@ const BlogPage = () => {
         </section>
 
         {/* Blog Posts Grid */}
-        <section ref={sectionRef} className={`py-20 bg-gradient-to-b from-black to-gray-900 transition-all duration-700 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+        <section ref={sectionRef} className={`py-20 bg-gradient-to-b from-black to-gray-900 transition-all duration-700 min-h-screen ${visible ? 'opacity-100' : 'opacity-0'}`}>
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {filteredPosts.map((post, index) => (
@@ -361,7 +361,7 @@ const BlogPage = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 border-y border-[#F59E0B]/20">
+        <section className="py-20 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 border-y border-[#F59E0B]/20 min-h-screen">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-bold text-white mb-4">
               Precisa de Chopp em Sorocaba?
