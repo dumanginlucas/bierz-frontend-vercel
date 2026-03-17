@@ -167,6 +167,12 @@ const Header = () => {
             >
               Calculadora
             </button>
+            <Link
+              to="/blog"
+              className={`font-medium whitespace-nowrap transition-colors duration-200 ${location.pathname.startsWith('/blog') ? 'text-[#F59E0B]' : 'text-gray-200 hover:text-[#F59E0B]'}`}
+            >
+              Blog
+            </Link>
             <button
               onClick={() => scrollToSection('contact')}
               className="text-gray-200 hover:text-[#F59E0B] transition-colors duration-200 font-medium whitespace-nowrap"
@@ -305,6 +311,12 @@ const Header = () => {
             >
               Calculadora
             </button>
+            <Link
+              to="/blog"
+              className="text-left text-lg text-gray-200 hover:text-[#F59E0B]"
+            >
+              Blog
+            </Link>
             <button
               onClick={() => scrollToSection('contact')}
               className="text-left text-lg text-gray-200 hover:text-[#F59E0B]"
