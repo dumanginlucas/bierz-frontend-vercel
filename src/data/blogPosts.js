@@ -240,3 +240,7 @@ export const blogPosts = [
     sections: [],
   },
 ];
+
+export const getBlogPostBySlug = (slug) => {
+  return blogPosts.find((post) => post.slug === slug);
+};
