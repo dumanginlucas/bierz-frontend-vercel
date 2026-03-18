@@ -1,0 +1,27 @@
+# blog-images.txt
+
+Organização das imagens de capa dos artigos do blog.
+
+---
+
+blog1.png → Qual a diferença entre chopp e cerveja?
+
+blog2.png → Chopp, chop ou chope? Qual é o jeito certo de escrever
+
+blog3.jpg → Guia Completo de Chopp em Sorocaba: como pedir certo para seu evento
+
+blog4.png → Chope para eventos: como servir bem em festas, aniversários e confraternizações
+
+blog5.png → Disk chopp Sorocaba: como funciona a entrega rápida para sua casa ou evento
+
+blog6.png → Tipos de chopp: pilsen, IPA, weiss e stout — qual combina melhor com seu evento?
+
+blog7.jpg → Equipamentos para servir chopp: o que realmente faz diferença no resultado final
+
+---
+
+Observações:
+
+* Manter padrão de nomes (blogX.extensão)
+* Sempre substituir mantendo o mesmo nome
+* Não alterar caminhos no código
