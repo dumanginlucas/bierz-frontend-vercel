@@ -31,7 +31,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '18 de março de 2026',
     readTime: '4 min de leitura',
-    image: '/card-placeholders/catalogo-chopps.jpg',
+    image: '/blog/blog2.png',
     excerpt:
       'Entenda qual é a forma correta de escrever chopp, por que muita gente procura por chop e chope, e como essas variações aparecem nas buscas do Google.',
     seoDescription:
@@ -78,7 +78,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '18 de março de 2026',
     readTime: '5 min de leitura',
-    image: '/card-placeholders/chopp-eventos.png',
+    image: '/blog/blog1.png',
     excerpt:
       'Veja de forma simples a diferença entre chopp e cerveja, entenda o que é pasteurização e descubra por que o chopp costuma ser tão procurado para eventos e churrascos.',
     seoDescription:
@@ -132,7 +132,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '15 de março de 2026',
     readTime: '6 min de leitura',
-    image: '/card-placeholders/catalogo-chopps.jpg',
+    image: '/blog/blog3.jpg',
     excerpt:
       'Entenda como escolher chopp em Sorocaba, calcular volume, definir estilos e acertar no delivery para churrascos, aniversários e eventos corporativos.',
     seoDescription:
@@ -185,7 +185,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '12 de março de 2026',
     readTime: '5 min de leitura',
-    image: '/card-placeholders/chopp-eventos.png',
+    image: '/blog/blog4.png',
     excerpt:
       'Veja como acertar no chope para eventos com temperatura correta, ponto de serviço, tipo de copo e estrutura ideal para receber seus convidados.',
     seoDescription:
@@ -230,7 +230,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '10 de março de 2026',
     readTime: '4 min de leitura',
-    image: '/card-placeholders/entrega-montana.png',
+    image: '/blog/blog5.png',
     excerpt:
       'Entenda como funciona o disk chopp em Sorocaba, o que avaliar na entrega e por que o atendimento local faz diferença em pedidos de última hora.',
     seoDescription:
@@ -275,7 +275,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '8 de março de 2026',
     readTime: '5 min de leitura',
-    image: '/card-placeholders/tipos-evento.png',
+    image: '/blog/blog6.png',
     excerpt:
       'Conheça os principais estilos de chopp e descubra qual faz mais sentido para o seu público, seu cardápio e o clima da comemoração.',
     seoDescription:
@@ -320,7 +320,7 @@ export const blogPosts = [
     author: 'Equipe Bierz',
     date: '5 de março de 2026',
     readTime: '5 min de leitura',
-    image: '/card-placeholders/homebar-piscina.jpg',
+    image: '/blog/blog7.jpg',
     excerpt:
       'Veja quais equipamentos importam para servir chopp com qualidade, da chopeira ao ponto de instalação, sem complicar sua festa.',
     seoDescription:
