@@ -1,11 +1,17 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Calendar, Clock, Search, User } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, User } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { blogCategories, blogKeywordCluster, blogPosts } from '../data/blogPosts';
+import {
+  ProgressSlider,
+  SliderContent,
+  SliderWrapper,
+  SliderBtnGroup,
+  SliderBtn,
+} from '../components/ui/progressive-carousel';
 
 const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('todos');
@@ -35,79 +41,127 @@ const BlogPage = () => {
     return blogPosts.filter((post) => post.category === selectedCategory);
   }, [selectedCategory]);
 
-  const featuredPost = filteredPosts[0];
+  const carouselPosts = filteredPosts.length > 0 ? filteredPosts : blogPosts;
 
   return (
     <>
       <Header />
       <main className="min-h-screen bg-black text-white">
-        <section className="border-b border-[#F59E0B]/15 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.18),_transparent_36%),linear-gradient(to_bottom,#091226,#000000_55%)] pt-28 pb-14">
+        {/* Hero Section com Carrossel Progressivo */}
+        <section className="border-b border-[#F59E0B]/15 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.18),_transparent_36%),linear-gradient(to_bottom,#091226,#000000_55%)] pt-24 pb-16">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="mx-auto max-w-4xl text-center">
-              <span className="mb-4 inline-flex items-center rounded-full border border-[#F59E0B]/35 bg-[#F59E0B]/10 px-4 py-1 text-sm font-semibold text-[#F59E0B]">
-                Conteúdo para SEO local e conversão
-              </span>
-              <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+            <div className="mx-auto max-w-4xl text-center mb-10">
+              <h1 className="text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
                 Blog do <span className="text-[#F59E0B]">Chopp Bierz</span>
               </h1>
-              <p className="mx-auto mt-5 max-w-3xl text-base text-gray-300 sm:text-lg">
-                Artigos pensados para ranquear melhor no Google e responder buscas reais como{' '}
-                <strong className="text-white">delivery de chopp em Sorocaba</strong>,{' '}
-                <strong className="text-white">disk chope Sorocaba</strong> e{' '}
-                <strong className="text-white">chopp para churrasco</strong>.
+              <p className="mx-auto mt-4 max-w-3xl text-sm text-gray-300 sm:text-base">
+                Descubra tudo sobre chopp, chope, eventos e churrascos em Sorocaba.
               </p>
             </div>
 
-            {featuredPost && (
-              <div className="mt-12 grid overflow-hidden rounded-3xl border border-[#F59E0B]/20 bg-white/5 shadow-2xl shadow-black/40 lg:grid-cols-[1.1fr_0.9fr]">
-                <div className="min-h-[280px] bg-black">
-                  <img
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-                  <span className="mb-4 inline-flex w-fit rounded-full bg-[#F59E0B]/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#F59E0B]">
-                    Artigo em destaque
-                  </span>
-                  <h2 className="text-2xl font-bold leading-tight sm:text-3xl">{featuredPost.title}</h2>
-                  <p className="mt-4 text-gray-300">{featuredPost.excerpt}</p>
-                  <div className="mt-5 flex flex-wrap gap-4 text-sm text-gray-400">
-                    <span className="inline-flex items-center gap-2"><User className="h-4 w-4" />{featuredPost.author}</span>
-                    <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4" />{featuredPost.date}</span>
-                    <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4" />{featuredPost.readTime}</span>
-                  </div>
-                  <div className="mt-7 flex flex-wrap gap-2">
-                    {featuredPost.keywords.slice(0, 5).map((keyword) => (
-                      <span key={keyword} className="rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-3 py-1 text-xs font-medium text-[#F8C15C]">
-                        {keyword}
-                      </span>
+            {/* Carrossel Progressivo */}
+            <div className="mt-8">
+              <ProgressSlider
+                vertical={false}
+                activeSlider={carouselPosts[0]?.slug || 'post-1'}
+                duration={6000}
+                fastDuration={400}
+              >
+                <SliderContent>
+                  {carouselPosts.map((post) => (
+                    <SliderWrapper
+                      key={post.slug}
+                      value={post.slug}
+                      className="w-full"
+                    >
+                      <div className="relative w-full overflow-hidden rounded-2xl border border-[#F59E0B]/20 bg-black shadow-2xl shadow-black/40">
+                        {/* Container 16:9 RIGOROSO - Garante que a imagem não seja cortada */}
+                        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="absolute inset-0 h-full w-full object-contain bg-black"
+                            style={{ objectPosition: 'center top' }}
+                          />
+                          
+                          {/* Overlay com gradiente apenas na base para não cobrir o topo da imagem */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                          
+                          {/* Conteúdo posicionado na base */}
+                          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8">
+                            <span className="mb-2 inline-flex rounded-full bg-[#F59E0B]/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#F59E0B]">
+                              Destaque
+                            </span>
+                            <h2 className="text-base font-bold leading-tight sm:text-xl lg:text-2xl text-white line-clamp-2">
+                              {post.title}
+                            </h2>
+                            <p className="mt-1.5 text-[10px] sm:text-xs text-gray-200 line-clamp-1 opacity-90">
+                              {post.excerpt}
+                            </p>
+                            <div className="mt-2.5 flex flex-wrap gap-3 text-[10px] sm:text-xs text-gray-300">
+                              <span className="inline-flex items-center gap-1">
+                                <User className="h-3 w-3" />
+                                {post.author}
+                              </span>
+                              <span className="inline-flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {post.date}
+                              </span>
+                              <span className="inline-flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {post.readTime}
+                              </span>
+                            </div>
+                            <div className="mt-3">
+                              <Link to={`/blog/${post.slug}`}>
+                                <Button className="bg-[#F59E0B] text-black hover:bg-[#f7a91e] text-[10px] sm:text-xs h-8 px-4">
+                                  Ler artigo
+                                  <ArrowRight className="ml-1.5 h-3 w-3" />
+                                </Button>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </SliderWrapper>
+                  ))}
+                </SliderContent>
+
+                {/* Botões do Carrossel */}
+                <div className="mt-4">
+                  <SliderBtnGroup className="h-fit dark:text-white text-black dark:bg-black/60 bg-white/40 backdrop-blur-md overflow-x-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0.5 rounded-lg p-1">
+                    {carouselPosts.map((post, index) => (
+                      <SliderBtn
+                        key={index}
+                        value={post.slug}
+                        className="text-left cursor-pointer p-2 flex-shrink-0 hover:bg-white/5 rounded transition-colors"
+                        progressBarClass="dark:bg-[#F59E0B] bg-[#F59E0B] h-0.5"
+                      >
+                        <h3 className="text-[10px] font-semibold text-white line-clamp-1">
+                          {post.title}
+                        </h3>
+                        <p className="text-[9px] text-gray-400 line-clamp-1 mt-0.5">
+                          {post.excerpt}
+                        </p>
+                      </SliderBtn>
                     ))}
-                  </div>
-                  <div className="mt-8">
-                    <Link to={`/blog/${featuredPost.slug}`}>
-                      <Button className="bg-[#F59E0B] text-black hover:bg-[#f7a91e]">
-                        Ler artigo completo
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
+                  </SliderBtnGroup>
                 </div>
-              </div>
-            )}
+              </ProgressSlider>
+            </div>
           </div>
         </section>
 
-        <section className="border-b border-[#F59E0B]/10 bg-black py-7">
+        {/* Filtro de Categorias */}
+        <section className="border-b border-[#F59E0B]/10 bg-black py-6">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-2">
               {blogCategories.map((category) => (
                 <button
                   key={category.id}
                   type="button"
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`rounded-xl px-5 py-2 text-sm font-semibold transition-all ${
+                  className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-all ${
                     selectedCategory === category.id
                       ? 'bg-[#F59E0B] text-black shadow-lg shadow-[#F59E0B]/25'
                       : 'bg-white/10 text-gray-200 hover:bg-white/15'
@@ -120,88 +174,74 @@ const BlogPage = () => {
           </div>
         </section>
 
-        <section className="py-14">
+        {/* Listagem de Artigos */}
+        <section className="py-12">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="mb-8 flex items-end justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#F59E0B]">Artigos publicados</p>
-                <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Conteúdo organizado para leitura e indexação</h2>
-              </div>
-              <p className="hidden max-w-xl text-right text-sm text-gray-400 lg:block">
-                Cada artigo agora possui uma página individual para fortalecer o SEO, melhorar a navegação e criar mais relevância para buscas locais ligadas a chopp, chope, entrega e eventos.
-              </p>
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold sm:text-3xl">Todos os artigos</h2>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredPosts.map((post) => (
-                <Card key={post.slug} className="overflow-hidden border-[#F59E0B]/20 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#F59E0B]/45">
-                  <div className="h-56 bg-black">
-                    <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                <div
+                  key={post.slug}
+                  className="overflow-hidden border border-[#F59E0B]/20 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#F59E0B]/45 rounded-xl flex flex-col h-full"
+                >
+                  {/* Imagem 16:9 sem corte */}
+                  <div className="relative w-full bg-black flex-shrink-0" style={{ paddingBottom: '56.25%' }}>
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="absolute inset-0 h-full w-full object-contain bg-black"
+                    />
                   </div>
-                  <CardContent className="p-5">
-                    <div className="mb-3 flex items-center justify-between gap-3">
-                      <span className="rounded-full bg-[#F59E0B]/15 px-3 py-1 text-xs font-semibold text-[#F59E0B]">
-                        {blogCategories.find((item) => item.id === post.category)?.name}
+                  
+                  <div className="p-4 flex flex-col flex-grow">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <span className="rounded-full bg-[#F59E0B]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#F59E0B] flex-shrink-0">
+                        {
+                          blogCategories.find(
+                            (item) => item.id === post.category
+                          )?.name
+                        }
                       </span>
-                      <span className="text-xs text-gray-500">{post.readTime}</span>
+                      <span className="text-[10px] text-gray-500 flex-shrink-0">{post.readTime}</span>
                     </div>
 
-                    <h3 className="text-xl font-bold leading-tight text-white">{post.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-gray-400">{post.excerpt}</p>
+                    <h3 className="text-base font-bold leading-snug text-white line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="mt-2 text-xs leading-relaxed text-gray-400 line-clamp-2 flex-grow">
+                      {post.excerpt}
+                    </p>
 
-                    <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
-                      <span className="inline-flex items-center gap-1"><User className="h-3.5 w-3.5" />{post.author}</span>
-                      <span className="inline-flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{post.date}</span>
+                    <div className="mt-3 flex flex-wrap gap-3 text-[10px] text-gray-500">
+                      <span className="inline-flex items-center gap-1">
+                        <User className="h-3 w-3" />
+                        {post.author}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {post.date}
+                      </span>
                     </div>
 
-                    <div className="mt-5 border-t border-white/10 pt-4">
-                      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">Palavras-chave do artigo</p>
-                      <div className="flex flex-wrap gap-2">
-                        {post.keywords.slice(0, 6).map((keyword) => (
-                          <span key={keyword} className="rounded-md bg-white/5 px-2.5 py-1 text-xs text-gray-300">
-                            {keyword}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <Link to={`/blog/${post.slug}`} className="mt-6 block">
-                      <Button className="w-full bg-[#F59E0B] text-black hover:bg-[#f7a91e]">
+                    <Link to={`/blog/${post.slug}`} className="mt-4 block">
+                      <Button className="w-full bg-[#F59E0B] text-black hover:bg-[#f7a91e] text-xs h-8">
                         Ler artigo
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="ml-1.5 h-3 w-3" />
                       </Button>
                     </Link>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
 
             {filteredPosts.length === 0 && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-gray-400">
+              <div className="rounded-lg border border-white/10 bg-white/5 p-8 text-center text-gray-400">
                 Nenhum artigo encontrado nessa categoria.
               </div>
             )}
-          </div>
-        </section>
-
-        <section className="border-y border-[#F59E0B]/10 bg-gradient-to-b from-[#0b1322] to-black py-14">
-          <div className="container mx-auto max-w-6xl px-4">
-            <div className="rounded-3xl border border-[#F59E0B]/20 bg-white/5 p-6 sm:p-8">
-              <h2 className="flex items-center gap-3 text-2xl font-bold text-white">
-                <Search className="h-5 w-5 text-[#F59E0B]" />
-                Buscas comuns que esse blog precisa cobrir
-              </h2>
-              <p className="mt-3 max-w-3xl text-gray-400">
-                Essas variações ajudam a ampliar o alcance orgânico porque refletem formas reais de busca usadas pelos clientes na região.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {blogKeywordCluster.map((keyword) => (
-                  <span key={keyword} className="rounded-full border border-[#F59E0B]/25 bg-[#F59E0B]/10 px-3 py-1.5 text-sm font-medium text-[#F8C15C]">
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
       </main>
