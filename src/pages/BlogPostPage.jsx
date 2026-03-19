@@ -66,10 +66,9 @@ const BlogPostPage = () => {
               <span className="rounded-full bg-[#F59E0B]/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#F59E0B]">
                 {blogCategories.find((item) => item.id === post.category)?.name || post.category}
               </span>
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-gray-300">SEO local</span>
-            </div>
+                          </div>
             <h1 className="mt-5 text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">{post.title}</h1>
-            <p className="mt-5 text-lg leading-8 text-gray-300">{post.seoDescription}</p>
+            <p className="mt-5 text-lg leading-8 text-gray-300">{post.excerpt}</p>
             <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-400">
               <span className="inline-flex items-center gap-2"><User className="h-4 w-4" />{post.author}</span>
               <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4" />{post.date}</span>
@@ -81,7 +80,7 @@ const BlogPostPage = () => {
         <section className="py-10">
           <div className="container mx-auto max-w-4xl px-4">
             <div className="overflow-hidden rounded-3xl border border-[#F59E0B]/20 bg-white/5">
-              <img src={post.image} alt={post.title} className="h-[260px] w-full object-cover sm:h-[360px]" />
+              <img src={post.image} alt={post.title} className="max-h-[360px] w-full object-contain bg-black" />
             </div>
 
             <article className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8">
@@ -98,16 +97,20 @@ const BlogPostPage = () => {
                 ))}
               </div>
 
-              <div className="mt-10 rounded-2xl border border-[#F59E0B]/20 bg-[#F59E0B]/10 p-5">
-                <h3 className="text-xl font-bold text-white">Precisa de chopp para seu evento?</h3>
+              <div className="mt-10 rounded-2xl border border-[#F59E0B]/25 bg-[linear-gradient(135deg,rgba(245,158,11,0.18),rgba(245,158,11,0.06))] p-5 sm:p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#F8C15C]">Peça com praticidade</p>
+                <h3 className="mt-2 text-xl font-bold text-white sm:text-2xl">Seja chopp, chop ou chope, a Bierz cuida de tudo para você.</h3>
+                <p className="mt-3 text-gray-200">
+                  Você pede do jeito que preferir e a nossa equipe faz o resto: entrega o chopp gelado, instala o equipamento no local e depois realiza a retirada.
+                </p>
                 <p className="mt-2 text-gray-300">
-                  A Bierz atende pedidos de chopp, chope e delivery em Sorocaba com foco em praticidade, apresentação e experiência para churrascos, festas e eventos.
+                  É uma solução prática para churrascos, aniversários, confraternizações e eventos em Sorocaba, com mais conforto para você e uma experiência melhor para os convidados.
                 </p>
                 <Button
                   onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
-                  className="mt-5 bg-[#F59E0B] text-black hover:bg-[#f7a91e]"
+                  className="mt-5 h-10 bg-[#F59E0B] px-5 font-semibold text-black hover:bg-[#f7a91e]"
                 >
-                  Pedir pelo WhatsApp
+                  Pedir chopp pelo WhatsApp
                 </Button>
               </div>
 
@@ -142,7 +145,7 @@ const BlogPostPage = () => {
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {relatedPosts.map((item) => (
                 <div key={item.slug} className="overflow-hidden rounded-3xl border border-[#F59E0B]/20 bg-white/5">
-                  <img src={item.image} alt={item.title} className="h-48 w-full object-cover" />
+                  <div className="flex h-48 w-full items-center justify-center bg-black"><img src={item.image} alt={item.title} className="max-h-full max-w-full object-contain" /></div>
                   <div className="p-5">
                     <h3 className="text-xl font-bold leading-tight">{item.title}</h3>
                     <p className="mt-3 text-sm leading-6 text-gray-400">{item.excerpt}</p>
