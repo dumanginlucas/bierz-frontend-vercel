@@ -47,20 +47,18 @@ const BlogPage = () => {
     <>
       <Header />
       <main className="min-h-screen bg-black text-white">
-        {/* Hero Section com Carrossel Progressivo */}
-        <section className="border-b border-[#F59E0B]/15 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.18),_transparent_36%),linear-gradient(to_bottom,#091226,#000000_55%)] pt-24 pb-16">
+        <section className="border-b border-[#F59E0B]/15 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.18),_transparent_36%),linear-gradient(to_bottom,#091226,#000000_55%)] pt-24 pb-12 sm:pb-16">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="mx-auto max-w-4xl text-center mb-10">
-              <h1 className="text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
+            <div className="mx-auto max-w-4xl text-center">
+              <h1 className="text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
                 Blog do <span className="text-[#F59E0B]">Chopp Bierz</span>
               </h1>
-              <p className="mx-auto mt-4 max-w-3xl text-sm text-gray-300 sm:text-base">
-                Descubra tudo sobre chopp, chope, eventos e churrascos em Sorocaba.
+              <p className="mx-auto mt-4 max-w-3xl text-sm leading-6 text-gray-300 sm:text-base sm:leading-7">
+                Conteúdos sobre chopp, chope, eventos, churrascos e delivery em Sorocaba para ajudar você a pedir melhor e servir bem.
               </p>
             </div>
 
-            {/* Carrossel Progressivo */}
-            <div className="mt-8">
+            <div className="mt-8 sm:mt-10">
               <ProgressSlider
                 vertical={false}
                 activeSlider={carouselPosts[0]?.slug || 'post-1'}
@@ -69,56 +67,49 @@ const BlogPage = () => {
               >
                 <SliderContent>
                   {carouselPosts.map((post) => (
-                    <SliderWrapper
-                      key={post.slug}
-                      value={post.slug}
-                      className="w-full"
-                    >
-                      <div className="relative w-full overflow-hidden rounded-2xl border border-[#F59E0B]/20 bg-black shadow-2xl shadow-black/40">
-                        {/* Container 16:9 RIGOROSO - Garante que a imagem não seja cortada */}
-                        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                    <SliderWrapper key={post.slug} value={post.slug} className="w-full">
+                      <div className="relative w-full overflow-hidden rounded-[1.5rem] border border-[#F59E0B]/20 bg-[#050505] shadow-2xl shadow-black/40">
+                        <div className="relative aspect-video w-full overflow-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.24))]">
                           <img
                             src={post.image}
                             alt={post.title}
-                            className="absolute inset-0 h-full w-full object-contain bg-black"
-                            style={{ objectPosition: 'center top' }}
+                            className="absolute inset-0 h-full w-full object-contain p-2 sm:p-3"
+                            style={{ objectPosition: 'center center' }}
                           />
-                          
-                          {/* Overlay com gradiente apenas na base para não cobrir o topo da imagem */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                          
-                          {/* Conteúdo posicionado na base */}
-                          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8">
-                            <span className="mb-2 inline-flex rounded-full bg-[#F59E0B]/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#F59E0B]">
-                              Destaque
-                            </span>
-                            <h2 className="text-base font-bold leading-tight sm:text-xl lg:text-2xl text-white line-clamp-2">
-                              {post.title}
-                            </h2>
-                            <p className="mt-1.5 text-[10px] sm:text-xs text-gray-200 line-clamp-1 opacity-90">
-                              {post.excerpt}
-                            </p>
-                            <div className="mt-2.5 flex flex-wrap gap-3 text-[10px] sm:text-xs text-gray-300">
-                              <span className="inline-flex items-center gap-1">
-                                <User className="h-3 w-3" />
-                                {post.author}
+                          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/75 to-transparent" />
+                          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
+                            <div className="max-w-3xl">
+                              <span className="mb-2 inline-flex rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#F59E0B] sm:text-[11px]">
+                                Destaque do blog
                               </span>
-                              <span className="inline-flex items-center gap-1">
-                                <Calendar className="h-3 w-3" />
-                                {post.date}
-                              </span>
-                              <span className="inline-flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {post.readTime}
-                              </span>
-                            </div>
-                            <div className="mt-3">
-                              <Link to={`/blog/${post.slug}`}>
-                                <Button className="bg-[#F59E0B] text-black hover:bg-[#f7a91e] text-[10px] sm:text-xs h-8 px-4">
-                                  Ler artigo
-                                  <ArrowRight className="ml-1.5 h-3 w-3" />
-                                </Button>
-                              </Link>
+                              <h2 className="text-lg font-bold leading-tight text-white sm:text-2xl lg:text-3xl">
+                                {post.title}
+                              </h2>
+                              <p className="mt-2 max-w-2xl text-xs leading-5 text-gray-200 sm:text-sm sm:leading-6">
+                                {post.excerpt}
+                              </p>
+                              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-gray-300 sm:text-xs">
+                                <span className="inline-flex items-center gap-1.5">
+                                  <User className="h-3.5 w-3.5" />
+                                  {post.author}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                  <Calendar className="h-3.5 w-3.5" />
+                                  {post.date}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                  <Clock className="h-3.5 w-3.5" />
+                                  {post.readTime}
+                                </span>
+                              </div>
+                              <div className="mt-4">
+                                <Link to={`/blog/${post.slug}`}>
+                                  <Button className="h-9 rounded-full bg-[#F59E0B] px-5 text-xs font-semibold text-black hover:bg-[#f7a91e] sm:h-10 sm:text-sm">
+                                    Ler artigo
+                                    <ArrowRight className="ml-2 h-3.5 w-3.5" />
+                                  </Button>
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -127,20 +118,19 @@ const BlogPage = () => {
                   ))}
                 </SliderContent>
 
-                {/* Botões do Carrossel */}
                 <div className="mt-4">
-                  <SliderBtnGroup className="h-fit dark:text-white text-black dark:bg-black/60 bg-white/40 backdrop-blur-md overflow-x-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0.5 rounded-lg p-1">
+                  <SliderBtnGroup className="grid h-fit grid-cols-1 gap-1 rounded-2xl bg-white/5 p-1.5 backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4">
                     {carouselPosts.map((post, index) => (
                       <SliderBtn
                         key={index}
                         value={post.slug}
-                        className="text-left cursor-pointer p-2 flex-shrink-0 hover:bg-white/5 rounded transition-colors"
+                        className="cursor-pointer rounded-xl p-3 text-left transition-colors hover:bg-white/5"
                         progressBarClass="dark:bg-[#F59E0B] bg-[#F59E0B] h-0.5"
                       >
-                        <h3 className="text-[10px] font-semibold text-white line-clamp-1">
+                        <h3 className="text-[11px] font-semibold leading-4 text-white sm:text-xs">
                           {post.title}
                         </h3>
-                        <p className="text-[9px] text-gray-400 line-clamp-1 mt-0.5">
+                        <p className="mt-1 text-[10px] leading-4 text-gray-400 sm:text-[11px]">
                           {post.excerpt}
                         </p>
                       </SliderBtn>
@@ -152,84 +142,83 @@ const BlogPage = () => {
           </div>
         </section>
 
-        {/* Filtro de Categorias */}
-        <section className="border-b border-[#F59E0B]/10 bg-black py-6">
+        <section className="border-b border-[#F59E0B]/10 bg-black py-5 sm:py-6">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="flex flex-wrap justify-center gap-2">
-              {blogCategories.map((category) => (
-                <button
-                  key={category.id}
-                  type="button"
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-all ${
-                    selectedCategory === category.id
-                      ? 'bg-[#F59E0B] text-black shadow-lg shadow-[#F59E0B]/25'
-                      : 'bg-white/10 text-gray-200 hover:bg-white/15'
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+            <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex min-w-max gap-2">
+                {blogCategories.map((category) => (
+                  <button
+                    key={category.id}
+                    type="button"
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all sm:text-sm ${
+                      selectedCategory === category.id
+                        ? 'bg-[#F59E0B] text-black shadow-lg shadow-[#F59E0B]/25'
+                        : 'bg-white/10 text-gray-200 hover:bg-white/15'
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Listagem de Artigos */}
-        <section className="py-12">
+        <section className="py-10 sm:py-12">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="mb-8">
+            <div className="mb-7 sm:mb-8">
               <h2 className="text-2xl font-bold sm:text-3xl">Todos os artigos</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                Conteúdo para quem quer pedir com mais segurança, entender melhor o produto e organizar eventos com mais praticidade.
+              </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredPosts.map((post) => (
                 <div
                   key={post.slug}
-                  className="overflow-hidden border border-[#F59E0B]/20 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#F59E0B]/45 rounded-xl flex flex-col h-full"
+                  className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#F59E0B]/20 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#F59E0B]/45"
                 >
-                  {/* Imagem 16:9 sem corte */}
-                  <div className="relative w-full bg-black flex-shrink-0" style={{ paddingBottom: '56.25%' }}>
+                  <div className="relative aspect-video w-full overflow-hidden bg-black/60">
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="absolute inset-0 h-full w-full object-contain bg-black"
+                      className="absolute inset-0 h-full w-full object-contain p-2 sm:p-3"
+                      style={{ objectPosition: 'center center' }}
                     />
                   </div>
-                  
-                  <div className="p-4 flex flex-col flex-grow">
-                    <div className="mb-2 flex items-center justify-between gap-2">
-                      <span className="rounded-full bg-[#F59E0B]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#F59E0B] flex-shrink-0">
-                        {
-                          blogCategories.find(
-                            (item) => item.id === post.category
-                          )?.name
-                        }
+
+                  <div className="flex flex-grow flex-col p-4 sm:p-5">
+                    <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
+                      <span className="rounded-full bg-[#F59E0B]/15 px-2.5 py-1 text-[10px] font-semibold leading-none text-[#F59E0B] sm:text-[11px]">
+                        {blogCategories.find((item) => item.id === post.category)?.name}
                       </span>
-                      <span className="text-[10px] text-gray-500 flex-shrink-0">{post.readTime}</span>
+                      <span className="text-[10px] leading-none text-gray-500 sm:text-[11px]">{post.readTime}</span>
                     </div>
 
-                    <h3 className="text-base font-bold leading-snug text-white line-clamp-2">
+                    <h3 className="text-base font-bold leading-snug text-white sm:text-lg">
                       {post.title}
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-gray-400 line-clamp-2 flex-grow">
+                    <p className="mt-2 text-sm leading-6 text-gray-400 flex-grow">
                       {post.excerpt}
                     </p>
 
-                    <div className="mt-3 flex flex-wrap gap-3 text-[10px] text-gray-500">
-                      <span className="inline-flex items-center gap-1">
-                        <User className="h-3 w-3" />
+                    <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-gray-500 sm:text-xs">
+                      <span className="inline-flex items-center gap-1.5">
+                        <User className="h-3.5 w-3.5" />
                         {post.author}
                       </span>
-                      <span className="inline-flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" />
                         {post.date}
                       </span>
                     </div>
 
-                    <Link to={`/blog/${post.slug}`} className="mt-4 block">
-                      <Button className="w-full bg-[#F59E0B] text-black hover:bg-[#f7a91e] text-xs h-8">
+                    <Link to={`/blog/${post.slug}`} className="mt-5 block">
+                      <Button className="h-10 w-full rounded-full bg-[#F59E0B] text-sm font-semibold text-black hover:bg-[#f7a91e]">
                         Ler artigo
-                        <ArrowRight className="ml-1.5 h-3 w-3" />
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -238,7 +227,7 @@ const BlogPage = () => {
             </div>
 
             {filteredPosts.length === 0 && (
-              <div className="rounded-lg border border-white/10 bg-white/5 p-8 text-center text-gray-400">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center text-gray-400">
                 Nenhum artigo encontrado nessa categoria.
               </div>
             )}
