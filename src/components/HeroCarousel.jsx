@@ -72,7 +72,7 @@ const HeroCarousel = () => {
     {
       id: 3,
       label: 'Nossas Redes',
-      description: 'Siga a Bierz no Instagram para acompanhar as promoções.',
+      description: 'Siga @bieerz no Instagram para acompanhar promoções e novidades.',
       theme: 'hero-card-theme-barril',
       image: '/card-placeholders/redes-social-card.png',
       imageClass: 'hero-card-v8-image-redes',

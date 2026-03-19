@@ -1,379 +1,189 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AboutBierz.css";
 import Marquee from "./Marquee.jsx";
 import { ArrowRight, CalendarDays, Clock3 } from "lucide-react";
-import { blogPosts } from "../data/blogPosts";
 
-/* ─────────────────────────────────────────────
-   Dados da seção
-───────────────────────────────────────────── */
 const STATS = [
-  { value: 500, suffix: "+", label: "Eventos realizados" },
-  { value: 100, suffix: "%", label: "Clientes satisfeitos" },
-  { value: 7,   suffix: "",  label: "Artigos postados" },
-  { value: 24,  suffix: "h", label: "Suporte ao cliente" },
-];
-
-const PILLARS = [
-  {
-    icon: "🍺",
-    title: "Chopp sempre gelado",
-    text: "Com a HomeBar, o barril é mantido entre 0° e 3°C do primeiro ao último copo.",
-    color: "amber",
-  },
-  {
-    icon: "⚡",
-    title: "Entrega rápida",
-    text: "Cobrimos Sorocaba e região com agendamento simples e instalação no local.",
-    color: "blue",
-  },
-  {
-    icon: "✨",
-    title: "Experiência premium",
-    text: "Equipamentos revisados, higienizados e marcas selecionadas para seu evento.",
-    color: "gold",
-  },
-  {
-    icon: "🎯",
-    title: "Processo simples",
-    text: "Escolha, agende, receba. A gente cuida de tudo — você só curte a festa.",
-    color: "green",
-  },
+  { value: "500+", label: "Eventos realizados" },
+  { value: "100%", label: "Clientes satisfeitos" },
+  { value: "7", label: "Artigos postados" },
+  { value: "24h", label: "Suporte ao cliente" },
 ];
 
 const MARQUEE_ITEMS = [
-  "Chopp Gelado", "HomeBar", "Sorocaba", "Eventos Premium",
-  "Cerveja Artesanal", "Barril Refrigerado", "Entrega Rápida",
-  "Experiência Única", "Chopeira Elétrica", "Qualidade Garantida",
+  "Chopp Gelado", "HomeBar", "Sorocaba", "Barril Refrigerado", "Entrega Rápida",
+  "Experiência Única", "Chopeira Elétrica", "Qualidade Garantida", "Chopp Gelado", "HomeBar", "Sorocaba"
 ];
 
-/* ─────────────────────────────────────────────
-   Hook: Intersection Observer (Scroll Reveal)
-───────────────────────────────────────────── */
-function useReveal(threshold = 0.15) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, visible];
-}
+const BLOG_ARTICLES = [
+  {
+    slug: "/blog/chopp-chop-chope-como-escrever",
+    title: "Chopp, chop ou chope? Qual é o jeito certo de escrever",
+    excerpt: "Descubra qual é a forma mais correta de escrever, por que chope e chop também aparecem no dia a dia e o que realmente importa na hora de pedir.",
+    image: "/blog/blog2.png",
+    date: "18 de março de 2026",
+    readTime: "4 min de leitura",
+  },
+  {
+    slug: "/blog/diferenca-entre-chopp-e-cerveja",
+    title: "Qual a diferença entre chopp e cerveja?",
+    excerpt: "Veja de forma simples a diferença entre chopp e cerveja, entenda o que é pasteurização e por que o chopp costuma ser tão valorizado em eventos e churrascos.",
+    image: "/blog/blog1.png",
+    date: "18 de março de 2026",
+    readTime: "5 min de leitura",
+  },
+  {
+    slug: "/blog/guia-chopp-sorocaba",
+    title: "Guia Completo de Chopp em Sorocaba: como pedir certo para seu evento",
+    excerpt: "Entenda como escolher chopp em Sorocaba, calcular volume, definir estilos e acertar no delivery para churrascos, aniversários e eventos corporativos.",
+    image: "/blog/blog3.jpg",
+    date: "15 de março de 2026",
+    readTime: "6 min de leitura",
+  },
+  {
+    slug: "/blog/chope-para-eventos",
+    title: "Chope para eventos: como servir bem em festas, aniversários e confraternizações",
+    excerpt: "Veja como acertar no chope para eventos com temperatura, tipo do copo e estrutura ideal para receber seus convidados.",
+    image: "/blog/blog4.png",
+    date: "12 de março de 2026",
+    readTime: "5 min de leitura",
+  },
+  {
+    slug: "/blog/disk-chopp-sorocaba",
+    title: "Disk chopp Sorocaba: como funciona a entrega rápida para sua casa ou evento",
+    excerpt: "Entenda como funciona o disk chopp em Sorocaba, prazos de entrega, montagem da chopeira e o que observar antes de pedir.",
+    image: "/blog/blog5.png",
+    date: "10 de março de 2026",
+    readTime: "5 min de leitura",
+  },
+  {
+    slug: "/blog/tipos-de-chopp",
+    title: "Tipos de chopp: pilsen, IPA, weiss e stout — qual combina melhor com seu evento?",
+    excerpt: "Conheça os principais estilos de chopp e descubra qual combina melhor com o tipo de comida que você pretende servir no seu evento.",
+    image: "/blog/blog6.png",
+    date: "08 de março de 2026",
+    readTime: "5 min de leitura",
+  },
+  {
+    slug: "/blog/equipamentos-chopp",
+    title: "Equipamentos para servir chopp: o que realmente faz diferença no resultado final",
+    excerpt: "Veja quais equipamentos importam para servir um chopp de qualidade: chopeira elétrica, cilindros de CO2 e limpeza da linha.",
+    image: "/blog/blog7.jpg",
+    date: "05 de março de 2026",
+    readTime: "4 min de leitura",
+  },
+];
 
-/* ─────────────────────────────────────────────
-   Hook: Counter animado
-───────────────────────────────────────────── */
-function useCounter(target, active, duration = 1800) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    let start = null;
-    const step = (ts) => {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setCount(Math.floor(eased * target));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [active, target, duration]);
-  return count;
-}
-
-/* ─────────────────────────────────────────────
-   Hook: Parallax via scroll
-───────────────────────────────────────────── */
-function useParallax(speed = 0.15) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const center = rect.top + rect.height / 2 - window.innerHeight / 2;
-      el.style.setProperty("--parallax-y", `${center * speed}px`);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [speed]);
-  return ref;
-}
-
-/* ─────────────────────────────────────────────
-   Hook: Tilt 3D
-───────────────────────────────────────────── */
-function useTilt(strength = 12) {
-  const ref = useRef(null);
-  const handleMove = useCallback((e) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(800px) rotateY(${x * strength}deg) rotateX(${-y * strength}deg) scale(1.02)`;
-  }, [strength]);
-  const handleLeave = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.transform = "perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)";
-  }, []);
-  return { ref, handleMove, handleLeave };
-}
-
-/* ─────────────────────────────────────────────
-   Hook: Mouse Follow (background glow)
-───────────────────────────────────────────── */
-function useMouseFollow() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onMove = (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      el.style.setProperty("--mx", `${x}%`);
-      el.style.setProperty("--my", `${y}%`);
-    };
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
-  }, []);
-  return ref;
-}
-
-/* ─────────────────────────────────────────────
-   Hook: Typing Effect
-───────────────────────────────────────────── */
-function useTyping(words, speed = 80, pause = 2000) {
-  const [display, setDisplay] = useState("");
-  const [wordIdx, setWordIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    const word = words[wordIdx % words.length];
-    let timeout;
-    if (!deleting && charIdx <= word.length) {
-      timeout = setTimeout(() => {
-        setDisplay(word.slice(0, charIdx));
-        setCharIdx((c) => c + 1);
-        if (charIdx === word.length) {
-          timeout = setTimeout(() => setDeleting(true), pause);
-        }
-      }, speed);
-    } else if (deleting && charIdx >= 0) {
-      timeout = setTimeout(() => {
-        setDisplay(word.slice(0, charIdx));
-        setCharIdx((c) => c - 1);
-        if (charIdx === 0) {
-          setDeleting(false);
-          setWordIdx((w) => (w + 1) % words.length);
-        }
-      }, speed / 2);
-    }
-    return () => clearTimeout(timeout);
-  }, [charIdx, deleting, wordIdx, words, speed, pause]);
-
-  return display;
-}
-
-/* ─────────────────────────────────────────────
-   Sub-componente: Stat Card
-───────────────────────────────────────────── */
-function StatCard({ value, suffix, label, active }) {
-  const count = useCounter(value, active);
-  return (
-    <div className="ab-stat">
-      <div className="ab-stat__value">
-        {count}<span className="ab-stat__suffix">{suffix}</span>
-      </div>
-      <div className="ab-stat__label">{label}</div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Sub-componente: Pillar Card (Tilt + Hover)
-───────────────────────────────────────────── */
-function PillarCard({ icon, title, text, color, delay }) {
-  const [revRef, visible] = useReveal(0.1);
-  const { ref: tiltRef, handleMove, handleLeave } = useTilt(8);
-
-  return (
-    <div
-      ref={(node) => { revRef.current = node; tiltRef.current = node; }}
-      className={`ab-pillar ab-pillar--${color} ${visible ? "ab-pillar--visible" : ""}`}
-      style={{ transitionDelay: `${delay}ms` }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-    >
-      <div className="ab-pillar__glow" aria-hidden="true" />
-      <div className="ab-pillar__icon">{icon}</div>
-      <h4 className="ab-pillar__title">{title}</h4>
-      <p className="ab-pillar__text">{text}</p>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Componente principal: AboutBierz
-───────────────────────────────────────────── */
 export default function AboutBierz() {
-  const sectionRef = useMouseFollow();
-  const [heroRef, heroVisible] = useReveal(0.05);
-  const [statsRef, statsVisible] = useReveal(0.2);
-  const [storyRef, storyVisible] = useReveal(0.15);
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+  const railRef = useRef(null);
+  const featured = BLOG_ARTICLES[featuredIndex];
 
-  const typingWords = ["Sorocaba", "seu evento", "sua festa", "sua área gourmet"];
-  const typedText = useTyping(typingWords, 75, 2200);
-  const featuredPosts = blogPosts;
-  const [activePostIndex, setActivePostIndex] = useState(0);
-  const activePost = featuredPosts[activePostIndex] || featuredPosts[0];
+  useEffect(() => {
+    const node = railRef.current;
+    if (!node) return;
+    const cards = Array.from(node.querySelectorAll('[data-article-index]'));
+    if (!cards.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) {
+          const idx = Number(visible.target.getAttribute('data-article-index'));
+          if (!Number.isNaN(idx)) setFeaturedIndex(idx);
+        }
+      },
+      { root: node, threshold: 0.65 }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section
-      id="about"
-      className="ab-root"
-      ref={sectionRef}
-      aria-label="Sobre a Bierz"
-    >
-      {/* Animated background */}
+    <section id="about" className="ab-root" aria-label="Sobre a Bierz">
       <div className="ab-bg" aria-hidden="true">
         <div className="ab-bg__orb ab-bg__orb--1" />
         <div className="ab-bg__orb ab-bg__orb--2" />
         <div className="ab-bg__orb ab-bg__orb--3" />
         <div className="ab-bg__grid" />
-        <div className="ab-bg__mouse-glow" />
       </div>
 
-      {/* ── HERO ── */}
       <div className="ab-container">
-        <div
-          ref={heroRef}
-          className={`ab-hero ${heroVisible ? "ab-hero--visible" : ""}`}
-        >
-          <div className="ab-hero__badge">
-            <span className="ab-hero__badge-dot" />
-            Distribuidora em Sorocaba
-          </div>
-
+        <div className="ab-hero ab-hero--visible">
+          <div className="ab-hero__badge"><span className="ab-hero__badge-dot" />Distribuidora em Sorocaba</div>
           <h2 className="ab-hero__title">
-            <span className="ab-hero__title-line ab-hero__title-line--1">
-              Sobre a
-            </span>
-            <span className="ab-hero__title-line ab-hero__title-line--2">
-              <span className="ab-grad">Bierz</span>
-            </span>
+            <span className="ab-hero__title-line ab-hero__title-line--1">Sobre a</span>
+            <span className="ab-hero__title-line ab-hero__title-line--2"><span className="ab-grad">Bierz</span></span>
           </h2>
-
-          <p className="ab-hero__sub">
-            Chopp e cervejas especiais para{" "}
-            <span className="ab-typing">
-              {typedText}
-            </span>
-            !
-          </p>
+          <p className="ab-hero__sub">Chopp e cervejas especiais para <span className="ab-typing">Sorocaba</span>!</p>
         </div>
 
-        {/* ── STATS ── */}
-        <div
-          ref={statsRef}
-          className={`ab-stats ${statsVisible ? "ab-stats--visible" : ""}`}
-        >
-          {STATS.map((s, i) => (
-            <StatCard key={s.label} {...s} active={statsVisible} />
+        <div className="ab-stats ab-stats--visible">
+          {STATS.map((s) => (
+            <div key={s.label} className="ab-stat">
+              <div className="ab-stat__value">{s.value}</div>
+              <div className="ab-stat__label">{s.label}</div>
+            </div>
           ))}
         </div>
 
-        {/* ── MARQUEE ── */}
         <Marquee speed={28}>
           {MARQUEE_ITEMS.map((item, i) => (
-            <span key={i} className="ab-marquee__item">
-              {item} <span className="ab-marquee__sep">·</span>
-            </span>
+            <span key={i} className="ab-marquee__item">{item} <span className="ab-marquee__sep">·</span></span>
           ))}
         </Marquee>
 
-        {/* ── STORY + BLOG CAROUSEL ── */}
-        <div
-          ref={storyRef}
-          className={`ab-story ab-story--blog ${storyVisible ? "ab-story--visible" : ""}`}
-        >
-          <div className="ab-story__intro">
-            <div className="ab-story__left ab-story__left--narrow">
-              <div className="ab-story__tag">Nossa história</div>
-              <h3 className="ab-story__title">
-                Nascemos para elevar a experiência do chopp em Sorocaba.
-              </h3>
-              <p className="ab-story__text">
-                A Bierz surgiu da vontade de transformar eventos comuns em momentos
-                memoráveis. Combinamos tecnologia, qualidade e agilidade para
-                entregar o melhor chopp gelado da região — do barril ao seu copo.
-              </p>
-              <p className="ab-story__text">
-                Com a <strong>HomeBar</strong>, mantemos o barril sempre refrigerado
-                e preservado, garantindo espuma cremosa e sabor original do
-                primeiro ao último copo. Simples assim.
-              </p>
-              <div className="ab-story__cta-row">
-                <a href="#services" className="ab-story__cta ab-story__cta--primary">
-                  Ver equipamentos
-                </a>
-                <a href="#products" className="ab-story__cta ab-story__cta--ghost">
-                  Ver produtos
-                </a>
-              </div>
+        <div className="ab-story ab-story--stacked ab-story--visible">
+          <div className="ab-story__top ab-story__top--wide">
+            <div className="ab-story__tag">Nossa história</div>
+            <h3 className="ab-story__title">Nascemos para elevar a experiência do chopp em Sorocaba.</h3>
+            <div className="ab-story__copy-grid">
+              <p className="ab-story__text">A Bierz surgiu da vontade de transformar eventos comuns em momentos memoráveis. Combinamos tecnologia, qualidade e agilidade para entregar o melhor chopp gelado da região — do barril ao seu copo.</p>
+              <p className="ab-story__text">Com a <strong>HomeBar</strong>, mantemos o barril sempre refrigerado e preservado, garantindo espuma cremosa e sabor original do primeiro ao último copo. Simples assim.</p>
+            </div>
+            <div className="ab-story__cta-row">
+              <a href="#services" className="ab-story__cta ab-story__cta--primary">Ver equipamentos</a>
+              <a href="#products" className="ab-story__cta ab-story__cta--ghost">Ver produtos</a>
             </div>
           </div>
 
-          <div className="ab-story__carouselWrap">
-            {activePost && (
-              <article className="ab-featured-post">
-                <div className="ab-featured-post__media">
-                  <img src={activePost.image} alt={activePost.title} className="ab-featured-post__image" />
+          <div className="ab-blog-showcase">
+            <div className="ab-blog-featured">
+              <div className="ab-blog-featured__media">
+                <img src={featured.image} alt={featured.title} className="ab-blog-featured__image" />
+              </div>
+              <div className="ab-blog-featured__content">
+                <div className="ab-blog-featured__badge">Destaque do blog</div>
+                <h4 className="ab-blog-featured__title">{featured.title}</h4>
+                <p className="ab-blog-featured__excerpt">{featured.excerpt}</p>
+                <div className="ab-blog-featured__meta">
+                  <span><CalendarDays size={15} /> {featured.date}</span>
+                  <span><Clock3 size={15} /> {featured.readTime}</span>
                 </div>
-                <div className="ab-featured-post__body">
-                  <span className="ab-blog-card__badge">
-                    <span className="ab-blog-card__badge-dot" />
-                    Destaque do blog
-                  </span>
-                  <h4 className="ab-featured-post__title">{activePost.title}</h4>
-                  <p className="ab-featured-post__excerpt">{activePost.excerpt}</p>
-                  <div className="ab-featured-post__meta">
-                    <span><CalendarDays size={15} /> {activePost.date}</span>
-                    <span><Clock3 size={15} /> {activePost.readTime}</span>
-                  </div>
-                  <Link to={`/blog/${activePost.slug}`} className="ab-story__cta ab-story__cta--primary ab-featured-post__button">
-                    Ler artigo <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </article>
-            )}
+                <Link to={featured.slug} className="ab-blog-featured__cta">Ler artigo <ArrowRight size={16} /></Link>
+              </div>
+            </div>
 
-            <div className="ab-post-strip" aria-label="Artigos do blog da Bierz">
-              {featuredPosts.map((post, index) => (
-                <button
-                  type="button"
-                  key={post.id}
-                  className={`ab-post-strip__item ${index === activePostIndex ? "is-active" : ""}`}
-                  onClick={() => setActivePostIndex(index)}
+            <div className="ab-blog-rail" ref={railRef}>
+              {BLOG_ARTICLES.map((article, index) => (
+                <Link
+                  key={article.slug}
+                  to={article.slug}
+                  className={`ab-blog-mini ${featuredIndex === index ? 'is-active' : ''}`}
+                  data-article-index={index}
                 >
-                  <div className="ab-post-strip__thumbWrap">
-                    <img src={post.image} alt={post.title} className="ab-post-strip__thumb" />
+                  <div className="ab-blog-mini__thumb-wrap">
+                    <img src={article.image} alt={article.title} className="ab-blog-mini__thumb" />
                   </div>
-                  <div className="ab-post-strip__content">
-                    <h5>{post.title}</h5>
-                    <p>{post.excerpt}</p>
+                  <div className="ab-blog-mini__body">
+                    <h5 className="ab-blog-mini__title">{article.title}</h5>
+                    <p className="ab-blog-mini__excerpt">{article.excerpt}</p>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
           </div>
