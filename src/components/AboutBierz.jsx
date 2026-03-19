@@ -2,16 +2,24 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./AboutBierz.css";
 import Marquee from "./Marquee.jsx";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { blogPosts } from "../data/blogPosts";
+import {
+  ProgressSlider,
+  SliderContent,
+  SliderWrapper,
+  SliderBtnGroup,
+  SliderBtn,
+} from "./ui/progressive-carousel";
 
 /* ─────────────────────────────────────────────
    Dados da seção
 ───────────────────────────────────────────── */
 const STATS = [
   { value: 500, suffix: "+", label: "Eventos realizados" },
-  { value: 98,  suffix: "%", label: "Clientes satisfeitos" },
-  { value: 30,  suffix: "d", label: "Chopp gelado (HomeBar)" },
-  { value: 24,  suffix: "h", label: "Suporte ao cliente" },
+  { value: 100, suffix: "%", label: "Clientes satisfeitos" },
+  { value: 7, suffix: "", label: "Artigos postados" },
+  { value: 24, suffix: "h", label: "Suporte ao cliente" },
 ];
 
 const PILLARS = [
@@ -234,6 +242,7 @@ export default function AboutBierz() {
 
   const typingWords = ["Sorocaba", "seu evento", "sua festa", "sua área gourmet"];
   const typedText = useTyping(typingWords, 75, 2200);
+  const featuredPosts = blogPosts.slice(0, 5);
 
   return (
     <section
@@ -330,60 +339,56 @@ export default function AboutBierz() {
             </div>
           </div>
 
-          {/* Right: Blog do Chopp Card */}
+          {/* Right: Blog do Chopp Carousel */}
           <div className="ab-story__right" ref={parallaxRef}>
-            <Link to="/blog" className="ab-blog-card ab-blog-card--interactive">
-              <div className="ab-blog-card__bg" />
-              <div className="ab-blog-card__content">
-                <div className="ab-blog-card__header">
-                  <span className="ab-blog-card__badge">
-                    <span className="ab-blog-card__badge-dot" />
-                    Novo Conteúdo
-                  </span>
-                  <h3 className="ab-blog-card__title">Blog do Chopp</h3>
-                  <p className="ab-blog-card__subtitle">Dicas, guias e informações sobre chopp em Sorocaba</p>
-                </div>
+            <div className="ab-blog-showcase">
+              <ProgressSlider
+                vertical={false}
+                activeSlider={featuredPosts[0]?.slug || "post-1"}
+                duration={6500}
+                fastDuration={450}
+              >
+                <SliderContent>
+                  {featuredPosts.map((post) => (
+                    <SliderWrapper key={post.slug} value={post.slug} className="w-full">
+                      <div className="ab-blog-showcase__frame">
+                        <div className="ab-blog-showcase__media">
+                          <img src={post.image} alt={post.title} className="ab-blog-showcase__image" />
+                          <div className="ab-blog-showcase__overlay" />
+                          <div className="ab-blog-showcase__content">
+                            <span className="ab-blog-showcase__badge">Destaque do blog</span>
+                            <h3 className="ab-blog-showcase__title">{post.title}</h3>
+                            <p className="ab-blog-showcase__excerpt">{post.excerpt}</p>
+                            <div className="ab-blog-showcase__meta">
+                              <span><Calendar className="h-3.5 w-3.5" /> {post.date}</span>
+                              <span><Clock className="h-3.5 w-3.5" /> {post.readTime}</span>
+                            </div>
+                            <Link to={`/blog/${post.slug}`} className="ab-blog-showcase__cta">
+                              Ler artigo <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </SliderWrapper>
+                  ))}
+                </SliderContent>
 
-                <div className="ab-blog-card__articles">
-                  <div className="ab-blog-article">
-                    <div className="ab-blog-article__icon">📚</div>
-                    <div className="ab-blog-article__text">
-                      <h4>Guias Completos</h4>
-                      <p>Tudo sobre chopp, tipos e servimento</p>
-                    </div>
-                  </div>
-                  <div className="ab-blog-article">
-                    <div className="ab-blog-article__icon">💡</div>
-                    <div className="ab-blog-article__text">
-                      <h4>Dicas Práticas</h4>
-                      <p>Como escolher e servir o melhor chopp</p>
-                    </div>
-                  </div>
-                  <div className="ab-blog-article">
-                    <div className="ab-blog-article__icon">🎯</div>
-                    <div className="ab-blog-article__text">
-                      <h4>Para Eventos</h4>
-                      <p>Chopp para churrascos e festas</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="ab-blog-card__cta">
-                  <span className="ab-blog-card__btn">
-                    Explorar Blog <ArrowRight className="w-5 h-5" />
-                  </span>
-                </div>
-              </div>
-              <div className="ab-blog-card__glow" aria-hidden="true" />
-            </Link>
+                <SliderBtnGroup className="ab-blog-showcase__tabs">
+                  {featuredPosts.map((post) => (
+                    <SliderBtn
+                      key={post.slug}
+                      value={post.slug}
+                      className="ab-blog-showcase__tab"
+                      progressBarClass="ab-blog-showcase__progress"
+                    >
+                      <h4>{post.title}</h4>
+                      <p>{post.excerpt}</p>
+                    </SliderBtn>
+                  ))}
+                </SliderBtnGroup>
+              </ProgressSlider>
+            </div>
           </div>
-        </div>
-
-        {/* ── PILLARS ── */}
-        <div className="ab-pillars">
-          {PILLARS.map((p, i) => (
-            <PillarCard key={p.title} {...p} delay={i * 100} />
-          ))}
         </div>
       </div>
     </section>
