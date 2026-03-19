@@ -244,3 +244,19 @@ export const blogPosts = [
 export const getBlogPostBySlug = (slug) => {
   return blogPosts.find((post) => post.slug === slug);
 };
+
+export const getRelatedPosts = (currentSlug, category, limit = 3) => {
+  const sameCategoryPosts = blogPosts.filter(
+    (post) => post.slug !== currentSlug && (!category || post.category === category)
+  );
+
+  if (sameCategoryPosts.length >= limit) {
+    return sameCategoryPosts.slice(0, limit);
+  }
+
+  const fallbackPosts = blogPosts.filter(
+    (post) => post.slug !== currentSlug && !sameCategoryPosts.some((item) => item.slug === post.slug)
+  );
+
+  return [...sameCategoryPosts, ...fallbackPosts].slice(0, limit);
+};
