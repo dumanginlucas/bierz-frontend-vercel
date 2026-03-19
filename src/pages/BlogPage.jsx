@@ -68,7 +68,7 @@ const BlogPage = () => {
                 <SliderContent>
                   {carouselPosts.map((post) => (
                     <SliderWrapper key={post.slug} value={post.slug} className="w-full">
-                      <div className="relative w-full overflow-hidden rounded-[1.5rem] border border-[#F59E0B]/20 bg-[#050505] shadow-2xl shadow-black/40">
+                      <div className="w-full overflow-hidden rounded-[1.5rem] border border-[#F59E0B]/20 bg-[#050505] shadow-2xl shadow-black/40">
                         <div className="relative aspect-video w-full overflow-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.24))]">
                           <img
                             src={post.image}
@@ -76,8 +76,9 @@ const BlogPage = () => {
                             className="absolute inset-0 h-full w-full object-contain p-2 sm:p-3"
                             style={{ objectPosition: 'center center' }}
                           />
-                          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/75 to-transparent" />
-                          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
+
+                          <div className="hidden md:block absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/75 to-transparent" />
+                          <div className="hidden md:block absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
                             <div className="max-w-3xl">
                               <span className="mb-2 inline-flex rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#F59E0B] sm:text-[11px]">
                                 Destaque do blog
@@ -111,6 +112,40 @@ const BlogPage = () => {
                                 </Link>
                               </div>
                             </div>
+                          </div>
+                        </div>
+
+                        <div className="block border-t border-white/5 bg-[linear-gradient(180deg,#080808,#0d1220)] p-4 md:hidden">
+                          <span className="inline-flex rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#F59E0B]">
+                            Destaque do blog
+                          </span>
+                          <h2 className="mt-3 text-xl font-bold leading-tight text-white">
+                            {post.title}
+                          </h2>
+                          <p className="mt-2 text-sm leading-6 text-gray-300">
+                            {post.excerpt}
+                          </p>
+                          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-gray-400">
+                            <span className="inline-flex items-center gap-1.5">
+                              <User className="h-3.5 w-3.5" />
+                              {post.author}
+                            </span>
+                            <span className="inline-flex items-center gap-1.5">
+                              <Calendar className="h-3.5 w-3.5" />
+                              {post.date}
+                            </span>
+                            <span className="inline-flex items-center gap-1.5">
+                              <Clock className="h-3.5 w-3.5" />
+                              {post.readTime}
+                            </span>
+                          </div>
+                          <div className="mt-4">
+                            <Link to={`/blog/${post.slug}`}>
+                              <Button className="h-11 w-full rounded-full bg-[#F59E0B] px-5 text-sm font-semibold text-black hover:bg-[#f7a91e]">
+                                Ler artigo
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </div>
