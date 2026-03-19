@@ -108,5 +108,7 @@ export const companyInfo = {
   phone: "(15) 98801-5195",
   whatsapp: "5515988015195",
   email: "bierz665@gmail.com",
-  hours: "Segunda a Sexta: 8h às 18h | Sábado: 8h às 14h"
+  instagram: "@bieerz",
+  instagramUrl: "https://www.instagram.com/bieerz/",
+  hours: "Atendimento 24 horas"
 };

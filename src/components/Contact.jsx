@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Instagram, MapPin, Clock } from 'lucide-react';
 import { companyInfo } from '../mock';
 
 const Contact = () => {
@@ -72,18 +72,20 @@ const Contact = () => {
                   </div>
                 </div>
 
-                {/* Email */}
+                {/* Instagram */}
                 <div className="flex items-start gap-4">
                   <div className="bg-[#F59E0B]/10 p-3 rounded-lg">
-                    <Mail className="w-6 h-6 text-[#F59E0B]" />
+                    <Instagram className="w-6 h-6 text-[#F59E0B]" />
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold mb-1">E-mail</h3>
+                    <h3 className="text-white font-semibold mb-1">Instagram</h3>
                     <a
-                      href={`mailto:${companyInfo.email}`}
+                      href={companyInfo.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-[#F59E0B] hover:text-[#F97316] transition-colors"
                     >
-                      {companyInfo.email}
+                      {companyInfo.instagram}
                     </a>
                   </div>
                 </div>
