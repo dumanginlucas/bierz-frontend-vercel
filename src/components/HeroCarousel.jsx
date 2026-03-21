@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
@@ -8,6 +9,7 @@ const AUTO_PLAY_MS = 12000;
 const DRAG_THRESHOLD_RATIO = 0.15;
 
 const HeroCarousel = () => {
+  const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(() => {
     if (typeof window === 'undefined') return 1200;
     return window.innerWidth;
@@ -338,7 +340,13 @@ const HeroCarousel = () => {
       <div className="hero-cards-v8-wrapper">
         <div className="hero-cards-v8-grid">
           {cards.map((card) => (
-            <div key={card.id} className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'}`}>
+            <div 
+              key={card.id} 
+              className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'} cursor-pointer transition-transform hover:scale-[1.02]`}
+              onClick={() => {
+                if (card.id === 1) navigate('/catalogo');
+              }}
+            >
               <div className="hero-card-v8-inner">
                 <div className="hero-card-v8-art" aria-hidden="true">
                   <div className={`hero-card-v8-image ${card.imageClass}`} style={{ backgroundImage: `url(${card.image})` }} />
