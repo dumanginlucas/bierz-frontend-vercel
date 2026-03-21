@@ -35,8 +35,8 @@ const BlogPostPage = () => {
     ensureMeta('og:title', `${post.title} | Blog do Chopp Bierz`, 'property');
     ensureMeta('og:description', post.seoDescription, 'property');
     ensureMeta('keywords', post.keywords.join(', '));
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    window.scrollTo(0, 0);
   }, [post]);
 
   const relatedPosts = getRelatedPosts(slug, post?.category);

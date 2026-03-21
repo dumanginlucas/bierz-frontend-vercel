@@ -34,6 +34,7 @@ const BlogPage = () => {
       'Blog da Bierz com artigos sobre chopp em Sorocaba, chope para eventos, disk chopp, delivery e dicas para churrascos e festas.'
     );
     ensureMeta('keywords', blogKeywordCluster.join(', '));
+    window.scrollTo(0, 0);
   }, []);
 
   const filteredPosts = useMemo(() => {

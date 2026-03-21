@@ -5,6 +5,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { Toaster } from "./components/ui/sonner";
 import AgeVerificationModal from "./components/AgeVerificationModal";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -71,6 +72,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
+          <ScrollToTop />
           <div className="App">
             <AgeVerificationModal />
             <Routes>

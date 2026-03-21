@@ -345,6 +345,17 @@ const HeroCarousel = () => {
               className={`hero-card-v8 ${card.theme} ${card.hasSplash ? 'with-splash' : 'no-splash'} cursor-pointer transition-transform hover:scale-[1.02]`}
               onClick={() => {
                 if (card.id === 1) navigate('/catalogo');
+                if (card.id === 2) {
+                  const el = document.getElementById('services');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  else navigate('/', { state: { scrollTo: 'services' } });
+                }
+                if (card.id === 3) window.open('https://www.instagram.com/bieerz/', '_blank');
+                if (card.id === 4) {
+                  const el = document.getElementById('how-it-works');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  else navigate('/', { state: { scrollTo: 'how-it-works' } });
+                }
               }}
             >
               <div className="hero-card-v8-inner">
