@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Calendar, Clock, User } from 'lucide-react';
 import Header from '../components/Header';
@@ -39,6 +39,25 @@ const BlogPostPage = () => {
     window.scrollTo(0, 0);
   }, [post]);
 
+  useLayoutEffect(() => {
+    if (!post) return;
+
+    const forceTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    forceTop();
+    const raf = window.requestAnimationFrame(forceTop);
+    const timeoutId = window.setTimeout(forceTop, 80);
+
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(timeoutId);
+    };
+  }, [slug, post]);
+
   const relatedPosts = getRelatedPosts(slug, post?.category);
   const cta = post?.cta || defaultCta;
 
@@ -63,7 +82,7 @@ const BlogPostPage = () => {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black text-white">
+      <main key={slug} className="min-h-screen bg-black text-white">
         <section className="border-b border-[#F59E0B]/10 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.16),_transparent_34%),linear-gradient(to_bottom,#091226,#000000_56%)] pt-28 pb-10 sm:pb-12">
           <div className="container mx-auto max-w-4xl px-4">
             <Link to="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-[#F8C15C] transition hover:text-[#F59E0B]">

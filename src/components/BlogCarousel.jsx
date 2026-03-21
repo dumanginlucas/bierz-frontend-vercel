@@ -91,6 +91,11 @@ const BlogCarousel = () => {
                 
                 <Link 
                   to={`/blog/${post.slug}`}
+                  onClick={() => {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                  }}
                   className="inline-flex items-center gap-2 text-xs font-bold text-white uppercase tracking-widest group/link"
                 >
                   Ler artigo 
