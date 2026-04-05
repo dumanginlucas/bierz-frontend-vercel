@@ -11,7 +11,7 @@ export const catalogProducts = [
     brand: 'Ashby',
     category: 'pilsen',
     name: 'Chopp Ashby Pilsen',
-    style: 'Pilsen Premium',
+    style: 'Pilsen',
     description:
       'Referência em qualidade artesanal, o Chopp Ashby Pilsen é puro malte e entrega coloração dourada, espuma cremosa e equilíbrio elegante entre malte e refrescância.',
     prices: buildPrices(12.9),
@@ -24,7 +24,7 @@ export const catalogProducts = [
     brand: 'Stell',
     category: 'pilsen',
     name: 'Chopp Stell Pilsen',
-    style: 'Premium Lager',
+    style: 'Pilsen',
     description:
       'Pureza, leveza e excelente drinkability definem o Chopp Stell Pilsen, com perfil limpo, refrescante e ideal para churrascos, festas e confraternizações.',
     prices: buildPrices(12.9),
@@ -42,8 +42,8 @@ export const catalogProducts = [
       'Chopp leve, refrescante e versátil, com perfil equilibrado para servir bem em eventos, aniversários e encontros em casa.',
     prices: buildPrices(12.9),
     image: '/catalogo/Barril Hockenheim.png',
-    abv: 4.2,
-    ibu: 8,
+    abv: 4.6,
+    ibu: 12,
   },
   {
     id: 'hockenheim-pilsen-puro-malte',
@@ -55,8 +55,8 @@ export const catalogProducts = [
       'Versão puro malte da Hockenheim, com corpo mais presente, excelente formação de espuma e final limpo para quem busca uma experiência mais premium.',
     prices: buildPrices(14.9),
     image: '/catalogo/Barril Hockenheim Puro Malte.png',
-    abv: 4.6,
-    ibu: 12,
+    abv: 4.8,
+    ibu: 17,
   },
   {
     id: 'ashby-nirvana-ipa',
