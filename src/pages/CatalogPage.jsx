@@ -97,167 +97,196 @@ const CatalogPage = () => {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 12;
+    const margin = 14;
     const contentWidth = pageWidth - margin * 2;
-    const logoData = await loadImageAsDataUrl('/logo.png');
-    const pdfVariationOrder = ['pilsen', 'ipa', 'vinho'];
+    const topLimit = 48;
+    const bottomLimit = pageHeight - 18;
 
-    const productsByVariation = pdfVariationOrder.flatMap((variation) => {
-      const featuredId = featuredByVariation[variation];
-      const variationOrder = orderByVariation[variation] ?? [];
+    const [logoData, ...productImages] = await Promise.all([
+      loadImageAsDataUrl('/logo.png'),
+      ...catalogProducts.map((product) =>
+        loadImageAsDataUrl(product.image).catch(() => null)
+      ),
+    ]);
 
-      return catalogProducts
-        .filter((product) => product.category === variation)
-        .sort((a, b) => {
-          const aFeatured = a.id === featuredId ? 0 : 1;
-          const bFeatured = b.id === featuredId ? 0 : 1;
-          if (aFeatured !== bFeatured) return aFeatured - bFeatured;
-
-          const aOrder = variationOrder.indexOf(a.id);
-          const bOrder = variationOrder.indexOf(b.id);
-          const aRank = aOrder === -1 ? 999 : aOrder;
-          const bRank = bOrder === -1 ? 999 : bOrder;
-
-          if (aRank !== bRank) return aRank - bRank;
-
-          return a.name.localeCompare(b.name, 'pt-BR');
-        })
-        .map((product) => ({ ...product, pdfVariation: variation }));
-    });
+    const imageMap = new Map(catalogProducts.map((product, index) => [product.id, productImages[index]]));
 
     let pageNumber = 1;
+    let y = topLimit;
+
+    const sections = ['pilsen', 'ipa', 'vinho'].map((variation) => {
+      const variationOrder = orderByVariation[variation] ?? [];
+      return {
+        key: variation,
+        label: variationLabels[variation],
+        products: catalogProducts
+          .filter((product) => product.category === variation)
+          .sort((a, b) => {
+            const aOrder = variationOrder.indexOf(a.id);
+            const bOrder = variationOrder.indexOf(b.id);
+            const aRank = aOrder === -1 ? 999 : aOrder;
+            const bRank = bOrder === -1 ? 999 : bOrder;
+            if (aRank !== bRank) return aRank - bRank;
+            return a.name.localeCompare(b.name, 'pt-BR');
+          }),
+      };
+    });
 
     const drawHeader = () => {
-      doc.setFillColor(7, 7, 7);
-      doc.rect(0, 0, pageWidth, 34, 'F');
+      doc.setFillColor(255, 255, 255);
+      doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-      doc.addImage(logoData, 'PNG', 12, 6, 16, 16);
+      doc.addImage(logoData, 'PNG', margin, 10, 14, 14);
 
-      doc.setTextColor(245, 158, 11);
+      doc.setTextColor(22, 22, 22);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(20);
-      doc.text('CATÁLOGO PREMIUM', 34, 14);
+      doc.setFontSize(18);
+      doc.text('CATÁLOGO DE CHOPP', margin + 19, 15);
 
-      doc.setTextColor(255, 255, 255);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text(`TIPOS: PILSEN • IPA • VINHO  •  EQUIPAMENTO: ${equipmentInfo[selectedEquipment].name.toUpperCase()}`, 34, 21);
+      doc.setTextColor(196, 132, 18);
+      doc.setFontSize(8.8);
+      doc.text('PILSEN • IPA • VINHO', margin + 19, 20.2);
 
+      doc.setTextColor(95, 95, 95);
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8.5);
-      doc.setTextColor(184, 184, 184);
-      doc.text('Entrega, instalação e retirada inclusos em Sorocaba e região.', 34, 27);
+      doc.setFontSize(8);
+      doc.text(`Equipamento sugerido: ${equipmentInfo[selectedEquipment].name}`, margin + 19, 25.2);
+      doc.text('Entrega, instalação e retirada inclusos em Sorocaba e região.', pageWidth - margin, 15.2, {
+        align: 'right',
+      });
+      doc.text('Seleção premium com apresentação limpa e profissional.', pageWidth - margin, 20.2, {
+        align: 'right',
+      });
 
-      doc.setFillColor(245, 158, 11);
-      doc.roundedRect(margin, 39, contentWidth, 8, 2, 2, 'F');
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
-      doc.text('BIERZ • CHOPP GELADO • ATENDIMENTO PREMIUM', pageWidth / 2, 44.4, { align: 'center' });
+      doc.setDrawColor(222, 222, 222);
+      doc.line(margin, 30, pageWidth - margin, 30);
     };
 
     const drawFooter = () => {
-      doc.setDrawColor(38, 38, 38);
-      doc.line(margin, pageHeight - 16, pageWidth - margin, pageHeight - 16);
-      doc.setTextColor(140, 140, 140);
+      doc.setDrawColor(228, 228, 228);
+      doc.line(margin, pageHeight - 14, pageWidth - margin, pageHeight - 14);
+
+      doc.setTextColor(110, 110, 110);
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text('Beba com moderação. Venda proibida para menores de 18 anos.', margin, pageHeight - 10);
-      doc.text(`WhatsApp: ${companyInfo.phone} • bierz.com.br`, pageWidth - margin, pageHeight - 10, { align: 'right' });
-      doc.text(`${pageNumber}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+      doc.setFontSize(7.4);
+      doc.text('BIERZ DISTRIBUIDORA • Entrega • Instalação • Suporte', margin, pageHeight - 8.2);
+      doc.text(`WhatsApp ${companyInfo.phone} • www.bierz.com.br`, pageWidth - margin, pageHeight - 8.2, {
+        align: 'right',
+      });
+      doc.text(String(pageNumber), pageWidth / 2, pageHeight - 8.2, { align: 'center' });
     };
 
-    const ensureSpace = (heightNeeded) => {
-      if (y + heightNeeded > pageHeight - 24) {
-        drawFooter();
-        doc.addPage();
-        pageNumber += 1;
-        drawHeader();
-        y = 56;
+    const addNewPage = () => {
+      drawFooter();
+      doc.addPage();
+      pageNumber += 1;
+      drawHeader();
+      y = topLimit;
+    };
+
+    const ensureSpace = (neededHeight) => {
+      if (y + neededHeight > bottomLimit) {
+        addNewPage();
       }
     };
 
-    const drawSectionTitle = (variation) => {
-      ensureSpace(16);
-      doc.setFillColor(18, 18, 18);
-      doc.setDrawColor(245, 158, 11);
-      doc.roundedRect(margin, y, contentWidth, 10, 2, 2, 'FD');
-      doc.setTextColor(245, 158, 11);
+    const drawSectionHeader = (title) => {
+      ensureSpace(14);
+      doc.setFillColor(250, 250, 250);
+      doc.roundedRect(margin, y, contentWidth, 10, 2, 2, 'F');
+      doc.setDrawColor(212, 162, 76);
+      doc.setLineWidth(0.6);
+      doc.line(margin, y + 10, pageWidth - margin, y + 10);
+      doc.setTextColor(18, 18, 18);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.text(variationLabels[variation].toUpperCase(), margin + 5, y + 6.8);
+      doc.setFontSize(10.8);
+      doc.text(title.toUpperCase(), margin + 3, y + 6.6);
       y += 14;
     };
 
-    drawHeader();
-    let y = 56;
-    let currentVariation = null;
+    const drawProductRow = (product) => {
+      const rowHeight = 34;
+      ensureSpace(rowHeight + 4);
 
-    productsByVariation.forEach((product, index) => {
-      if (product.pdfVariation !== currentVariation) {
-        currentVariation = product.pdfVariation;
-        drawSectionTitle(currentVariation);
+      const imageX = margin;
+      const imageY = y + 1;
+      const imageW = 22;
+      const imageH = 28;
+      const textX = imageX + imageW + 6;
+      const priceBoxW = 33;
+      const specsX = pageWidth - margin - priceBoxW;
+      const contentRight = specsX - 5;
+      const bodyWidth = contentRight - textX;
+
+      doc.setDrawColor(232, 232, 232);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y + rowHeight, pageWidth - margin, y + rowHeight);
+
+      const imageData = imageMap.get(product.id);
+      if (imageData) {
+        doc.addImage(imageData, 'PNG', imageX, imageY, imageW, imageH, undefined, 'FAST');
       }
 
-      const cardHeight = 39;
-      ensureSpace(cardHeight);
-
-      doc.setFillColor(13, 13, 13);
-      doc.setDrawColor(38, 38, 38);
-      doc.roundedRect(margin, y, contentWidth, cardHeight, 3, 3, 'FD');
-
-      doc.setFillColor(245, 158, 11);
-      doc.roundedRect(margin + 4, y + 4, 30, 7, 2, 2, 'F');
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(28, 28, 28);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
-      doc.text(product.brand.toUpperCase(), margin + 19, y + 8.8, { align: 'center' });
+      doc.setFontSize(11.5);
+      doc.text(product.brand.toUpperCase(), textX, y + 7);
 
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(11);
-      doc.text(product.style, margin + 38, y + 9);
+      doc.setTextColor(196, 132, 18);
+      doc.setFontSize(8.8);
+      doc.text(product.style.toUpperCase(), textX, y + 12.2);
 
-      doc.setTextColor(245, 158, 11);
+      doc.setTextColor(78, 78, 78);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(7.5);
-      doc.text(`${formatAbv(product.abv)}  •  ${formatIbu(product.ibu)}`, margin + 38, y + 14.5);
+      doc.setFontSize(7.6);
+      doc.text(`${formatAbv(product.abv)} • ${formatIbu(product.ibu)}`, textX, y + 17.2);
 
-      doc.setTextColor(165, 165, 165);
+      doc.setTextColor(92, 92, 92);
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8.2);
-      const descriptionLines = doc.splitTextToSize(product.description, 90).slice(0, 3);
-      doc.text(descriptionLines, margin + 38, y + 20);
+      doc.setFontSize(7.7);
+      const descriptionLines = doc.splitTextToSize(product.description, bodyWidth).slice(0, 3);
+      doc.text(descriptionLines, textX, y + 22.2);
 
-      doc.setFillColor(20, 20, 20);
-      doc.setDrawColor(55, 55, 55);
-      doc.roundedRect(pageWidth - margin - 46, y + 4, 42, 9, 2, 2, 'FD');
-      doc.setTextColor(245, 158, 11);
+      doc.setFillColor(251, 248, 242);
+      doc.roundedRect(specsX, y + 1.8, priceBoxW, 12, 2, 2, 'F');
+      doc.setTextColor(196, 132, 18);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
-      doc.text(`R$ ${formatCurrency(product.prices.perLiter)}/L`, pageWidth - margin - 25, y + 10, { align: 'center' });
+      doc.setFontSize(6.9);
+      doc.text('VALOR / LITRO', specsX + priceBoxW / 2, y + 6.1, { align: 'center' });
+      doc.setTextColor(22, 22, 22);
+      doc.setFontSize(10.5);
+      doc.text(`R$ ${formatCurrency(product.prices.perLiter)}`, specsX + priceBoxW / 2, y + 10.6, { align: 'center' });
 
-      ['20L', '30L', '50L'].forEach((size, sizeIndex) => {
-        const boxX = pageWidth - margin - 46 + sizeIndex * 14.1;
-        const boxY = y + 21;
-        doc.setFillColor(10, 10, 10);
-        doc.setDrawColor(65, 65, 65);
-        doc.roundedRect(boxX, boxY, 13, 11, 2, 2, 'FD');
-        doc.setTextColor(245, 158, 11);
+      const sizes = ['20L', '30L', '50L'];
+      sizes.forEach((size, index) => {
+        const x = specsX + index * 11.2;
+        const boxW = 10.2;
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(224, 224, 224);
+        doc.roundedRect(x, y + 18.2, boxW, 9.6, 1.6, 1.6, 'FD');
+        doc.setTextColor(196, 132, 18);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(7.5);
-        doc.text(size, boxX + 6.5, boxY + 4, { align: 'center' });
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(6.9);
-        doc.text(`R$ ${formatCurrency(product.prices[size])}`, boxX + 6.5, boxY + 8.4, { align: 'center' });
+        doc.setFontSize(6.5);
+        doc.text(size, x + boxW / 2, y + 21.7, { align: 'center' });
+        doc.setTextColor(35, 35, 35);
+        doc.setFontSize(5.9);
+        doc.text(`R$ ${formatCurrency(product.prices[size])}`, x + boxW / 2, y + 25.6, { align: 'center' });
       });
 
-      y += cardHeight + 4;
+      y += rowHeight + 3;
+    };
 
-      if (index === productsByVariation.length - 1) {
-        drawFooter();
+    drawHeader();
+
+    sections.forEach((section, sectionIndex) => {
+      drawSectionHeader(section.label);
+      section.products.forEach(drawProductRow);
+      if (sectionIndex !== sections.length - 1) {
+        y += 2;
       }
     });
 
+    drawFooter();
     doc.save('catalogo_bierz_completo.pdf');
   };
 
