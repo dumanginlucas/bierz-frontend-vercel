@@ -100,6 +100,30 @@ const CatalogPage = () => {
     const margin = 12;
     const contentWidth = pageWidth - margin * 2;
     const logoData = await loadImageAsDataUrl('/logo.png');
+    const pdfVariationOrder = ['pilsen', 'ipa', 'vinho'];
+
+    const productsByVariation = pdfVariationOrder.flatMap((variation) => {
+      const featuredId = featuredByVariation[variation];
+      const variationOrder = orderByVariation[variation] ?? [];
+
+      return catalogProducts
+        .filter((product) => product.category === variation)
+        .sort((a, b) => {
+          const aFeatured = a.id === featuredId ? 0 : 1;
+          const bFeatured = b.id === featuredId ? 0 : 1;
+          if (aFeatured !== bFeatured) return aFeatured - bFeatured;
+
+          const aOrder = variationOrder.indexOf(a.id);
+          const bOrder = variationOrder.indexOf(b.id);
+          const aRank = aOrder === -1 ? 999 : aOrder;
+          const bRank = bOrder === -1 ? 999 : bOrder;
+
+          if (aRank !== bRank) return aRank - bRank;
+
+          return a.name.localeCompare(b.name, 'pt-BR');
+        })
+        .map((product) => ({ ...product, pdfVariation: variation }));
+    });
 
     let pageNumber = 1;
 
@@ -117,7 +141,7 @@ const CatalogPage = () => {
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
-      doc.text(`TIPO: ${variationLabels[selectedVariation].toUpperCase()}  •  EQUIPAMENTO: ${equipmentInfo[selectedEquipment].name.toUpperCase()}`, 34, 21);
+      doc.text(`TIPOS: PILSEN • IPA • VINHO  •  EQUIPAMENTO: ${equipmentInfo[selectedEquipment].name.toUpperCase()}`, 34, 21);
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8.5);
@@ -143,18 +167,40 @@ const CatalogPage = () => {
       doc.text(`${pageNumber}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
     };
 
-    drawHeader();
-    let y = 56;
-
-    filteredProducts.forEach((product, index) => {
-      const cardHeight = 39;
-      if (y + cardHeight > pageHeight - 24) {
+    const ensureSpace = (heightNeeded) => {
+      if (y + heightNeeded > pageHeight - 24) {
         drawFooter();
         doc.addPage();
         pageNumber += 1;
         drawHeader();
         y = 56;
       }
+    };
+
+    const drawSectionTitle = (variation) => {
+      ensureSpace(16);
+      doc.setFillColor(18, 18, 18);
+      doc.setDrawColor(245, 158, 11);
+      doc.roundedRect(margin, y, contentWidth, 10, 2, 2, 'FD');
+      doc.setTextColor(245, 158, 11);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text(variationLabels[variation].toUpperCase(), margin + 5, y + 6.8);
+      y += 14;
+    };
+
+    drawHeader();
+    let y = 56;
+    let currentVariation = null;
+
+    productsByVariation.forEach((product, index) => {
+      if (product.pdfVariation !== currentVariation) {
+        currentVariation = product.pdfVariation;
+        drawSectionTitle(currentVariation);
+      }
+
+      const cardHeight = 39;
+      ensureSpace(cardHeight);
 
       doc.setFillColor(13, 13, 13);
       doc.setDrawColor(38, 38, 38);
@@ -207,12 +253,12 @@ const CatalogPage = () => {
 
       y += cardHeight + 4;
 
-      if (index === filteredProducts.length - 1) {
+      if (index === productsByVariation.length - 1) {
         drawFooter();
       }
     });
 
-    doc.save(`catalogo_bierz_${selectedVariation}.pdf`);
+    doc.save('catalogo_bierz_completo.pdf');
   };
 
   const getWhatsAppMessage = (productName) => {
@@ -316,7 +362,7 @@ const CatalogPage = () => {
               className="flex items-center gap-2 text-zinc-300 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest bg-white/5 px-4 py-2 rounded-lg border border-white/5"
             >
               <Download size={12} />
-              Baixar PDF ({variationLabels[selectedVariation]})
+              Baixar Catálogo
             </button>
           </div>
         </div>
