@@ -105,7 +105,7 @@ export const catalogProducts = [
     style: 'Draft Wine',
     description:
       'Uma experiência diferenciada que une refrescância e perfil frutado, criando uma opção marcante para eventos especiais.',
-    prices: buildPrices(16.9),
+    prices: buildPrices(17.9),
     image: '/catalogo/Barril Ashby.png',
     abv: null,
     ibu: null,
@@ -118,7 +118,7 @@ export const catalogProducts = [
     style: 'Gourmet Wine Beer',
     description:
       'Uma proposta sofisticada, com notas frutadas e perfil refrescante para quem quer fugir do comum em celebrações e confraternizações.',
-    prices: buildPrices(16.9),
+    prices: buildPrices(17.9),
     image: '/catalogo/Barril Stell.png',
     abv: null,
     ibu: null,
