@@ -16,8 +16,8 @@ export const catalogProducts = [
       'Referência em qualidade artesanal, o Chopp Ashby Pilsen é puro malte e entrega coloração dourada, espuma cremosa e equilíbrio elegante entre malte e refrescância.',
     prices: buildPrices(12.9),
     image: '/catalogo/Barril Ashby.png',
-    abv: null,
-    ibu: null,
+    abv: 4.6,
+    ibu: 12,
   },
   {
     id: 'stell-pilsen',
@@ -29,8 +29,8 @@ export const catalogProducts = [
       'Pureza, leveza e excelente drinkability definem o Chopp Stell Pilsen, com perfil limpo, refrescante e ideal para churrascos, festas e confraternizações.',
     prices: buildPrices(12.9),
     image: '/catalogo/Barril Stell.png',
-    abv: null,
-    ibu: null,
+    abv: 4.3,
+    ibu: 8,
   },
   {
     id: 'hockenheim-pilsen',
@@ -42,8 +42,8 @@ export const catalogProducts = [
       'Chopp leve, refrescante e versátil, com perfil equilibrado para servir bem em eventos, aniversários e encontros em casa.',
     prices: buildPrices(12.9),
     image: '/catalogo/Barril Hockenheim.png',
-    abv: null,
-    ibu: null,
+    abv: 4.2,
+    ibu: 8,
   },
   {
     id: 'hockenheim-pilsen-puro-malte',
@@ -55,8 +55,8 @@ export const catalogProducts = [
       'Versão puro malte da Hockenheim, com corpo mais presente, excelente formação de espuma e final limpo para quem busca uma experiência mais premium.',
     prices: buildPrices(14.9),
     image: '/catalogo/Barril Hockenheim Puro Malte.png',
-    abv: null,
-    ibu: null,
+    abv: 4.6,
+    ibu: 12,
   },
   {
     id: 'ashby-ipa',
@@ -133,7 +133,7 @@ export const catalogProducts = [
       'Opção frutada, refrescante e de excelente aceitação, ideal para quem procura uma bebida diferenciada e muito agradável para servir.',
     prices: buildPrices(17.9),
     image: '/catalogo/Barril Hockenheim.png',
-    abv: null,
-    ibu: null,
+    abv: 6.0,
+    ibu: 15,
   },
 ];

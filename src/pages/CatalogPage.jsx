@@ -26,10 +26,10 @@ const variationLabels = {
   vinho: 'Vinho',
 };
 
-const brandPriority = {
-  Ashby: 0,
-  Stell: 1,
-  Hockenheim: 2,
+const orderByVariation = {
+  pilsen: ['hockenheim-pilsen-puro-malte', 'stell-pilsen', 'hockenheim-pilsen', 'ashby-pilsen'],
+  ipa: ['hockenheim-session-ipa', 'ashby-ipa', 'stell-ipa'],
+  vinho: ['ashby-vinho', 'stell-vinho', 'hockenheim-vinho'],
 };
 
 const featuredByVariation = {
@@ -73,6 +73,8 @@ const CatalogPage = () => {
   const filteredProducts = useMemo(() => {
     const featuredId = featuredByVariation[selectedVariation];
 
+    const variationOrder = orderByVariation[selectedVariation] ?? [];
+
     return catalogProducts
       .filter((product) => product.category === selectedVariation)
       .sort((a, b) => {
@@ -80,9 +82,12 @@ const CatalogPage = () => {
         const bFeatured = b.id === featuredId ? 0 : 1;
         if (aFeatured !== bFeatured) return aFeatured - bFeatured;
 
-        const aBrandRank = brandPriority[a.brand] ?? 99;
-        const bBrandRank = brandPriority[b.brand] ?? 99;
-        if (aBrandRank !== bBrandRank) return aBrandRank - bBrandRank;
+        const aOrder = variationOrder.indexOf(a.id);
+        const bOrder = variationOrder.indexOf(b.id);
+        const aRank = aOrder === -1 ? 999 : aOrder;
+        const bRank = bOrder === -1 ? 999 : bOrder;
+
+        if (aRank !== bRank) return aRank - bRank;
 
         return a.name.localeCompare(b.name, 'pt-BR');
       });
