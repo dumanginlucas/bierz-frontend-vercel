@@ -7,15 +7,6 @@ import { companyInfo } from '../mock';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const brandImages = {
-  Itaipava: '/catalogo/Barril Itaipava.png',
-  Amstel: '/catalogo/Barril Amstel.png',
-  Ashby: '/catalogo/Barril Ashby.png',
-  Brahma: '/catalogo/Barril Brahma.png',
-  Stell: '/catalogo/Barril Stell.png',
-  Heineken: '/catalogo/Barril Heineken.png',
-};
-
 const equipmentInfo = {
   homebar: {
     name: 'HomeBar Premium',
@@ -29,13 +20,32 @@ const equipmentInfo = {
   },
 };
 
-const variationIndex = { pilsen: 0, ipa: 1, vinho: 2 };
+const variationLabels = {
+  pilsen: 'Pilsen',
+  ipa: 'IPA',
+  vinho: 'Vinho',
+};
+
+const brandPriority = {
+  Ashby: 0,
+  Stell: 1,
+  Hockenheim: 2,
+};
+
+const featuredByVariation = {
+  pilsen: 'hockenheim-pilsen-puro-malte',
+  ipa: 'hockenheim-session-ipa',
+  vinho: null,
+};
 
 const formatCurrency = (value) =>
   Number(value).toLocaleString('pt-BR', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+
+const formatAbv = (value) => (typeof value === 'number' ? `${value.toFixed(1).replace('.', ',')}% ABV` : 'ABV —');
+const formatIbu = (value) => (typeof value === 'number' ? `${value} IBU` : 'IBU —');
 
 const scrollPageToTopNow = () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -60,23 +70,23 @@ const CatalogPage = () => {
 
   const whatsappLink = `https://wa.me/${companyInfo.whatsapp}?text=`;
 
-  const orderedProducts = useMemo(() => {
-    const priority = ['Ashby', 'Stell'];
-    const priorityMap = new Map(priority.map((brand, index) => [brand, index]));
+  const filteredProducts = useMemo(() => {
+    const featuredId = featuredByVariation[selectedVariation];
 
-    return [...catalogProducts].sort((a, b) => {
-      const aRank = priorityMap.has(a.brand) ? priorityMap.get(a.brand) : 99;
-      const bRank = priorityMap.has(b.brand) ? priorityMap.get(b.brand) : 99;
-      if (aRank !== bRank) return aRank - bRank;
-      return 0;
-    });
-  }, []);
+    return catalogProducts
+      .filter((product) => product.category === selectedVariation)
+      .sort((a, b) => {
+        const aFeatured = a.id === featuredId ? 0 : 1;
+        const bFeatured = b.id === featuredId ? 0 : 1;
+        if (aFeatured !== bFeatured) return aFeatured - bFeatured;
 
-  const getProductByVariation = (brand, variation) => {
-    const brandData = orderedProducts.find((item) => item.brand === brand);
-    if (!brandData) return null;
-    return brandData.variations[variationIndex[variation]] || null;
-  };
+        const aBrandRank = brandPriority[a.brand] ?? 99;
+        const bBrandRank = brandPriority[b.brand] ?? 99;
+        if (aBrandRank !== bBrandRank) return aBrandRank - bBrandRank;
+
+        return a.name.localeCompare(b.name, 'pt-BR');
+      });
+  }, [selectedVariation]);
 
   const handleDownloadPDF = async () => {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
@@ -102,7 +112,7 @@ const CatalogPage = () => {
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
-      doc.text(`TIPO: ${selectedVariation.toUpperCase()}  •  EQUIPAMENTO: ${equipmentInfo[selectedEquipment].name.toUpperCase()}`, 34, 21);
+      doc.text(`TIPO: ${variationLabels[selectedVariation].toUpperCase()}  •  EQUIPAMENTO: ${equipmentInfo[selectedEquipment].name.toUpperCase()}`, 34, 21);
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8.5);
@@ -131,11 +141,8 @@ const CatalogPage = () => {
     drawHeader();
     let y = 56;
 
-    orderedProducts.forEach((brandGroup, index) => {
-      const product = getProductByVariation(brandGroup.brand, selectedVariation);
-      if (!product) return;
-
-      const cardHeight = 34;
+    filteredProducts.forEach((product, index) => {
+      const cardHeight = 39;
       if (y + cardHeight > pageHeight - 24) {
         drawFooter();
         doc.addPage();
@@ -149,21 +156,26 @@ const CatalogPage = () => {
       doc.roundedRect(margin, y, contentWidth, cardHeight, 3, 3, 'FD');
 
       doc.setFillColor(245, 158, 11);
-      doc.roundedRect(margin + 4, y + 4, 25, 7, 2, 2, 'F');
+      doc.roundedRect(margin + 4, y + 4, 30, 7, 2, 2, 'F');
       doc.setTextColor(0, 0, 0);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8.5);
-      doc.text(`${brandGroup.brand.toUpperCase()}`, margin + 16.5, y + 8.8, { align: 'center' });
+      doc.text(product.brand.toUpperCase(), margin + 19, y + 8.8, { align: 'center' });
 
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(11);
-      doc.text(product.style, margin + 34, y + 9);
+      doc.text(product.style, margin + 38, y + 9);
+
+      doc.setTextColor(245, 158, 11);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.text(`${formatAbv(product.abv)}  •  ${formatIbu(product.ibu)}`, margin + 38, y + 14.5);
 
       doc.setTextColor(165, 165, 165);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8.2);
-      const descriptionLines = doc.splitTextToSize(product.description, 92).slice(0, 3);
-      doc.text(descriptionLines, margin + 34, y + 15);
+      const descriptionLines = doc.splitTextToSize(product.description, 90).slice(0, 3);
+      doc.text(descriptionLines, margin + 38, y + 20);
 
       doc.setFillColor(20, 20, 20);
       doc.setDrawColor(55, 55, 55);
@@ -173,10 +185,9 @@ const CatalogPage = () => {
       doc.setFontSize(8.5);
       doc.text(`R$ ${formatCurrency(product.prices.perLiter)}/L`, pageWidth - margin - 25, y + 10, { align: 'center' });
 
-      const sizes = ['20L', '30L', '50L'];
-      sizes.forEach((size, sizeIndex) => {
+      ['20L', '30L', '50L'].forEach((size, sizeIndex) => {
         const boxX = pageWidth - margin - 46 + sizeIndex * 14.1;
-        const boxY = y + 17;
+        const boxY = y + 21;
         doc.setFillColor(10, 10, 10);
         doc.setDrawColor(65, 65, 65);
         doc.roundedRect(boxX, boxY, 13, 11, 2, 2, 'FD');
@@ -191,7 +202,7 @@ const CatalogPage = () => {
 
       y += cardHeight + 4;
 
-      if (index === orderedProducts.length - 1) {
+      if (index === filteredProducts.length - 1) {
         drawFooter();
       }
     });
@@ -200,7 +211,7 @@ const CatalogPage = () => {
   };
 
   const getWhatsAppMessage = (productName) => {
-    const text = `Olá! Gostaria de pedir o ${productName} (${selectedVariation.toUpperCase()}) com a ${equipmentInfo[selectedEquipment].name}.`;
+    const text = `Olá! Gostaria de pedir o ${productName} (${variationLabels[selectedVariation].toUpperCase()}) com a ${equipmentInfo[selectedEquipment].name}.`;
     return whatsappLink + encodeURIComponent(text);
   };
 
@@ -291,7 +302,7 @@ const CatalogPage = () => {
                     selectedVariation === variation ? 'bg-amber-500 text-black shadow-sm' : 'text-zinc-500 hover:text-zinc-200'
                   }`}
                 >
-                  {variation}
+                  {variationLabels[variation]}
                 </button>
               ))}
             </div>
@@ -300,7 +311,7 @@ const CatalogPage = () => {
               className="flex items-center gap-2 text-zinc-300 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest bg-white/5 px-4 py-2 rounded-lg border border-white/5"
             >
               <Download size={12} />
-              Baixar PDF ({selectedVariation})
+              Baixar PDF ({variationLabels[selectedVariation]})
             </button>
           </div>
         </div>
@@ -309,30 +320,37 @@ const CatalogPage = () => {
       <main className="container mx-auto px-6 py-8 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="wait">
-            {orderedProducts.map((brandGroup, idx) => {
-              const product = getProductByVariation(brandGroup.brand, selectedVariation);
-              if (!product) return null;
+            {filteredProducts.map((product, idx) => {
+              const isFeatured = featuredByVariation[selectedVariation] === product.id;
 
               return (
                 <motion.div
-                  key={`${brandGroup.brand}-${selectedVariation}`}
+                  key={product.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: idx * 0.03 }}
-                  className="bg-zinc-900/20 border border-white/5 rounded-2xl overflow-hidden hover:border-amber-500/20 transition-all flex flex-col group"
+                  className={`bg-zinc-900/20 border rounded-2xl overflow-hidden transition-all flex flex-col group ${
+                    isFeatured ? 'border-amber-500/30 shadow-lg shadow-amber-500/5' : 'border-white/5 hover:border-amber-500/20'
+                  }`}
                 >
                   <div className="relative h-44 flex items-center justify-center p-6 bg-gradient-to-b from-zinc-900 to-black">
+                    {isFeatured && (
+                      <div className="absolute top-3 left-3 z-10 rounded-full bg-amber-500 text-black text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1">
+                        Destaque
+                      </div>
+                    )}
                     <img
-                      src={brandImages[brandGroup.brand]}
-                      alt={brandGroup.brand}
+                      src={product.image}
+                      alt={product.name}
                       className="h-full w-auto object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
 
                   <div className="p-5 flex-1 flex flex-col space-y-4">
                     <div>
-                      <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none">{brandGroup.brand}</h3>
+                      <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none">{product.brand}</h3>
                       <p className="text-[11px] text-amber-500 font-bold uppercase tracking-[0.18em] mt-2">{product.style}</p>
+                      <p className="text-[11px] text-zinc-400 font-semibold uppercase tracking-[0.12em] mt-2">{formatAbv(product.abv)} • {formatIbu(product.ibu)}</p>
                     </div>
 
                     <p className="text-[13px] text-zinc-300 leading-7 font-normal">{product.description}</p>
