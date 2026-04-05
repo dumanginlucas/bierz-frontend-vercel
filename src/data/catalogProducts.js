@@ -59,17 +59,17 @@ export const catalogProducts = [
     ibu: 12,
   },
   {
-    id: 'ashby-ipa',
+    id: 'ashby-nirvana-ipa',
     brand: 'Ashby',
     category: 'ipa',
-    name: 'Chopp Ashby IPA',
-    style: 'English IPA',
+    name: 'Chopp Ashby IPA Nirvana',
+    style: 'Nirvana IPA',
     description:
-      'IPA inspirada na tradição britânica, com notas maltadas, toque herbal e amargor presente para quem prefere um perfil mais marcante.',
+      'Ashby IPA Nirvana, uma expoente do estilo India Pale Ale que traz 4 lúpulos em sua receita e o processo de dry hopping, sendo amarga e aromática no ponto certo. Preparada seguindo as tradições inglesas para esse estil mais que apaixonante. Um cerveja ideal para os apreciadores de cervejas mais amargas e complexas.',
     prices: buildPrices(17.9),
     image: '/catalogo/Barril Ashby.png',
-    abv: null,
-    ibu: null,
+    abv: 5.5,
+    ibu: 55,
   },
   {
     id: 'stell-ipa',
