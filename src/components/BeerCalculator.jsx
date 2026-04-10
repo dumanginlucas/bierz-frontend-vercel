@@ -59,8 +59,8 @@ const BeerCalculator = () => {
   };
 
   const consumptionOptions = [
-    { value: 250, label: 'Leve', description: '250ml/h', subtitle: 'Confraternizações Empresariais' },
-    { value: 350, label: 'Moderado', description: '350ml/h', subtitle: 'Festas e Aniversários' },
+    { value: 300, label: 'Leve', description: '300ml/h', subtitle: 'Confraternizações Empresariais' },
+    { value: 400, label: 'Moderado', description: '400ml/h', subtitle: 'Festas e Aniversários' },
     { value: 500, label: 'Intenso', description: '500ml/h', subtitle: 'Grandes Eventos' }
   ];
 
