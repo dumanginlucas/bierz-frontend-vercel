@@ -248,7 +248,7 @@ const Header = () => {
             )}
 
             <Button
-              onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
+              onClick={() => window.open('https://wa.me/5515991474614', '_blank')}
               className="bg-[#F59E0B] hover:bg-[#F97316] text-black font-semibold transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap"
             >
               <Phone className="w-4 h-4 mr-2" />
@@ -335,7 +335,7 @@ const Header = () => {
                 </Link>
               )}
               <Button
-                onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
+                onClick={() => window.open('https://wa.me/5515991474614', '_blank')}
                 className="w-full bg-[#F59E0B] text-black font-bold"
               >
                 WhatsApp

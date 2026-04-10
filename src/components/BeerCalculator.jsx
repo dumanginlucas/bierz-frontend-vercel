@@ -29,7 +29,7 @@ const BeerCalculator = () => {
   }, []);
   const [people, setPeople] = useState(50);
   const [hours, setHours] = useState(4);
-  const [consumption, setConsumption] = useState(450); // ml por pessoa/hora
+  const [consumption, setConsumption] = useState(350); // ml por pessoa/hora
   const [result, setResult] = useState(null);
 
   // Calcular automaticamente quando valores mudam
@@ -55,13 +55,13 @@ const BeerCalculator = () => {
     if (!result) return;
     
     const message = `Olá! Calculei que preciso de aproximadamente ${result.totalLiters}L de chopp para ${people} pessoas durante ${hours} horas. Gostaria de solicitar um orçamento!`;
-    window.open(`https://wa.me/5515988015195?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/5515991474614?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   const consumptionOptions = [
-    { value: 300, label: 'Leve', description: '300ml/h', subtitle: 'Confraternizações Empresariais' },
-    { value: 450, label: 'Moderado', description: '450ml/h', subtitle: 'Festas e Aniversários' },
-    { value: 600, label: 'Intenso', description: '600ml/h', subtitle: 'Grandes Eventos' }
+    { value: 250, label: 'Leve', description: '250ml/h', subtitle: 'Confraternizações Empresariais' },
+    { value: 350, label: 'Moderado', description: '350ml/h', subtitle: 'Festas e Aniversários' },
+    { value: 500, label: 'Intenso', description: '500ml/h', subtitle: 'Grandes Eventos' }
   ];
 
   return (

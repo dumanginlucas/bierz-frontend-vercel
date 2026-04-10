@@ -28,13 +28,13 @@ const variationLabels = {
 
 const orderByVariation = {
   pilsen: ['hockenheim-pilsen-puro-malte', 'stell-pilsen', 'hockenheim-pilsen', 'ashby-pilsen'],
-  ipa: ['hockenheim-session-ipa', 'ashby-ipa', 'stell-ipa'],
+  ipa: ['hockenheim-rota-77-american-ipa', 'ashby-nirvana-ipa', 'stell-ipa'],
   vinho: ['ashby-vinho', 'stell-vinho', 'hockenheim-vinho'],
 };
 
 const featuredByVariation = {
   pilsen: 'hockenheim-pilsen-puro-malte',
-  ipa: 'hockenheim-session-ipa',
+  ipa: 'hockenheim-rota-77-american-ipa',
   vinho: null,
 };
 

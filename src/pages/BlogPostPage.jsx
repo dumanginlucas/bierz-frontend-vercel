@@ -140,7 +140,7 @@ const BlogPostPage = () => {
                   {cta.description}
                 </p>
                 <Button
-                  onClick={() => window.open('https://wa.me/5515988015195', '_blank')}
+                  onClick={() => window.open('https://wa.me/5515991474614', '_blank')}
                   className="mt-5 h-11 rounded-full bg-[#F59E0B] px-6 text-sm font-semibold text-black hover:bg-[#f7a91e] sm:h-12 sm:text-base"
                 >
                   {cta.buttonLabel}
